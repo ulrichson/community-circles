@@ -4,7 +4,7 @@
 steroids.config.name = "community-circles-mobile"
 
 # -- Initial Location --
-steroids.config.location = "http://localhost/index.html"
+steroids.config.location = "http://localhost/views/map/index.html"
 
 # -- Tab Bar --
 # steroids.config.tabBar.enabled = true
@@ -29,7 +29,7 @@ steroids.config.location = "http://localhost/index.html"
 # steroids.config.tabBar.backgroundImage = ""
 
 # -- Navigation Bar --
-steroids.config.navigationBar.tintColor = "#00aeef"
+steroids.config.navigationBar.tintColor = "#00a8b3"
 steroids.config.navigationBar.titleColor = "#ffffff"
 steroids.config.navigationBar.buttonTintColor = "#ffffff"
 steroids.config.navigationBar.buttonTitleColor = "#ffffff"
@@ -38,11 +38,11 @@ steroids.config.navigationBar.buttonTitleColor = "#ffffff"
 # steroids.config.navigationBar.portrait.backgroundImage = ""
 
 # -- Android Loading Screen
-steroids.config.loadingScreen.tintColor = "#262626"
+steroids.config.loadingScreen.tintColor = "#00a8b3"
 
 # -- iOS Status Bar --
 steroids.config.statusBar.enabled = true
-steroids.config.statusBar.style = "default"
+steroids.config.statusBar.style = "light"
 
 # -- File Watcher --
 # steroids.config.watch.exclude = ["www/my_excluded_file.js", "www/my_excluded_dir"]

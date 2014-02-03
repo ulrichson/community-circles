@@ -1,0 +1,49 @@
+{
+  "name": "OnsenUI",
+  "version": "0.7.0",
+  "homepage": "http://onsenui.io",
+  "authors": [
+    "Kruy Vanna <kruyvanna@gmail.com>"
+  ],
+  "description": "Web Component inspired HTML5 UI framework for building modern mobile application",
+  "main": [
+    "build/js/onsenui.js",
+    "build/css/onsenui.css",
+    "build/css/topcoat-mobile-onsen-blue.css"
+  ],
+  "keywords": [
+    "onsenui",
+    "angular",
+    "html5",
+    "cordova",
+    "phonegap",
+    "web",
+    "component",
+    "monaca"
+  ],
+  "dependencies": {
+    "angular-unstable": "1.1.5"
+  },
+  "license": "Apache License, Version 2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "component_demo",
+    "config",
+    "framework",
+    "project_templates",
+    "scripts",
+    "test",
+    "Gruntfile.js",
+    "plugin_info.json"
+  ],
+  "_release": "0.7.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.7.0",
+    "commit": "82af66f63991c559e7212ba17a20fd39003c0ff1"
+  },
+  "_source": "git://github.com/OnsenUI/OnsenUI.git",
+  "_target": "0.7.x",
+  "_originalSource": "onsenui"
+}
