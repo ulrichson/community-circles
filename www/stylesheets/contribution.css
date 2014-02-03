@@ -22,17 +22,3 @@
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-timing-function: linear;
 }
-
-#map {
-  bottom: 0; 
-  position: absolute;
-  top: 0;
-  width: 100%;
-}
-
-#btnNewContribution {
-  bottom: 10px;
-  left: 10px; 
-  position: absolute;
-  z-index: 1000;
-}

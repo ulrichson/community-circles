@@ -13,21 +13,19 @@ mapApp.controller "IndexCtrl", ($scope, MapRestangular) ->
   map.on "error", (error) ->
     console.error "Mapbox error: #{error}"
 
-  # This will be populated with Restangular
-  # $scope.maps = []
-  
-  # Helper function for opening new webviews
-  # $scope.open = function(id) {
-  #   webView = new steroids.views.WebView("/views/map/show.html?id="+id);
-  #   steroids.layers.push(webView);
-  # };
+  $scope.newContribution = ->
+    # newContributionView = new steroids.views.WebView "/views/contribution/new.html",
+    # console.debug "newContributionView=#{JSON.stringify newContributionView}"
+    # console.debug "__newContributionView=#{JSON.stringify newContributionView}"
+    # steroids.layers.push
+    #   view: newContributionView
+    #   onFailure: (error) ->
+    #     console.error "Could not push the view: #{error.errorDescription}"
+    steroids.layers.push new steroids.views.WebView "/views/contribution/new.html"
   
   # Helper function for loading map data with spinner
   $scope.loadMap = ->
     $scope.loading = false
-    # maps.getList().then (data) ->
-    #   $scope.maps = data
-    #   $scope.loading = false
     navigator.geolocation.getCurrentPosition (position) ->
       # $scope.loading = false
       # $scope.$apply
@@ -55,10 +53,6 @@ mapApp.controller "IndexCtrl", ($scope, MapRestangular) ->
       # $scope.$apply
       console.error "Could not determine position. #{error.message} (#{error.code})."
       alert "Could not determine position, please verify that the app has permission to use location services."
-
-  # Fetch all objects from the backend (see app/models/map.js)
-  # maps = MapRestangular.all("map")
-  # $scope.loadMap()
  
   # Get notified when an another webview modifies the data and reload
   window.addEventListener "message", (event) ->
@@ -78,16 +72,3 @@ mapApp.controller "IndexCtrl", ($scope, MapRestangular) ->
 
   steroids.view.navigationBar.setButtons
     right: [buttonRefresh]
-
-  # ..and add a button to it
-  # addButton = new steroids.buttons.NavigationBarButton()
-  # addButton.title = "Add"
-  
-  # ..set callback for tap action
-  # addButton.onTap = ->
-  #   addView = new steroids.views.WebView("/views/map/new.html")
-  #   steroids.modal.show addView
-
-  
-  # and finally put it to navigation bar
-  # steroids.view.navigationBar.setButtons right: [addButton]
