@@ -6,8 +6,8 @@
       <h1>Add a new contribution</h1>
 
       <form class="simple-form">
-        Name: <input type="text" ng-model="contribution.name" /><br />
-        Description: <input type="text" ng-model="contribution.description" /><br />
+        <input type="text" ng-model="contribution.name" class="topcoat-text-input" placeholder="Name" />
+        <input type="text" ng-model="contribution.description" class="topcoat-text-input" placeholder="Description" />
 
         <a class="topcoat-button" hm-tap="create(contribution)">Add</a>
         <a class="topcoat-button" hm-tap="close()">Cancel</a>
