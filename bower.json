@@ -16,6 +16,9 @@
     "underscore": "1.5.1",
     "restangular": "1.0.7",
     "mapbox.js": "1.6.x",
-    "onsenui": "0.7.x"
+    "onsenui": "1.0.x"
+  },
+  "resolutions": {
+    "angular": "1.0.7"
   }
 }
