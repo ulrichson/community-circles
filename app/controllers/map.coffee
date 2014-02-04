@@ -2,13 +2,22 @@ mapApp = angular.module("mapApp", ["MapModel", "hmTouchevents"])
 
 # Index: http://localhost/views/map/index.html
 mapApp.controller "IndexCtrl", ($scope, MapRestangular) ->
+  # Set positition watcher
+  positionWatcherId = navigator.geolocation.watchPosition (positition) ->
+    window.localStorage.setItem "lastKnownPosition", positition
+    window.localStorage.setItem "lastKnownPositionTime", new Date().getTime()
+    refreshMap positition
+  , (error) ->
+    console.error "Could not determine position. #{error.message} (#{error.code})."
+  , enableHighAccuracy: true
+
   map = L.mapbox.map "map",
     "examples.map-y7l23tes",
     tileLayer:
       detectRetina: true
 
   map.on "ready", ->
-    $scope.loadMap()
+    loadMap()
 
   map.on "error", (error) ->
     console.error "Mapbox error: #{error}"
@@ -23,13 +32,15 @@ mapApp.controller "IndexCtrl", ($scope, MapRestangular) ->
     #     console.error "Could not push the view: #{error.errorDescription}"
     steroids.layers.push new steroids.views.WebView "/views/contribution/new.html"
   
+  refreshMap = (position) ->
+    console.debug "Received position #{position.coords.latitude} #{position.coords.longitude}, accuracy: #{position.coords.accuracy}."
+
   # Helper function for loading map data with spinner
-  $scope.loadMap = ->
+  loadMap = ->
     $scope.loading = false
     navigator.geolocation.getCurrentPosition (position) ->
       # $scope.loading = false
       # $scope.$apply
-      console.debug "Received position #{position.coords.latitude} #{position.coords.longitude}, accuracy: #{position.coords.accuracy}."
       map.setView [position.coords.latitude, position.coords.longitude], 20
       map.markerLayer.setGeoJSON
         type: "Feature"
@@ -58,7 +69,7 @@ mapApp.controller "IndexCtrl", ($scope, MapRestangular) ->
   window.addEventListener "message", (event) ->
     
     # reload data on message with reload status
-    $scope.loadMap() if event.data.status is "reload"
+    loadMap() if event.data.status is "reload"
 
   # -- Native navigation
   
@@ -68,7 +79,7 @@ mapApp.controller "IndexCtrl", ($scope, MapRestangular) ->
   buttonRefresh = new steroids.buttons.NavigationBarButton
   buttonRefresh.title = "Refresh"
   buttonRefresh.onTap = ->
-    $scope.loadMap()
+    loadMap()
 
   steroids.view.navigationBar.setButtons
     right: [buttonRefresh]
