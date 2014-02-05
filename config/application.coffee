@@ -7,19 +7,24 @@ steroids.config.name = "Community Circles Mobile"
 steroids.config.location = "http://localhost/views/map/index.html"
 
 # -- Tab Bar --
-# steroids.config.tabBar.enabled = true
-# steroids.config.tabBar.tabs = [
-#   {
-#     title: "Index"
-#     icon: "icons/pill@2x.png"
-#     location: "http://localhost/index.html"
-#   },
-#   {
-#     title: "Internet"
-#     icon: "icons/telescope@2x.png"
-#     location: "http://www.google.com"
-#   }
-# ]
+steroids.config.tabBar.enabled = true
+steroids.config.tabBar.tabs = [
+  {
+    title: "Car"
+    icon: "icons/pill@2x.png"
+    location: "http://localhost/views/car/index.html"
+  },
+  {
+    title: "Map"
+    icon: "icons/pill@2x.png"
+    location: "http://localhost/views/map/index.html"
+  },
+  {
+    title: "Internet"
+    icon: "icons/telescope@2x.png"
+    location: "http://www.google.com"
+  }
+]
 
 # steroids.config.tabBar.tintColor = "#000000"
 # steroids.config.tabBar.tabTitleColor = "#00aeef"
@@ -38,7 +43,7 @@ steroids.config.navigationBar.buttonTitleColor = "#ffffff"
 # steroids.config.navigationBar.portrait.backgroundImage = ""
 
 # -- Android Loading Screen
-steroids.config.loadingScreen.tintColor = "#00a8b3"
+steroids.config.loadingScreen.tintColor = "#ff0000"
 
 # -- iOS Status Bar --
 steroids.config.statusBar.enabled = true
@@ -54,5 +59,5 @@ steroids.config.statusBar.style = "light"
 # steroids.config.hooks.postMake.args = ["cleaning up files"]
 
 # -- Default Editor --
-# steroids.config.editor.cmd = "subl"
-# steroids.config.editor.args = ["."]
+steroids.config.editor.cmd = "subl"
+steroids.config.editor.args = ["."]

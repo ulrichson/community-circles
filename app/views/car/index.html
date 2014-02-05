@@ -1,0 +1,16 @@
+<div ng-app="carApp">
+
+  <div ng-controller="IndexCtrl">
+    <div class="topcoat-list__container">
+
+      <ul class="topcoat-list">
+        <li class="topcoat-list__item" hm-tap="open(car.car_id)" ng-repeat="car in cars">
+          Car: {{ car.name }}
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,12 @@
+[
+  {
+    "car_id": 1,
+    "name": "First car",
+    "description": "This is awesome."
+  },
+  {
+    "car_id": 2,
+    "name": "Second car",
+    "description": "This is also okay."
+  }
+]

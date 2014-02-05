@@ -36,3 +36,10 @@
   position: absolute;
   z-index: 1000;
 }
+
+#btnTestLocalNotification {
+  bottom: 40px;
+  left: 10px; 
+  position: absolute;
+  z-index: 1000;
+}
