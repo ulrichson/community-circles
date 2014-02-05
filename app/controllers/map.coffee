@@ -22,6 +22,13 @@ mapApp.controller "IndexCtrl", ($scope, MapRestangular) ->
   map.on "error", (error) ->
     console.error "Mapbox error: #{error}"
 
+  $scope.testLocalNotification = ->
+    if window.plugin.notification.local
+      window.plugin.notification.local.add
+        message: "Hello World"
+    else
+      console.warn "Local notifications are not supported"
+
   $scope.newContribution = ->
     # newContributionView = new steroids.views.WebView "/views/contribution/new.html",
     # console.debug "newContributionView=#{JSON.stringify newContributionView}"
