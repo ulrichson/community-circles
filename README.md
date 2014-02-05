@@ -13,6 +13,8 @@ Install
 The app uses following custom PhoneGap plugins:
 
 - [PhoneGap-Geofencing](https://github.com/radshag/PhoneGap-Geofencing)
+- [Cordova LocalNotification-Plugin](https://github.com/katzer/cordova-plugin-local-notifications)
+- [Background Tracking plugin](https://github.com/AppGyver/BackgroundTracking)
 
 Therefore it is neccessary to build a custom Scanner app, in order to run the app.
 Register an account at [AppGyver](https://cloud.appgyver.com/users/sign_up), afterwards you can link your local Steroids environment with your account by typing `steroids login`.
@@ -22,7 +24,9 @@ For Android goto [your applicatoins](https://cloud.appgyver.com/applications/) a
 
 ```
 [
-  {"source": "https://github.com/radshag/PhoneGap-Geofencing.git"}
+  {"source": "https://github.com/radshag/PhoneGap-Geofencing.git"},
+  {"source": "https://github.com/katzer/cordova-plugin-local-notifications"},
+  {"source": "https://github.com/AppGyver/BackgroundTracking"}
 ]
 ```
 
