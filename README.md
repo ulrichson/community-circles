@@ -24,7 +24,7 @@ For Android goto [your applicatoins](https://cloud.appgyver.com/applications/) a
 [
   {"source": "https://github.com/radshag/PhoneGap-Geofencing.git"}
 ]
-´´´
+```
 
 Note that you also have to specify other attributes, see [Android Build Configuration](http://guides.appgyver.com/steroids/guides/cloud_services/android-build-config/)
 
