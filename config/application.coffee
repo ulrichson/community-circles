@@ -18,16 +18,11 @@ steroids.config.tabBar.tabs = [
     title: "Map"
     icon: "icons/pill@2x.png"
     location: "http://localhost/views/map/index.html"
-  },
-  {
-    title: "Internet"
-    icon: "icons/telescope@2x.png"
-    location: "http://www.google.com"
   }
 ]
 
-# steroids.config.tabBar.tintColor = "#000000"
-# steroids.config.tabBar.tabTitleColor = "#00aeef"
+# steroids.config.tabBar.tintColor = "#ffffff"
+# steroids.config.tabBar.tabTitleColor = "#00a8b3"
 # steroids.config.tabBar.selectedTabTintColor = "#ffffff"
 # steroids.config.tabBar.selectedTabBackgroundImage = "icons/pill@2x.png"
 
