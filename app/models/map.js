@@ -12,10 +12,6 @@ var module = angular.module('MapModel', ['restangular']);
 
 module.factory('MapRestangular', function(Restangular) {
 
-  // window.setTimeout(function() {
-  //   alert("Good! Now configure app/models/map.js");
-  // }, 2000);
-
   return Restangular.withConfig(function(RestangularConfigurer) {
 
 // -- Stackmob REST API configuration

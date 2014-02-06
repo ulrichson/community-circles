@@ -7,22 +7,32 @@ steroids.config.name = "Community Circles Mobile"
 steroids.config.location = "http://localhost/views/map/index.html"
 
 # -- Tab Bar --
-steroids.config.tabBar.enabled = true
-steroids.config.tabBar.tabs = [
-  {
-    title: "Car"
-    icon: "icons/pill@2x.png"
-    location: "http://localhost/views/car/index.html"
-  },
-  {
-    title: "Map"
-    icon: "icons/pill@2x.png"
-    location: "http://localhost/views/map/index.html"
-  }
-]
+# steroids.config.tabBar.enabled = true
+# steroids.config.tabBar.tabs = [
+#   {
+#     title: "Map"
+#     icon: "icons/pill@2x.png"
+#     location: "http://localhost/views/map/index.html"
+#   },
+#   {
+#     title: "Trending"
+#     icon: "icons/pill@2x.png"
+#     location: "http://localhost/views/map/index.html"
+#   },
+#   {
+#     title: "Recent"
+#     icon: "icons/pill@2x.png"
+#     location: "http://localhost/views/map/index.html"
+#   },
+#   {
+#     title: "Search"
+#     icon: "icons/pill@2x.png"
+#     location: "http://localhost/views/map/index.html"
+#   }
+# ]
 
-# steroids.config.tabBar.tintColor = "#ffffff"
-# steroids.config.tabBar.tabTitleColor = "#00a8b3"
+# steroids.config.tabBar.tintColor = "#00a8b3"
+# steroids.config.tabBar.tabTitleColor = "#ffffff"
 # steroids.config.tabBar.selectedTabTintColor = "#ffffff"
 # steroids.config.tabBar.selectedTabBackgroundImage = "icons/pill@2x.png"
 
@@ -38,7 +48,7 @@ steroids.config.navigationBar.buttonTitleColor = "#ffffff"
 # steroids.config.navigationBar.portrait.backgroundImage = ""
 
 # -- Android Loading Screen
-steroids.config.loadingScreen.tintColor = "#ff0000"
+steroids.config.loadingScreen.tintColor = "#262626"
 
 # -- iOS Status Bar --
 steroids.config.statusBar.enabled = true

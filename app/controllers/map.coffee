@@ -1,44 +1,12 @@
 mapApp = angular.module("mapApp", ["MapModel", "hmTouchevents"])
 
+#-------------------------------------------------------------------------------
 # Index: http://localhost/views/map/index.html
+#------------------------------------------------------------------------------- 
 mapApp.controller "IndexCtrl", ($scope, MapRestangular) ->
-  # Set positition watcher
-  positionWatcherId = navigator.geolocation.watchPosition (positition) ->
-    window.localStorage.setItem "lastKnownPosition", positition
-    window.localStorage.setItem "lastKnownPositionTime", new Date().getTime()
-    refreshMap positition
-  , (error) ->
-    console.error "Could not determine position. #{error.message} (#{error.code})."
-  , enableHighAccuracy: true
-
-  map = L.mapbox.map "map",
-    "examples.map-y7l23tes",
-    tileLayer:
-      detectRetina: true
-
-  map.on "ready", ->
-    loadMap()
-
-  map.on "error", (error) ->
-    console.error "Mapbox error: #{error}"
-
-  $scope.testLocalNotification = ->
-    if window.plugin.notification.local
-      window.plugin.notification.local.add
-        message: "Hello World"
-    else
-      console.warn "Local notifications are not supported"
-
-  $scope.newContribution = ->
-    # newContributionView = new steroids.views.WebView "/views/contribution/new.html",
-    # console.debug "newContributionView=#{JSON.stringify newContributionView}"
-    # console.debug "__newContributionView=#{JSON.stringify newContributionView}"
-    # steroids.layers.push
-    #   view: newContributionView
-    #   onFailure: (error) ->
-    #     console.error "Could not push the view: #{error.errorDescription}"
-    steroids.layers.push new steroids.views.WebView "/views/contribution/new.html"
-  
+  #-----------------------------------------------------------------------------
+  # FUNCTIONS
+  #-----------------------------------------------------------------------------  
   refreshMap = (position) ->
     console.debug "Received position #{position.coords.latitude} #{position.coords.longitude}, accuracy: #{position.coords.accuracy}."
 
@@ -62,31 +30,62 @@ mapApp.controller "IndexCtrl", ($scope, MapRestangular) ->
         map.panTo e.layer.getLatLng()
 
       # Draw circle with initial radius of contribution
-      L.circle([position.coords.latitude, position.coords.longitude], 50, { stroke: false, fillColor: "#00a8b3"}).addTo map
+      # L.circle([position.coords.latitude, position.coords.longitude], 50, { stroke: false, fillColor: "#00a8b3"}).addTo map
 
       # Draw circle with GPS accuracy
-      L.circle([position.coords.latitude, position.coords.longitude], position.coords.accuracy, { opacity: 0.1, fillOpacity: 0.1 }).addTo map
+      # L.circle([position.coords.latitude, position.coords.longitude], position.coords.accuracy, { opacity: 0.1, fillOpacity: 0.1 }).addTo map
     , (error) ->
       # $scope.loading = false
       # $scope.$apply
       console.error "Could not determine position. #{error.message} (#{error.code})."
       alert "Could not determine position, please verify that the app has permission to use location services."
+
+  #-----------------------------------------------------------------------------
+  # INITIALIZE GEO
+  #-----------------------------------------------------------------------------
+  positionWatcherId = navigator.geolocation.watchPosition (positition) ->
+    window.localStorage.setItem "lastKnownPosition", positition
+    window.localStorage.setItem "lastKnownPositionTime", new Date().getTime()
+    refreshMap positition
+  , (error) ->
+    console.error "Could not determine position. #{error.message} (#{error.code})."
+  , enableHighAccuracy: true
+
+  map = L.mapbox.map "map",
+    "examples.map-y7l23tes",
+    tileLayer:
+      detectRetina: true
+
+  map.on "ready", ->
+    loadMap()
+
+  map.on "error", (error) ->
+    console.error "Mapbox error: #{error}"
+
+  #-----------------------------------------------------------------------------
+  # UI EVENTS
+  #-----------------------------------------------------------------------------
+  $scope.testLocalNotification = ->
+    if window.plugin.notification.local
+      window.plugin.notification.local.add
+        message: "Hello World"
+    else
+      console.warn "Local notifications are not supported"
+
+  $scope.newContribution = ->
+    # newContributionView = new steroids.views.WebView "/views/contribution/new.html",
+    # console.debug "newContributionView=#{JSON.stringify newContributionView}"
+    # console.debug "__newContributionView=#{JSON.stringify newContributionView}"
+    # steroids.layers.push
+    #   view: newContributionView
+    #   onFailure: (error) ->
+    #     console.error "Could not push the view: #{error.errorDescription}"
+    steroids.modal.show new steroids.views.WebView "/views/contribution/new.html"
  
-  # Get notified when an another webview modifies the data and reload
+  #-----------------------------------------------------------------------------
+  # GENERAL EVENTS
+  #-----------------------------------------------------------------------------
   window.addEventListener "message", (event) ->
     
     # reload data on message with reload status
     loadMap() if event.data.status is "reload"
-
-  # -- Native navigation
-  
-  # Set navigation bar..
-  steroids.view.navigationBar.show "Community Circles"
-
-  buttonRefresh = new steroids.buttons.NavigationBarButton
-  buttonRefresh.title = "Refresh"
-  buttonRefresh.onTap = ->
-    loadMap()
-
-  steroids.view.navigationBar.setButtons
-    right: [buttonRefresh]

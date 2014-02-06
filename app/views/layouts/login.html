@@ -2,22 +2,16 @@
 <html>
 <head>
   <meta charset="utf8">
-  <title>Community Circlres</title>
+  <title>Login</title>
   <link rel="stylesheet" href="/vendor/topcoat/css/topcoat-mobile-light.css" />
-  <link rel='stylesheet' href='/components/mapbox.js/dist/mapbox.css' />
   <link rel="stylesheet" href="/stylesheets/application.css" />
-  <link rel="stylesheet" href="/stylesheets/<%= yield.controller %>.css" />
+  <script src="/javascripts/onerror.js"></script>
   <script src="http://localhost/cordova.js"></script>
   <script src="/components/steroids-js/steroids.js"></script>
   <script src="/components/angular/angular.min.js"></script>
-  <script src="/components/underscore/underscore-min.js"></script>
-  <script src="/components/restangular/dist/restangular.min.js"></script>
   <script src="/vendor/hammerjs/hammer.min.js"></script>
   <script src="/vendor/angular-hammer/angular-hammer.js"></script>
-  <script src="/models/models.js"></script>
-  <script src="/app.js"></script>
-  <script src="/controllers/<%= yield.controller %>.js"></script>
-  <script src='/components/mapbox.js/dist/mapbox.js'></script>
+  <script src="/controllers/<%= yield.controller %>.js"></script>  
 </head>
 <body>
   <%= yield.view %>

@@ -12,9 +12,9 @@ var module = angular.module('ContributionModel', ['restangular']);
 
 module.factory('ContributionRestangular', function(Restangular) {
 
-  window.setTimeout(function() {
-    alert("Good! Now configure app/models/contribution.js");
-  }, 2000);
+  // window.setTimeout(function() {
+  //   alert("Good! Now configure app/models/contribution.js");
+  // }, 2000);
 
   return Restangular.withConfig(function(RestangularConfigurer) {
 
