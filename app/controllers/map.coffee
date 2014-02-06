@@ -53,6 +53,7 @@ mapApp.controller "IndexCtrl", ($scope) ->
 
   map = L.mapbox.map "map",
     "examples.map-y7l23tes",
+    zoomControl: false
     tileLayer:
       detectRetina: true
 
