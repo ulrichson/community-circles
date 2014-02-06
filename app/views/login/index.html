@@ -1,10 +1,8 @@
 <div ng-app="loginApp">
-  <div ng-controller="IndexCtrl">
-    <form class="simple-form">
-        <input type="text" ng-model="login.user" class="topcoat-text-input" placeholder="User" />
-        <input type="password" ng-model="login.password" class="topcoat-text-input" placeholder="Password" />
-        <a class="topcoat-button" hm-tap="login()">Login</a>
-        <a class="topcoat-button" hm-tap="register()">Register</a>
-      </form>
+  <div ng-controller="IndexCtrl" class="content-padded">
+      <input type="text" ng-model="login.user" class="topcoat-text-input" placeholder="User" />
+      <input type="password" ng-model="login.password" class="topcoat-text-input" placeholder="Password" />
+      <a class="topcoat-button--cta full center" hm-tap="login()">Login</a>
+      <a class="topcoat-button full center" hm-tap="register()">Register</a>
   </div>
 </div>

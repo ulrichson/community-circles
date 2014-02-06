@@ -1,8 +1,9 @@
 <div ng-app="profileApp"> 
   <div ng-controller="IndexCtrl" class="content-padded">
     <h1>Profile</h1>
-    <a class="topcoat-button" hm-tap="logout()">Logout</a>
-    <a class="topcoat-button" hm-tap="settings()">Settings</a>
-    <a class="topcoat-button" hm-tap="imprint()">Imprint</a>
+    <p>LoggedIn: {{ loggedIn }}</p>
+    <a class="topcoat-button full center" hm-tap="logout()">Logout</a>
+    <a class="topcoat-button full center" hm-tap="settings()">Settings</a>
+    <a class="topcoat-button full center" hm-tap="imprint()">Imprint</a>
   </div>
 </div>

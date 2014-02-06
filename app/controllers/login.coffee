@@ -5,6 +5,7 @@ loginApp = angular.module("loginApp", ["hmTouchevents"])
 #------------------------------------------------------------------------------- 
 loginApp.controller "IndexCtrl", ($scope) ->
   $scope.login = ->
+    window.localStorage.setItem "loggedIn", true
     steroids.modal.hide()
 
   $scope.register = ->

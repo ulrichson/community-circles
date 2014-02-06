@@ -1,64 +1,31 @@
-#-------------------------------------------------------------------------------
-# GLOBAL VARIABLES
-#-------------------------------------------------------------------------------
-window.localStorage.setItem "rootWebView", steroids.view.location
-# window.localStorage.setItem "mainMenuVisible", "hidden"
-
-#-----------------------------------------------------------------------------
-# LOGIN/LOGOUT
-#----------------------------------------------------------------------------- 
-steroids.modal.show new steroids.views.WebView "/views/login/index.html" unless window.localStorage.getItem("loggedIn") is "true"
-
-window.logout = ->
-  window.localStorage.setItem "loggedIn", false
-  steroids.modal.show new steroids.views.WebView "/views/login/index.html" 
-
-#-----------------------------------------------------------------------------
-# INITIALIZE NATIVE UI
-#----------------------------------------------------------------------------- 
-steroids.tabBar.show()
-steroids.view.navigationBar.show "Community Circles"
-
-# buttonMainMenu = new steroids.buttons.NavigationBarButton
-# buttonMainMenu.title = "Menu"
-# buttonMainMenu.onTap = ->
-#   toggleMainMenu()
-
-buttonNotifications = new steroids.buttons.NavigationBarButton
-buttonNotifications.title = "Notifications"
-buttonNotifications.onTap = ->
-  steroids.modal.show new steroids.views.WebView "/views/notification/index.html"
-
-steroids.view.navigationBar.setButtons
-  # left: [buttonMainMenu]
-  right: [buttonNotifications]
+communityCirclesApp = angular.module("communityCirclesApp", [])
 
 #-------------------------------------------------------------------------------
-# INITIALIZE MAIN MENU (DRAWER)
+# APP INITIALIZATIOM
 #-------------------------------------------------------------------------------
-# mainMenuWebView = new steroids.views.WebView
-#   location: "/views/mainMenu/index.html"
-#   id: "mainMenu"
+communityCirclesApp.run ->
+  # Login
+  steroids.modal.show new steroids.views.WebView "/views/login/index.html" unless window.localStorage.getItem("loggedIn") is "true"
+  
+  # Native UI
+  steroids.view.navigationBar.show "Community Circles"
 
-# mainMenuWebView.preload {},
-#   onSuccess: ->
-#     # alert "menu loaded"
-#     # steroids.drawers.enableGesture mainMenuWebView if steroids.view.location.indexOf("map/index.html") is -1
-#   # onFailure: ->
-#   #   alert "error loading menu"
+  buttonNotifications = new steroids.buttons.NavigationBarButton
+  buttonNotifications.title = "Notifications"
+  buttonNotifications.onTap = ->
+    steroids.modal.show new steroids.views.WebView "/views/notification/index.html"
+
+  steroids.view.navigationBar.setButtons
+    right: [buttonNotifications]
 
 #-------------------------------------------------------------------------------
-# FUNCTIONS
+# APP METHODS
 #-------------------------------------------------------------------------------
-# toggleMainMenu = ->
-#   # alert "mainMenuVisible=#{window.localStorage.getItem 'mainMenuVisible'}"
-#   if window.localStorage.getItem("mainMenuVisible") is "visible"
-#     # alert "close"
-#     window.localStorage.setItem "mainMenuVisible", "hidden"
-#     steroids.drawers.hide mainMenuWebView
-#   else
-#     # alert "show"
-#     window.localStorage.setItem "mainMenuVisible", "visible"
-#     steroids.drawers.show mainMenuWebView
-
-
+communityCirclesApp.value "app",
+  test: ->
+    alert "test message from app"
+  logout: ->
+    window.localStorage.setItem "loggedIn", false
+    steroids.modal.show new steroids.views.WebView "/views/login/index.html"
+  loggedIn: ->
+    return window.localStorage.getItem("loggedIn") is "true"
