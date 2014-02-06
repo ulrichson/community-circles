@@ -1,9 +1,9 @@
-mapApp = angular.module("mapApp", ["MapModel", "hmTouchevents"])
+mapApp = angular.module("mapApp", ["hmTouchevents"])
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/map/index.html
 #------------------------------------------------------------------------------- 
-mapApp.controller "IndexCtrl", ($scope, MapRestangular) ->
+mapApp.controller "IndexCtrl", ($scope) ->
   #-----------------------------------------------------------------------------
   # FUNCTIONS
   #-----------------------------------------------------------------------------  
