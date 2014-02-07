@@ -19,9 +19,10 @@ communityCirclesApp.run ->
     right: [buttonNotifications]
 
 #-------------------------------------------------------------------------------
-# APP METHODS
+# APP PROPERTIES AND METHODS
 #-------------------------------------------------------------------------------
 communityCirclesApp.value "app",
+  mapId: "examples.map-y7l23tes"
   test: ->
     alert "test message from app"
   logout: ->

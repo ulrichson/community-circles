@@ -18,7 +18,7 @@ mapApp.controller "IndexCtrl", ($scope, app) ->
   , enableHighAccuracy: true
 
   map = L.mapbox.map "map",
-    "examples.map-y7l23tes",
+    app.mapId,
     zoomControl: false
     tileLayer:
       detectRetina: true
