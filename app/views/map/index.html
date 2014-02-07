@@ -2,6 +2,8 @@
   <div ng-controller="IndexCtrl">
     <div class="spinner" ng-show="loading"></div>
     <div id="map"></div>
-    <a id="btnNewContribution" class="topcoat-button" hm-tap="newContribution()">New Contribution</a>
+    <span id="lblLocating" ng-show="locating">Locating...</span>
+    <button id="btnLocate" class="topcoat-button--quiet" hm-tap="locate()">Locate</button>
+    <butotn id="btnNewContribution" class="topcoat-button--quiet" hm-tap="newContribution()">New Contribution</button>
   </div>
 </div>

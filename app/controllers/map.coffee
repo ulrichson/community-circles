@@ -4,42 +4,8 @@ mapApp = angular.module("mapApp", ["communityCirclesApp", "hmTouchevents"])
 # Index: http://localhost/views/map/index.html
 #------------------------------------------------------------------------------- 
 mapApp.controller "IndexCtrl", ($scope, app) ->
-  #-----------------------------------------------------------------------------
-  # FUNCTIONS
-  #-----------------------------------------------------------------------------  
-  refreshMap = (position) ->
-    console.debug "Received position #{position.coords.latitude} #{position.coords.longitude}, accuracy: #{position.coords.accuracy}."
-
-  # Helper function for loading map data with spinner
-  loadMap = ->
-    $scope.loading = false
-    navigator.geolocation.getCurrentPosition (position) ->
-      # $scope.loading = false
-      # $scope.$apply
-      map.setView [position.coords.latitude, position.coords.longitude], 20
-      map.markerLayer.setGeoJSON
-        type: "Feature"
-        geometry:
-          type: "Point"
-          coordinates: [position.coords.longitude, position.coords.latitude]
-        properties:
-          "marker-color": "#00a8b3"
-          "marker-symbol": "star-stroked"
-      map.markerLayer.on "click", (e) ->
-        console.debug "Panning to #{e.layer.getLatLng()}"
-        map.panTo e.layer.getLatLng()
-
-      # Draw circle with initial radius of contribution
-      # L.circle([position.coords.latitude, position.coords.longitude], 50, { stroke: false, fillColor: "#00a8b3"}).addTo map
-
-      # Draw circle with GPS accuracy
-      # L.circle([position.coords.latitude, position.coords.longitude], position.coords.accuracy, { opacity: 0.1, fillOpacity: 0.1 }).addTo map
-    , (error) ->
-      # $scope.loading = false
-      # $scope.$apply
-      console.error "Could not determine position. #{error.message} (#{error.code})."
-      alert "Could not determine position, please verify that the app has permission to use location services."
-
+  $scope.locating = false
+  $scope.loading = false
   #-----------------------------------------------------------------------------
   # INITIALIZE GEO
   #-----------------------------------------------------------------------------
@@ -64,6 +30,31 @@ mapApp.controller "IndexCtrl", ($scope, app) ->
     console.error "Mapbox error: #{error}"
 
   #-----------------------------------------------------------------------------
+  # FUNCTIONS
+  #-----------------------------------------------------------------------------  
+  refreshMap = (position) ->
+    console.debug "Received position #{position.coords.latitude} #{position.coords.longitude}, accuracy: #{position.coords.accuracy}."
+
+  # Helper function for loading map data with spinner
+  loadMap = ->
+    $scope.loading = true
+    navigator.geolocation.getCurrentPosition (position) ->
+      $scope.$apply ->
+        $scope.loading = false
+      map.setView [position.coords.latitude, position.coords.longitude], 20
+
+      # Draw circle with initial radius of contribution
+      # L.circle([position.coords.latitude, position.coords.longitude], 50, { stroke: false, fillColor: "#00a8b3"}).addTo map
+
+      # Draw circle with GPS accuracy
+      # L.circle([position.coords.latitude, position.coords.longitude], position.coords.accuracy, { opacity: 0.1, fillOpacity: 0.1 }).addTo map
+    , (error) ->
+      # $scope.loading = false
+      # $scope.$apply
+      console.error "Could not determine position. #{error.message} (#{error.code})."
+      alert "Could not determine position, please verify that the app has permission to use location services."
+
+  #-----------------------------------------------------------------------------
   # UI EVENTS
   #-----------------------------------------------------------------------------
   $scope.testLocalNotification = ->
@@ -82,6 +73,24 @@ mapApp.controller "IndexCtrl", ($scope, app) ->
     #   onFailure: (error) ->
     #     console.error "Could not push the view: #{error.errorDescription}"
     steroids.modal.show new steroids.views.WebView "/views/contribution/new.html"
+
+  $scope.locate = ->
+    $scope.locating = true
+    navigator.geolocation.getCurrentPosition (position) ->
+      $scope.$apply -> 
+        $scope.locating = false
+      map.setView [position.coords.latitude, position.coords.longitude], 20
+      map.markerLayer.setGeoJSON
+        type: "Feature"
+        geometry:
+          type: "Point"
+          coordinates: [position.coords.longitude, position.coords.latitude]
+        properties:
+          "marker-color": "#00a8b3"
+          "marker-symbol": "star-stroked"
+      map.markerLayer.on "click", (e) ->
+        console.debug "Panning to #{e.layer.getLatLng()}"
+        map.panTo e.layer.getLatLng()
  
   #-----------------------------------------------------------------------------
   # GENERAL EVENTS
