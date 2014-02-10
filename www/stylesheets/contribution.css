@@ -23,11 +23,19 @@
   -webkit-animation-timing-function: linear;
 }
 
-.btn-toolbar {
-  padding-bottom: 1em;
-  padding-top: 1em;
+.contribution-type a {
+  border-radius: 0;
 }
 
-.btn-toolbar span {
+.contribution-type span {
   font-size: 2em;
+}
+
+.contribution-input {
+  background-color: #415b76;
+  margin-bottom: 0.5em;
+  padding-bottom: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 1em;
 }
