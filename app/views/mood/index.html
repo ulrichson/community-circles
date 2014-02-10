@@ -1,6 +1,5 @@
-<div ng-app="moodApp">
+<div class="container" ng-app="moodApp">
   <div ng-controller="IndexCtrl">
-    <p>Mood: {{ mood }}
     <div class="list-group">
       <a href="#" class="list-group-item" ng-class="{active: mood == 'happy'}" hm-tap="choose('happy')">Happy</a>
       <a href="#" class="list-group-item" ng-class="{active: mood == 'sad'}" hm-tap="choose('sad')">Sad</a>

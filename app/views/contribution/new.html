@@ -13,7 +13,26 @@
         <button type="button" class="btn btn-default">Middle</button>
         <button type="button" class="btn btn-default">Right</button>
       </div> -->
-      <p>Mood: {{ mood }}</p>
+      <div class="btn-toolbar">
+        <div class="btn-group btn-group-justified">
+          <a class="btn btn-inverse">
+            <span class="li_megaphone"></span><br>
+            <small>Opinion</small>
+          </a>
+          <a class="btn btn-inverse">
+            <span class="li_bubble"></span><br>
+            <small>Poll</small>
+          </a>
+          <a class="btn btn-inverse">
+            <span class="li_fire"></span><br>
+            <small>Issue</small>
+          </a>
+          <a class="btn btn-inverse">
+            <span class="li_bulb"></span><br>
+            <small>Idea</small>
+          </a>
+        </div>
+      </div>
       <form role="form">
         <div class="form-group">
           <input type="text" class="form-control" ng-model="contribution.title" placeholder="Title" />
@@ -21,10 +40,12 @@
         <div class="form-group">
           <textarea class="form-control" ng-model="contribution.description" rows="3" placeholder="Description"></textarea>
         </div>
-        <button type="button" class="btn btn-default" hm-tap="chooseMood()">I'm feeling...</button>
-        <button type="button" class="btn btn-default" hm-tap="capturePhoto()">Add a photo</button>
-        <button type="button" class="btn btn-default" hm-tap="create(contribution)">Add</button>
-        <button type="button" class="btn btn-default" hm-tap="close()">Cancel</button>
+        <button type="button" class="btn btn-default btn-block" hm-tap="chooseMood()">I'm feeling {{ mood }}</button>
+        <button type="button" class="btn btn-default btn-block" hm-tap="capturePhoto()">
+          <span class="li_camera"></span> Add a photo
+        </button>
+        <button type="button" class="btn btn-default btn-block" hm-tap="create(contribution)">Add</button>
+        <button type="button" class="btn btn-default btn-block" hm-tap="close()">Cancel</button>
       </form>
       <img id="photo" src="" width="100%">
     </div>

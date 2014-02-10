@@ -22,3 +22,12 @@
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-timing-function: linear;
 }
+
+.btn-toolbar {
+  padding-bottom: 1em;
+  padding-top: 1em;
+}
+
+.btn-toolbar span {
+  font-size: 2em;
+}

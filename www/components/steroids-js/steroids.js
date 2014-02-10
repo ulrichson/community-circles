@@ -1,4 +1,4 @@
-/*! steroids-js - v3.1.4 - 2014-02-10 15:25 */
+/*! steroids-js - v3.1.5 - 2014-02-10 17:37 */
 (function(window){
 var Bridge,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
@@ -1365,7 +1365,8 @@ NavigationBar = (function() {
   };
 
   NavigationBar.prototype.buttonTapped = function(options) {
-    return this.buttonCallbacks[options.location][options.index]();
+    var _name, _ref;
+    return (_ref = this.buttonCallbacks[options.location]) != null ? typeof _ref[_name = options.index] === "function" ? _ref[_name]() : void 0 : void 0;
   };
 
   NavigationBar.prototype.update = function(options, callbacks) {
@@ -2596,7 +2597,7 @@ PostMessage = (function() {
 
 }).call(this);
 ;window.steroids = {
-  version: "3.1.4",
+  version: "3.1.5",
   Animation: Animation,
   File: File,
   views: {
