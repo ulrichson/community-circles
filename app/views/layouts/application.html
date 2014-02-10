@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf8">
   <title>Community Circlres</title>
-  <link rel="stylesheet" href="/vendor/topcoat/css/topcoat-mobile-light.css" />
-  <link rel='stylesheet' href='/components/mapbox.js/dist/mapbox.css' />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <!-- <link rel="stylesheet" href="/components/topcoat/css/topcoat-mobile-light.min.css" /> -->
+  <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href='/components/mapbox.js/dist/mapbox.css' />
   <link rel="stylesheet" href="/stylesheets/application.css" />
   <link rel="stylesheet" href="/stylesheets/<%= yield.controller %>.css" />
   <script src="http://localhost/cordova.js"></script>
@@ -17,9 +19,17 @@
   <script src="/models/models.js"></script>
   <script src="/app.js"></script>
   <script src="/controllers/<%= yield.controller %>.js"></script>
-  <script src='/components/mapbox.js/dist/mapbox.js'></script>
+  <script src="/components/mapbox.js/dist/mapbox.js"></script>
+  <script src="/components/fastclick/lib/fastclick.js"></script>
+  <script>
+    window.addEventListener('load', function() {
+        FastClick.attach(document.body);
+    }, false);
+  </script>
 </head>
 <body>
   <%= yield.view %>
+  <script src="/components/jquery/jquery.min.js"></script>
+  <script src="/components/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

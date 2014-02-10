@@ -65,14 +65,8 @@ mapApp.controller "IndexCtrl", ($scope, app) ->
       console.warn "Local notifications are not supported"
 
   $scope.newContribution = ->
-    # newContributionView = new steroids.views.WebView "/views/contribution/new.html",
-    # console.debug "newContributionView=#{JSON.stringify newContributionView}"
-    # console.debug "__newContributionView=#{JSON.stringify newContributionView}"
-    # steroids.layers.push
-    #   view: newContributionView
-    #   onFailure: (error) ->
-    #     console.error "Could not push the view: #{error.errorDescription}"
-    steroids.modal.show new steroids.views.WebView "/views/contribution/new.html"
+    steroids.layers.push new steroids.views.WebView "/views/contribution/new.html"
+    # steroids.modal.show new steroids.views.WebView "/views/contribution/new.html"
 
   $scope.locate = ->
     $scope.locating = true
