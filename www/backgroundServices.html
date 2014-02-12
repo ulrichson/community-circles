@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf8">
+  <title>Background Service</title>
+  <script src="http://localhost/cordova.js"></script>
+  <script src="/components/steroids-js/steroids.js"></script>
+</head>
+<body style="background-color: #000000">
+  <p style="color: #ffffff; font-family: sans-serif; margin: auto; text-align: center">This page is not intended to be visible. Go away, please.</p>
+  <script>
+    // For further information see http://guides.appgyver.com/steroids/guides/steroids-js/sharing-data-between-webviews/
+    setTimeout(function() {
+      console.debug("backgroundService.html is alive");
+    }, 5000);
+
+    new steroids.views.WebView("/views/imprint/index.html").preload();
+  </script>
+</body>
+</html>

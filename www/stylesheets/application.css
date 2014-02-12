@@ -1,3 +1,8 @@
+body {
+  overflow-x: hidden;
+  width: 100% !important;
+}
+
 * {
   -webkit-user-select: none;  /* Disable selection/copy of elements when tapping for a long time */
   -webkit-touch-callout: none; /* Disable touch callouts */
@@ -9,4 +14,42 @@ input, textarea, [contenteditable] * {
 
 .content-padded {
   padding: 10px;
+}
+
+.full-background-image {
+  /*background-color: red;*/
+  background-size: cover;
+  bottom: -100px;
+  /*height: 150%;*/
+  left: -100px;
+  /*overflow: hidden;*/
+  position: fixed;
+  right: -100px;
+  top: -100px;
+  /*width: 150%;*/
+  z-index: -1;
+}
+
+.blur {
+  filter: blur(15px);
+  -webkit-filter: blur(15px);
+  -moz-filter: blur(15px);
+  -o-filter: blur(15px);
+  -ms-filter: blur(15px);
+}
+
+.darken {
+  filter: brightness(0.5);
+  -webkit-filter: brightness(0.5);
+  -moz-filter: brightness(0.5);
+  -o-filter: brightness(0.5);
+  -ms-filter: brightness(0.5);
+}
+
+.grayscale {
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
 }

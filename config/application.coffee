@@ -4,47 +4,47 @@
 steroids.config.name = "Community Circles Mobile"
 
 # -- Initial Location --
-steroids.config.location = "http://localhost/views/map/index.html"
+# steroids.config.location = "http://localhost/views/map/index.html"
 
 # -- Tab Bar --
 steroids.config.tabBar.enabled = true
 steroids.config.tabBar.tabs = [
   {
     title: "Map"
-    icon: "icons/pill@2x.png"
+    icon: "icons/location@2x.png"
     location: "http://localhost/views/map/index.html"
   },
   {
     title: "Nearby"
-    icon: "icons/pill@2x.png"
+    icon: "icons/paperplane@2x.png"
     location: "http://localhost/views/contribution/index.html?view=nearby"
   },
   {
     title: "Top"
-    icon: "icons/pill@2x.png"
+    icon: "icons/star@2x.png"
     location: "http://localhost/views/contribution/index.html?view=top"
   },
   {
     title: "Search"
-    icon: "icons/pill@2x.png"
+    icon: "icons/search@2x.png"
     location: "http://localhost/views/contribution/index.html?view=search"
   },
   {
     title: "Profile"
-    icon: "icons/pill@2x.png"
+    icon: "icons/user@2x.png"
     location: "http://localhost/views/profile/index.html"
   }
 ]
 
 # steroids.config.tabBar.tintColor = "#00a8b3"
-# steroids.config.tabBar.tabTitleColor = "#ffffff"
-# steroids.config.tabBar.selectedTabTintColor = "#ffffff"
+steroids.config.tabBar.tabTitleColor = "#00a8b3"
+steroids.config.tabBar.selectedTabTintColor = "#00a8b3"
 # steroids.config.tabBar.selectedTabBackgroundImage = "icons/pill@2x.png"
 
 # steroids.config.tabBar.backgroundImage = ""
 
 # -- Navigation Bar --
-steroids.config.navigationBar.tintColor = "#00a8b3"
+steroids.config.navigationBar.tintColor = "#00c8c8"
 steroids.config.navigationBar.titleColor = "#ffffff"
 steroids.config.navigationBar.buttonTintColor = "#ffffff"
 steroids.config.navigationBar.buttonTitleColor = "#ffffff"

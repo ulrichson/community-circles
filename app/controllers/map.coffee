@@ -6,6 +6,13 @@ mapApp = angular.module("mapApp", ["communityCirclesApp", "hmTouchevents"])
 mapApp.controller "IndexCtrl", ($scope, app) ->
   $scope.locating = false
   $scope.loading = false
+
+  #-----------------------------------------------------------------------------
+  # INITIALIZE BACKGROUND SERVICE !!!MOVE SOMEWHERE ELSE!!!
+  #-----------------------------------------------------------------------------
+  # backgroundWebView = new steroids.views.WebView "backgroundServices.html"
+  # backgroundView.preload()
+
   #-----------------------------------------------------------------------------
   # INITIALIZE GEO
   #-----------------------------------------------------------------------------

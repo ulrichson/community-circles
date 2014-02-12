@@ -1,26 +1,28 @@
 <div ng-app="contributionApp">
   <div ng-controller="NewCtrl">
     <div class="spinner" ng-show="loading"></div>
-    <div class="contribution-type btn-toolbar">
+    <div class="full-background-image blur" ng-style="bgImageStyle"></div>
+    <div class="contribution-type">
       <div class=" btn-group btn-group-justified">
-        <a class="btn btn-inverse">
+        <a class="btn btn-default" ng-class="{active: contribution.type == 'opinion'}" hm-tap="contribution.type = 'opinion'">
           <span class="li_megaphone"></span><br>
           <small>Opinion</small>
         </a>
-        <a class="btn btn-inverse">
+        <a class="btn btn-default" ng-class="{active: contribution.type == 'poll'}" hm-tap="contribution.type = 'poll'">
           <span class="li_bubble"></span><br>
           <small>Poll</small>
         </a>
-        <a class="btn btn-inverse">
+        <a class="btn btn-default" ng-class="{active: contribution.type == 'issue'}" hm-tap="contribution.type = 'issue'">
           <span class="li_fire"></span><br>
           <small>Issue</small>
         </a>
-        <a class="btn btn-inverse">
+        <a class="btn btn-default" ng-class="{active: contribution.type == 'idea'}" hm-tap="contribution.type = 'idea'">
           <span class="li_bulb"></span><br>
           <small>Idea</small>
         </a>
       </div>
     </div>
+    <!-- <img id="photo" width="100%" ng-src="{{ imageSrc }}" ng-hide="loading"> -->
     <div class="contribution-input">
       <form role="form">
         <div class="form-group">
@@ -29,16 +31,18 @@
         <div class="form-group">
           <textarea class="form-control" ng-model="contribution.description" rows="3" placeholder="Description"></textarea>
         </div>
+        <!-- <div class="btn-group"> -->
+        <a class="btn btn-primary btn-lg" hm-tap="choosePhoto()"><span class="fui-photo"></span></a>
+        <a class="btn btn-primary btn-lg" hm-tap="choosePoi()"><span class="fui-location"></span></a>
+        <!-- </div> -->
       </form>
     </div>
     <div class="container">
-      <button type="button" class="btn btn-default btn-block" hm-tap="chooseMood()">I'm feeling {{ mood }}</button>
-      <button type="button" class="btn btn-default btn-block" hm-tap="capturePhoto()">
-        <span class="li_camera"></span> Add a photo
-      </button>
+      <!-- <p>Photo URI: {{ imageSrc }}</p> -->
+      <button type="button" class="btn btn-default btn-block" hm-tap="chooseMood()">I'm feeling {{ contribution.mood && contribution.mood || '...' }}</button>
+      <button type="button" class="btn btn-default btn-block" hm-tap="choosePoi()">I'm at {{ contribution.poi && contribution.poi || '...' }}</button>
       <button type="button" class="btn btn-default btn-block" hm-tap="create(contribution)">Add</button>
-      <button type="button" class="btn btn-default btn-block" hm-tap="close()">Cancel</button>
-      <img id="photo" src="" width="100%">
+      <!-- <button type="button" class="btn btn-default btn-block" hm-tap="close()">Cancel</button> -->
     </div>
   </div>
 </div>

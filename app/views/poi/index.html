@@ -1,0 +1,11 @@
+<div ng-app="poiApp">
+  <div ng-controller="IndexCtrl">
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Search">
+    </div>
+    <div id="map"></div>
+    <div class="list-group">
+      <a href="#" class="list-group-item" ng-repeat="poi in pois" ng-class="{active: selectedPoi == poi.title}" hm-tap="choose(poi.title)">{{ poi.title }}</a>
+    </div>
+  </div>
+</div>
