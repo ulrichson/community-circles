@@ -1,9 +1,7 @@
 <div ng-app="moodApp">
   <div ng-controller="IndexCtrl">
     <div class="list-group">
-      <a href="#" class="list-group-item" ng-class="{active: selectedMood == 'happy'}" hm-tap="choose('happy')">Happy</a>
-      <a href="#" class="list-group-item" ng-class="{active: selectedMood == 'sad'}" hm-tap="choose('sad')">Sad</a>
-      <a href="#" class="list-group-item" ng-class="{active: selectedMood == 'excited'}" hm-tap="choose('excited')">Excited</a>
+      <a href="#" class="list-group-item" ng-repeat="mood in moods" ng-class="{active: selectedMood == mood.code}" hm-tap="choose(mood.code)">{{ mood.name }}</a>
     </div>
   </div>
 </div>

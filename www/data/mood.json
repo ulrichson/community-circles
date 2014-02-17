@@ -1,0 +1,84 @@
+[
+  {
+    "id": 1,
+    "code": "happy",
+    "name": "Happy"
+  },
+  {
+    "id": 2,
+    "code": "unhappy",
+    "name": "Unhappy"
+  },{
+    "id": 3,
+    "code": "crying",
+    "name": "Crying"
+  },{
+    "id": 4,
+    "code": "angry",
+    "name": "Angry"
+  },{
+    "id": 5,
+    "code": "pirate",
+    "name": "Pirate"
+  },{
+    "id": 6,
+    "code": "intelligent",
+    "name": "Intelligent"
+  },{
+    "id": 7,
+    "code": "naughty",
+    "name": "Naughty"
+  },{
+    "id": 8,
+    "code": "blinking",
+    "name": "Blinking"
+  },{
+    "id": 9,
+    "code": "overhappy",
+    "name": "Overhappy"
+  },{
+    "id": 10,
+    "code": "inlove",
+    "name": "In love"
+  },{
+    "id": 11,
+    "code": "shocked",
+    "name": "Shocked"
+  },{
+    "id": 12,
+    "code": "kissing",
+    "name": "Kissing"
+  },{
+    "id": 13,
+    "code": "confused",
+    "name": "Confused"
+  },{
+    "id": 14,
+    "code": "vampire",
+    "name": "Vampire"
+  },{
+    "id": 15,
+    "code": "silent",
+    "name": "Silent"
+  },{
+    "id": 16,
+    "code": "king",
+    "name": "King"
+  },{
+    "id": 17,
+    "code": "thief",
+    "name": "Thief"
+  },{
+    "id": 18,
+    "code": "toothy",
+    "name": "Toothy"
+  },{
+    "id": 19,
+    "code": "sleepy",
+    "name": "Sleepy"
+  },{
+    "id": 20,
+    "code": "sealed",
+    "name": "Sealed"
+  }
+]
