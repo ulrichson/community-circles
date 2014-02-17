@@ -2,7 +2,7 @@
   <div ng-controller="ShowCtrl">
     <div class="spinner" ng-show="loading"></div>
       <h2>{{contribution.title}}</h2>
-      <small><em>{{contribution.created}}</em></small>
+      <small><em am-time-ago="contribution.created"></em></small>
       <p>{{contribution.description}}</p>
   </div>
 </div>
