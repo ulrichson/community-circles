@@ -25,6 +25,8 @@ communityCirclesApp.run ->
 communityCirclesApp.value "app",
   #mapId: "examples.map-y7l23tes",
   mapId: "ulrichson.map-yys0e6yr",
+  mapInitZoom: 14,
+  mapShowZoomControls: true,
   apiBaseUrl: "http://community-circles.ftw.at/api"
   test: ->
     alert "test message from app"
