@@ -6,7 +6,7 @@
     "description": "",
     "mood": "shocked",
     "location": { "latitude": 48.23097650874437, "longitude": 16.411428451538086 },
-    "radius": 30,
+    "radius": 60,
     "community_id": 1,
     "created": "2014-02-17T08:00:00+01:00"
   },{
@@ -16,7 +16,7 @@
     "description": "",
     "mood": "overhappy",
     "location": { "latitude": 48.237493968373116, "longitude": 16.414132118225098 },
-    "radius": 30,
+    "radius": 130,
     "community_id": 1,
     "created": "2014-02-17T09:00:00+01:00"
   },{
@@ -26,7 +26,7 @@
     "description": "",
     "mood": "angry",
     "location": { "latitude": 48.23303474357673, "longitude": 16.420977115631104},
-    "radius": 30,
+    "radius": 250,
     "community_id": 1,
     "created": "2014-02-17T10:00:00+01:00"
   },{
@@ -36,7 +36,7 @@
     "description": "",
     "mood": "confused",
     "location": { "latitude": 48.233935195282996, "longitude": 16.412630081176758},
-    "radius": 30,
+    "radius": 300,
     "community_id": 1,
     "created": "2014-02-17T12:00:00+01:00"
   },{
@@ -46,7 +46,7 @@
     "description": "",
     "mood": "intelligent",
     "location": { "latitude": 48.23096221515749, "longitude": 16.4171040058136},
-    "radius": 30,
+    "radius": 270,
     "community_id": 1,
     "created": "2014-02-17T13:00:00+01:00"
   }
