@@ -19,16 +19,24 @@ input, textarea, [contenteditable] * {
 .full-background-image {
   /*background-color: red;*/
   background-size: cover;
-  bottom: -100px;
+  bottom: 0;
   /*height: 150%;*/
-  left: -100px;
+  left: 0;
   /*overflow: hidden;*/
   position: fixed;
-  right: -100px;
-  top: -100px;
+  right: 0;
+  top: 0;
   /*width: 150%;*/
   z-index: -1;
+
+  filter: grayscale(80%) brightness(1.2);
+  -webkit-filter: grayscale(80%) brightness(1.2);
+  -moz-filter: grayscale(80%) brightness(1.2);
+  -o-filter: grayscale(80%) brightness(1.2);
+  -ms-filter: grayscale(80%) brightness(1.2);
 }
+
+.
 
 .blur {
   filter: blur(15px);

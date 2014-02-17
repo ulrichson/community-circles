@@ -1,7 +1,7 @@
 <div ng-app="contributionApp">
   <div ng-controller="NewCtrl">
     <div class="spinner" ng-show="loading"></div>
-    <div class="full-background-image blur" ng-style="bgImageStyle"></div>
+    <div class="full-background-image" ng-style="bgImageStyle"></div>
     <div class="contribution-type">
       <div class=" btn-group btn-group-justified">
         <a class="btn btn-default" ng-class="{active: contribution.type == 'opinion'}" hm-tap="contribution.type = 'opinion'">
