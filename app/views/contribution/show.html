@@ -1,12 +1,8 @@
 <div ng-app="contributionApp">
-
   <div ng-controller="ShowCtrl">
     <div class="spinner" ng-show="loading"></div>
-    <div class="content-padded">
-      <h2>{{contribution.name}}</h2>
+      <h2>{{contribution.title}}</h2>
+      <small><em>{{contribution.created}}</em></small>
       <p>{{contribution.description}}</p>
-    </div>
-
   </div>
-
 </div>

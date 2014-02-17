@@ -9,7 +9,11 @@ module = angular.module "ContributionModel", ["communityCirclesApp", "restangula
 module.factory "ContributionRestangular", (Restangular) ->
 
   return Restangular.withConfig (RestangularConfigurer) ->
-
+    RestangularConfigurer.setBaseUrl "http://localhost/data/demo"
+    RestangularConfigurer.setRequestSuffix ".json"
+    # RestangularConfigurer.setRestangularFields
+    #  id: "id"
+     
 # -- Stackmob REST API configuration
 
 #    RestangularConfigurer.setBaseUrl('http:#api.stackmob.com');

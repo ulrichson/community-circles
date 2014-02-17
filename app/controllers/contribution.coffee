@@ -1,6 +1,56 @@
 contributionApp = angular.module("contributionApp", ["communityCirclesApp", "ContributionModel", "hmTouchevents"]) 
 
 #-------------------------------------------------------------------------------
+# Index: http://localhost/views/contribution/index.html
+#------------------------------------------------------------------------------- 
+contributionApp.controller "IndexCtrl", ($scope, ContributionRestangular) ->
+  $scope.contributions = []
+
+  $scope.open = (id) ->
+    webView = new steroids.views.WebView "/views/contribution/show.html?id=#{id}"
+    steroids.layers.push webView
+
+  $scope.loadContributions = ->
+    $scope.loading = true
+    contributions.getList().then (data) ->
+      $scope.length = data.length
+      $scope.contributions = data
+      $scope.loading = false
+
+  contributions = ContributionRestangular.all "contribution"
+  $scope.loadContributions()
+
+  window.addEventListener "message", (event) ->
+    if event.data.status is "reload" 
+      $scope.loadContributions()
+
+#-------------------------------------------------------------------------------
+# Show: http://localhost/views/contribution/show.html?id=<id>
+#------------------------------------------------------------------------------- 
+contributionApp.controller "ShowCtrl", ($scope, $filter, ContributionRestangular) ->
+
+  $scope.loadContribution = ->
+    $scope.loading = true
+
+    # contribution.get().then (data) ->
+    #   $scope.contribution = data
+    #   $scope.loading = false
+    contributions.getList().then (data) ->
+      $scope.contribution = $filter("filter")(data, {id: steroids.view.params.id})[0]
+      $scope.loading = false
+
+  # Save current contribution id to localStorage (edit.html gets it from there)
+  localStorage.setItem "currentContributionId", steroids.view.params.id
+
+  # contribution = ContributionRestangular.one "contribution", steroids.view.params.id
+  contributions = ContributionRestangular.all "contribution"
+  $scope.loadContribution()
+
+  window.addEventListener "message", (event) ->
+    if event.data.status is "reload"
+      $scope.loadContribution()
+
+#-------------------------------------------------------------------------------
 # New: http://localhost/views/contribution/new.html
 #------------------------------------------------------------------------------- 
 contributionApp.controller "NewCtrl", ($scope, ContributionRestangular) ->
@@ -120,7 +170,7 @@ contributionApp.controller "NewCtrl", ($scope, ContributionRestangular) ->
       $scope.$apply -> $scope.loading = false
     , ->
       $scope.$apply -> $scope.loading = false
-      alert("Sorry, couldn't upload your contribution. Please try again later");
+      alert "Sorry, couldn't upload your contribution. Please try again later"
 
   #-----------------------------------------------------------------------------
   # WINDOW MESSAGES

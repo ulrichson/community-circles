@@ -2,15 +2,9 @@
 
   <div ng-controller="IndexCtrl">
     <div class="spinner" ng-show="loading"></div>
-    <div class="topcoat-list__container">
-
-      <ul class="topcoat-list">
-        <!-- order is reversed created timestamp -->
-        <li class="topcoat-list__item" hm-tap="open(contribution.contribution_id)" ng-repeat="contribution in contributions | orderBy: '-createddate'">
-          Contribution: {{ contribution.name }}
-        </li>
-      </ul>
-
+    {{ length }}
+    <div class="list-group">
+      <a href="#" class="list-group-item" hm-tap="open(contribution.id)" ng-repeat="contribution in contributions | orderBy: 'created'">{{ contribution.title }}</a>
     </div>
 
   </div>
