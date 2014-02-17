@@ -187,3 +187,50 @@ contributionApp.controller "NewCtrl", ($scope, ContributionRestangular) ->
   # CUSTOM NATIVE UI BAHAVIOR
   #-----------------------------------------------------------------------------
   # TODO: on back show confirmation dialog, if data was set 
+
+
+#-------------------------------------------------------------------------------
+# Edit: http://localhost/views/contribution/edit.html
+#------------------------------------------------------------------------------- 
+# contributionApp.controller('EditCtrl', function ($scope, ContributionRestangular) {
+
+#   var id  = localStorage.getItem("currentContributionId"),
+#       contribution = ContributionRestangular.one("contribution", id);
+
+#   $scope.close = function() {
+#     steroids.modal.hide();
+#   };
+
+#   $scope.update = function(contribution) {
+#     $scope.loading = true;
+
+#     contribution.put().then(function() {
+
+#       // Notify the show.html to reload data
+#       var msg = { status: "reload" };
+#       window.postMessage(msg, "*");
+
+#       $scope.close();
+#       $scope.loading = false;
+#     }, function() {
+#       $scope.loading = false;
+
+#       alert("Error when editing the object, is Restangular configured correctly, are the permissions set correctly?");
+#     });
+
+#   };
+
+#   // Helper function for loading contribution data with spinner
+#   $scope.loadContribution = function() {
+#     $scope.loading = true;
+
+#     // Fetch a single object from the backend (see app/models/contribution.js)
+#     contribution.get().then(function(data) {
+#       $scope.contribution = data;
+#       $scope.loading = false;
+#     });
+#   };
+
+#   $scope.loadContribution();
+
+# }); 
