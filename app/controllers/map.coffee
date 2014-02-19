@@ -97,36 +97,73 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
       #     L.circle([element.location.latitude, element.location.longitude], element.radius, { stroke: false, fillColor: "#00a8b3"}).addTo map
       #   # L.featureLayer()
       #d3.json "http://localhost/data/demo/communities-geo.json", (collection) ->
-      communities = CommunityRestangular.one "contributions-geo"
-      communities.get().then (data) ->
+      
+      # communities = CommunityRestangular.one "contributions-geo"
+      # communities.get().then (data) ->
+      
+      fakeAsyncCall = (data) ->
         # alert JSON.stringify d3.geo.bounds data
         # cl = communitiesLayer().data(data)
         # alert JSON.stringify cl
         # cl = d3layer().data data
         # map.addLayer cl
 
+        console.debug "Received contributions: #{JSON.stringify data}"
+
+        _.each data.features, (element) ->
+          L.circle([element.geometry.coordinates[1], element.geometry.coordinates[0]], element.properties.radius, { stroke: false, fillColor: "#00c8c8"}).addTo map
+
         ### INLINE CIRCLE RENDERING ###
         # See http://bost.ocks.org/mike/leaflet/
         # and https://github.com/rclark/leaflet-d3-layer
-        projectPoint = (x, y) ->
-          point = map.latLngToLayerPoint new L.LatLng(y, x)
-          return [point.x, point.y]
 
-        # div = d3.select(document.body).append("div").attr "class", "d3-vec"
-        svg = d3.select(map.getPanes().overlayPane).append "svg"
+        contributionIconRadius = 0
+
+        svg = d3.select(map.getPanes().overlayPane).append("svg")
         g = svg.append("g").attr "class", "leaflet-zoom-hide"
         # bounds = d3.geo.bounds data
-        transform = d3.geo.transform({point: projectPoint})
-        path = d3.geo.path().projection(transform)
-        bounds = path.bounds(collection)
-        feature = g.selectAll("circle").data(collection.features).enter().append("circle").style "fill", "00c8c8"
-        
-        topLeft = bounds[0]
-        bottomRight = bounds[1]
-        svg.attr("width", bottomRight[0] - topLeft[0]).attr("height", bottomRight[1] - topLeft[1]).style("left", topLeft[0] + "px").style("top", topLeft[1] + "px")
-        g.attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")")
-        feature.attr("d", path)
+        transform = d3.geo.transform
+          point: (x, y) ->
+            point = map.latLngToLayerPoint new L.LatLng y, x
+            this.stream.point point.x, point.y
 
+        path = d3.geo.path()
+          .projection(transform)
+          .pointRadius (d) ->
+            return 20
+            # return contributionIconRadius
+            #return 0.1 * d.properties.radius
+
+        bounds = path.bounds data
+        feature = g.selectAll("path")
+          .data(data.features)
+          .enter()
+          .append("path")
+          #.append("circle")
+          .style("fill", "00c8c8")
+          # .append("circle")
+          # .datum( (d) -> console.log JSON.stringify d )
+          # .attr("opacity", "0.5")
+
+        reset = ->
+          # topLeft = bounds[0]
+          # bottomRight = bounds[1]
+          # svg.attr("width", bottomRight[0] - topLeft[0] + 2 * contributionIconRadius)
+          #   .attr("height", bottomRight[1] - topLeft[1] + 2 * contributionIconRadius)
+          #   .style("left", (topLeft[0] - contributionIconRadius) + "px")
+          #   .style("top", (topLeft[1] + contributionIconRadius) + "px")
+          # # svg.style("left", topLeft[0] + "px").style("top", topLeft[1] + "px")
+          # g.attr("transform", "translate(" + - (topLeft[0] - contributionIconRadius) + "," + -(topLeft[1] + contributionIconRadius) + ")")
+          svg.attr("width", map.getSize().x).attr("height", map.getSize().y)
+          feature.attr("d", path)
+
+        map.on "viewreset", reset
+        reset()
+
+        # Approach by http://bl.ocks.org/mbostock/899711
+      
+      fakeAsyncCall(contributionsGeoJSON)
+      # console.log JSON.stringify contributionsGeoJSON
 
       # Draw circle with GPS accuracy
       # L.circle([position.coords.latitude, position.coords.longitude], position.coords.accuracy, { opacity: 0.1, fillOpacity: 0.1 }).addTo map
