@@ -157,10 +157,38 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
           svg.attr("width", map.getSize().x).attr("height", map.getSize().y)
           feature.attr("d", path)
 
-        map.on "viewreset", reset
-        reset()
+        # map.on "viewreset", reset
+        # reset()
 
         # Approach by http://bl.ocks.org/mbostock/899711
+        # NOT DONE
+
+        # Clustering
+        markers = new L.MarkerClusterGroup()
+        _.each data.features, (element) ->
+          latlan = [element.geometry.coordinates[1], element.geometry.coordinates[0]]
+          markers.addLayer new L.circleMarker [element.geometry.coordinates[1], element.geometry.coordinates[0]],
+            radius: 20
+            fillColor: "#00c8c8"
+            fillOpacity: 1
+            weight: 0
+
+          options = 
+            data:
+              "health": 0.7
+          # dataOptions:
+          #   "dataPoint1":
+          #     fillColor: "#cc0000"
+          #     minValue: 0
+          #     maxValue: 1
+
+          # markers.addLayer new L.SVGMarker latlan,
+          #   svg: "http://upload.wikimedia.org/wikipedia/commons/8/8b/Green_Arrow_Up_Darker.svg"
+          #   size: new L.Point 20, 20
+          
+          
+        map.addLayer markers
+
       
       fakeAsyncCall(contributionsGeoJSON)
       # console.log JSON.stringify contributionsGeoJSON
