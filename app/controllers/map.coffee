@@ -164,28 +164,40 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
         # NOT DONE
 
         # Clustering
-        markers = new L.MarkerClusterGroup()
+        # markers = new L.MarkerClusterGroup()
+        markers = new L.LayerGroup()
         _.each data.features, (element) ->
-          latlan = [element.geometry.coordinates[1], element.geometry.coordinates[0]]
-          markers.addLayer new L.circleMarker [element.geometry.coordinates[1], element.geometry.coordinates[0]],
+          latlan = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
+          markers.addLayer new L.circleMarker latlan,
             radius: 20
             fillColor: "#00c8c8"
             fillOpacity: 1
             weight: 0
 
-          options = 
-            data:
-              "health": 0.7
-          # dataOptions:
-          #   "dataPoint1":
-          #     fillColor: "#cc0000"
-          #     minValue: 0
-          #     maxValue: 1
+          markers.addLayer new L.SVGMarker latlan,
+            svg: "/icons/contribution-type/#{element.properties.type}.svg"
+            size: new L.Point 15, 15
+            fill: "#ffffff"
 
-          # markers.addLayer new L.SVGMarker latlan,
-          #   svg: "http://upload.wikimedia.org/wikipedia/commons/8/8b/Green_Arrow_Up_Darker.svg"
-          #   size: new L.Point 20, 20
-          
+          markers.addLayer new L.RadialBarChartMarker latlan,
+            data:
+              "health": Math.random() * 100
+            chartOptions:
+              "health":
+                color: "#333333"
+                fillColor: "#00c8c8"
+                minValue: 0
+                maxValue: 100
+                maxHeight: 100
+            backgroundStyle: null
+            clickable: false
+            fillColor: "#00c8c8"
+            fillOpacity: 1
+            weight: 0
+            gradient: false
+            dropshadow: false
+            radius: 20
+            rotation: -90
           
         map.addLayer markers
 

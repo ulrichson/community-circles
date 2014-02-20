@@ -23,9 +23,9 @@ communityCirclesApp.run ->
 # APP PROPERTIES AND METHODS
 #-------------------------------------------------------------------------------
 communityCirclesApp.value "app",
-  # mapId: "examples.map-y7l23tes",
+  mapId: "examples.map-y7l23tes",
   # mapId: "ulrichson.map-yys0e6yr",
-  mapId: "examples.map-vyofok3q",
+  # mapId: "examples.map-vyofok3q",
   mapInitZoom: 14,
   mapShowZoomControls: true,
   apiBaseUrl: "http://community-circles.ftw.at/api"
