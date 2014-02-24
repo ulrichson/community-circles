@@ -23,6 +23,7 @@
     "flat-ui-official": "2.1.x",
     "angular-moment": "0.6.x",
     "d3": "3.4.x",
+    "leaflet": "0.7.x",
     "leaflet.markercluster": "0.4.x",
     "leaflet-dvs": "git://github.com/humangeo/leaflet-dvf.git"
   }
