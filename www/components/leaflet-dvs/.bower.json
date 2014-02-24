@@ -1,0 +1,13 @@
+{
+  "name": "leaflet-dvs",
+  "homepage": "https://github.com/humangeo/leaflet-dvf",
+  "_release": "eb631cb46a",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "eb631cb46a61f82bdc60879f745d30234f586641"
+  },
+  "_source": "git://github.com/humangeo/leaflet-dvf.git",
+  "_target": "*",
+  "_originalSource": "git://github.com/humangeo/leaflet-dvf.git"
+}
