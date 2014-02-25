@@ -51,66 +51,42 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
     console.debug "loading map"
     $scope.loading = true
 
-    # markers = new L.MarkerClusterGroup()
-    # i = 0
-    # while i < 3000
-    #   i++
-    #   latlan = new L.LatLng Math.random() * 90, Math.random() * 180
-    #   marker = new L.SVGMarker latlan,
-    #     svg: "http://upload.wikimedia.org/wikipedia/commons/8/8b/Green_Arrow_Up_Darker.svg"
-    #     size: new L.Point 20, 20
-    #   markers.addLayer marker
-    
-    # map.addLayer markers
-
     navigator.geolocation.getCurrentPosition (position) ->
       map.setView [position.coords.latitude, position.coords.longitude], app.mapInitZoom
       $scope.$apply -> $scope.loading = false
 
       fakeAsyncCall = (data) ->
-
-        console.debug "Received contributions: #{JSON.stringify data}"
+        # console.debug "Received contributions: #{JSON.stringify data}"
 
         _.each data.features, (element) ->
           L.circle([element.geometry.coordinates[1], element.geometry.coordinates[0]], element.properties.radius, { stroke: false, fillColor: "#00c8c8"}).addTo map
 
+        diameter = 25
+
         # Clustering
         markers = new L.MarkerClusterGroup()
         map.addLayer markers
-        # markers = new L.LayerGroup()
+
         _.each data.features, (element) ->
           latlan = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
-          # markers.addLayer new L.circleMarker latlan,
-          #   radius: 20
-          #   fillColor: "#00c8c8"
-          #   fillOpacity: 1
-          #   weight: 0
-
-          markers.addLayer new L.SVGMarker latlan,
+          svgMarker = new L.SVGMarker latlan,
             svg: "/icons/contribution-type/simple.svg"
-            # svg: "/icons/contribution-type/#{element.properties.type}.svg"
-            # svg: "http://upload.wikimedia.org/wikipedia/commons/8/8b/Green_Arrow_Up_Darker.svg"
-            size: new L.Point 25, 25
+            size: new L.Point diameter, diameter
+            afterwards: (domNode) ->
+              # Health progress bar
+              console.debug "Adding health progress to #{d3.select(domNode)}"
+              arc = d3.svg.arc()
+              # arc.startAngle(0)
+              # arc.endAngle(2 * Math.PI * 0.7)
+              # arc.innerRadius(10)
+              # arc.outerRadius(25 / 2)
 
-          # markers.addLayer new L.RadialBarChartMarker latlan,
-          #   data:
-          #     "health": Math.random() * 100
-          #   chartOptions:
-          #     "health":
-          #       color: "#333333"
-          #       fillColor: "#00c8c8"
-          #       minValue: 0
-          #       maxValue: 100
-          #       maxHeight: 100
-          #   backgroundStyle: null
-          #   clickable: false
-          #   fillColor: "#00c8c8"
-          #   fillOpacity: 1
-          #   weight: 0
-          #   gradient: false
-          #   dropshadow: false
-          #   radius: 20
-          #   rotation: -90
+              console.debug "Arc is #{JSON.stringify arc}"
+              # d3.select(domNode).append arc
+              # domNode.appendChild arc
+
+          markers.addLayer svgMarker
+
       fakeAsyncCall(contributionsGeoJSON)
     , (error) ->
       $scope.$apply -> $scope.loading = false
