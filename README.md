@@ -49,7 +49,7 @@ More information on the [Steroids documentation](http://guides.appgyver.com/ster
 
 You can also run the project in your browser by typint `steroids connect --serve` (server is available at `http://localhost:4000/`). 
 
-For other platform refere to [http://guides.appgyver.com/steroids/guides/debugging/best-practices/](http://guides.appgyver.com/steroids/guides/debugging/best-practices/).
+For other platforms refere to [http://guides.appgyver.com/steroids/guides/debugging/best-practices/](http://guides.appgyver.com/steroids/guides/debugging/best-practices/).
 
 Deploy
 ------
@@ -61,3 +61,13 @@ Editor
 ------
 
 Indent using spaces, space width: 2
+
+Graphics
+--------
+
+- For `SVGMarker` to work with SVG graphics, the `width` and `height` attribute in the `<svg>` have to be set.
+
+Contributiors
+-------------
+
+- [Leaflet Data Visualization Framework (DVF)](https://github.com/humangeo/leaflet-dvf) by [humangeo](https://github.com/humangeo/)
