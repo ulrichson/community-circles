@@ -25,6 +25,6 @@
     "d3": "3.4.x",
     "leaflet": "0.7.x",
     "leaflet.markercluster": "0.4.x",
-    "leaflet-dvs": "git://github.com/humangeo/leaflet-dvf.git"
+    "paper": "0.9.x"
   }
 }

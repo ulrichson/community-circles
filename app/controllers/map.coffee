@@ -59,7 +59,7 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
         # console.debug "Received contributions: #{JSON.stringify data}"
 
         _.each data.features, (element) ->
-          L.circle([element.geometry.coordinates[1], element.geometry.coordinates[0]], element.properties.radius, { stroke: false, fillColor: "#00c8c8"}).addTo map
+          L.circle([element.geometry.coordinates[1], element.geometry.coordinates[0]], element.properties.radius, { "id": element.properties.id, className: "contribution-radius", stroke: false, fillColor: "#00c8c8"}).addTo map
 
         diameter = 32
 
@@ -74,7 +74,6 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
             size: new L.Point diameter, diameter
             afterwards: (domNode) ->
               # Health progress bar
-              console.debug "Adding health progress to #{d3.select(domNode)}"
 
               # Remove previous created bar
               d3.select(domNode).select(".contribution-health").remove()

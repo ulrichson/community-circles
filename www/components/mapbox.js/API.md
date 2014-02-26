@@ -10,7 +10,7 @@ interactivity.
 | ---- | ---- | ---- |
 | element (_required_) | string | Must be the id of an element, or a DOM element reference. |
 | id _or_ url _or_ tilejson | __string__ if _id_ or _url_ __object__ if _tilejson_ | url can be <ul><li>a map `id` string `examples.map-foo`</li><li> a URL to TileJSON, like `http://a.tiles.mapbox.com/v3/examples.map-0l53fhk2.json`</li><li>a [TileJSON](http://mapbox.com/wax/tilejson.html) object, from your own Javascript code</li></ul> |
-| options | object | If provided, it is the same options as provided to L.Map with the following additions: <ul><li>`tileLayer` ([TileLayer options](../leaflet-tilelayer/#tilelayer-options)). Options passed to a `L.mapbox.tileLayer` based on the TileJSON. Set to `false` to disable the `L.mapbox.tileLayer`.</li><li>`featureLayer` `L.FeatureLayer` options. Options passed to a `L.mapbox.featureLayer` based on the TileJSON. Set to `false` to disable the `L.mapbox.tileLayer`.</li><li>`gridLayer` `L.mapbox.gridLayer`. Options passed to a `L.mapbox.gridLayer` based on the TileJSON. Set to `false` to disable the `L.mapbox.gridLayer`.</li><li>`legendControl` `L.mapbox.legendControl` options. Options passed to a `L.mapbox.legendControl` based on the TileJSON. Set to `false` to disable the `L.mapbox.legendControl`.</li> |
+| options | object | If provided, it is the same options as provided to L.Map with the following additions: <ul><li>`tileLayer` L.TileLayer options. Options passed to a `L.mapbox.tileLayer` based on the TileJSON. Set to `false` to disable the `L.mapbox.tileLayer`.</li><li>`featureLayer` `L.FeatureLayer` options. Options passed to a `L.mapbox.featureLayer` based on the TileJSON. Set to `false` to disable the `L.mapbox.tileLayer`.</li><li>`gridLayer` `L.mapbox.gridLayer`. Options passed to a `L.mapbox.gridLayer` based on the TileJSON. Set to `false` to disable the `L.mapbox.gridLayer`.</li><li>`legendControl` `L.mapbox.legendControl` options. Options passed to a `L.mapbox.legendControl` based on the TileJSON. Set to `false` to disable the `L.mapbox.legendControl`.</li><li>`shareControl`: Options passed to a `L.mapbox.shareControl`. Set to `false` to disable the `L.mapbox.shareControl`.</li><li>`infoControl`: Options passed to a `L.mapbox.infoControl`. Set to `false` to disable the `L.mapbox.infoControl`.</li> |
 
 _Example_:
 
@@ -153,7 +153,9 @@ function with that data, if any.
 
 _Returns_: the L.mapbox.gridLayer object
 
-## L.mapbox.featureLayer(id|url|tilejson, options)
+## L.mapbox.featureLayer(id|url|geojson, options)
+
+<span class='leaflet'>_Extends_: L.FeatureGroup</span>
 
 **NOTE: in version 1.6.0, `L.mapbox.markerLayer` was renamed to `L.mapbox.featureLayer`
 to signal the addition of support for lines and polygons. The `L.mapbox.markerLayer`
@@ -164,7 +166,7 @@ from Mapbox and elsewhere into your map.
 
 | Options | Value | Description |
 | ---- | ---- | ---- |
-| id _or_ url _or_ tilejson | __string__ if _id_ or _url_ __object__ if _tilejson_ | Must be either <ul><li>An id string examples.map-foo</li><li>A URL to TileJSON, like `http://a.tiles.mapbox.com/v3/examples.map-0l53fhk2.json`</li><li>A GeoJSON object, from your own Javascript code</li><li>`null`, if you wish to only provide `options` and not initial data.</li></ul> |
+| id _or_ url _or_ geojson | __string__ if _id_ or _url_ __object__ if _tilejson_ | Must be either <ul><li>An id string examples.map-foo</li><li>A URL to TileJSON, like `http://a.tiles.mapbox.com/v3/examples.map-0l53fhk2.json`</li><li>A GeoJSON object, from your own Javascript code</li><li>`null`, if you wish to only provide `options` and not initial data.</li></ul> |
 | options | object | If provided, it is the same options as provided to `L.FeatureGroup`, as well as: <ul><li>`filter`: A function that accepts a feature object and returns `true` or `false` to indicate whether it should be displayed on the map. This can be changed later using `setFilter`.</li><li>`sanitizer`: A function that accepts a string containing tooltip data, and returns a sanitized result for HTML display. The default will remove dangerous script content, and is recommended.</li></ul> |
 
 _Example_:
@@ -329,11 +331,14 @@ _Returns_: the geocoder object. The return value of this function is not useful 
 # Controls
 
 ## L.mapbox.infoControl(options)
+
+<span class='leaflet'>_Extends_: L.Control</span>
+
 A map control that shows a toggleable info container. This is triggered by default and attribution is auto-detected from active layers and added to the info container.
 
 | Options | Value | Description |
 | ---- | ---- | ---- |
-| options _optional_ | object | An options object. Beyond the default options for map controls, this object has a two additional parameters: <ul><li>`editLink`: A boolean that adds an `Improve this map` link to your map allowing users to make edits to OpenStreetMap from the current map coordinates being viewed.</li><li>`sanitizer`: A function that accepts a string, and returns a sanitized result for HTML display. The default will remove dangerous script content, and is recommended.</li></ul> |
+| options _optional_ | object | An options object. Beyond the default options for map controls, this object has a two additional parameters: <ul><li>`sanitizer`: A function that accepts a string, and returns a sanitized result for HTML display. The default will remove dangerous script content, and is recommended.</li></ul> |
 
 _Example_:
 
@@ -357,6 +362,9 @@ Removes an info string from infoControl.
 | info _required_ | string | Info to remove. |
 
 ## L.mapbox.legendControl(options)
+
+<span class='leaflet'>_Extends_: L.Control</span>
+
 A map control that shows legends added to maps in Mapbox. Legends are auto-detected from active layers.
 
 | Options | Value | Description |
@@ -386,6 +394,8 @@ Removes a legend from the legendControl.
 | legend _required_ | string | legend data to remove. |
 
 ## L.mapbox.gridControl(layer, options)
+
+<span class='leaflet'>_Extends_: L.Control</span>
 
 Interaction is what we call interactive parts of maps that are created with the powerful [tooltips &amp; regions](http://mapbox.com/tilemill/docs/crashcourse/tooltips/) system in [TileMill](http://mapbox.com/tilemill/). Under the hood, it's powered by the open [UTFGrid specification](https://github.com/mapbox/utfgrid-spec/).
 
@@ -544,7 +554,7 @@ A `L.Marker` object with the latitude, longitude position and a styled marker
 The other sections of the [simplestyle-spec](https://github.com/mapbox/simplestyle-spec) are implemented
 by `L.mapbox.simplestyle`
 
-## L.simplestyle.style(feature)
+## L.mapbox.simplestyle.style(feature)
 
 Given a GeoJSON Feature with optional simplestyle-spec properties, return an
 options object formatted to be used as [Leaflet Path options](http://leafletjs.com/reference.html#path).
