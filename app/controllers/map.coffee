@@ -61,7 +61,7 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
         _.each data.features, (element) ->
           L.circle([element.geometry.coordinates[1], element.geometry.coordinates[0]], element.properties.radius, { stroke: false, fillColor: "#00c8c8"}).addTo map
 
-        diameter = 25
+        diameter = 32
 
         # Clustering
         markers = new L.MarkerClusterGroup()
@@ -70,20 +70,28 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
         _.each data.features, (element) ->
           latlan = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
           svgMarker = new L.SVGMarker latlan,
-            svg: "/icons/contribution-type/simple.svg"
+            svg: "/icons/contribution/#{element.properties.type}.svg"
             size: new L.Point diameter, diameter
             afterwards: (domNode) ->
               # Health progress bar
               console.debug "Adding health progress to #{d3.select(domNode)}"
-              arc = d3.svg.arc()
-              # arc.startAngle(0)
-              # arc.endAngle(2 * Math.PI * 0.7)
-              # arc.innerRadius(10)
-              # arc.outerRadius(25 / 2)
 
-              console.debug "Arc is #{JSON.stringify arc}"
-              # d3.select(domNode).append arc
-              # domNode.appendChild arc
+              # Remove previous created bar
+              d3.select(domNode).select(".contribution-health").remove()
+
+              healthProgress = d3.select(domNode)
+                .insert("svg:path", ":first-child")
+                .attr("class", "contribution-health")
+                .attr("width", diameter)
+                .attr("height", diameter)
+                .attr("fill", "#00c8c8")
+                .attr("transform", "translate(#{diameter / 2 }, #{diameter / 2})")
+
+              healthProgress.attr "d", d3.svg.arc()
+                .startAngle(0)
+                .endAngle(2 * Math.PI * element.properties.health)
+                .innerRadius(0)
+                .outerRadius(diameter / 2)
 
           markers.addLayer svgMarker
 

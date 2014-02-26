@@ -41,7 +41,7 @@ L.SVGMarker = L.Path.extend({
         width = me.options.size.x;
         height = me.options.size.y;
         svg.setAttribute("width", width);
-        svg.setAttribute("height", height + (height.indexOf("%") !== -1 ? "" : "px"));
+        svg.setAttribute("height", height + ((height+"").indexOf("%") !== -1 ? "" : "px"));
       }
       var size = me.options.size || new L.Point(width, height);
       var scaleSize = new L.Point(size.x / width, size.y / height);
