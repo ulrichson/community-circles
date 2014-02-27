@@ -48,10 +48,6 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
   map.on "viewreset", ->
     createCommunityCircles()
 
-  map.markerLayer.on "click", (e) ->
-    # console.debug "Panning to #{e.layer.getLatLng()}"
-    map.panTo e.layer.getLatLng()
-
   map.on "error", (error) ->
     alert "Sorry, the map cannot be loaded at the moment"
     console.error "Mapbox error: #{error}"
@@ -137,7 +133,13 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
                 .innerRadius(0)
                 .outerRadius(markerDiameter / 2)
 
+              healthProgress.node().parentNode.dataset.contribution_id = element.properties.id
+
           markers.addLayer svgMarker
+
+          # Register click event
+          svgMarker.on "click", (e) ->
+            console.debug "Received click from contribution with id=#{e.target._container.dataset.contribution_id}"
         
         map.addLayer markers
 
