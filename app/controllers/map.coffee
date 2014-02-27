@@ -6,9 +6,12 @@ mapApp = angular.module("mapApp", ["communityCirclesApp", "hmTouchevents", "Comm
 mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
 
   communities = []
+  contributions = []
 
   $scope.locating = false
   $scope.loading = false
+
+  paper.setup()
 
   #-----------------------------------------------------------------------------
   # INITIALIZE BACKGROUND SERVICE !!!MOVE SOMEWHERE ELSE!!!
@@ -36,6 +39,9 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
   map.on "ready", ->
     loadMap()
 
+  map.on "viewreset", ->
+    createCommunityCircles()
+
   map.on "error", (error) ->
     alert "Sorry, the map cannot be loaded at the moment"
     console.error "Mapbox error: #{error}"
@@ -50,6 +56,34 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
     radius = point.x - map.latLngToLayerPoint(ll2).x
     return point: point, radius: radius
 
+  createCommunityCircles = ->
+    return null if contributions.length is 0
+
+    unitedCircles = null
+    _.each contributions, (element) ->
+      latlan = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
+      projectedCircle = projectCircle latlan, element.properties.radius
+      
+      circle = new paper.Path.Circle(new paper.Point(projectedCircle.point.x, projectedCircle.point.y), projectedCircle.radius)
+
+      if unitedCircles is null
+        unitedCircles = circle
+      else
+        unitedCircles = unitedCircles.unite circle
+
+    circlesPathElement = unitedCircles.exportSVG()
+    circlesPathElement.setAttribute "fill", "#00c8c8"
+    circlesPathElement.setAttribute "fill-opacity", "0.2"
+    circlesPathElement.setAttribute "class", "community-circle"
+
+    container = document.getElementsByClassName("leaflet-overlay-pane")[0].firstChild
+    if document.getElementsByClassName("community-circle").length is 0
+      container.insertBefore circlesPathElement, container.firstChild
+    else
+      container.replaceChild circlesPathElement, container.firstChild
+
+    return circlesPathElement
+
   refreshMap = (position) ->
     # console.debug "Received position #{position.coords.latitude} #{position.coords.longitude}, accuracy: #{position.coords.accuracy}."
 
@@ -63,88 +97,12 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
       $scope.$apply -> $scope.loading = false
 
       fakeAsyncCall = (data) ->
-        # console.debug "Received contributions: #{JSON.stringify data}"
-
-        ### INLINE CIRCLE RENDERING ###
-        # See http://bost.ocks.org/mike/leaflet/
-        # Projection radius: https://github.com/Leaflet/Leaflet/blob/master/src/layer/vector/Circle.js#L33-63
-        # Projection point: https://github.com/Leaflet/Leaflet/blob/master/src/layer/vector/CircleMarker.js#L43
-
-        # svg = d3.select(map.getPanes().overlayPane).append("svg")
-        # g = svg.append("g").attr "class", "leaflet-zoom-hide"
-        # # bounds = d3.geo.bounds data
-        # transform = d3.geo.transform
-        #   point: (x, y) ->
-        #     point = map.latLngToLayerPoint new L.LatLng y, x
-        #     this.stream.point point.x, point.y
-
-        # path = d3.geo.path()
-        #   .projection(transform)
-        #   .pointRadius (d) ->
-        #     return d.properties.radius
-
-        # bounds = path.bounds data
-        # feature = g.selectAll("path")
-        #   .data(data.features)
-        #   .enter()
-        #   .append("path")
-        #   .style("fill", "00c8c8")
-        #   .style("opacity", "0.5")
-        #   # .append("circle")
-        #   # .datum( (d) -> console.log JSON.stringify d )
-        #   # .attr("opacity", "0.5")
-
-        # reset = ->
-        #   topLeft = bounds[0]
-        #   bottomRight = bounds[1]
-        #   svg.attr("width", bottomRight[0] - topLeft[0])
-        #     .attr("height", bottomRight[1] - topLeft[1])
-        #     .style("left", topLeft[0] + "px")
-        #     .style("top", topLeft[1] + "px")
-        #   g.attr("transform", "translate(" + - topLeft[0] + "," + -topLeft[1] + ")")
-        #   svg.attr("width", map.getSize().x).attr("height", map.getSize().y)
-        #   feature.attr("d", path)
-
-        # map.on "viewreset", reset
-        # reset()
-
-        unitedCircles = null
-        paper.setup()
-        _.each data.features, (element) ->
-          latlan = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
-          projectedCircle = projectCircle latlan, element.properties.radius
-          console.debug "Projected contribution is #{JSON.stringify projectedCircle}"
-          
-          circle = new paper.Path.Circle(new paper.Point(projectedCircle.point.x, projectedCircle.point.y), projectedCircle.radius)
-
-          if unitedCircles is null
-            unitedCircles = circle
-          else
-            unitedCircles = unitedCircles.unite circle
-
-        pathElement = unitedCircles.exportSVG()
-        console.debug "United path is #{pathElement.getAttributeNode('d').value}"
-
-        # console.debug document.getElementsByClassName("leaflet-overlay-pane")[0].outerHTML
-
-        #document.getElementsByClassName("leaflet-overlay-pane")[0].getElementsByTagName("svg")[0].appendChild svgElement
-        #d3.select(".leaflet-overlay-pane>svg:first-child").append svgElement.outerHTML
-        svgElement = document.createElement "svg"
-        svgElement.setAttribute "width", map.getSize().x
-        svgElement.setAttribute "height", map.getSize().y
-        document.getElementsByClassName("leaflet-overlay-pane")[0].appendChild svgElement
-
-        pathElement.setAttribute "fill", "#00c8c8"
-        svgElement.appendChild pathElement
-
-        _.each data.features, (element) ->
-          L.circle([element.geometry.coordinates[1], element.geometry.coordinates[0]], element.properties.radius, { "id": element.properties.id, className: "contribution-radius", stroke: false, fillColor: "#00c8c8"}).addTo map
-
+        contributions = data.features
+        
         contributionDiameter = 32
 
-        # Clustering
+        # Contributions and clustering
         markers = new L.MarkerClusterGroup()
-        map.addLayer markers
 
         _.each data.features, (element) ->
           latlan = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
@@ -172,6 +130,11 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
                 .outerRadius(contributionDiameter / 2)
 
           markers.addLayer svgMarker
+        
+        map.addLayer markers
+
+        # Community Circles
+        createCommunityCircles()
 
       fakeAsyncCall(contributionsGeoJSON)
     , (error) ->
