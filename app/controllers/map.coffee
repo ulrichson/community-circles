@@ -5,6 +5,8 @@ mapApp = angular.module("mapApp", ["communityCirclesApp", "hmTouchevents", "Comm
 #------------------------------------------------------------------------------- 
 mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
 
+  markerDiameter = 32
+
   communities = []
   contributions = []
 
@@ -12,6 +14,9 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
   $scope.loading = false
 
   paper.setup()
+
+  currentPositionLayer = null
+  currentPositionMarker = null
 
   #-----------------------------------------------------------------------------
   # INITIALIZE BACKGROUND SERVICE !!!MOVE SOMEWHERE ELSE!!!
@@ -38,9 +43,14 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
 
   map.on "ready", ->
     loadMap()
+    $scope.locate()
 
   map.on "viewreset", ->
     createCommunityCircles()
+
+  map.markerLayer.on "click", (e) ->
+    # console.debug "Panning to #{e.layer.getLatLng()}"
+    map.panTo e.layer.getLatLng()
 
   map.on "error", (error) ->
     alert "Sorry, the map cannot be loaded at the moment"
@@ -99,8 +109,6 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
       fakeAsyncCall = (data) ->
         contributions = data.features
         
-        contributionDiameter = 32
-
         # Contributions and clustering
         markers = new L.MarkerClusterGroup()
 
@@ -108,7 +116,7 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
           latlan = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
           svgMarker = new L.SVGMarker latlan,
             svg: "/icons/contribution/#{element.properties.type}.svg"
-            size: new L.Point contributionDiameter, contributionDiameter
+            size: new L.Point markerDiameter, markerDiameter
             afterwards: (domNode) ->
               # Health progress bar
 
@@ -118,16 +126,16 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
               healthProgress = d3.select(domNode)
                 .insert("svg:path", ":first-child")
                 .attr("class", "contribution-health")
-                .attr("width", contributionDiameter)
-                .attr("height", contributionDiameter)
+                .attr("width", markerDiameter)
+                .attr("height", markerDiameter)
                 .attr("fill", "#00c8c8")
-                .attr("transform", "translate(#{contributionDiameter / 2 }, #{contributionDiameter / 2})")
+                .attr("transform", "translate(#{markerDiameter / 2 }, #{markerDiameter / 2})")
 
               healthProgress.attr "d", d3.svg.arc()
                 .startAngle(0)
                 .endAngle(2 * Math.PI * element.properties.health)
                 .innerRadius(0)
-                .outerRadius(contributionDiameter / 2)
+                .outerRadius(markerDiameter / 2)
 
           markers.addLayer svgMarker
         
@@ -160,18 +168,23 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
     navigator.geolocation.getCurrentPosition (position) ->
       $scope.$apply -> 
         $scope.locating = false
-      map.setView [position.coords.latitude, position.coords.longitude], app.mapInitZoom
-      map.markerLayer.setGeoJSON
-        type: "Feature"
-        geometry:
-          type: "Point"
-          coordinates: [position.coords.longitude, position.coords.latitude]
-        properties:
-          "marker-color": "#00a8b3"
-          "marker-symbol": "star-stroked"
-      map.markerLayer.on "click", (e) ->
-        console.debug "Panning to #{e.layer.getLatLng()}"
-        map.panTo e.layer.getLatLng()
+
+      latlan = new L.LatLng position.coords.latitude, position.coords.longitude
+      map.setView latlan, app.mapInitZoom
+
+      # Clean up
+      if currentPositionLayer isnt null
+        currentPositionLayer.removeLayer currentPositionMarker unless currentPositionMarker is null
+        map.removeLayer currentPositionLayer
+
+      # Add marker
+      currentPositionLayer = new L.LayerGroup()
+      currentPositionMarker = new L.SVGMarker latlan,
+        svg: "/icons/current_position.svg"
+        size: new L.Point markerDiameter, markerDiameter
+
+      currentPositionLayer.addLayer currentPositionMarker
+      map.addLayer currentPositionLayer
  
   #-----------------------------------------------------------------------------
   # GENERAL EVENTS
