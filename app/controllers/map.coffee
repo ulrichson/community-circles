@@ -52,6 +52,11 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
     alert "Sorry, the map cannot be loaded at the moment"
     console.error "Mapbox error: #{error}"
 
+  map.on "popupopen", (e) ->
+    console.debug e
+    # $scope.$compile e.popup._contentNode
+    # angular.bootstrap document, ["communityCirclesApp", "hmTouchevents", "CommunityModel"]
+
   #-----------------------------------------------------------------------------
   # FUNCTIONS
   #-----------------------------------------------------------------------------
@@ -114,11 +119,12 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
             svg: "/icons/contribution/#{element.properties.type}.svg"
             size: new L.Point markerDiameter, markerDiameter
             afterwards: (domNode) ->
-              # Health progress bar
+              contribution = element.properties
 
-              # Remove previous created bar
+              # Remove previous created health bar
               d3.select(domNode).select(".contribution-health").remove()
 
+              # Create health progress bar
               healthProgress = d3.select(domNode)
                 .insert("svg:path", ":first-child")
                 .attr("class", "contribution-health")
@@ -129,11 +135,18 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
 
               healthProgress.attr "d", d3.svg.arc()
                 .startAngle(0)
-                .endAngle(2 * Math.PI * element.properties.health)
+                .endAngle(2 * Math.PI * contribution.health)
                 .innerRadius(0)
                 .outerRadius(markerDiameter / 2)
 
-              healthProgress.node().parentNode.dataset.contribution_id = element.properties.id
+              healthProgress.node().parentNode.dataset.contribution_id = contribution.id
+
+              # Contribution popup
+              area = contribution.radius * contribution.radius * Math.PI
+              # open(#{contribution.id})
+              svgMarker.bindPopup "<p><strong>#{contribution.title}</strong> with an area of #{area}m<sup>2</sup><br /><a href=\"#\" hm-tap=\"alert('hello')\">Details</a></p>",
+                offset: new L.Point 0, -markerDiameter / 2
+                # autoPanPaddingTopLeft: [0,0]
 
           markers.addLayer svgMarker
 
@@ -187,6 +200,10 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
 
       currentPositionLayer.addLayer currentPositionMarker
       map.addLayer currentPositionLayer
+
+  $scope.open = (id) ->
+    webView = new steroids.views.WebView "/views/contribution/show.html?id=#{id}"
+    steroids.layers.push webView
  
   #-----------------------------------------------------------------------------
   # GENERAL EVENTS
