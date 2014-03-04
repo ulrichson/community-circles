@@ -19,10 +19,10 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
   currentPositionMarker = null
 
   #-----------------------------------------------------------------------------
-  # INITIALIZE BACKGROUND SERVICE !!!MOVE SOMEWHERE ELSE!!!
+  # INITIALIZE BACKGROUND SERVICE
   #-----------------------------------------------------------------------------
-  # backgroundWebView = new steroids.views.WebView "backgroundServices.html"
-  # backgroundView.preload()
+  backgroundWebView = new steroids.views.WebView "backgroundServices.html"
+  backgroundWebView.preload()
 
   #-----------------------------------------------------------------------------
   # INITIALIZE GEO

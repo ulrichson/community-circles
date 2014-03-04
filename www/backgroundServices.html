@@ -7,14 +7,16 @@
   <script src="/components/steroids-js/steroids.js"></script>
 </head>
 <body style="background-color: #000000">
-  <p style="color: #ffffff; font-family: sans-serif; margin: auto; text-align: center">This page is not intended to be visible. Go away, please.</p>
+  <p style="color: #ffffff; font-family: sans-serif; margin: auto; text-align: center; padding: 10px">This page is not intended to be visible. Go away, please.</p>
   <script>
-    // For further information see http://guides.appgyver.com/steroids/guides/steroids-js/sharing-data-between-webviews/
-    setTimeout(function() {
-      console.debug("backgroundService.html is alive");
-    }, 5000);
+    var beats = 0;
+    setInterval(function() {
+      console.log("backgroundService.html is alive: " + ++beats);
+    }, 1000);
 
-    new steroids.views.WebView("/views/imprint/index.html").preload();
+    // Preload static views
+    // new steroids.views.WebView("/views/imprint/index.html").preload();
+    // alert("backgroundService");
   </script>
 </body>
 </html>
