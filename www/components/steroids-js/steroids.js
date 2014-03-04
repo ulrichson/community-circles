@@ -1,4 +1,4 @@
-/*! steroids-js - v3.1.5 - 2014-02-10 17:37 */
+/*! steroids-js - v3.1.6 - 2014-02-27 15:13 */
 (function(window){
 var Bridge,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
@@ -867,9 +867,8 @@ Modal = (function() {
         } : {
           url: view.location
         };
-        if (options.keepLoading === true) {
-          parameters.keepTransitionHelper = true;
-        }
+        parameters.keepTransitionHelper = options.keepLoading;
+        parameters.disableAnimation = options.disableAnimation;
         return steroids.nativeBridge.nativeCall({
           method: "openModal",
           parameters: parameters,
@@ -1561,6 +1560,25 @@ TabBar = (function() {
     });
   };
 
+  TabBar.prototype.selectTab = function(options, callbacks) {
+    if (options == null) {
+      options = {};
+    }
+    if (callbacks == null) {
+      callbacks = {};
+    }
+    steroids.debug("steroids.tabBar.selectTab options: " + (JSON.stringify(options)) + " callbacks: " + (JSON.stringify(callbacks)));
+    this.index = options.constructor.name === "Number" ? options : options.index;
+    return steroids.nativeBridge.nativeCall({
+      method: "selectTab",
+      parameters: {
+        index: this.index
+      },
+      successCallbacks: [callbacks.onSuccess],
+      failureCallbacks: [callbacks.onFailure]
+    });
+  };
+
   TabBar.prototype.update = function(options, callbacks) {
     var parameters, scale, _i, _ref;
     if (options == null) {
@@ -1576,7 +1594,8 @@ TabBar = (function() {
       for (scale = _i = 0, _ref = options.tabs.length; 0 <= _ref ? _i < _ref : _i > _ref; scale = 0 <= _ref ? ++_i : --_i) {
         parameters.tabs.push({
           title: options.tabs[scale].title,
-          image_path: options.tabs[scale].icon
+          image_path: options.tabs[scale].icon,
+          badge: options.tabs[scale].badge
         });
       }
     }
@@ -2581,6 +2600,7 @@ PostMessage = (function() {
         javascript: "steroids.PostMessage.dispatchMessageEvent('" + escapedJSONMessage + "', '*');"
       },
       successCallbacks: [],
+      failureCallbacks: [],
       recurringCallbacks: []
     });
   };
@@ -2597,7 +2617,7 @@ PostMessage = (function() {
 
 }).call(this);
 ;window.steroids = {
-  version: "3.1.5",
+  version: "3.1.6",
   Animation: Animation,
   File: File,
   views: {
