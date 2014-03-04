@@ -1,5 +1,6 @@
 .DS_Store
 /dist
+/.sass-cache
 node_modules
 community-circles-mobile.keystore
 cloud.json
