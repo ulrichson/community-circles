@@ -1,0 +1,90 @@
+/*******************************************************************************
+* COLOR SCHEME
+*******************************************************************************/
+$cc-lighter: #3FD1D1;
+$cc-light: #00C8C8;
+$cc-main: #00A8B3;
+$cc-dark: #004855;
+$cc-darker: #212B37;
+
+/*******************************************************************************
+* MIXINS
+*******************************************************************************/
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  -o-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin blur($blur) {
+  -webkit-filter: blur($blur);
+  -moz-filter: blur($blur);
+  -ms-filter: blur($blur);
+  -o-filter: blur($blur);
+  filter: blur($blur);
+}
+
+@mixin brightness($brightness) {
+  -webkit-filter: brightness($brightness);
+  -moz-filter: brightness($brightness);
+  -ms-filter: brightness($brightness);
+  -o-filter: brightness($brightness);
+  filter: brightness($brightness);
+}
+
+@mixin grayscale($grayscale) {
+  -webkit-filter: grayscale($grayscale);
+  -moz-filter: grayscale($grayscale);
+  -ms-filter: grayscale($grayscale);
+  -o-filter: grayscale($grayscale);
+  filter: grayscale($grayscale);
+}
+
+@mixin fade() {
+  -webkit-filter: grayscale(80%) brightness(1.2);
+  -moz-filter: grayscale(80%) brightness(1.2);
+  -ms-filter: grayscale(80%) brightness(1.2);
+  -o-filter: grayscale(80%) brightness(1.2);
+  filter: grayscale(80%) brightness(1.2);
+}
+
+
+body {
+  font-color: $cc-darker;
+  overflow-x: hidden;
+  width: 100% !important;
+}
+
+* {
+  -webkit-user-select: none;  /* Disable selection/copy of elements when tapping for a long time */
+  -webkit-touch-callout: none; /* Disable touch callouts */
+}
+
+input, textarea, [contenteditable] * {
+  -webkit-user-select: auto;  /* Allow selection for input elements and those with contenteditable attribute */
+}
+
+.full-background-image {
+  background-size: cover;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: -1;
+  @include fade();
+}
+
+.blur {
+  @include blur(15px);
+}
+
+.darken {
+  @include brightness(0.5);
+}
+
+.grayscale {
+  @include grayscale(100%);
+}
