@@ -16,7 +16,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
 
   map = new L.Map "map",
     center: Util.lastKnownPosition()
-    zoom: 12
+    zoom: 16
 
   $scope.loading = false
 
@@ -101,7 +101,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
       
       # Contributions and clustering
       markers = new L.MarkerClusterGroup()
-
+      # markers = new L.LayerGroup()
       _.each data.features, (element) ->
         latlan = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
         svgMarker = new L.SVGMarker latlan,
@@ -136,7 +136,8 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
             # open(#{contribution.id})
             svgMarker.bindPopup "<p><strong>#{contribution.title}</strong> with an area of #{Util.formatAreaHtml area}</p><button class=\"btn btn-lg btn-block btn-primary\" hm-tap=\"open(#{contribution.id})\">Details</button>",
               offset: new L.Point 0, -markerDiameter / 2
-              # autoPanPaddingTopLeft: [0,0]
+              maxWidth: window.screen.width - 40
+              autoPanPaddingTopLeft: [0, 0]
 
         markers.addLayer svgMarker
 
@@ -207,8 +208,14 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   paper.setup()
 
   # Stamen tile layer
-  layer = new L.StamenTileLayer "toner"
-  map.addLayer layer
+  # layer = new L.StamenTileLayer "toner"
+  # map.addLayer layer
+
+  tileLayer = L.tileLayer "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
+    detectRetina: true
+    subdomains: "a b c d".split " "
+
+  tileLayer.addTo map
   
   #-----------------------------------------------------------------------------
   # RUN
