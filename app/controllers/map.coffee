@@ -3,7 +3,7 @@ mapApp = angular.module("mapApp", ["communityCirclesApp", "hmTouchevents", "Comm
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/map/index.html
 #------------------------------------------------------------------------------- 
-mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
+mapApp.controller "IndexCtrl", ($scope, $compile, app, CommunityRestangular) ->
 
   markerDiameter = 32
 
@@ -41,6 +41,9 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
     tileLayer:
       detectRetina: true
 
+  #-----------------------------------------------------------------------------
+  # MAP EVENTS
+  #-----------------------------------------------------------------------------
   map.on "ready", ->
     loadMap()
     $scope.locate()
@@ -53,12 +56,11 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
     console.error "Mapbox error: #{error}"
 
   map.on "popupopen", (e) ->
-    console.debug e
-    # $scope.$compile e.popup._contentNode
-    # angular.bootstrap document, ["communityCirclesApp", "hmTouchevents", "CommunityModel"]
+    # DOM elements created by Leaflet.js need to be compiled for Angular.js
+    $compile(e.popup._contentNode) $scope
 
   #-----------------------------------------------------------------------------
-  # FUNCTIONS
+  # INTERNAL FUNCTIONS
   #-----------------------------------------------------------------------------
   projectCircle = (ll, r) ->
     lr = (r / 40075017) * 360 / Math.cos(L.LatLng.DEG_TO_RAD * ll.lat)
@@ -144,7 +146,7 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
               # Contribution popup
               area = contribution.radius * contribution.radius * Math.PI
               # open(#{contribution.id})
-              svgMarker.bindPopup "<p><strong>#{contribution.title}</strong> with an area of #{area}m<sup>2</sup><br /><a href=\"#\" hm-tap=\"alert('hello')\">Details</a></p>",
+              svgMarker.bindPopup "<p><strong>#{contribution.title}</strong> with an area of #{area}m<sup>2</sup></p><button class=\"btn btn-lg btn-block btn-primary\" hm-tap=\"open(#{contribution.id})\">Details</button>",
                 offset: new L.Point 0, -markerDiameter / 2
                 # autoPanPaddingTopLeft: [0,0]
 
@@ -206,7 +208,7 @@ mapApp.controller "IndexCtrl", ($scope, app, CommunityRestangular) ->
     steroids.layers.push webView
  
   #-----------------------------------------------------------------------------
-  # GENERAL EVENTS
+  # GLOBAL EVENTS
   #-----------------------------------------------------------------------------
   window.addEventListener "message", (event) ->
     
