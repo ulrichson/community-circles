@@ -1,5 +1,5 @@
 # util = window.Util
-mapApp = angular.module("mapApp", ["communityCirclesApp", "communityCirclesUtil", "hmTouchevents", "CommunityModel"])
+mapApp = angular.module("mapApp", ["communityCirclesApp", "communityCirclesUtil", "hmTouchevents", "CommunityModel", "ngAnimate"])
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/map/index.html
@@ -7,6 +7,7 @@ mapApp = angular.module("mapApp", ["communityCirclesApp", "communityCirclesUtil"
 mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangular) ->
 
   markerDiameter = 32
+  mapPreviewHeight = 80
 
   communities = []
   contributions = []
@@ -17,8 +18,16 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   map = new L.Map "map",
     center: Util.lastKnownPosition()
     zoom: 16
+    zoomControl: false
 
   $scope.loading = false
+  $scope.contributionSelected = false;
+
+  L.Map.prototype.panToOffset = (latlng, offset, options) ->
+    x = this.latLngToContainerPoint(latlng).x - offset[0]
+    y = this.latLngToContainerPoint(latlng).y - offset[1]
+    point = this.containerPointToLatLng [x, y]
+    return this.setView point, this._zoom, { pan: options }
 
   #-----------------------------------------------------------------------------
   # MAP EVENTS
@@ -46,6 +55,12 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     # DOM elements created by Leaflet.js need to be compiled for Angular.js
     $compile(e.popup._contentNode) $scope
 
+  contributionMarkerClicked = (e) ->
+    # map.panTo e.latlng
+    $scope.$apply -> $scope.contributionSelected = true
+    map.panToOffset e.latlng, [0, -(map.getSize().y / 2 - mapPreviewHeight / 2) + markerDiameter / 2]
+    console.debug "Received click from contribution with id=#{e.target._container.dataset.contribution_id}"
+
   #-----------------------------------------------------------------------------
   # INTERNAL FUNCTIONS
   #-----------------------------------------------------------------------------
@@ -65,8 +80,8 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
 
     unitedCircles = null
     _.each contributions, (element) ->
-      latlan = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
-      projectedCircle = projectCircle latlan, element.properties.radius
+      latlng = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
+      projectedCircle = projectCircle latlng, element.properties.radius
       
       circle = new paper.Path.Circle(new paper.Point(projectedCircle.point.x, projectedCircle.point.y), projectedCircle.radius)
 
@@ -103,8 +118,8 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
       markers = new L.MarkerClusterGroup()
       # markers = new L.LayerGroup()
       _.each data.features, (element) ->
-        latlan = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
-        svgMarker = new L.SVGMarker latlan,
+        latlng = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
+        svgMarker = new L.SVGMarker latlng,
           svg: "/icons/contribution/#{element.properties.type}.svg"
           size: new L.Point markerDiameter, markerDiameter
           afterwards: (domNode) ->
@@ -133,17 +148,15 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
 
             # Contribution popup
             area = contribution.radius * contribution.radius * Math.PI
-            # open(#{contribution.id})
-            svgMarker.bindPopup "<p><strong>#{contribution.title}</strong> with an area of #{Util.formatAreaHtml area}</p><button class=\"btn btn-lg btn-block btn-primary\" hm-tap=\"open(#{contribution.id})\">Details</button>",
-              offset: new L.Point 0, -markerDiameter / 2
-              maxWidth: window.screen.width - 40
-              autoPanPaddingTopLeft: [0, 0]
+            # svgMarker.bindPopup "<p><strong>#{contribution.title}</strong> with an area of #{Util.formatAreaHtml area}</p><button class=\"btn btn-lg btn-block btn-primary\" hm-tap=\"open(#{contribution.id})\">Details</button>",
+            #   offset: new L.Point 0, -markerDiameter / 2
+            #   maxWidth: window.screen.width - 40
+            #   autoPanPaddingTopLeft: [0, 0]
 
         markers.addLayer svgMarker
 
         # Register click event
-        svgMarker.on "click", (e) ->
-          console.debug "Received click from contribution with id=#{e.target._container.dataset.contribution_id}"
+        svgMarker.on "click", contributionMarkerClicked
       
       map.addLayer markers
 

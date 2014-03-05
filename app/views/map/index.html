@@ -2,8 +2,27 @@
   <div ng-controller="IndexCtrl">
     <div class="spinner" ng-show="loading"></div>
     <div id="map"></div>
-    <button type="button" class="btn btn-default" id="btnLocate" hm-tap="locate()">Locate</button>
-    <button type="button" class="btn btn-default" id="btnNewContribution" hm-tap="newContribution()">New Contribution</button>
+    
+    <div class="container-fluid map-button-bar">
+      <div class="row">
+        <div class="col-xs-4">
+          <span class="map-button fa-stack fa-lg fa-2x" hm-tap="locate()">
+            <i class="fa fa-circle-o fa-stack-2x"></i>
+            <i class="fa fa-location-arrow fa-stack-1x"></i>
+          </span>
+        </div>
+        <div class="col-xs-4 text-center">
+          <span class="map-button fa-stack fa-lg fa-2x" hm-tap="newContribution()">
+            <i class="fa fa-circle-o fa-stack-2x"></i>
+            <i class="fa fa-plus fa-stack-1x"></i>
+          </span>
+        </div>
+        <div class="col-xs-4"></div>
+      </div>
+    </div>
+    <div class="contribution-detail" ng-show="contributionSelected">
+      <strong>expect more...</strong>
+    </div>
   </div>
 </div>
 <script>
