@@ -12,7 +12,7 @@
   ],
   "dependencies": {
     "steroids-js": "3.1.x",
-    "angular": "1.0.7",
+    "angular": "1.2.x",
     "underscore": "1.5.1",
     "restangular": "1.0.7",
     "mapbox.js": "1.6.x",
@@ -25,6 +25,7 @@
     "d3": "3.4.x",
     "leaflet.markercluster": "0.4.x",
     "paper": "0.9.x",
-    "leaflet-dist": "0.7.x"
+    "leaflet-dist": "0.7.x",
+    "angular-animate": "1.2.x"
   }
 }
