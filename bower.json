@@ -25,7 +25,6 @@
     "d3": "3.4.x",
     "leaflet.markercluster": "0.4.x",
     "paper": "0.9.x",
-    "leaflet-dist": "0.7.x",
-    "fontawesome": "4.0.x"
+    "leaflet-dist": "0.7.x"
   }
 }
