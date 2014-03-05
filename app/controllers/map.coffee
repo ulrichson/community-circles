@@ -1,9 +1,10 @@
-mapApp = angular.module("mapApp", ["communityCirclesApp", "hmTouchevents", "CommunityModel"])
+# util = window.Util
+mapApp = angular.module("mapApp", ["communityCirclesApp", "communityCirclesUtil", "hmTouchevents", "CommunityModel"])
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/map/index.html
 #------------------------------------------------------------------------------- 
-mapApp.controller "IndexCtrl", ($scope, $compile, app, CommunityRestangular) ->
+mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangular) ->
 
   markerDiameter = 32
 
@@ -146,7 +147,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, CommunityRestangular) ->
               # Contribution popup
               area = contribution.radius * contribution.radius * Math.PI
               # open(#{contribution.id})
-              svgMarker.bindPopup "<p><strong>#{contribution.title}</strong> with an area of #{area}m<sup>2</sup></p><button class=\"btn btn-lg btn-block btn-primary\" hm-tap=\"open(#{contribution.id})\">Details</button>",
+              svgMarker.bindPopup "<p><strong>#{contribution.title}</strong> with an area of #{Util.formatAreaHtml area}</p><button class=\"btn btn-lg btn-block btn-primary\" hm-tap=\"open(#{contribution.id})\">Details</button>",
                 offset: new L.Point 0, -markerDiameter / 2
                 # autoPanPaddingTopLeft: [0,0]
 
