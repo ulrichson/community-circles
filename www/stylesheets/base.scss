@@ -50,6 +50,34 @@ $cc-darker: #212B37;
   filter: grayscale(80%) brightness(1.2);
 }
 
+/*******************************************************************************
+* SPINNER
+*******************************************************************************/
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  background-image: url("../../vendor/topcoat/img/spinner2x.png");
+  background-size: 36px;
+  background-repeat: no-repeat;
+  position: absolute;
+  z-index: 1000;
+  left: 45%;
+  top: 45%;
+  -webkit-animation-name:            rotate;
+  -webkit-animation-duration:        1s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+}
+
 
 body {
   font-color: $cc-darker;

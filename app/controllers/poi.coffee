@@ -1,4 +1,4 @@
-poiApp = angular.module("poiApp", ["hmTouchevents"])
+poiApp = angular.module("poiApp", ["hmTouchEvents"])
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/poi/index.html

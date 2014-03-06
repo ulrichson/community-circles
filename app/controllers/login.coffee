@@ -1,4 +1,4 @@
-loginApp = angular.module("loginApp", ["hmTouchevents"])
+loginApp = angular.module("loginApp", ["hmTouchEvents"])
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/login/index.html

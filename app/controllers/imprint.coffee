@@ -1,4 +1,4 @@
-imprintApp = angular.module("imprintApp", ["hmTouchevents"])
+imprintApp = angular.module("imprintApp", ["hmTouchEvents"])
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/imprint/index.html

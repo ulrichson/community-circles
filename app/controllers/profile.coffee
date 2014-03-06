@@ -1,4 +1,4 @@
-profileApp = angular.module("profileApp", ["communityCirclesApp", "hmTouchevents"])
+profileApp = angular.module("profileApp", ["communityCirclesApp", "hmTouchEvents"])
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/profile/index.html

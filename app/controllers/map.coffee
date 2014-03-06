@@ -1,13 +1,16 @@
 # util = window.Util
-mapApp = angular.module("mapApp", ["communityCirclesApp", "communityCirclesUtil", "hmTouchevents", "CommunityModel", "ngAnimate"])
+mapApp = angular.module("mapApp", ["communityCirclesApp", "communityCirclesUtil", "hmTouchEvents", "CommunityModel", "ngAnimate"])
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/map/index.html
 #------------------------------------------------------------------------------- 
 mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangular) ->
 
-  markerDiameter = 32
+  markerDiameter = 60
   mapPreviewHeight = 80
+  communityOpacity = 0.2
+  animationDuration = 1
+  communityRenderingEnabled = true
 
   communities = []
   contributions = []
@@ -22,6 +25,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
 
   $scope.loading = false
   $scope.contributionSelected = false;
+  $scope.contribution = {}
 
   L.Map.prototype.panToOffset = (latlng, offset, options) ->
     x = this.latLngToContainerPoint(latlng).x - offset[0]
@@ -44,22 +48,12 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     console.error "Could not determine position (code=#{e.code}). #{e.message}"
 
   map.on "viewreset", ->
-    createCommunityCircles()
+    renderCommunityCircles()
 
   map.on "error", (e) ->
     $scope.$apply -> $scope.loading = false
     alert "Sorry, the map cannot be loaded at the moment"
     console.error "Leaflet error: #{e.message}"
-
-  map.on "popupopen", (e) ->
-    # DOM elements created by Leaflet.js need to be compiled for Angular.js
-    $compile(e.popup._contentNode) $scope
-
-  contributionMarkerClicked = (e) ->
-    # map.panTo e.latlng
-    $scope.$apply -> $scope.contributionSelected = true
-    map.panToOffset e.latlng, [0, -(map.getSize().y / 2 - mapPreviewHeight / 2) + markerDiameter / 2]
-    console.debug "Received click from contribution with id=#{e.target._container.dataset.contribution_id}"
 
   #-----------------------------------------------------------------------------
   # INTERNAL FUNCTIONS
@@ -75,8 +69,8 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     radius = point.x - map.latLngToLayerPoint(ll2).x
     return point: point, radius: radius
 
-  createCommunityCircles = ->
-    return null if contributions.length is 0
+  renderCommunityCircles = ->
+    return if contributions.length is 0 or not communityRenderingEnabled
 
     unitedCircles = null
     _.each contributions, (element) ->
@@ -92,7 +86,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
 
     circlesPathElement = unitedCircles.exportSVG()
     circlesPathElement.setAttribute "fill", "#00c8c8"
-    circlesPathElement.setAttribute "fill-opacity", "0.4"
+    circlesPathElement.setAttribute "fill-opacity", communityOpacity
     circlesPathElement.setAttribute "class", "community-circle"
 
     container = document.getElementsByClassName("leaflet-overlay-pane")[0].firstChild
@@ -144,24 +138,19 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
               .innerRadius(0)
               .outerRadius(markerDiameter / 2)
 
-            healthProgress.node().parentNode.dataset.contribution_id = contribution.id
-
-            # Contribution popup
-            area = contribution.radius * contribution.radius * Math.PI
-            # svgMarker.bindPopup "<p><strong>#{contribution.title}</strong> with an area of #{Util.formatAreaHtml area}</p><button class=\"btn btn-lg btn-block btn-primary\" hm-tap=\"open(#{contribution.id})\">Details</button>",
-            #   offset: new L.Point 0, -markerDiameter / 2
-            #   maxWidth: window.screen.width - 40
-            #   autoPanPaddingTopLeft: [0, 0]
+            domParent = healthProgress.node().parentNode
+            domParent.setAttribute "hm-tap", "showContributionDetail(#{contribution.id})"
+            $compile(domParent) $scope
 
         markers.addLayer svgMarker
 
         # Register click event
-        svgMarker.on "click", contributionMarkerClicked
+        # svgMarker.on "click", contributionMarkerClicked
       
       map.addLayer markers
 
       # Community Circles
-      createCommunityCircles()
+      renderCommunityCircles()
 
     fakeAsyncCallback(contributionsGeoJSON)
 
@@ -196,9 +185,45 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   $scope.locate = ->
     locate()
 
-  $scope.open = (id) ->
-    webView = new steroids.views.WebView "/views/contribution/show.html?id=#{id}"
+  $scope.openContribution = ->
+    webView = new steroids.views.WebView "/views/contribution/show.html?id=#{$scope.contribution.properties.id}"
     steroids.layers.push webView
+
+  $scope.showContributionDetail = (id) ->
+    console.debug "Showing contribution with id #{id}"
+    $scope.contributionSelected = true
+    $scope.contribution = _.filter(contributions, (e) -> return e.properties.id == id )[0]
+    $scope.contribution.properties.area = Util.formatAreaHtml $scope.contribution.properties.radius * $scope.contribution.properties.radius * Math.PI
+    
+    # Pan map to contribution and offset it on top
+    latlng = new L.LatLng $scope.contribution.geometry.coordinates[1], $scope.contribution.geometry.coordinates[0]
+    offset = [0, -(map.getSize().y / 2 - mapPreviewHeight / 2)]
+    x = map.latLngToContainerPoint(latlng).x - offset[0]
+    y = map.latLngToContainerPoint(latlng).y - offset[1]
+    point = map.containerPointToLatLng [x, y]
+    map.setView point#,
+      # animate: true
+      # duration: animationDuration;
+
+    # map.dragging.disable()
+    # map.touchZoom.disable()
+    # map.doubleClickZoom.disable()
+    # map.scrollWheelZoom.disable()
+    # map.tap.disable() if map.tap
+
+    # drawCommunities point
+
+  $scope.hideContributionDetail = ->
+    latlng = new L.LatLng $scope.contribution.geometry.coordinates[1], $scope.contribution.geometry.coordinates[0]
+    map.panTo latlng,
+      animate: true
+      duration: animationDuration;
+    map.dragging.enable()
+    map.touchZoom.enable()
+    map.doubleClickZoom.enable()
+    map.scrollWheelZoom.enable()
+    map.tap.enable() if map.tap
+    $scope.contributionSelected = false
  
   #-----------------------------------------------------------------------------
   # GLOBAL EVENTS
@@ -220,12 +245,10 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   # Paper for SVG union on community rendering
   paper.setup()
 
-  # Stamen tile layer
-  # layer = new L.StamenTileLayer "toner"
-  # map.addLayer layer
-
   tileLayer = L.tileLayer "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
     detectRetina: true
+    reuseTiles: true
+    unloadInvisibleTiles: false
     subdomains: "a b c d".split " "
 
   tileLayer.addTo map
@@ -233,4 +256,5 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   #-----------------------------------------------------------------------------
   # RUN
   #-----------------------------------------------------------------------------
+  document.ontouchmove = (e) -> e.preventDefault()
   locate()
