@@ -17,6 +17,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
 
   currentPositionLayer = null
   currentPositionMarker = null
+  zoomBefore = null
 
   map = new L.Map "map",
     center: Util.lastKnownPosition()
@@ -54,6 +55,10 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     $scope.$apply -> $scope.loading = false
     alert "Sorry, the map cannot be loaded at the moment"
     console.error "Leaflet error: #{e.message}"
+
+  contributionMarkerClicked = (e) ->
+    id = parseInt e.target._container.dataset.contribution_id
+    $scope.showContributionDetail id
 
   #-----------------------------------------------------------------------------
   # INTERNAL FUNCTIONS
@@ -139,13 +144,14 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
               .outerRadius(markerDiameter / 2)
 
             domParent = healthProgress.node().parentNode
-            domParent.setAttribute "hm-tap", "showContributionDetail(#{contribution.id})"
-            $compile(domParent) $scope
+            domParent.dataset.contribution_id = contribution.id
+            # domParent.setAttribute "hm-tap", "showContributionDetail(#{contribution.id})"
+            # $compile(domParent) $scope
 
         markers.addLayer svgMarker
 
         # Register click event
-        # svgMarker.on "click", contributionMarkerClicked
+        svgMarker.on "click", contributionMarkerClicked
       
       map.addLayer markers
 
@@ -190,39 +196,42 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     steroids.layers.push webView
 
   $scope.showContributionDetail = (id) ->
-    console.debug "Showing contribution with id #{id}"
     $scope.contributionSelected = true
-    $scope.contribution = _.filter(contributions, (e) -> return e.properties.id == id )[0]
+    $scope.contribution = _.filter(contributions, (e) -> return e.properties.id is id)[0]
     $scope.contribution.properties.area = Util.formatAreaHtml $scope.contribution.properties.radius * $scope.contribution.properties.radius * Math.PI
     
+    zoomBefore = map.getZoom()
+
     # Pan map to contribution and offset it on top
     latlng = new L.LatLng $scope.contribution.geometry.coordinates[1], $scope.contribution.geometry.coordinates[0]
     offset = [0, -(map.getSize().y / 2 - mapPreviewHeight / 2)]
     x = map.latLngToContainerPoint(latlng).x - offset[0]
     y = map.latLngToContainerPoint(latlng).y - offset[1]
     point = map.containerPointToLatLng [x, y]
-    map.setView point#,
-      # animate: true
-      # duration: animationDuration;
+    map.panTo point,
+      animate: true
+      duration: animationDuration
+    
+    map.dragging.disable()
+    map.touchZoom.disable()
+    map.doubleClickZoom.disable()
+    map.scrollWheelZoom.disable()
+    map.tap.disable() if map.tap
 
-    # map.dragging.disable()
-    # map.touchZoom.disable()
-    # map.doubleClickZoom.disable()
-    # map.scrollWheelZoom.disable()
-    # map.tap.disable() if map.tap
-
-    # drawCommunities point
+    $scope.$apply()
 
   $scope.hideContributionDetail = ->
     latlng = new L.LatLng $scope.contribution.geometry.coordinates[1], $scope.contribution.geometry.coordinates[0]
     map.panTo latlng,
       animate: true
-      duration: animationDuration;
+      duration: animationDuration
+    
     map.dragging.enable()
     map.touchZoom.enable()
     map.doubleClickZoom.enable()
     map.scrollWheelZoom.enable()
     map.tap.enable() if map.tap
+    
     $scope.contributionSelected = false
  
   #-----------------------------------------------------------------------------
