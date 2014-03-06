@@ -9,7 +9,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   markerDiameter = 60
   mapPreviewHeight = 80
   communityOpacity = 0.2
-  animationDuration = 1
+  animationDuration = 0.5
   communityRenderingEnabled = true
 
   communities = []
@@ -27,12 +27,6 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   $scope.loading = false
   $scope.contributionSelected = false;
   $scope.contribution = {}
-
-  L.Map.prototype.panToOffset = (latlng, offset, options) ->
-    x = this.latLngToContainerPoint(latlng).x - offset[0]
-    y = this.latLngToContainerPoint(latlng).y - offset[1]
-    point = this.containerPointToLatLng [x, y]
-    return this.setView point, this._zoom, { pan: options }
 
   #-----------------------------------------------------------------------------
   # MAP EVENTS
@@ -105,6 +99,38 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   refreshMap = (position) ->
     # console.debug "Received position #{position.coords.latitude} #{position.coords.longitude}, accuracy: #{position.coords.accuracy}."
 
+  createContributionMarker = (element) ->
+    latlng = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
+    svgMarker = new L.SVGMarker latlng,
+      svg: "/icons/contribution/#{element.properties.type}.svg"
+      size: new L.Point markerDiameter, markerDiameter
+      afterwards: (domNode) ->
+        contribution = element.properties
+
+        # Remove previous created health bar
+        d3.select(domNode).select(".contribution-health").remove()
+
+        # Create health progress bar
+        healthProgress = d3.select(domNode)
+          .attr("class", "leaflet-zoom-hide")
+          .insert("svg:path", ":first-child")
+          .attr("class", "contribution-health")
+          .attr("width", markerDiameter)
+          .attr("height", markerDiameter)
+          .attr("fill", "#00c8c8")
+          .attr("transform", "translate(#{markerDiameter / 2 }, #{markerDiameter / 2})")
+
+        healthProgress.attr "d", d3.svg.arc()
+          .startAngle(0)
+          .endAngle(2 * Math.PI * contribution.health)
+          .innerRadius(0)
+          .outerRadius(markerDiameter / 2)
+
+        domParent = healthProgress.node().parentNode
+        domParent.dataset.contribution_id = contribution.id
+
+    return svgMarker
+
   # Helper function for loading map data with spinner
   drawCommunities = (position) ->
     $scope.loading = true
@@ -115,43 +141,10 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
       
       # Contributions and clustering
       markers = new L.MarkerClusterGroup()
-      # markers = new L.LayerGroup()
       _.each data.features, (element) ->
-        latlng = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
-        svgMarker = new L.SVGMarker latlng,
-          svg: "/icons/contribution/#{element.properties.type}.svg"
-          size: new L.Point markerDiameter, markerDiameter
-          afterwards: (domNode) ->
-            contribution = element.properties
-
-            # Remove previous created health bar
-            d3.select(domNode).select(".contribution-health").remove()
-
-            # Create health progress bar
-            healthProgress = d3.select(domNode)
-              .attr("class", "leaflet-zoom-hide")
-              .insert("svg:path", ":first-child")
-              .attr("class", "contribution-health")
-              .attr("width", markerDiameter)
-              .attr("height", markerDiameter)
-              .attr("fill", "#00c8c8")
-              .attr("transform", "translate(#{markerDiameter / 2 }, #{markerDiameter / 2})")
-
-            healthProgress.attr "d", d3.svg.arc()
-              .startAngle(0)
-              .endAngle(2 * Math.PI * contribution.health)
-              .innerRadius(0)
-              .outerRadius(markerDiameter / 2)
-
-            domParent = healthProgress.node().parentNode
-            domParent.dataset.contribution_id = contribution.id
-            # domParent.setAttribute "hm-tap", "showContributionDetail(#{contribution.id})"
-            # $compile(domParent) $scope
-
-        markers.addLayer svgMarker
-
-        # Register click event
-        svgMarker.on "click", contributionMarkerClicked
+        contributionMarker = createContributionMarker element
+        contributionMarker.on "click", contributionMarkerClicked
+        markers.addLayer contributionMarker
       
       map.addLayer markers
 
@@ -231,9 +224,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     map.doubleClickZoom.enable()
     map.scrollWheelZoom.enable()
     map.tap.enable() if map.tap
-    
+
     $scope.contributionSelected = false
- 
+     
   #-----------------------------------------------------------------------------
   # GLOBAL EVENTS
   #-----------------------------------------------------------------------------
@@ -257,7 +250,6 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   tileLayer = L.tileLayer "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
     detectRetina: true
     reuseTiles: true
-    unloadInvisibleTiles: false
     subdomains: "a b c d".split " "
 
   tileLayer.addTo map
@@ -265,5 +257,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   #-----------------------------------------------------------------------------
   # RUN
   #-----------------------------------------------------------------------------
+  # Prevents that WebView is dragged
   document.ontouchmove = (e) -> e.preventDefault()
+
+  # Prevent that map doesn't receive click events from contribution overlay
+  L.DomEvent.disableClickPropagation document.getElementsByClassName("contribution-detail")[0]
   locate()
