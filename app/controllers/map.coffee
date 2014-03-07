@@ -14,6 +14,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   communities = []
   contributions = []
 
+  communitiesLayer = null
+  contributionsLayer = null
+
   currentPositionLayer = null
   currentPositionMarker = null
   zoomBefore = null
@@ -138,27 +141,30 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   drawCommunities = (position) ->
     $scope.loading = true
 
+    map.removeLayer communitiesLayer unless communitiesLayer is null
+    map.removeLayer contributionsLayer unless contributionsLayer is null
+
     fakeAsyncCallback = (data) ->
       $scope.$apply -> $scope.loading = false
       contributions = data.features
 
       # Community Circles
-      circles = new CommunityCirclesLayer contributions,
+      communitiesLayer = new CommunityCirclesLayer contributions,
         className: "cc-map-item"
         fill: true
         fillColor: "#00c8c8"
         fillOpacity: communityOpacity
         stroke: false
-      map.addLayer circles
+      map.addLayer communitiesLayer
       
       # Contributions and clustering
-      markers = new L.MarkerClusterGroup()
+      contributionsLayer = new L.MarkerClusterGroup()
       _.each data.features, (element) ->
         contributionMarker = createContributionMarker element
         contributionMarker.on "click", contributionMarkerClicked
-        markers.addLayer contributionMarker
+        contributionsLayer.addLayer contributionMarker
       
-      map.addLayer markers
+      map.addLayer contributionsLayer
 
     fakeAsyncCallback(contributionsGeoJSON)
 
@@ -266,6 +272,8 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     detectRetina: true
     reuseTiles: true
     subdomains: "a b c d".split " "
+    unloadInvisibleTiles: false
+    updateWhenIdle: true
 
   tileLayer.addTo map
   
