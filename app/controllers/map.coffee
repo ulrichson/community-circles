@@ -84,6 +84,11 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     console.error "Leaflet error: #{e.message}"
 
   contributionMarkerClicked = (e) ->
+    # Hide everything, except selected contribution
+    matches = map.getPanes().overlayPane.getElementsByClassName "leaflet-clickable"
+    _.each matches, (m) ->
+      m.style.display = "none" unless m is e.target._container
+
     id = parseInt e.target._container.dataset.contribution_id
     $scope.showContributionDetail id
 
@@ -110,7 +115,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
 
         # Create health progress bar
         healthProgress = d3.select(domNode)
-          .attr("class", "leaflet-zoom-hide")
+          # .attr("class", "leaflet-zoom-hide")
           .insert("svg:path", ":first-child")
           .attr("class", "contribution-health")
           .attr("width", markerDiameter)
@@ -139,10 +144,11 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
 
       # Community Circles
       circles = new CommunityCirclesLayer contributions,
+        className: "cc-map-item"
         fill: true
-        stroke: false
         fillColor: "#00c8c8"
         fillOpacity: communityOpacity
+        stroke: false
       map.addLayer circles
       
       # Contributions and clustering
@@ -165,8 +171,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     # Add marker
     currentPositionLayer = new L.LayerGroup()
     currentPositionMarker = new L.SVGMarker latlng,
-      svg: "/icons/current_position.svg"
+      className: "cc-map-item"
       size: new L.Point markerDiameter, markerDiameter
+      svg: "/icons/current_position.svg"
 
     currentPositionLayer.addLayer currentPositionMarker
     map.addLayer currentPositionLayer
@@ -227,6 +234,11 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     map.doubleClickZoom.enable()
     map.scrollWheelZoom.enable()
     map.tap.enable() if map.tap
+
+    # Show contributions
+    matches = map.getPanes().overlayPane.getElementsByClassName "leaflet-clickable"
+    _.each matches, (m) ->
+      m.style.display = ""
 
     $scope.contributionSelected = false
      
