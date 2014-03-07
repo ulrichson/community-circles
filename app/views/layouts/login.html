@@ -3,15 +3,24 @@
 <head>
   <meta charset="utf8">
   <title>Login</title>
-  <link rel="stylesheet" href="/components/topcoat/css/topcoat-mobile-light.min.css" />
-  <link rel="stylesheet" href="/stylesheets/application.css" />
-  <script src="/javascripts/onerror.js"></script>
+  <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/components/flat-ui-official/css/flat-ui.css">
+  <link rel="stylesheet" href="/stylesheets/<%= yield.controller %>.css">
+
+  <!-- Cordova -->
   <script src="http://localhost/cordova.js"></script>
+
+  <!-- Basic libraries -->
   <script src="/components/steroids-js/steroids.js"></script>
+  <script src="/components/hammerjs/hammer.min.js"></script>
+  <script src="/components/fastclick/lib/fastclick.js"></script>
   <script src="/components/angular/angular.min.js"></script>
-  <script src="/vendor/hammerjs/hammer.min.js"></script>
-  <script src="/vendor/angular-hammer/angular-hammer.js"></script>
-  <script src="/controllers/<%= yield.controller %>.js"></script>  
+
+  <!-- Plugins -->
+  <script src="/components/angular-hammer/angular-hammer.js"></script>
+
+  <!-- App code -->
+  <script src="/controllers/<%= yield.controller %>.js"></script>
 </head>
 <body>
   <%= yield.view %>
