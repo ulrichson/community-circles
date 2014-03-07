@@ -191,7 +191,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   $scope.showContributionDetail = (id) ->
     $scope.contributionSelected = true
     $scope.contribution = _.filter(contributions, (e) -> return e.properties.id is id)[0]
-    $scope.contribution.properties.area = Util.formatAreaHtml $scope.contribution.properties.radius * $scope.contribution.properties.radius * Math.PI
+    $scope.contribution.properties.area = Util.formatAreaSqKm $scope.contribution.properties.radius * $scope.contribution.properties.radius * Math.PI
     
     zoomBefore = map.getZoom()
 
