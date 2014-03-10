@@ -17,7 +17,6 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   # Map Layer
   communitiesLayer = null
   contributionsLayer = null
-  currentPositionLayer = null
 
   contributionMarkers = []
   selectedContributionMarker = null
@@ -113,7 +112,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     $scope.$apply -> $scope.loading = false
     map.setView e.latlng
     drawCommunities e.latlng
-    drawCurrentPositionMarker e.latlng
+    updateCurrentPositionMarker e.latlng
 
   map.on "locationerror", (e) ->
     $scope.$apply -> $scope.loading = false
@@ -127,6 +126,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
 
   contributionMarkerClicked = (e) ->
     # Hide everything, except selected contribution
+    map.removeLayer currentPositionMarker
     map.removeLayer communitiesLayer
     _.each contributionMarkers, (marker) ->
       if marker is e.target
@@ -202,7 +202,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
       map.addLayer communitiesLayer
       
       # Contributions and clustering
-      contributionsLayer = new L.MarkerClusterGroup()
+      contributionsLayer = new L.MarkerClusterGroup
+        showCoverageOnHover: false
+
       _.each data.features, (element) ->
         contributionMarker = createContributionMarker element
         contributionMarker.on "click", contributionMarkerClicked
@@ -213,21 +215,17 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
 
     fakeAsyncCallback(contributionsGeoJSON)
 
-  drawCurrentPositionMarker = (latlng) ->
+  updateCurrentPositionMarker = (latlng) ->
     # Clean up
-    if currentPositionLayer isnt null
-      currentPositionLayer.removeLayer currentPositionMarker unless currentPositionMarker is null
-      map.removeLayer currentPositionLayer
+    map.removeLayer currentPositionMarker unless currentPositionMarker is null
 
-    # Add marker
-    currentPositionLayer = new L.LayerGroup()
-    currentPositionMarker = new L.SVGMarker latlng,
-      className: "cc-map-item"
-      size: new L.Point markerDiameter, markerDiameter
-      svg: "/icons/current_position.svg"
+    currentPositionMarker = new L.Marker latlng,
+      icon: L.icon
+        iconUrl: "/icons/marker-icon-current-position@2x.png"
+        iconSize: [32, 32]
+        iconAnchor: [16, 16]
 
-    currentPositionLayer.addLayer currentPositionMarker
-    map.addLayer currentPositionLayer
+    map.addLayer currentPositionMarker, true
 
   #-----------------------------------------------------------------------------
   # UI EVENTS
@@ -290,7 +288,8 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     contributionsLayer.removeLayer selectedContributionMarker
     map.addLayer communitiesLayer
     _.each contributionMarkers, (marker) ->
-      contributionsLayer.addLayer marker #unless marker is selectedContributionMarker
+      contributionsLayer.addLayer marker
+    map.addLayer currentPositionMarker
     
     selectedContributionMarker = null
     $scope.contributionSelected = false
