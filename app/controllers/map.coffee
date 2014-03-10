@@ -315,6 +315,11 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   backgroundWebView = new steroids.views.WebView "backgroundServices.html"
   backgroundWebView.preload()
 
+  moodWebView = new steroids.views.WebView 
+    location: "/views/mood/index.html"
+    id: "moodView"
+  moodWebView.preload()
+
   # Paper for SVG union on community rendering
   paper.setup()
 

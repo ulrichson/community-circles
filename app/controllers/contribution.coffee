@@ -141,9 +141,10 @@ contributionApp.controller "NewCtrl", ($scope, ContributionRestangular) ->
     $scope.imageSrc = null
 
   $scope.chooseMood = ->
-    moodWebView = new steroids.views.WebView "/views/mood/index.html"
-    if $scope.contribution.mood isnt null
-      moodWebView.location += "?mood=#{$scope.contribution.mood}" 
+    moodWebView = new steroids.views.WebView
+      location: "/views/mood/index.html"
+      id: "moodView"
+
     steroids.layers.push moodWebView
 
   $scope.choosePoi = ->
@@ -187,6 +188,13 @@ contributionApp.controller "NewCtrl", ($scope, ContributionRestangular) ->
   # CUSTOM NATIVE UI BAHAVIOR
   #-----------------------------------------------------------------------------
   # TODO: on back show confirmation dialog, if data was set 
+
+  #-----------------------------------------------------------------------------
+  # RUN
+  #-----------------------------------------------------------------------------
+  window.postMessage
+    recipient: "moodView"
+    command: "reset"
 
 
 #-------------------------------------------------------------------------------

@@ -7,7 +7,6 @@ moodApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, MoodRestangul
   
   MoodRestangular.all("mood").getList().then (moods) ->
     $scope.moods = moods
-    $scope.selectedMood = steroids.view.params.mood
 
     # Scroll to selected element
     $location.hash $scope.selectedMood
@@ -17,4 +16,10 @@ moodApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, MoodRestangul
     window.postMessage
       recipient: "contributionView"
       mood: mood
+    $scope.selectedMood = mood
     steroids.layers.pop()
+
+  window.addEventListener "message", (event) ->
+    if event.data.recipient is "moodView"
+      if event.data.command is "reset"
+        $scope.$apply -> $scope.selectedMood = null
