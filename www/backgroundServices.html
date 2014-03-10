@@ -9,16 +9,22 @@
 <body style="background-color: #000000">
   <p style="color: #ffffff; font-family: sans-serif; margin: auto; text-align: center; padding: 10px">This page is not intended to be visible. Go away, please.</p>
   <script>
-    console.debug("Background service initializing");
-    // Preload static views
-    // new steroids.views.WebView("/views/imprint/index.html").preload();
-    // alert("backgroundService");
+    document.addEventListener("deviceready", onDeviceReady, false);
 
-    // Position watcher
-    var positionWatcherId = navigator.geolocation.watchPosition(function(position) {
-      console.debug("Received position at " + position.coords.latitude + " " + position.coords.longitude);
-      window.localStorage.setItem("lastKnownPosition", JSON.stringify(position));
-    });
+    function onDeviceReady() {   
+      console.debug("Background service initializing");
+      // Preload static views
+      // var moodView = new steroids.views.WebView({location: "/views/mood/index.html", id: "moodView");
+      // moodView.preload();
+      // new steroids.views.WebView("/views/imprint/index.html").preload();
+      // alert("backgroundService");
+
+      // Position watcher
+      var positionWatcherId = navigator.geolocation.watchPosition(function(position) {
+        console.debug("Received position at " + position.coords.latitude + " " + position.coords.longitude);
+        window.localStorage.setItem("lastKnownPosition", JSON.stringify(position));
+      });
+    }
   </script>
 </body>
 </html>
