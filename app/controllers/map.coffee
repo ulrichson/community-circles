@@ -23,6 +23,10 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   currentPositionMarker = null
   zoomBefore = null
 
+  # Map controls
+  locateControl = null
+  newContributionControl = null
+
   map = new L.Map "map",
     center: Util.lastKnownPosition()
     zoom: 16
@@ -86,9 +90,6 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
 
       return this._container
 
-    onRemove: (map) ->
-      L.DomEvent.removeListener this._container, "click"
-
   NewContributionControl = L.Control.extend
     options:
       position: "bottomleft"
@@ -102,9 +103,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
         $scope.newContribution()
 
       return this._container
-
-    onRemove: (map) ->
-      L.DomEvent.removeListener this._container, "click"
+      
   #-----------------------------------------------------------------------------
   # MAP EVENTS
   #-----------------------------------------------------------------------------
@@ -126,6 +125,8 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
 
   contributionMarkerClicked = (e) ->
     # Hide everything, except selected contribution
+    map.removeControl locateControl
+    map.removeControl newContributionControl
     map.removeLayer currentPositionMarker
     map.removeLayer communitiesLayer
     _.each contributionMarkers, (marker) ->
@@ -290,6 +291,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     _.each contributionMarkers, (marker) ->
       contributionsLayer.addLayer marker
     map.addLayer currentPositionMarker
+
+    map.addControl locateControl
+    map.addControl newContributionControl
     
     selectedContributionMarker = null
     $scope.contributionSelected = false
@@ -323,8 +327,11 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
 
   tileLayer.addTo map
 
-  map.addControl new LocateControl()
-  map.addControl new NewContributionControl()
+  locateControl = new LocateControl()
+  newContributionControl = new NewContributionControl()
+
+  map.addControl locateControl
+  map.addControl newContributionControl
   
   #-----------------------------------------------------------------------------
   # RUN
