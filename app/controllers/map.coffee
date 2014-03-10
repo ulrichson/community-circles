@@ -71,6 +71,42 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
       return circlesPathElement.getAttribute "d"
 
   #-----------------------------------------------------------------------------
+  # CUSTOM MAP CONTROLS
+  #-----------------------------------------------------------------------------
+  LocateControl = L.Control.extend
+    options:
+      position: "bottomleft"
+
+    onAdd: (map) ->
+      this._container = L.DomUtil.create "span", "cc-locate-control map-button fa-stack fa-lg fa-2x"
+      this._container.appendChild L.DomUtil.create "i", "fa fa-circle-o fa-stack-2x"
+      this._container.appendChild L.DomUtil.create "i", "fa fa-location-arrow fa-stack-1x"
+      L.DomEvent.addListener this._container, "click", (e) ->
+        L.DomEvent.stopPropagation e
+        $scope.locate()
+
+      return this._container
+
+    onRemove: (map) ->
+      L.DomEvent.removeListener this._container, "click"
+
+  NewContributionControl = L.Control.extend
+    options:
+      position: "bottomleft"
+
+    onAdd: (map) ->
+      this._container = L.DomUtil.create "span", "cc-locate-control map-button fa-stack fa-lg fa-2x"
+      this._container.appendChild L.DomUtil.create "i", "fa fa-circle-o fa-stack-2x"
+      this._container.appendChild L.DomUtil.create "i", "fa fa-plus fa-stack-1x"
+      L.DomEvent.addListener this._container, "click", (e) ->
+        L.DomEvent.stopPropagation e
+        $scope.newContribution()
+
+      return this._container
+
+    onRemove: (map) ->
+      L.DomEvent.removeListener this._container, "click"
+  #-----------------------------------------------------------------------------
   # MAP EVENTS
   #-----------------------------------------------------------------------------
   map.on "locationfound", (e) ->
@@ -287,6 +323,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     updateWhenIdle: true
 
   tileLayer.addTo map
+
+  map.addControl new LocateControl()
+  map.addControl new NewContributionControl()
   
   #-----------------------------------------------------------------------------
   # RUN
