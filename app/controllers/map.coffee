@@ -239,7 +239,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   #     console.warn "Local notifications are not supported"
 
   $scope.newContribution = ->
-    steroids.layers.push new steroids.views.WebView "/views/contribution/new.html"
+    steroids.layers.push new steroids.views.WebView
+      location: "/views/contribution/new.html"
+      id: "newContributionView"
 
   $scope.locate = ->
     locate()
@@ -311,14 +313,21 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   # INITIALIZE
   #-----------------------------------------------------------------------------
   
-  # Background service
-  backgroundWebView = new steroids.views.WebView "backgroundServices.html"
+  # Preload WebViews
+  backgroundWebView = new steroids.views.WebView
+    location: "backgroundServices.html"
+    id: "backgroundService"
   backgroundWebView.preload()
 
   moodWebView = new steroids.views.WebView 
     location: "/views/mood/index.html"
     id: "moodView"
   moodWebView.preload()
+
+  newContributionWebView = new steroids.views.WebView 
+    location: "/views/contribution/new.html"
+    id: "newContributionView"
+  newContributionWebView.preload()
 
   # Paper for SVG union on community rendering
   paper.setup()
