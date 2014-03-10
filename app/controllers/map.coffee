@@ -14,10 +14,13 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   communities = []
   contributions = []
 
+  # Map Layer
   communitiesLayer = null
   contributionsLayer = null
-
   currentPositionLayer = null
+
+  contributionMarkers = []
+  selectedContributionMarker = null
   currentPositionMarker = null
   zoomBefore = null
 
@@ -88,9 +91,12 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
 
   contributionMarkerClicked = (e) ->
     # Hide everything, except selected contribution
-    matches = map.getPanes().overlayPane.getElementsByClassName "leaflet-clickable"
-    _.each matches, (m) ->
-      m.style.display = "none" unless m is e.target._container
+    map.removeLayer communitiesLayer
+    _.each contributionMarkers, (marker) ->
+      if marker is e.target
+        selectedContributionMarker = e.target
+      else
+        contributionsLayer.removeLayer marker
 
     id = parseInt e.target._container.dataset.contribution_id
     $scope.showContributionDetail id
@@ -144,6 +150,8 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     map.removeLayer communitiesLayer unless communitiesLayer is null
     map.removeLayer contributionsLayer unless contributionsLayer is null
 
+    contributionMarkers = []
+
     fakeAsyncCallback = (data) ->
       $scope.$apply -> $scope.loading = false
       contributions = data.features
@@ -163,6 +171,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
         contributionMarker = createContributionMarker element
         contributionMarker.on "click", contributionMarkerClicked
         contributionsLayer.addLayer contributionMarker
+        contributionMarkers.push contributionMarker
       
       map.addLayer contributionsLayer
 
@@ -242,10 +251,12 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     map.tap.enable() if map.tap
 
     # Show contributions
-    matches = map.getPanes().overlayPane.getElementsByClassName "leaflet-clickable"
-    _.each matches, (m) ->
-      m.style.display = ""
-
+    contributionsLayer.removeLayer selectedContributionMarker
+    map.addLayer communitiesLayer
+    _.each contributionMarkers, (marker) ->
+      contributionsLayer.addLayer marker #unless marker is selectedContributionMarker
+    
+    selectedContributionMarker = null
     $scope.contributionSelected = false
      
   #-----------------------------------------------------------------------------
