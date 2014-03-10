@@ -1,7 +1,8 @@
 <div ng-app="moodApp">
   <div ng-controller="IndexCtrl">
-    <div class="list-group">
-      <a href="#" class="list-group-item" ng-repeat="mood in moods" ng-class="{active: selectedMood == mood.code}" hm-tap="choose(mood.code)">{{ mood.name }}</a>
+    <div id="{{ mood.code }}" class="mood" ng-repeat="mood in moods" ng-class="{active: selectedMood == mood.code}" hm-tap="choose(mood.code)">
+      <span class="mood-icon icomatic">{{ mood.code }}</span><br />
+      <span class="mood-label">{{ mood.name }}</span>
     </div>
   </div>
 </div>
