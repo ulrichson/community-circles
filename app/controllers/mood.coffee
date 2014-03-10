@@ -4,8 +4,10 @@ moodApp = angular.module("moodApp", ["MoodModel", "hmTouchEvents"])
 # Index: http://localhost/views/mood/index.html
 #------------------------------------------------------------------------------- 
 moodApp.controller "IndexCtrl", ($scope, MoodRestangular) ->
-  $scope.selectedMood = steroids.view.params.mood
-  $scope.moods = MoodRestangular.all("mood").getList()
+  
+  MoodRestangular.all("mood").getList().then (moods) ->
+    $scope.moods = moods
+    $scope.selectedMood = steroids.view.params.mood
 
   $scope.choose = (mood) ->
     window.postMessage
