@@ -2,7 +2,7 @@ communityCirclesUtil = angular.module("communityCirclesUtil", [])
 communityCirclesUtil.factory "Util", ->
 
   formatAreaSqKm: (area) ->
-    return "#{(area/1000).toFixed(2)}"
+    return "#{(area/1000000).toFixed(2)}"
 
   lastKnownPosition: ->
     try
