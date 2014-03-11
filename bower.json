@@ -27,6 +27,7 @@
     "leaflet-dist": "0.7.x",
     "angular-animate": "1.2.x",
     "hammerjs": "1.0.x",
-    "angular-hammer": "1.0.x"
+    "angular-hammer": "1.0.x",
+    "holderjs": "2.3.x"
   }
 }

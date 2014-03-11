@@ -1,5 +1,5 @@
 # util = window.Util
-mapApp = angular.module("mapApp", ["communityCirclesApp", "communityCirclesUtil", "hmTouchEvents", "CommunityModel", "ngAnimate"])
+mapApp = angular.module("mapApp", ["communityCirclesApp", "communityCirclesUtil", "hmTouchEvents", "CommunityModel", "ngAnimate", "angularMoment"])
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/map/index.html
