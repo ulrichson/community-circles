@@ -53,7 +53,3 @@ communityCirclesUtil.factory "Util", ->
       msg = event.data
       if msg.receiver is scope.message_id
         scope[msg.command].apply scope, msg.params 
-
-
-
-    
