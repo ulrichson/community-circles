@@ -1,10 +1,10 @@
 # util = window.Util
-mapApp = angular.module("mapApp", ["communityCirclesApp", "communityCirclesUtil", "hmTouchEvents", "CommunityModel", "ngAnimate", "angularMoment"])
+mapApp = angular.module("mapApp", ["communityCirclesApp", "communityCirclesGame", "communityCirclesUtil", "hmTouchEvents", "CommunityModel", "ngAnimate", "angularMoment"])
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/map/index.html
 #------------------------------------------------------------------------------- 
-mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangular) ->
+mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRestangular) ->
 
   markerDiameter = 60
   mapPreviewHeight = 80
@@ -220,11 +220,23 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     # Clean up
     map.removeLayer currentPositionMarker unless currentPositionMarker is null
 
-    currentPositionMarker = new L.Marker latlng,
+    currentPositionMarker = new L.LayerGroup
+
+    c = new L.Circle latlng, Game.initialRadius,
+      color: "#004855"
+      fill: true
+      fillColor: "#004855"
+      fillOpacity: 0.2
+      opacity: 1
+      weight: 1
+    pm = new L.Marker latlng,
       icon: L.icon
         iconUrl: "/icons/marker-icon-current-position@2x.png"
         iconSize: [32, 32]
         iconAnchor: [16, 16]
+
+    currentPositionMarker.addLayer c
+    currentPositionMarker.addLayer pm
 
     map.addLayer currentPositionMarker, true
 
