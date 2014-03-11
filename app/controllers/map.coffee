@@ -247,10 +247,10 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     locate()
 
   $scope.openContribution = ->
-    Util.send "contributionController", "setContributionId", $scope.contribution.properties.id
+    Util.send "showContributionController", "loadContribution", $scope.contribution.properties.id
     webView = new steroids.views.WebView 
-      location: "/views/contribution/show.html" #?id=#{$scope.contribution.properties.id}"
-      id: "showContributionView"
+      location: "/views/contribution/show.html"
+      id: "mapShowContributionView"
 
     steroids.layers.push webView
 
@@ -339,7 +339,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
 
   showContributionWebView = new steroids.views.WebView
     location: "/views/contribution/show.html"
-    id: "showContributionView"
+    id: "mapShowContributionView"
   showContributionWebView.preload()
 
   # Paper for SVG union on community rendering

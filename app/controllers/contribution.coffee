@@ -3,11 +3,14 @@ contributionApp = angular.module("contributionApp", ["communityCirclesApp", "com
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/contribution/index.html
 #------------------------------------------------------------------------------- 
-contributionApp.controller "IndexCtrl", ($scope, ContributionRestangular) ->
+contributionApp.controller "IndexCtrl", ($scope, Util, ContributionRestangular) ->
   $scope.contributions = []
 
   $scope.open = (id) ->
-    webView = new steroids.views.WebView "/views/contribution/show.html?id=#{id}"
+    Util.send "showContributionController", "loadContribution", id
+    webView = new steroids.views.WebView 
+      location: "/views/contribution/show.html"
+      id: "showContributionView"
     steroids.layers.push webView
 
   $scope.loadContributions = ->
@@ -24,40 +27,28 @@ contributionApp.controller "IndexCtrl", ($scope, ContributionRestangular) ->
     if event.data.status is "reload" 
       $scope.loadContributions()
 
+  showContributionView = new steroids.views.WebView 
+    location: "/views/contribution/show.html"
+    id: "showContributionView"
+  showContributionView.preload()
+
 #-------------------------------------------------------------------------------
 # Show: http://localhost/views/contribution/show.html?id=<id>
 #------------------------------------------------------------------------------- 
 contributionApp.controller "ShowCtrl", ($scope, $filter, Util, ContributionRestangular) ->
-  $scope.message_id = "contributionController"
+  $scope.message_id = "showContributionController"
 
-  $scope.setContributionId = (id) ->
-    # alert "holy moly"
-    $scope.$apply -> $scope.debug = "holy moly: #{id}"
-
-  $scope.loadContribution = ->
+  $scope.loadContribution = (id) ->
     $scope.loading = true
-
-    # contribution.get().then (data) ->
-    #   $scope.contribution = data
-    #   $scope.loading = false
     contributions.getList().then (data) ->
-      $scope.contribution = $filter("filter")(data, {id: steroids.view.params.id})[0]
+      $scope.contribution = $filter("filter")(data, {id: id})[0]
       $scope.loading = false
 
   # Save current contribution id to localStorage (edit.html gets it from there)
-  localStorage.setItem "currentContributionId", steroids.view.params.id
+  # localStorage.setItem "currentContributionId", steroids.view.params.id
 
-  # contribution = ContributionRestangular.one "contribution", steroids.view.params.id
   contributions = ContributionRestangular.all "contribution"
-  $scope.loadContribution()
-  # $scope.debug = "message_id=#{@message_id} vs. message_id=#{self.message_id}"
-  # Util.consume this
   Util.consume $scope
-    # $scope.$apply -> $scope.debug = "message_id=#{@message_id}, #{JSON.stringify event.data}"
-
-  # window.addEventListener "message", (event) ->
-  #   if event.data.status is "reload"
-  #     $scope.loadContribution()
 
 #-------------------------------------------------------------------------------
 # New: http://localhost/views/contribution/new.html
