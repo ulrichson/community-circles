@@ -1,8 +1,9 @@
 <div ng-app="contributionApp">
   <div ng-controller="ShowCtrl">
     <div class="spinner" ng-show="loading"></div>
-      <h2>{{contribution.title}}</h2>
-      <small><em am-time-ago="contribution.created"></em></small>
-      <p>{{contribution.description}}</p>
+    <p class="bg-info" ng-show="debug">{{ debug }}<p>
+    <h2>{{contribution.title}}</h2>
+    <small><em am-time-ago="contribution.created"></em></small>
+    <p>{{contribution.description}}</p>
   </div>
 </div>

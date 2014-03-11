@@ -247,7 +247,11 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     locate()
 
   $scope.openContribution = ->
-    webView = new steroids.views.WebView "/views/contribution/show.html?id=#{$scope.contribution.properties.id}"
+    Util.send "contributionController", "setContributionId", $scope.contribution.properties.id
+    webView = new steroids.views.WebView 
+      location: "/views/contribution/show.html" #?id=#{$scope.contribution.properties.id}"
+      id: "showContributionView"
+
     steroids.layers.push webView
 
   $scope.showContributionDetail = (id) ->
@@ -314,6 +318,10 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
   #-----------------------------------------------------------------------------
   
   # Preload WebViews
+
+  # ATTENTION: this must only be called ONCE, therefore needs to be moved, if
+  #            map view isn't the initial view anymore
+
   backgroundWebView = new steroids.views.WebView
     location: "backgroundServices.html"
     id: "backgroundService"
@@ -328,6 +336,11 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Util, CommunityRestangula
     location: "/views/contribution/new.html"
     id: "newContributionView"
   newContributionWebView.preload()
+
+  showContributionWebView = new steroids.views.WebView
+    location: "/views/contribution/show.html"
+    id: "showContributionView"
+  showContributionWebView.preload()
 
   # Paper for SVG union on community rendering
   paper.setup()

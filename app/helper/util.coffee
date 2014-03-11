@@ -24,4 +24,36 @@ communityCirclesUtil.factory "Util", ->
 
       return new L.LatLng lat, lng
 
+  #-----------------------------------------------------------------------------
+  # INTERWEBVIEW COMMUNICATION
+  #
+  # Example: `Util.send "myController", "sayHello", "World"` invokes the method
+  # `$scope.sayHello "World"` in `myController`. This controller must have set
+  # `$scope.message_id = "myController"` in order to receive the message. In the
+  # controller `Util.consume $scope` can be called in order to automatically
+  # receive messages and invike the corresponding method.
+  #-----------------------------------------------------------------------------
+  send: (to, command, params) ->
+    msg =
+      receiver: to
+      command: command
+      params: []
+
+    if params.length?
+      _.each params, (p) ->
+        msg.params.push JSON.stringify p
+    else if params?
+      msg.params.push JSON.stringify params
+
+    window.postMessage msg
+
+  consume: (scope) ->
+    throw "$scope.message_id is not set" if not scope.message_id?
+    window.addEventListener "message", (event) ->
+      msg = event.data
+      if msg.receiver is scope.message_id
+        scope[msg.command].apply scope, msg.params 
+
+
+
     

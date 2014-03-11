@@ -1,4 +1,4 @@
-contributionApp = angular.module("contributionApp", ["communityCirclesApp", "ContributionModel", "hmTouchEvents", "angularMoment"]) 
+contributionApp = angular.module("contributionApp", ["communityCirclesApp", "communityCirclesUtil", "ContributionModel", "hmTouchEvents", "angularMoment"]) 
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/contribution/index.html
@@ -27,7 +27,12 @@ contributionApp.controller "IndexCtrl", ($scope, ContributionRestangular) ->
 #-------------------------------------------------------------------------------
 # Show: http://localhost/views/contribution/show.html?id=<id>
 #------------------------------------------------------------------------------- 
-contributionApp.controller "ShowCtrl", ($scope, $filter, ContributionRestangular) ->
+contributionApp.controller "ShowCtrl", ($scope, $filter, Util, ContributionRestangular) ->
+  $scope.message_id = "contributionController"
+
+  $scope.setContributionId = (id) ->
+    # alert "holy moly"
+    $scope.$apply -> $scope.debug = "holy moly: #{id}"
 
   $scope.loadContribution = ->
     $scope.loading = true
@@ -45,10 +50,14 @@ contributionApp.controller "ShowCtrl", ($scope, $filter, ContributionRestangular
   # contribution = ContributionRestangular.one "contribution", steroids.view.params.id
   contributions = ContributionRestangular.all "contribution"
   $scope.loadContribution()
+  # $scope.debug = "message_id=#{@message_id} vs. message_id=#{self.message_id}"
+  # Util.consume this
+  Util.consume $scope
+    # $scope.$apply -> $scope.debug = "message_id=#{@message_id}, #{JSON.stringify event.data}"
 
-  window.addEventListener "message", (event) ->
-    if event.data.status is "reload"
-      $scope.loadContribution()
+  # window.addEventListener "message", (event) ->
+  #   if event.data.status is "reload"
+  #     $scope.loadContribution()
 
 #-------------------------------------------------------------------------------
 # New: http://localhost/views/contribution/new.html
