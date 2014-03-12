@@ -47,20 +47,13 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRest
     getPathString: ->
       return this._createPath()
 
-    _projectCircle: (ll, r) ->
-      lr = (r / 40075017) * 360 / Math.cos(L.LatLng.DEG_TO_RAD * ll.lat)
-      ll2 = new L.LatLng(ll.lat, ll.lng - lr)
-      point = map.latLngToLayerPoint(ll)
-      radius = point.x - map.latLngToLayerPoint(ll2).x
-      return point: point, radius: radius
-
     _createPath: ->
       self = this
       circlesPathElement = null
       unitedCircles = null
       _.each this._contributions, (element) ->
         latlng = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
-        projectedCircle = self._projectCircle latlng, element.properties.radius
+        projectedCircle = projectCircle latlng, element.properties.radius
       
         circle = new paper.Path.Circle(new paper.Point(projectedCircle.point.x, projectedCircle.point.y), projectedCircle.radius)
 
@@ -141,6 +134,13 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRest
   #-----------------------------------------------------------------------------
   # INTERNAL FUNCTIONS
   #-----------------------------------------------------------------------------
+  projectCircle = (ll, r) ->
+    lr = (r / 40075017) * 360 / Math.cos(L.LatLng.DEG_TO_RAD * ll.lat)
+    ll2 = new L.LatLng(ll.lat, ll.lng - lr)
+    point = map.latLngToLayerPoint(ll)
+    radius = point.x - map.latLngToLayerPoint(ll2).x
+    return point: point, radius: radius
+
   locate = ->
     $scope.loading = true
     map.locate()
@@ -174,6 +174,37 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRest
           .endAngle(2 * Math.PI * contribution.health)
           .innerRadius(0)
           .outerRadius(markerDiameter / 2)
+
+        # Indicate low health
+        baseDuration = 500
+        blink = (parent, opacity) ->
+          opacity ?= 0
+          parent.transition()
+           .style("opacity", opacity)
+           .duration(baseDuration)
+           .each "end", -> blink parent, if opacity is 0 then 1 else 0
+
+        pulse = (parent) ->
+          signal = d3.select(parent).append("circle")
+            .attr("class", "pulse")
+            .attr("r", markerDiameter)
+            .attr("cx", markerDiameter / 2)
+            .attr("cy", markerDiameter / 2)
+            .attr("fill-opacity", 0)
+            .attr("stroke", "#00c8c8")
+            .attr("stroke-width", 2)
+            .transition()
+            .attr("r", projectCircle(latlng, contribution.radius).radius)
+            .style("opacity", 0)
+            .ease("cubic-out")
+            .duration(baseDuration * 6)
+            .each "end", ->
+              d3.select(this).remove()
+              # pulse parent
+
+        if contribution.health < Game.healthAlertThreshold
+          blink healthProgress
+          pulse domNode
 
         domParent = healthProgress.node().parentNode
         domParent.dataset.contribution_id = contribution.id
