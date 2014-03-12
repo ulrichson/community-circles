@@ -101,6 +101,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRest
   # MAP EVENTS
   #-----------------------------------------------------------------------------
   map.on "locationfound", (e) ->
+    console.log "Position found: #{JSON.stringify e.latlng}"
     $scope.$apply -> $scope.loading = false
     map.setView e.latlng
     drawCommunities e.latlng
