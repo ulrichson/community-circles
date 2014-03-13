@@ -129,7 +129,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRest
       else
         contributionsLayer.removeLayer marker
 
-    id = parseInt e.target._container.dataset.contribution_id
+    id = parseInt e.target.feature.properties.id
     $scope.showContributionDetail id
 
   #-----------------------------------------------------------------------------
@@ -149,67 +149,57 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRest
   refreshMap = (position) ->
     # console.debug "Received position #{position.coords.latitude} #{position.coords.longitude}, accuracy: #{position.coords.accuracy}."
 
-  createContributionMarker = (element) ->
-    latlng = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
-    svgMarker = new L.SVGMarker latlng,
-      svg: "/icons/contribution/#{element.properties.type}.svg"
-      size: new L.Point markerDiameter, markerDiameter
-      afterwards: (domNode) ->
-        contribution = element.properties
+  createContributionMarker = (feature, latlng) ->
+    #     # Indicate low health
+    #     baseDuration = 500
+    #     blink = (parent, opacity) ->
+    #       opacity ?= 0
+    #       parent.transition()
+    #        .style("opacity", opacity)
+    #        .duration(baseDuration)
+    #        .each "end", -> blink parent, if opacity is 0 then 1 else 0
 
-        # Remove previous created health bar
-        d3.select(domNode).select(".contribution-health").remove()
+    #     pulse = (parent) ->
+    #       signal = d3.select(parent).append("circle")
+    #         .attr("class", "pulse")
+    #         .attr("r", markerDiameter)
+    #         .attr("cx", markerDiameter / 2)
+    #         .attr("cy", markerDiameter / 2)
+    #         .attr("fill-opacity", 0)
+    #         .attr("stroke", "#00c8c8")
+    #         .attr("stroke-width", 2)
+    #         .transition()
+    #         .attr("r", projectCircle(latlng, contribution.radius).radius)
+    #         .style("opacity", 0)
+    #         .ease("cubic-out")
+    #         .duration(baseDuration * 6)
+    #         .each "end", ->
+    #           d3.select(this).remove()
+    #           # pulse parent
 
-        # Create health progress bar
-        healthProgress = d3.select(domNode)
-          # .attr("class", "leaflet-zoom-hide")
-          .insert("svg:path", ":first-child")
-          .attr("class", "contribution-health")
-          .attr("width", markerDiameter)
-          .attr("height", markerDiameter)
-          .attr("fill", "#00c8c8")
-          .attr("transform", "translate(#{markerDiameter / 2 }, #{markerDiameter / 2})")
+    #     if contribution.health < Game.healthAlertThreshold
+    #       blink healthProgress
+    #       pulse domNode
 
-        healthProgress.attr "d", d3.svg.arc()
-          .startAngle(0)
-          .endAngle(2 * Math.PI * contribution.health)
-          .innerRadius(0)
-          .outerRadius(markerDiameter / 2)
+    healthProgress = d3.select(document.createElement("div"))
+    healthProgress.append("svg")
+      .attr("class", "contribution-health")
+      .attr("width", markerDiameter)
+      .attr("height", markerDiameter)
+      .append("path")
+      .attr("fill", "#00c8c8")
+      .attr("transform", "translate(#{markerDiameter / 2 }, #{markerDiameter / 2})")
+      .attr("d", d3.svg.arc()
+        .startAngle(0)
+        .endAngle(2 * Math.PI * feature.properties.health)
+        .innerRadius(0)
+        .outerRadius(markerDiameter / 2))
 
-        # Indicate low health
-        baseDuration = 500
-        blink = (parent, opacity) ->
-          opacity ?= 0
-          parent.transition()
-           .style("opacity", opacity)
-           .duration(baseDuration)
-           .each "end", -> blink parent, if opacity is 0 then 1 else 0
-
-        pulse = (parent) ->
-          signal = d3.select(parent).append("circle")
-            .attr("class", "pulse")
-            .attr("r", markerDiameter)
-            .attr("cx", markerDiameter / 2)
-            .attr("cy", markerDiameter / 2)
-            .attr("fill-opacity", 0)
-            .attr("stroke", "#00c8c8")
-            .attr("stroke-width", 2)
-            .transition()
-            .attr("r", projectCircle(latlng, contribution.radius).radius)
-            .style("opacity", 0)
-            .ease("cubic-out")
-            .duration(baseDuration * 6)
-            .each "end", ->
-              d3.select(this).remove()
-              # pulse parent
-
-        if contribution.health < Game.healthAlertThreshold
-          blink healthProgress
-          pulse domNode
-
-        domParent = healthProgress.node().parentNode
-        domParent.dataset.contribution_id = contribution.id
-
+    svgMarker = new L.Marker latlng,
+      icon: L.divIcon
+        className: "contribution-marker"
+        iconSize: [markerDiameter, markerDiameter]
+        html: "#{healthProgress.node().innerHTML}<div class=\"contribution-icon contribution-icon-#{feature.properties.type}\"></div>"
     return svgMarker
 
   # Helper function for loading map data with spinner
@@ -242,7 +232,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRest
         onEachFeature: (feature, layer) ->
           layer.on "click", contributionMarkerClicked
         pointToLayer: (feature, latlng) ->
-          contributionMarker = createContributionMarker feature
+          contributionMarker = createContributionMarker feature, latlng
           contributionMarkers.push contributionMarker
           return contributionMarker
 

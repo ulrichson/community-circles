@@ -21,6 +21,41 @@
 }
 
 /*******************************************************************************
+* CONTRIBUTION MARKER
+*******************************************************************************/
+.contribution-maker {
+  cursor: inherit;
+  position: relative;
+}
+
+.contribution-icon {
+  bottom: 0;
+  background-size: 100%;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.contribution-icon-idea {
+  background-image: url(/icons/contribution/idea.svg);
+}
+
+.contribution-icon-issue {
+  background-image: url(/icons/contribution/issue.svg);
+}
+
+.contribution-icon-opinion {
+  background-image: url(/icons/contribution/opinion.svg);
+}
+
+.contribution-icon-poll {
+  background-image: url(/icons/contribution/poll.svg);
+}
+
+/*******************************************************************************
 * CONTRIBUTION DETAIL
 *******************************************************************************/
 $dropshadowColor: rgba(0, 0, 0, 0.4);
