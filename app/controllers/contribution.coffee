@@ -49,6 +49,22 @@ contributionApp.controller "ShowCtrl", ($scope, $filter, Util, ContributionResta
     $scope.loading = true
     contributions.getList().then (data) ->
       $scope.contribution = $filter("filter")(data, {id: id})[0]
+
+      # Simple demo data
+      $scope.comments = [
+        creator: "ulrichson"
+        created: new Date()
+        text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"
+      ,
+        creator: "ulrichson"
+        created: new Date()
+        text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"
+      ,
+        creator: "ulrichson"
+        created: new Date()
+        text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"
+      ]
+
       $scope.loading = false
 
   # Save current contribution id to localStorage (edit.html gets it from there)
