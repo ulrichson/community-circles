@@ -238,11 +238,15 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRest
       contributionsLayer = new L.MarkerClusterGroup
         showCoverageOnHover: false
 
-      _.each data.features, (element) ->
-        contributionMarker = createContributionMarker element
-        contributionMarker.on "click", contributionMarkerClicked
-        contributionsLayer.addLayer contributionMarker
-        contributionMarkers.push contributionMarker
+      geoJsonLayer = L.geoJson data,
+        onEachFeature: (feature, layer) ->
+          layer.on "click", contributionMarkerClicked
+        pointToLayer: (feature, latlng) ->
+          contributionMarker = createContributionMarker feature
+          contributionMarkers.push contributionMarker
+          return contributionMarker
+
+      contributionsLayer.addLayer geoJsonLayer
       
       map.addLayer contributionsLayer
 
