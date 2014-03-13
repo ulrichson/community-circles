@@ -1,4 +1,11 @@
-contributionApp = angular.module("contributionApp", ["communityCirclesApp", "communityCirclesUtil", "ContributionModel", "hmTouchEvents", "angularMoment"]) 
+contributionApp = angular.module "contributionApp", [
+  "communityCirclesApp",
+  "communityCirclesUtil",
+  "ContributionModel",
+  "ngTouch",
+  "angularMoment",
+  "angular-carousel"
+] 
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/contribution/index.html

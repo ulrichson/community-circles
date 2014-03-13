@@ -1,4 +1,4 @@
-settingsApp = angular.module("settingsApp", ["hmTouchEvents"])
+settingsApp = angular.module("settingsApp", ["ngTouch"])
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/settings/index.html

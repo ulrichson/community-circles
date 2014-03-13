@@ -1,4 +1,4 @@
-moodApp = angular.module("moodApp", ["MoodModel", "hmTouchEvents"])
+moodApp = angular.module("moodApp", ["MoodModel", "ngTouch"])
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/mood/index.html

@@ -1,4 +1,4 @@
-notificationApp = angular.module("notificationApp", ["hmTouchEvents"])
+notificationApp = angular.module("notificationApp", ["ngTouch"])
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/notification/index.html

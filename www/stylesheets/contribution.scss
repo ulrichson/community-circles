@@ -41,3 +41,13 @@
   padding-right: 1em;
   padding-top: 1em;
 }
+
+.rn-carousel-container {
+  position: relative;
+}
+
+.rn-carousel-indicator {
+  background-color: transparent !important;
+  bottom: 0;
+  position: absolute !important;
+}

@@ -5,7 +5,7 @@
     </div>
     <div id="map"></div>
     <div class="list-group">
-      <a href="#" class="list-group-item" ng-repeat="poi in pois" ng-class="{active: selectedPoi == poi.title}" hm-tap="choose(poi.title)">{{ poi.title }}</a>
+      <a href="#" class="list-group-item" ng-repeat="poi in pois" ng-class="{active: selectedPoi == poi.title}" ng-click="choose(poi.title)">{{ poi.title }}</a>
     </div>
   </div>
 </div>

@@ -4,7 +4,7 @@
     <div class="spinner" ng-show="loading"></div>
     {{ length }}
     <div class="list-group">
-      <a href="#" class="list-group-item" hm-tap="open(contribution.id)" ng-repeat="contribution in contributions | orderBy: 'created'">{{ contribution.title }}</a>
+      <a href="#" class="list-group-item" ng-click="open(contribution.id)" ng-repeat="contribution in contributions | orderBy: 'created'">{{ contribution.title }}</a>
     </div>
 
   </div>
