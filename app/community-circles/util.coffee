@@ -9,7 +9,7 @@ communityCirclesUtil.factory "Util", ->
       pos = JSON.parse window.localStorage.getItem "lastKnownPosition"
       return new L.LatLng pos.coords.latitude, pos.coords.longitude
     catch e
-      return new L.LatLng 48.1217811, 16.5633169
+      return new L.LatLng 48.1217811, 16.5633169 # Vienna calling!
 
   meanLatLngs: (latlngs) ->
       lat = 0
@@ -26,7 +26,7 @@ communityCirclesUtil.factory "Util", ->
 
   #-----------------------------------------------------------------------------
   # INTERWEBVIEW COMMUNICATION
-  #
+  #-----------------------------------------------------------------------------
   # Example: `Util.send "myController", "sayHello", "World"` invokes the method
   # `$scope.sayHello "World"` in `myController`. This controller must have set
   # `$scope.message_id = "myController"` in order to receive the message. In the
