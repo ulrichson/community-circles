@@ -1,0 +1,24 @@
+{
+  "name": "ratchet",
+  "version": "2.0.1",
+  "main": [
+    "./dist/css/ratchet.css",
+    "./dist/js/ratchet.js"
+  ],
+  "ignore": [
+    "_config.yml",
+    "CNAME",
+    "CONTRIBUTING.md",
+    "docs"
+  ],
+  "homepage": "https://github.com/maker/ratchet",
+  "_release": "2.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.0.1",
+    "commit": "a3e6dd4399e23f8dae49e0fbb61a8eb4db9df0c9"
+  },
+  "_source": "git://github.com/maker/ratchet.git",
+  "_target": "2.0.x",
+  "_originalSource": "ratchet"
+}
