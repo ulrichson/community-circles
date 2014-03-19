@@ -19,7 +19,7 @@
     </div>
     <div class="container">
       <h3 class="text-center">{{contribution.title}}<br><small>by <strong>{{ contribution.creator }}</strong> <em am-time-ago="contribution.created"></em></small></h3>
-      <div class="well">{{contribution.description}}</div>
+      <div class="well well-sm">{{contribution.description}}</div>
       <ul class="media-list">
         <li class="media" ng-repeat="comment in comments">
           <div class="media-body">
