@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf8">
   <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/components/flat-ui-official/css/flat-ui.css">
   <link rel="stylesheet" href="/stylesheets/<%= yield.controller %>.css">
 
   <!-- Cordova -->
@@ -12,12 +12,10 @@
 
   <!-- Basic libraries -->
   <script src="/components/steroids-js/steroids.js"></script>
-  <script src="/components/hammerjs/hammer.min.js"></script>
-  <script src="/components/fastclick/lib/fastclick.js"></script>
   <script src="/components/angular/angular.min.js"></script>
 
   <!-- Plugins -->
-  <script src="/components/angular-hammer/angular-hammer.js"></script>
+  <script src="/components/angular-touch/angular-touch.min.js"></script>
 
   <!-- App code -->
   <script src="/controllers/<%= yield.controller %>.js"></script>
