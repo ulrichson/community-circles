@@ -194,16 +194,8 @@ contributionApp.controller "NewCtrl", ($scope, Util, ContributionRestangular) ->
   $scope.setPoi = (poi) ->
     $scope.contribution.poi = poi
 
-  #-----------------------------------------------------------------------------
-  # WINDOW MESSAGES
-  #-----------------------------------------------------------------------------
-  messageReceived = (event) ->
-    if event.data.recipient is "contributionView"
-      $scope.$apply -> 
-        $scope.contribution.mood = event.data.mood if event.data.mood?
-        $scope.contribution.poi = event.data.poi if event.data.poi?
-
-  window.addEventListener "message", messageReceived
+  $scope.setMood = (mood) ->
+    $scope.contribution.mood = mood
 
   #-----------------------------------------------------------------------------
   # CUSTOM NATIVE UI BAHAVIOR
@@ -213,12 +205,8 @@ contributionApp.controller "NewCtrl", ($scope, Util, ContributionRestangular) ->
   #-----------------------------------------------------------------------------
   # RUN
   #-----------------------------------------------------------------------------
-  window.postMessage
-    recipient: "moodView"
-    command: "reset"
-
+  Util.send "moodIndexCtrl", "reset"
   Util.consume $scope
-
 
 #-------------------------------------------------------------------------------
 # Edit: http://localhost/views/contribution/edit.html

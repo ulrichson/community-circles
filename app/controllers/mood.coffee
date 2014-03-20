@@ -1,10 +1,11 @@
-moodApp = angular.module("moodApp", ["MoodModel", "ngTouch"])
+moodApp = angular.module "moodApp", ["communityCirclesUtil", "MoodModel", "ngTouch"]
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/mood/index.html
 #------------------------------------------------------------------------------- 
-moodApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, MoodRestangular) ->
-  
+moodApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, MoodRestangular) ->
+  $scope.message_id = "moodIndexCtrl"
+
   MoodRestangular.all("mood").getList().then (moods) ->
     $scope.moods = moods
 
@@ -13,13 +14,11 @@ moodApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, MoodRestangul
     $anchorScroll()
 
   $scope.choose = (mood) ->
-    window.postMessage
-      recipient: "contributionView"
-      mood: mood
     $scope.selectedMood = mood
-    steroids.layers.pop()
+    Util.send "contributionNewCtrl", "setMood", mood
+    Util.return()
 
-  window.addEventListener "message", (event) ->
-    if event.data.recipient is "moodView"
-      if event.data.command is "reset"
-        $scope.$apply -> $scope.selectedMood = null
+  $scope.reset = ->
+    $scope.selectedMood = null
+
+  Util.consume $scope
