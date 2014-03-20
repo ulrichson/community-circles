@@ -388,12 +388,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRest
   # Paper for SVG union on community rendering
   paper.setup()
 
-  tileLayer = L.tileLayer "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
-    detectRetina: true
-    reuseTiles: true
-    subdomains: "a b c d".split " "
-    unloadInvisibleTiles: false
-    updateWhenIdle: true
+  tileLayer = Util.createTileLayer()
 
   tileLayer.addTo map
 
