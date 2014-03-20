@@ -23,7 +23,6 @@ communityCirclesApp.run ->
 # APP PROPERTIES AND METHODS
 #-------------------------------------------------------------------------------
 communityCirclesApp.value "app",
-  mapId: "ulrichson.he818hcj",
   mapInitZoom: 14,
   mapShowZoomControls: true,
   apiBaseUrl: "http://community-circles.ftw.at/api"
