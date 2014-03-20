@@ -76,7 +76,9 @@ contributionApp.controller "ShowCtrl", ($scope, $filter, Util, ContributionResta
 #-------------------------------------------------------------------------------
 # New: http://localhost/views/contribution/new.html
 #------------------------------------------------------------------------------- 
-contributionApp.controller "NewCtrl", ($scope, ContributionRestangular) ->
+contributionApp.controller "NewCtrl", ($scope, Util, ContributionRestangular) ->
+  $scope.message_id = "contributionNewCtrl"
+
   $scope.loading = false
   $scope.bgImageStyle = {}
 
@@ -164,20 +166,13 @@ contributionApp.controller "NewCtrl", ($scope, ContributionRestangular) ->
     $scope.imageSrc = null
 
   $scope.chooseMood = ->
-    moodWebView = new steroids.views.WebView
-      location: "/views/mood/index.html"
-      id: "moodView"
-
-    steroids.layers.push moodWebView
+    Util.enter "moodView"
 
   $scope.choosePoi = ->
-    poiWebView = new steroids.views.WebView "/views/poi/index.html"
-    if $scope.contribution.poi isnt null
-      poiWebView.location += "?poi=#{$scope.contribution.poi}"
-    steroids.layers.push poiWebView
+    Util.enter "poiView"
 
   $scope.close = ->
-    steroids.layers.pop()
+    Util.return()
 
   $scope.create = (contribution) ->
     $scope.$apply -> $scope.loading = true
@@ -195,6 +190,9 @@ contributionApp.controller "NewCtrl", ($scope, ContributionRestangular) ->
     , ->
       $scope.$apply -> $scope.loading = false
       alert "Sorry, couldn't upload your contribution. Please try again later"
+
+  $scope.setPoi = (poi) ->
+    $scope.contribution.poi = poi
 
   #-----------------------------------------------------------------------------
   # WINDOW MESSAGES
@@ -218,6 +216,8 @@ contributionApp.controller "NewCtrl", ($scope, ContributionRestangular) ->
   window.postMessage
     recipient: "moodView"
     command: "reset"
+
+  Util.consume $scope
 
 
 #-------------------------------------------------------------------------------

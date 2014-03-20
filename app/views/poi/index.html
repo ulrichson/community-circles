@@ -1,9 +1,10 @@
 <div ng-app="poiApp">
   <div ng-controller="IndexCtrl">
+    <div class="spinner" ng-show="loading"></div>
     <div class="container">
-      <h3>Select nearby location</h3>
+      <p><strong>Where are you?</strong></p>
       <ul class="list-group">
-        <li class="list-group-item" ng-repeat="poi in pois | orderBy:'location.distance'" ng-class="{active: selectedPoi == poi.name}" ng-click="choose(poi.name)">
+        <li class="list-group-item" ng-repeat="poi in pois | orderBy:'location.distance'" ng-class="{'list-group-item-info': selectedPoi == poi.name}" ng-click="choose(poi.name)">
           <span class="badge">{{ poi.location.distance }}m</span>
           {{ poi.name }}
         </li>

@@ -380,6 +380,11 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRest
     id: "mapShowContributionView"
   showContributionWebView.preload()
 
+  poiWebView = new steroids.views.WebView
+    location: "/views/poi/index.html"
+    id: "poiView"
+  poiWebView.preload()
+
   # Paper for SVG union on community rendering
   paper.setup()
 
