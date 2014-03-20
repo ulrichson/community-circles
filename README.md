@@ -41,13 +41,27 @@ Upload this file, specify a password and use `ccm_keystore_alias` as alias name.
 
 Afterwards you can press `Build Scanner` and upload to your phone.
 
+**API Keys**
+
+The client needs severeal API keys, e.g. from Foursquare.
+
+- To create a Foursquare app go to [https://foursquare.com/developers/register](https://foursquare.com/developers/register).
+
+Provide a `key.coffee` file in `app/community-circles/` with following content:
+
+```
+@key =
+  FOURSQUARE_CLIENT_ID: <client_id>
+  FOURSQAURE_CLIENT_SECTRET: <client_secret>
+```
+
 Debug
 -----
 
 Run `steroids connect`, on OSX you can run the simulator then by typing `simulator`.
 More information on the [Steroids documentation](http://guides.appgyver.com/steroids/guides/debugging/safari-web-inspector/).
 
-You can also run the project in your browser by typint `steroids connect --serve` (server is available at `http://localhost:4000/`). 
+You can also run the project in your browser by typing `steroids connect --serve` (server is available at `http://localhost:4000/`). 
 
 For other platforms refere to [http://guides.appgyver.com/steroids/guides/debugging/best-practices/](http://guides.appgyver.com/steroids/guides/debugging/best-practices/).
 
@@ -61,13 +75,3 @@ Editor
 ------
 
 Indent using spaces, space width: 2
-
-Graphics
---------
-
-- For `SVGMarker` to work with SVG graphics, the `width` and `height` attribute in the `<svg>` have to be set.
-
-Contributiors
--------------
-
-- [Leaflet Data Visualization Framework (DVF)](https://github.com/humangeo/leaflet-dvf) by [humangeo](https://github.com/humangeo/)

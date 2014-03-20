@@ -4,6 +4,9 @@ communityCirclesApp = angular.module("communityCirclesApp", [])
 # APP INITIALIZATIOM
 #-------------------------------------------------------------------------------
 communityCirclesApp.run ->
+  if !@key?
+    alert "app/community-circles/keys.coffee is missing!"
+
   # Login
   steroids.modal.show new steroids.views.WebView "/views/login/index.html" unless window.localStorage.getItem("loggedIn") is "true"
   
