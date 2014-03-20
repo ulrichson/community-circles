@@ -1,0 +1,23 @@
+@import 'base.scss';
+
+$mapHeight: 30%;
+
+body, html {
+  height: 100%;
+}
+
+#map {
+  height: $mapHeight;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+#poi-list {
+  bottom: 0;
+  overflow-y: auto;
+  position: absolute;
+  top: $mapHeight;
+  width: 100%;
+}
+
