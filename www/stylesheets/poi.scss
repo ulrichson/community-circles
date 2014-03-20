@@ -1,23 +1,25 @@
 @import 'base.scss';
 
-$mapHeight: 30%;
-
-body, html {
-  height: 100%;
-}
+$mapHeight: 200px;
+$anchorOffset: 30px;
 
 #map {
   height: $mapHeight;
-  position: absolute;
+  position: fixed;
   top: 0;
   width: 100%;
+  z-index: 200;
 }
 
 #poi-list {
-  bottom: 0;
-  overflow-y: auto;
-  position: absolute;
-  top: $mapHeight;
-  width: 100%;
+  margin-top: $mapHeight;
+  position: relative;
+  z-index: 100;
 }
 
+.anchor {
+  display: block;
+  position: relative;
+  top: -$mapHeight - $anchorOffset;
+  visibility: hidden;
+}

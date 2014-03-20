@@ -3,7 +3,7 @@ poiApp = angular.module "poiApp", ["communityCirclesUtil", "PoiModel", "ngTouch"
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/poi/index.html
 #------------------------------------------------------------------------------- 
-poiApp.controller "IndexCtrl", ($scope, Util, PoiRestangular) ->
+poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, PoiRestangular) ->
 
   $scope.message_id = "poiIndexCtrl"
   $scope.loading = false
@@ -19,14 +19,17 @@ poiApp.controller "IndexCtrl", ($scope, Util, PoiRestangular) ->
     # if document.visibilityState is "visible" and latLngOnLocate isnt null and Util.lastKnownPosition.distanceTo(latLngOnLocate) < 50
     #   locate()
 
+  selectPoi = (poi) ->
+    $scope.selectedPoi = poi
+    Util.send "contributionNewCtrl", "setPoi", poi
+
   locate = ->
     map.locate setView: true
     $scope.loading = true
    
   $scope.choose = (poi) ->
-    $scope.selectedPoi = poi
-    Util.send "contributionNewCtrl", "setPoi", poi
-    Util.return()
+    map.panTo new L.LatLng poi.location.lat, poi.location.lng
+    selectPoi poi.name
 
   $scope.reset = ->
     $scope.selectedPoi = null
@@ -41,14 +44,23 @@ poiApp.controller "IndexCtrl", ($scope, Util, PoiRestangular) ->
     latLngOnLocate = e.latlng
     PoiRestangular.all("venues/search").getList(ll: "#{e.latlng.lat},#{e.latlng.lng}").then (result) ->
       $scope.pois = result.response.venues
-      # alert result.response.venues.length
       venuesLayer = new L.LayerGroup
       _.each result.response.venues, (venue) ->
         latlng = new L.LatLng venue.location.lat, venue.location.lng
         poiMarker = new L.Marker latlng
+        poiMarker.data = venue
+        poiMarker.on "click", (e) ->
+          map.panTo e.latlng
+          selectPoi e.target.data.name
+
+          # Scroll to selected element
+          $location.hash e.target.data.id
+          $anchorScroll()
+
+          $scope.$apply()
         venuesLayer.addLayer poiMarker 
       map.addLayer venuesLayer
-      # map.fitBounds venuesLayer.bounds
+      # map.fitBounds venuesLayer.getBounds()
       $scope.loading = false
     , (error) ->
       alert "Sorry, could not load locations. #{JSON.stringify error}"

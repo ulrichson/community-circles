@@ -5,9 +5,9 @@
     <div id="poi-list" class="container">
       <p><strong>Where are you?</strong></p>
       <div class="list-group">
-        <a href="#" class="list-group-item" ng-repeat="poi in pois | orderBy:'location.distance'" ng-class="{'active': selectedPoi == poi.name}" ng-click="choose(poi.name)">
+        <a class="list-group-item" ng-repeat="poi in pois | orderBy:'location.distance'" ng-class="{'active': selectedPoi == poi.name}" ng-click="choose(poi)">
           <span class="badge">{{ poi.location.distance }}m</span>
-          {{ poi.name }}
+          <span class="anchor" id="{{ poi.id }}"></span>{{ poi.name }}
         </a>
       </div>
       <img class="img-responsive" src="/images/poweredByFoursquare_gray.png" alt="Powered by Foursquare">
