@@ -44,9 +44,9 @@ communityCirclesUtil.factory "Util", ->
 
     if typeIsArray params
       _.each params, (p) ->
-        msg.params.push JSON.stringify p
+        msg.params.push p
     else if params?
-      msg.params.push JSON.stringify params
+      msg.params.push params
 
     window.postMessage msg
 
@@ -56,6 +56,7 @@ communityCirclesUtil.factory "Util", ->
       msg = event.data
       if msg.receiver is scope.message_id
         scope[msg.command].apply scope, msg.params
+        scope.$apply()
 
   #-----------------------------------------------------------------------------
   # VIEW NAVIGATION
