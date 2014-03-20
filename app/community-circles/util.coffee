@@ -39,7 +39,10 @@ communityCirclesUtil.factory "Util", ->
       command: command
       params: []
 
-    if params.length?
+    # See http://coffeescriptcookbook.com/chapters/arrays/check-type-is-array
+    typeIsArray = Array.isArray || (value) -> return {}.toString.call(value) is "[object Array]"
+
+    if typeIsArray params
       _.each params, (p) ->
         msg.params.push JSON.stringify p
     else if params?
@@ -52,4 +55,15 @@ communityCirclesUtil.factory "Util", ->
     window.addEventListener "message", (event) ->
       msg = event.data
       if msg.receiver is scope.message_id
-        scope[msg.command].apply scope, msg.params 
+        scope[msg.command].apply scope, msg.params
+
+  #-----------------------------------------------------------------------------
+  # VIEW NAVIGATION
+  #-----------------------------------------------------------------------------
+  enter: (viewId) ->
+    steroids.layers.push new steroids.views.WebView
+      location: ""
+      id: viewId
+
+  return: ->
+    steroids.layers.pop()
