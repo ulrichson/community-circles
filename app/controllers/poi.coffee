@@ -1,9 +1,9 @@
-poiApp = angular.module "poiApp", ["communityCirclesUtil", "PoiModel", "ngTouch"]
+poiApp = angular.module "poiApp", ["communityCirclesGame", "communityCirclesUtil", "PoiModel", "ngTouch"]
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/poi/index.html
 #------------------------------------------------------------------------------- 
-poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, PoiRestangular) ->
+poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, PoiRestangular) ->
 
   $scope.message_id = "poiIndexCtrl"
   $scope.loading = false
@@ -29,7 +29,8 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, PoiResta
     $scope.loading = true
    
   $scope.choose = (poi) ->
-    map.panTo new L.LatLng poi.location.lat, poi.location.lng
+    latlng = new L.LatLng poi.location.lat, poi.location.lng
+    map.setView latlng, map.getMaxZoom() 
     selectPoi poi.name
 
   $scope.reset = ->
@@ -43,7 +44,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, PoiResta
 
   map.on "locationfound", (e) ->
     latLngOnLocate = e.latlng
-    PoiRestangular.all("venues/search").getList(ll: "#{e.latlng.lat},#{e.latlng.lng}").then (result) ->
+    PoiRestangular.all("venues/search").getList(ll: "#{e.latlng.lat},#{e.latlng.lng}", radius: Game.initialRadius, intent: "browse").then (result) ->
       $scope.pois = result.response.venues
       venuesLayer = new L.FeatureGroup
       _.each result.response.venues, (venue) ->
@@ -51,7 +52,10 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, PoiResta
         poiMarker = new L.Marker latlng
         poiMarker.data = venue
         poiMarker.on "click", (e) ->
-          map.panTo e.latlng
+          # map.panTo e.latlng
+          latlng = new L.LatLng e.target.data.location.lat, e.target.data.location.lng
+          map.setView latlng, map.getMaxZoom()
+
           selectPoi e.target.data.name
 
           # Scroll to selected element
