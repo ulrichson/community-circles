@@ -8,7 +8,8 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, PoiResta
   $scope.message_id = "poiIndexCtrl"
   $scope.loading = false
 
-  latLngOnLocate = null;
+  latLngOnLocate = null
+  currentPositionMarker = null
 
   map = new L.Map "map",
     zoom: 10
@@ -61,6 +62,12 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, PoiResta
         venuesLayer.addLayer poiMarker 
       map.addLayer venuesLayer
       # map.fitBounds venuesLayer.getBounds()
+
+      # Add current position marker
+      map.removeLayer currentPositionMarker unless currentPositionMarker is null
+      currentPositionMarker = Util.createPositionMarker e.latlng
+      map.addLayer currentPositionMarker, true
+
       $scope.loading = false
     , (error) ->
       alert "Sorry, could not load locations. #{JSON.stringify error}"
