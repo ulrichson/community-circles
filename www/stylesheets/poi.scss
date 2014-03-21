@@ -23,3 +23,8 @@ $anchorOffset: 30px;
   top: -$mapHeight - $anchorOffset;
   visibility: hidden;
 }
+
+.poi-name {
+  display: block;
+  margin-left: 30px;
+}
