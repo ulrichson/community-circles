@@ -11,6 +11,9 @@ communityCirclesUtil.factory "Util", ->
     catch e
       return new L.LatLng 48.1217811, 16.5633169 # Vienna calling!
 
+  #-----------------------------------------------------------------------------
+  # MAP HELPERS
+  #-----------------------------------------------------------------------------
   meanLatLngs: (latlngs) ->
       lat = 0
       lng = 0
@@ -23,7 +26,7 @@ communityCirclesUtil.factory "Util", ->
       lng /= latlngs.length
 
       return new L.LatLng lat, lng
-
+  
   createTileLayer: ->
     return L.tileLayer "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
       detectRetina: true
@@ -31,6 +34,28 @@ communityCirclesUtil.factory "Util", ->
       subdomains: "a b c d".split " "
       unloadInvisibleTiles: false
       updateWhenIdle: true
+
+  createPositionMarker: (latlng, radius) ->
+    positionMarker = new L.LayerGroup
+
+    if radius?
+      c = new L.Circle latlng, radius,
+        color: "#004855"
+        fill: true
+        fillColor: "#004855"
+        fillOpacity: 0.2
+        opacity: 1
+        weight: 1
+      positionMarker.addLayer c
+
+    pm = new L.Marker latlng,
+      icon: L.icon
+        iconUrl: "/icons/marker-icon-current-position@2x.png"
+        iconSize: [32, 32]
+        iconAnchor: [16, 16]
+    positionMarker.addLayer pm
+
+    return positionMarker
 
   #-----------------------------------------------------------------------------
   # INTERWEBVIEW COMMUNICATION

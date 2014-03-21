@@ -246,23 +246,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRest
     # Clean up
     map.removeLayer currentPositionMarker unless currentPositionMarker is null
 
-    currentPositionMarker = new L.LayerGroup
-
-    c = new L.Circle latlng, Game.initialRadius,
-      color: "#004855"
-      fill: true
-      fillColor: "#004855"
-      fillOpacity: 0.2
-      opacity: 1
-      weight: 1
-    pm = new L.Marker latlng,
-      icon: L.icon
-        iconUrl: "/icons/marker-icon-current-position@2x.png"
-        iconSize: [32, 32]
-        iconAnchor: [16, 16]
-
-    currentPositionMarker.addLayer c
-    currentPositionMarker.addLayer pm
+    currentPositionMarker = Util.createPositionMarker latlng, Game.initialRadius
 
     map.addLayer currentPositionMarker, true
 
