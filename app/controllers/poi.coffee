@@ -45,7 +45,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, PoiResta
     latLngOnLocate = e.latlng
     PoiRestangular.all("venues/search").getList(ll: "#{e.latlng.lat},#{e.latlng.lng}").then (result) ->
       $scope.pois = result.response.venues
-      venuesLayer = new L.LayerGroup
+      venuesLayer = new L.FeatureGroup
       _.each result.response.venues, (venue) ->
         latlng = new L.LatLng venue.location.lat, venue.location.lng
         poiMarker = new L.Marker latlng
@@ -61,7 +61,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, PoiResta
           $scope.$apply()
         venuesLayer.addLayer poiMarker 
       map.addLayer venuesLayer
-      # map.fitBounds venuesLayer.getBounds()
+      map.fitBounds venuesLayer.getBounds(), padding: [30, 30]
 
       # Add current position marker
       map.removeLayer currentPositionMarker unless currentPositionMarker is null
