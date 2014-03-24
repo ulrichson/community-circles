@@ -1,4 +1,4 @@
-poiApp = angular.module "poiApp", ["communityCirclesGame", "communityCirclesUtil", "PoiModel", "ngTouch"]
+poiApp = angular.module "poiApp", ["mgcrea.pullToRefresh", "communityCirclesGame", "communityCirclesUtil", "PoiModel", "ngTouch"]
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/poi/index.html
@@ -52,7 +52,6 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Po
         poiMarker = new L.Marker latlng
         poiMarker.data = venue
         poiMarker.on "click", (e) ->
-          # map.panTo e.latlng
           latlng = new L.LatLng e.target.data.location.lat, e.target.data.location.lng
           map.setView latlng, map.getMaxZoom()
 
