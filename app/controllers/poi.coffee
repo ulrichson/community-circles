@@ -30,6 +30,15 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
 
   selectPoi = (poi) ->
     $scope.selectedPoi = poi.id
+
+    selectedMarker = null;
+    # Select marker in map
+    _.each venuesLayer.getLayers(), (marker) ->
+      selectedMarker = marker if marker.data.id is poi.id
+      marker._icon.className = marker._icon.className.replace " active", ""
+
+    selectedMarker._icon.className += " active" unless selectedMarker is null
+
     Util.send "contributionNewCtrl", "setPoi", poi.name
 
   locate = ->
