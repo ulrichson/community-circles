@@ -29,8 +29,8 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
       $scope.reset()
 
   selectPoi = (poi) ->
-    $scope.selectedPoi = poi
-    Util.send "contributionNewCtrl", "setPoi", poi
+    $scope.selectedPoi = poi.id
+    Util.send "contributionNewCtrl", "setPoi", poi.name
 
   locate = ->
     map.locate setView: true
@@ -39,7 +39,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
   $scope.choose = (poi) ->
     latlng = new L.LatLng poi.location.lat, poi.location.lng
     map.setView latlng, map.getMaxZoom() 
-    selectPoi poi.name
+    selectPoi poi
 
   $scope.reset = ->
     $scope.selectedPoi = null
@@ -73,7 +73,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
           latlng = new L.LatLng e.target.data.location.lat, e.target.data.location.lng
           map.setView latlng, map.getMaxZoom()
 
-          selectPoi e.target.data.name
+          selectPoi e.target.data
 
           # Scroll to selected element
           $location.hash e.target.data.id
