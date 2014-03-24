@@ -30,6 +30,7 @@
     "angular-hammer": "1.0.x",
     "holderjs": "2.3.x",
     "angular-carousel": "0.2.x",
-    "ratchet": "2.0.x"
+    "ratchet": "2.0.x",
+    "angular-pull-to-refresh": "0.3.x"
   }
 }

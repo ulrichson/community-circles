@@ -3,7 +3,7 @@
 
     angular.module('angular-carousel')
 
-    .directive('rnCarousel', ['$swipe', '$window', '$document', '$parse', '$compile', function($swipe, $window, $document, $parse, $compile) {
+    .directive('rnCarousel', ['$swipe', '$window', '$document', '$parse', '$compile', '$rootScope', function($swipe, $window, $document, $parse, $compile, $rootScope) {
         // internal ids to allow multiple instances
         var carouselId = 0,
             // used to compute the sliding speed
@@ -12,6 +12,8 @@
             moveTreshold = 0.05,
             // in absolute pixels, at which distance the slide stick to the edge on release
             rubberTreshold = 3;
+
+        var requestAnimationFrame = $window.requestAnimationFrame || $window.webkitRequestAnimationFrame || $window.mozRequestAnimationFrame;
 
         return {
             restrict: 'A',
@@ -183,7 +185,6 @@
 
                     function scroll(x) {
                         // use CSS 3D transform to move the carousel
-                        //console.log('scroll', x, 'index', scope.carouselIndex);
                         if (isNaN(x)) {
                             x = scope.carouselIndex * containerWidth;
                         }
@@ -191,7 +192,12 @@
                         offset = x;
                         var move = -Math.round(offset);
                         move += (scope.carouselBufferIndex * containerWidth);
-                        carousel[0].style[transformProperty] = 'translate3d(' + move + 'px, 0, 0)';
+
+                        if(!is3dAvailable) {
+                            carousel[0].style[transformProperty] = 'translate(' + move + 'px, 0)';
+                        } else {
+                            carousel[0].style[transformProperty] = 'translate3d(' + move + 'px, 0, 0)';
+                        }
                     }
 
                     function autoScroll() {
@@ -204,6 +210,8 @@
                             delta = amplitude * Math.exp(-elapsed / timeConstant);
                             if (delta > rubberTreshold || delta < -rubberTreshold) {
                                 scroll(destination - delta);
+                                /* We are using raf.js, a requestAnimationFrame polyfill, so
+                                this will work on IE9 */
                                 requestAnimationFrame(autoScroll);
                             } else {
                                 goToSlide(destination / containerWidth);
@@ -249,7 +257,7 @@
                         updateBufferIndex();
                         // if outside of angular scope, trigger angular digest cycle
                         // use local digest only for perfs if no index bound
-                        if (scope.$$phase!=='$apply' && scope.$$phase!=='$digest') {
+                        if ($rootScope.$$phase!=='$apply' && $rootScope.$$phase!=='$digest') {
                             if (isIndexBound) {
                                 scope.$apply();
                             } else {
@@ -305,6 +313,9 @@
                             if (delta > 2 || delta < -2) {
                                 swipeMoved = true;
                                 startX = x;
+
+                                /* We are using raf.js, a requestAnimationFrame polyfill, so
+                                this will work on IE9 */
                                 requestAnimationFrame(function() {
                                     scroll(capPosition(offset + delta));
                                 });
@@ -347,6 +358,8 @@
                         if (forceAnimation) {
                             amplitude = offset - currentOffset;
                         }
+                        /* We are using raf.js, a requestAnimationFrame polyfill, so
+                        this will work on IE9 */
                         requestAnimationFrame(autoScroll);
 
                         return false;
@@ -385,6 +398,31 @@
                         }
                         return true;
                     });
+
+                    //Detect support of translate3d
+                    function detect3dSupport(){
+                        var el = document.createElement('p'),
+                        has3d,
+                        transforms = {
+                            'webkitTransform':'-webkit-transform',
+                            'OTransform':'-o-transform',
+                            'msTransform':'-ms-transform',
+                            'MozTransform':'-moz-transform',
+                            'transform':'transform'
+                        };
+                        // Add it to the body to get the computed style
+                        document.body.insertBefore(el, null);
+                        for(var t in transforms){
+                            if( el.style[t] !== undefined ){
+                                el.style[t] = 'translate3d(1px,1px,1px)';
+                                has3d = window.getComputedStyle(el).getPropertyValue(transforms[t]);
+                            }
+                        }
+                        document.body.removeChild(el);
+                        return (has3d !== undefined && has3d.length > 0 && has3d !== "none");
+                    }
+
+                    var is3dAvailable = detect3dSupport();
 
                     function onOrientationChange() {
                         updateContainerWidth();
