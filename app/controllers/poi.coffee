@@ -58,7 +58,16 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
       venuesLayer = new L.FeatureGroup
       _.each result.response.venues, (venue) ->
         latlng = new L.LatLng venue.location.lat, venue.location.lng
-        poiMarker = new L.Marker latlng
+        imgTag = ""
+        if venue.categories[0]?
+          imgSrc = "#{venue.categories[0].icon.prefix}44#{venue.categories[0].icon.suffix}"
+          imgTag = "<img class=\"category-icon\" alt=\"#{venue.categories[0].name}\" src=\"#{imgSrc}\" width=\"22\">"
+        poiMarker = new L.Marker latlng,
+          icon: L.divIcon
+            className: "poi-marker"
+            iconAnchor: [12, 36]
+            iconSize: [24, 36]
+            html: "<div class=\"poi-icon\">#{imgTag}</div>"
         poiMarker.data = venue
         poiMarker.on "click", (e) ->
           latlng = new L.LatLng e.target.data.location.lat, e.target.data.location.lng
