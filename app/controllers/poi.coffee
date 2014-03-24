@@ -1,15 +1,23 @@
-poiApp = angular.module "poiApp", ["mgcrea.pullToRefresh", "communityCirclesGame", "communityCirclesUtil", "PoiModel", "ngTouch"]
+poiApp = angular.module "poiApp", [
+  "mgcrea.pullToRefresh",
+  "communityCirclesGame",
+  "communityCirclesUtil",
+  "communityCirclesLog",
+  "PoiModel",
+  "ngTouch"
+]
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/poi/index.html
 #------------------------------------------------------------------------------- 
-poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, PoiRestangular) ->
+poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Log, PoiRestangular) ->
 
   $scope.message_id = "poiIndexCtrl"
   $scope.loading = false
 
   latLngOnLocate = null
   currentPositionMarker = null
+  venuesLayer = null
 
   map = new L.Map "map",
     zoom: 10
@@ -17,8 +25,8 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Po
 
   visibilityChanged = ->
     # POIs are prefetched, however, reload if you moved too far
-    # if document.visibilityState is "visible" and latLngOnLocate isnt null and Util.lastKnownPosition.distanceTo(latLngOnLocate) < 50
-    #   locate()
+    if document.visibilityState is "visible" and latLngOnLocate isnt null and Util.lastKnownPosition().distanceTo(latLngOnLocate) < Game.initialRadius / 4
+      $scope.reset()
 
   selectPoi = (poi) ->
     $scope.selectedPoi = poi
@@ -46,6 +54,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Po
     latLngOnLocate = e.latlng
     PoiRestangular.all("venues/search").getList(ll: "#{e.latlng.lat},#{e.latlng.lng}", radius: Game.initialRadius, intent: "browse").then (result) ->
       $scope.pois = result.response.venues
+      map.removeLayer venuesLayer unless venuesLayer is null
       venuesLayer = new L.FeatureGroup
       _.each result.response.venues, (venue) ->
         latlng = new L.LatLng venue.location.lat, venue.location.lng
