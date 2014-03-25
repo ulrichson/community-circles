@@ -39,9 +39,13 @@ $anchorOffset: 30px;
 
 .poi-icon {
   position: relative;
-  top: 2px;
+  top: 5px;
 }
 
 .poi-marker.active {
   background-image: url(/icons/marker-icon-poi_active.svg);
+}
+
+.poi-marker.disabled {
+  background-image: url(/icons/marker-icon-poi_disabled.svg);
 }

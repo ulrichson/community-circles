@@ -12,6 +12,9 @@ poiApp = angular.module "poiApp", [
 #------------------------------------------------------------------------------- 
 poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Log, PoiRestangular) ->
 
+  iconSize = [28, 42]
+  iconAnchor = [14, 42]
+
   $scope.message_id = "poiIndexCtrl"
   $scope.loading = false
 
@@ -22,19 +25,37 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
   selectedMarkerZIndex = 0
   maxZIndex = 0
 
+  spiderfiedMarkers = null
+
   venuesLayer = null
 
   map = new L.Map "map",
     zoom: 10
     zoomControl: false
 
+  oms = new OverlappingMarkerSpiderfier map,
+    nearbyDistance: (if iconSize[0] > iconSize[1] then iconSize[0] else iconSize[1]) + 5
+
   visibilityChanged = ->
     # POIs are prefetched, however, reload if you moved too far
     if document.visibilityState is "visible" and latLngOnLocate isnt null and Util.lastKnownPosition().distanceTo(latLngOnLocate) < Game.initialRadius / 4
       $scope.reset()
 
+  unselectPois = ->
+    selectedMarker._icon.style.zIndex = selectedMarkerZIndex unless selectedMarker is null
+    _.each venuesLayer.getLayers(), (marker) -> marker._icon.className = marker._icon.className.replace " active", ""
+
+    Util.send "contributionNewCtrl", "setPoi", null
+
+    $scope.selectedPoi = null
+    selectedMarker = null
+    selectedMarkerZIndex = 0
+    maxZIndex = 0
+
+    $scope.$apply()
+
   selectPoi = (poi) ->
-    return if venuesLayer is null
+    return if not venuesLayer? or not poi?
     
     $scope.selectedPoi = poi
 
@@ -42,6 +63,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
     selectedMarker._icon.style.zIndex = selectedMarkerZIndex unless selectedMarker is null
 
     selectedMarker = null
+
     # Select marker in map
     _.each venuesLayer.getLayers(), (marker) ->
       # Reset style of all markers
@@ -63,14 +85,12 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
    
   $scope.choose = (poi) ->
     latlng = new L.LatLng poi.location.lat, poi.location.lng
+    oms.unspiderfy()
     map.setView latlng, map.getMaxZoom() 
     selectPoi poi
 
   $scope.reset = ->
-    $scope.selectedPoi = null
-    selectedMarker = null
-    selectedMarkerZIndex = 0
-    maxZIndex = 0
+    unselectPois()
     locate()
 
   Util.consume $scope
@@ -93,22 +113,26 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
         poiMarker = new L.Marker latlng,
           icon: L.divIcon
             className: "poi-marker"
-            iconAnchor: [12, 36]
-            iconSize: [24, 36]
+            iconAnchor: iconAnchor
+            iconSize: iconSize
             html: "<div class=\"poi-icon\">#{imgTag}</div>"
         poiMarker.data = venue
-        poiMarker.on "click", (e) ->
-          latlng = new L.LatLng e.target.data.location.lat, e.target.data.location.lng
-          map.setView latlng, map.getMaxZoom()
+        oms.addListener "click", (marker) ->
+          if not _.contains spiderfiedMarkers, marker
+            latlng = new L.LatLng marker.data.location.lat, marker.data.location.lng
+            map.setView latlng, map.getMaxZoom()
 
-          selectPoi e.target.data
+            selectPoi marker.data
 
-          # Scroll to selected element
-          $location.hash e.target.data.id
-          $anchorScroll()
+            # Scroll to selected element
+            $location.hash marker.data.id
+            $anchorScroll()
 
-          $scope.$apply()
-        venuesLayer.addLayer poiMarker 
+            $scope.$apply()
+
+        venuesLayer.addLayer poiMarker
+        oms.addMarker poiMarker
+
       map.addLayer venuesLayer
       map.fitBounds venuesLayer.getBounds(), padding: [30, 30]
 
@@ -129,6 +153,19 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
     $scope.loading = false
 
   map.on "zoomend", (e) ->
-    selectPoi $scope.selectedPoi unless $scope.selectedPoi is null
+    selectPoi $scope.selectedPoi if $scope.selectedPoi?
+
+  oms.addListener "spiderfy", (spiderfied, others) ->
+    unselectPois()
+    _.each others, (marker) ->
+      marker._icon.className = marker._icon.className + " disabled"
+      # marker._icon.style.visibility = "hidden"
+    spiderfiedMarkers = spiderfied
+
+  oms.addListener "unspiderfy", (unspiderfied, others) ->
+    _.each venuesLayer.getLayers(), (marker) ->
+      marker._icon.className = marker._icon.className.replace " disabled", ""
+      # marker._icon.style.visibility = "visible"
+    spiderfiedMarkers = null
 
   document.addEventListener "visibilitychange", visibilityChanged, false
