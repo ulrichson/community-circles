@@ -17,6 +17,11 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
 
   latLngOnLocate = null
   currentPositionMarker = null
+
+  selectedMarker = null
+  selectedMarkerZIndex = -1
+  maxZIndex = 0
+
   venuesLayer = null
 
   map = new L.Map "map",
@@ -31,13 +36,22 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
   selectPoi = (poi) ->
     $scope.selectedPoi = poi.id
 
-    selectedMarker = null;
+    # Reset z-index of previously selected marker
+    selectedMarker._icon.style.zIndex = selectedMarkerZIndex unless selectedMarker is null
+
+    selectedMarker = null
     # Select marker in map
     _.each venuesLayer.getLayers(), (marker) ->
-      selectedMarker = marker if marker.data.id is poi.id
+      # Reset style of all markers
       marker._icon.className = marker._icon.className.replace " active", ""
+        
+      selectedMarker = marker if marker.data.id is poi.id
+      maxZIndex = marker._icon.style.zIndex if marker._icon.style.zIndex > maxZIndex
 
-    selectedMarker._icon.className += " active" unless selectedMarker is null
+    if selectedMarker isnt null
+      selectedMarkerZIndex = selectedMarker._icon.style.zIndex
+      selectedMarker._icon.className += " active"
+      selectedMarker._icon.style.zIndex = maxZIndex + 1
 
     Util.send "contributionNewCtrl", "setPoi", poi.name
 
