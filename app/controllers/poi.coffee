@@ -14,6 +14,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
 
   iconSize = [28, 42]
   iconAnchor = [14, 42]
+  iconLongerSide = if iconSize[0] > iconSize[1] then iconSize[0] else iconSize[1]
 
   $scope.message_id = "poiIndexCtrl"
   $scope.loading = false
@@ -34,7 +35,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
     zoomControl: false
 
   oms = new OverlappingMarkerSpiderfier map,
-    nearbyDistance: (if iconSize[0] > iconSize[1] then iconSize[0] else iconSize[1]) + 5
+    nearbyDistance: iconLongerSide + 5
 
   visibilityChanged = ->
     # POIs are prefetched, however, reload if you moved too far
@@ -93,6 +94,12 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
     unselectPois()
     locate()
 
+  map.dragging.disable()
+  map.touchZoom.disable()
+  map.doubleClickZoom.disable()
+  map.scrollWheelZoom.disable()
+  # map.tap.disable() if map.tap
+
   Util.consume $scope
 
   Util.createTileLayer().addTo map
@@ -134,7 +141,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
         oms.addMarker poiMarker
 
       map.addLayer venuesLayer
-      map.fitBounds venuesLayer.getBounds(), padding: [30, 30]
+      map.fitBounds venuesLayer.getBounds(), padding: [iconLongerSide, iconLongerSide]
 
       # Add current position marker
       map.removeLayer currentPositionMarker unless currentPositionMarker is null
