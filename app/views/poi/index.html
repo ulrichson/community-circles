@@ -5,11 +5,11 @@
     <div id="poi-list" class="container" pull-to-refresh="reset()">
       <p><strong>Where are you?</strong></p>
       <div class="list-group">
-        <a class="list-group-item" ng-repeat="poi in pois | orderBy:'location.distance'" ng-class="{ 'active': selectedPoi == poi.id }" ng-click="choose(poi)">
+        <a class="list-group-item" ng-repeat="poi in pois | orderBy:'location.distance'" ng-class="{ 'active': selectedPoi.id == poi.id }" ng-click="choose(poi)">
           <span class="anchor" id="{{ poi.id }}"></span>
           <span class="badge">{{ poi.location.distance }}m</span>
-          <img ng-show="poi.categories[0].icon && selectedPoi != poi.id" class="pull-left" src="{{ poi.categories[0].icon.prefix + 'bg_44' + poi.categories[0].icon.suffix }}" alt="{{ poi.categories[0].name }}" width="22">
-          <img ng-show="poi.categories[0].icon && selectedPoi == poi.id" class="pull-left" src="{{ poi.categories[0].icon.prefix + '44' + poi.categories[0].icon.suffix }}" alt="{{ poi.categories[0].name }}" width="22">
+          <img ng-show="poi.categories[0].icon && selectedPoi.id != poi.id" class="pull-left" src="{{ poi.categories[0].icon.prefix + 'bg_44' + poi.categories[0].icon.suffix }}" alt="{{ poi.categories[0].name }}" width="22">
+          <img ng-show="poi.categories[0].icon && selectedPoi.id == poi.id" class="pull-left" src="{{ poi.categories[0].icon.prefix + '44' + poi.categories[0].icon.suffix }}" alt="{{ poi.categories[0].name }}" width="22">
           <span ng-class="{ 'poi-name': poi.categories[0].icon }">{{ poi.name }}</span>
         </a>
       </div>

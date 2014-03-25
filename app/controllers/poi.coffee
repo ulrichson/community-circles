@@ -34,7 +34,9 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
       $scope.reset()
 
   selectPoi = (poi) ->
-    $scope.selectedPoi = poi.id
+    return if venuesLayer is null
+    
+    $scope.selectedPoi = poi
 
     # Reset z-index of previously selected marker
     selectedMarker._icon.style.zIndex = selectedMarkerZIndex unless selectedMarker is null
@@ -125,5 +127,8 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
     alert "Sorry, cannot determine position."
     console.error "Failed to get current position: {e}"
     $scope.loading = false
+
+  map.on "zoomend", (e) ->
+    selectPoi $scope.selectedPoi unless $scope.selectedPoi is null
 
   document.addEventListener "visibilitychange", visibilityChanged, false
