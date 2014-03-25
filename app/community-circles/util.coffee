@@ -26,6 +26,20 @@ communityCirclesUtil.factory "Util", ->
       lng /= latlngs.length
 
       return new L.LatLng lat, lng
+
+  getBoundsForMarkers: (markers) ->
+    minLat = Number.MAX_VALUE
+    minLng = Number.MAX_VALUE
+    maxLat = Number.MIN_VALUE
+    maxLng = Number.MIN_VALUE
+
+    _.each markers, (marker) ->
+      minLat = Math.min marker.getLatLng().lat, minLat
+      minLng = Math.min marker.getLatLng().lng, minLng
+      maxLat = Math.max marker.getLatLng().lat, maxLat
+      maxLng = Math.max marker.getLatLng().lng, maxLng
+
+    return L.latLngBounds new L.LatLng(minLat, minLng), new L.LatLng(maxLat, maxLng)
   
   createTileLayer: ->
     return L.tileLayer "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",

@@ -15,6 +15,10 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
   iconSize = [28, 42]
   iconAnchor = [14, 42]
   iconLongerSide = if iconSize[0] > iconSize[1] then iconSize[0] else iconSize[1]
+  paddingTopLeft = [iconSize[0] / 2 + 10, iconSize[1] + 10]
+  paddingBottomRight = [iconSize[0] / 2 + 10, 10]
+  # paddingTopLeft = [0, 0]
+  # paddingBottomRight = [0, 0]
 
   $scope.message_id = "poiIndexCtrl"
   $scope.loading = false
@@ -27,6 +31,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
   maxZIndex = 0
 
   spiderfiedMarkers = null
+  isSpiderfied = false
 
   venuesLayer = null
 
@@ -35,7 +40,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
     zoomControl: false
 
   oms = new OverlappingMarkerSpiderfier map,
-    nearbyDistance: iconLongerSide + 5
+    nearbyDistance: iconLongerSide / 2
 
   visibilityChanged = ->
     # POIs are prefetched, however, reload if you moved too far
@@ -53,7 +58,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
     selectedMarkerZIndex = 0
     maxZIndex = 0
 
-    $scope.$apply()
+    map.fitBounds venuesLayer.getBounds(), paddingTopLeft: paddingTopLeft, paddingBottomRight: paddingBottomRight unless isSpiderfied
 
   selectPoi = (poi) ->
     return if not venuesLayer? or not poi?
@@ -78,6 +83,10 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
       selectedMarker._icon.className += " active"
       selectedMarker._icon.style.zIndex = maxZIndex + 1
 
+    latlng = new L.LatLng poi.location.lat, poi.location.lng
+    map.setView latlng, map.getMaxZoom()
+    # map.panTo latlng
+
     Util.send "contributionNewCtrl", "setPoi", poi.name
 
   locate = ->
@@ -85,10 +94,11 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
     $scope.loading = true
    
   $scope.choose = (poi) ->
-    latlng = new L.LatLng poi.location.lat, poi.location.lng
-    oms.unspiderfy()
-    map.setView latlng, map.getMaxZoom() 
-    selectPoi poi
+    if $scope.selectedPoi? and $scope.selectedPoi.id is poi.id
+      unselectPois()
+    else
+      oms.unspiderfy()
+      selectPoi poi
 
   $scope.reset = ->
     unselectPois()
@@ -98,7 +108,6 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
   map.touchZoom.disable()
   map.doubleClickZoom.disable()
   map.scrollWheelZoom.disable()
-  # map.tap.disable() if map.tap
 
   Util.consume $scope
 
@@ -107,7 +116,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
 
   map.on "locationfound", (e) ->
     latLngOnLocate = e.latlng
-    PoiRestangular.all("venues/search").getList(ll: "#{e.latlng.lat},#{e.latlng.lng}", radius: Game.initialRadius, intent: "browse").then (result) ->
+    PoiRestangular.all("venues/search").getList(ll: "#{e.latlng.lat},#{e.latlng.lng}", radius: Game.initialRadius, intent: "browse", limit: 10).then (result) ->
       $scope.pois = result.response.venues
       map.removeLayer venuesLayer unless venuesLayer is null
       venuesLayer = new L.FeatureGroup
@@ -126,10 +135,8 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
         poiMarker.data = venue
         oms.addListener "click", (marker) ->
           if not _.contains spiderfiedMarkers, marker
-            latlng = new L.LatLng marker.data.location.lat, marker.data.location.lng
-            map.setView latlng, map.getMaxZoom()
-
             selectPoi marker.data
+            # $scope.choose marker.data
 
             # Scroll to selected element
             $location.hash marker.data.id
@@ -141,7 +148,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
         oms.addMarker poiMarker
 
       map.addLayer venuesLayer
-      map.fitBounds venuesLayer.getBounds(), padding: [iconLongerSide, iconLongerSide]
+      map.fitBounds venuesLayer.getBounds(), paddingTopLeft: paddingTopLeft, paddingBottomRight: paddingBottomRight
 
       # Add current position marker
       map.removeLayer currentPositionMarker unless currentPositionMarker is null
@@ -162,17 +169,28 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
   map.on "zoomend", (e) ->
     selectPoi $scope.selectedPoi if $scope.selectedPoi?
 
+  map.on "click", (e) ->
+    unselectPois()
+    $scope.$apply()
+
   oms.addListener "spiderfy", (spiderfied, others) ->
+    isSpiderfied = true
     unselectPois()
     _.each others, (marker) ->
       marker._icon.className = marker._icon.className + " disabled"
-      # marker._icon.style.visibility = "hidden"
+
+    map.fitBounds Util.getBoundsForMarkers spiderfied, paddingTopLeft: paddingTopLeft, paddingBottomRight: paddingBottomRight
+
     spiderfiedMarkers = spiderfied
 
   oms.addListener "unspiderfy", (unspiderfied, others) ->
+    isSpiderfied = false
     _.each venuesLayer.getLayers(), (marker) ->
       marker._icon.className = marker._icon.className.replace " disabled", ""
-      # marker._icon.style.visibility = "visible"
+
+    # Reset to original view, if nothing is selected
+    # map.fitBounds venuesLayer.getBounds(), paddingTopLeft: paddingTopLeft, paddingBottomRight: paddingBottomRight unless $scope.selectedPoi?
+    unselectPois()
     spiderfiedMarkers = null
 
   document.addEventListener "visibilitychange", visibilityChanged, false
