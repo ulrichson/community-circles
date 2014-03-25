@@ -19,7 +19,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
   currentPositionMarker = null
 
   selectedMarker = null
-  selectedMarkerZIndex = -1
+  selectedMarkerZIndex = 0
   maxZIndex = 0
 
   venuesLayer = null
@@ -44,7 +44,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
     _.each venuesLayer.getLayers(), (marker) ->
       # Reset style of all markers
       marker._icon.className = marker._icon.className.replace " active", ""
-        
+
       selectedMarker = marker if marker.data.id is poi.id
       maxZIndex = marker._icon.style.zIndex if marker._icon.style.zIndex > maxZIndex
 
@@ -66,6 +66,9 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
 
   $scope.reset = ->
     $scope.selectedPoi = null
+    selectedMarker = null
+    selectedMarkerZIndex = 0
+    maxZIndex = 0
     locate()
 
   Util.consume $scope
