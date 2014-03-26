@@ -1,12 +1,20 @@
 # util = window.Util
-mapApp = angular.module("mapApp", ["communityCirclesApp", "communityCirclesGame", "communityCirclesUtil", "ngTouch", "CommunityModel", "ngAnimate", "angularMoment"])
+mapApp = angular.module "mapApp", [
+  "communityCirclesApp",
+  "communityCirclesGame",
+  "communityCirclesUtil",
+  "communityCirclesLog",
+  "ngTouch",
+  "CommunityModel",
+  "ngAnimate",
+  "angularMoment"]
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/map/index.html
 #------------------------------------------------------------------------------- 
-mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRestangular) ->
+mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, CommunityRestangular) ->
 
-  markerDiameter = 60
+  markerDiameter = 40
   mapPreviewHeight = 80
   communityOpacity = 0.2
   animationDuration = 0.5
@@ -79,7 +87,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRest
       this._container.appendChild L.DomUtil.create "i", "fa fa-location-arrow fa-stack-1x"
       L.DomEvent.addListener this._container, "click", (e) ->
         L.DomEvent.stopPropagation e
-        $scope.locate()
+        map.setView Util.lastKnownPosition()
 
       return this._container
 
@@ -101,21 +109,19 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRest
   # MAP EVENTS
   #-----------------------------------------------------------------------------
   map.on "locationfound", (e) ->
-    console.log "Position found: #{JSON.stringify e.latlng}"
+    Log.i "Location found: #{e.latlng.lat}, #{e.latlng.lng}"
     $scope.$apply -> $scope.loading = false
-    map.setView e.latlng
     drawCommunities e.latlng
     updateCurrentPositionMarker e.latlng
 
   map.on "locationerror", (e) ->
     $scope.$apply -> $scope.loading = false
-    alert "Could not determine position, please verify that the app has permission to use location services."
-    console.error "Could not determine position (code=#{e.code}). #{e.message}"
+    Log.w "Could not determine position (code=#{e.code}). #{e.message}"
 
   map.on "error", (e) ->
     $scope.$apply -> $scope.loading = false
     alert "Sorry, the map cannot be loaded at the moment"
-    console.error "Leaflet error: #{e.message}"
+    Log.e "Leaflet error: #{e.message}"
 
   contributionMarkerClicked = (e) ->
     # Hide everything, except selected contribution
@@ -144,10 +150,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRest
 
   locate = ->
     $scope.loading = true
-    map.locate()
-
-  refreshMap = (position) ->
-    # console.debug "Received position #{position.coords.latitude} #{position.coords.longitude}, accuracy: #{position.coords.accuracy}."
+    map.locate
+      enableHighAccuracy: true
+      watch: true
 
   createContributionMarker = (feature, latlng) ->
     #     # Indicate low health
@@ -253,13 +258,6 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRest
   #-----------------------------------------------------------------------------
   # UI EVENTS
   #-----------------------------------------------------------------------------
-  # $scope.testLocalNotification = ->
-  #   if window.plugin.notification.local
-  #     window.plugin.notification.local.add
-  #       message: "Hello World"
-  #   else
-  #     console.warn "Local notifications are not supported"
-
   $scope.newContribution = ->
     steroids.layers.push new steroids.views.WebView
       location: "/views/contribution/new.html"
@@ -325,15 +323,6 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, CommunityRest
     
     selectedContributionMarker = null
     $scope.contributionSelected = false
-     
-  #-----------------------------------------------------------------------------
-  # GLOBAL EVENTS
-  #-----------------------------------------------------------------------------
-  window.addEventListener "message", (event) ->
-    
-    # reload data on message with reload status
-    # drawCommunities() if event.data.status is "reload"
-    return
 
   #-----------------------------------------------------------------------------
   # INITIALIZE
