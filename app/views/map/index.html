@@ -1,6 +1,8 @@
 <div ng-app="mapApp">
   <div ng-controller="IndexCtrl">
-    <div class="spinner" ng-show="loading"></div>
+    <div class="loading-full" ng-show="loading">
+      <i class="fa fa-4x fa-spinner fa-spin fa-inverse"></i>
+    </div>
     <div id="map"></div>
     <div class="contribution-detail" ng-show="contributionSelected">
       <div class="contribution-detail-inner">

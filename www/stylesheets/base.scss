@@ -80,6 +80,20 @@ $content-padding: 10px;
   -webkit-animation-timing-function: linear;
 }
 
+.loading-full {
+  background: rgba(0, 0, 0, 0.5);
+  display: table;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  z-index: 9999;
+}
+
+.loading-full i {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
 
 body {
   font-color: $cc-darker;
