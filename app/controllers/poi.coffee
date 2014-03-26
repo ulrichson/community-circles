@@ -17,8 +17,6 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
   iconLongerSide = if iconSize[0] > iconSize[1] then iconSize[0] else iconSize[1]
   paddingTopLeft = [iconSize[0] / 2 + 10, iconSize[1] + 10]
   paddingBottomRight = [iconSize[0] / 2 + 10, 10]
-  # paddingTopLeft = [0, 0]
-  # paddingBottomRight = [0, 0]
 
   $scope.message_id = "poiIndexCtrl"
   $scope.loading = false
@@ -31,7 +29,6 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
   maxZIndex = 0
 
   spiderfiedMarkers = null
-  isSpiderfied = false
 
   venuesLayer = null
 
@@ -58,7 +55,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
     selectedMarkerZIndex = 0
     maxZIndex = 0
 
-    map.fitBounds venuesLayer.getBounds(), paddingTopLeft: paddingTopLeft, paddingBottomRight: paddingBottomRight unless isSpiderfied
+    map.fitBounds venuesLayer.getBounds(), paddingTopLeft: paddingTopLeft, paddingBottomRight: paddingBottomRight
 
   selectPoi = (poi) ->
     return if not venuesLayer? or not poi?
@@ -174,22 +171,16 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
     $scope.$apply()
 
   oms.addListener "spiderfy", (spiderfied, others) ->
-    isSpiderfied = true
     unselectPois()
     _.each others, (marker) ->
       marker._icon.className = marker._icon.className + " disabled"
 
-    map.fitBounds Util.getBoundsForMarkers spiderfied, paddingTopLeft: paddingTopLeft, paddingBottomRight: paddingBottomRight
-
     spiderfiedMarkers = spiderfied
 
   oms.addListener "unspiderfy", (unspiderfied, others) ->
-    isSpiderfied = false
     _.each venuesLayer.getLayers(), (marker) ->
       marker._icon.className = marker._icon.className.replace " disabled", ""
 
-    # Reset to original view, if nothing is selected
-    # map.fitBounds venuesLayer.getBounds(), paddingTopLeft: paddingTopLeft, paddingBottomRight: paddingBottomRight unless $scope.selectedPoi?
     unselectPois()
     spiderfiedMarkers = null
 
