@@ -37,12 +37,13 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
     zoomControl: false
 
   oms = new OverlappingMarkerSpiderfier map,
-    nearbyDistance: iconLongerSide / 2
+    nearbyDistance: iconLongerSide
 
   visibilityChanged = ->
     # POIs are prefetched, however, reload if you moved too far
-    if document.visibilityState is "visible" and latLngOnLocate isnt null and Util.lastKnownPosition().distanceTo(latLngOnLocate) < Game.initialRadius / 4
-      $scope.reset()
+    if document.visibilityState is "visible" and latLngOnLocate isnt null and Util.lastKnownPosition().distanceTo(latLngOnLocate) > Game.initialRadius / 4
+      Log.d "Distance since last visit: #{Util.lastKnownPosition().distanceTo(latLngOnLocate)}m"
+      $scope.reset true
 
   unselectPois = ->
     selectedMarker._icon.style.zIndex = selectedMarkerZIndex unless selectedMarker is null
@@ -87,7 +88,7 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
     Util.send "contributionNewCtrl", "setPoi", poi.name
 
   locate = ->
-    map.locate setView: true
+    map.locate setView: false
     $scope.loading = true
    
   $scope.choose = (poi) ->
@@ -97,8 +98,8 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
       oms.unspiderfy()
       selectPoi poi
 
-  $scope.reset = ->
-    unselectPois()
+  $scope.reset = (keepSelected = false) ->
+    unselectPois() unless keepSelected
     locate()
 
   map.dragging.disable()
@@ -133,7 +134,6 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
         oms.addListener "click", (marker) ->
           if not _.contains spiderfiedMarkers, marker
             selectPoi marker.data
-            # $scope.choose marker.data
 
             # Scroll to selected element
             $location.hash marker.data.id
@@ -151,6 +151,12 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
       map.removeLayer currentPositionMarker unless currentPositionMarker is null
       currentPositionMarker = Util.createPositionMarker e.latlng
       map.addLayer currentPositionMarker, true
+
+      # Select previously selected POI again
+      selectedMarker = null
+      selectedMarkerZIndex = 0
+      maxZIndex = 0
+      selectPoi $scope.selectedPoi if $scope.selectedPoi?
 
       $scope.loading = false
     , (error) ->
