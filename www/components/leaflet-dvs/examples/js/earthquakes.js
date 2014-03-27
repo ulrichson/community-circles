@@ -70,12 +70,10 @@ var eqfeed_callback = function (data) {
 			weight: 1,
 			color: '#000',
 			opacity: 0.2,
+			stroke: true,
 			fillOpacity: 0.7,
 			dropShadow: true,
-			gradient: true,
-			text: {
-				text: 'Test'
-			}
+			gradient: true
 		},
 		tooltipOptions: {
 			iconSize: new L.Point(90,76),
@@ -83,20 +81,6 @@ var eqfeed_callback = function (data) {
 		},
 		onEachRecord: function (layer, record, location) {
 			var $html = $(L.HTMLUtils.buildTable(record));
-			var magString = record.properties.mag.toFixed(1);
-			var numChars = magString.length;
-			var fontSize = fontSizeFunction.evaluate(record.properties.mag);
-
-			/*
-			this.addLayer(new L.Marker(location.location, {
-				icon: new L.DivIcon({
-					html: '<div class="mag-value" style="font-size: ' + fontSize + 'px; line-height: ' + fontSize + 'px;">' + magString + '</div>',
-					className: 'mag-text',
-					iconSize: new L.Point(numChars * fontSize, fontSize)
-				}),
-
-			}));
-			*/
 
 			layer.bindPopup($html.wrap('<div/>').parent().html(),{
 				minWidth: 400,
