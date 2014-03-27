@@ -7,7 +7,9 @@ mapApp = angular.module "mapApp", [
   "ngTouch",
   "CommunityModel",
   "ngAnimate",
-  "angularMoment"]
+  "angularMoment",
+  "swipe"
+]
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/map/index.html
