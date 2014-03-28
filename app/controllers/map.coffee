@@ -39,7 +39,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
 
   map = new L.Map "map",
     center: Util.lastKnownPosition()
-    zoom: 16
+    zoom: 14
     zoomControl: false
 
   $scope.loading = false
@@ -247,7 +247,10 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
       
       map.addLayer contributionsLayer
 
-    fakeAsyncCallback(contributionsGeoJSON)
+    # latLngBounds = L.latLngBounds new L.LatLng(48.3290194, 16.1749), new L.LatLng(48.078705, 16.570455)
+    contributionsGeoJSON = generateRandomContributions map.getBounds(), 50
+    # console.log contributionsGeoJSON
+    fakeAsyncCallback contributionsGeoJSON
 
   updateCurrentPositionMarker = (latlng) ->
     # Clean up
@@ -256,6 +259,30 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
     currentPositionMarker = Util.createPositionMarker latlng, Game.initialRadius
 
     map.addLayer currentPositionMarker, true
+
+
+  generateRandomContributions = (latLngBounds, n) ->
+    ret = 
+      type: "FeatureCollection"
+      features: ( -> return 
+      type: "Feature"
+      geometry:
+        type: "Point"
+        coordinates: [
+          latLngBounds.getSouthWest().lng + (latLngBounds.getNorthEast().lng - latLngBounds.getSouthWest().lng) * Math.random(),
+          latLngBounds.getSouthWest().lat + (latLngBounds.getNorthEast().lat - latLngBounds.getSouthWest().lat) * Math.random()
+        ]
+      properties:
+        id: i
+        title: "Generated Title"
+        type: ["issue", "idea", "poll", "opinion"][Math.round(Math.random() * 3)]
+        mood: "happy"
+        radius: Util.randomFromTo 50, 300
+        health: Math.random()
+        community_id: 0
+        creator: "ulrichson"
+        craeted: new Date()
+      ) for i in [1..n]
 
   #-----------------------------------------------------------------------------
   # UI EVENTS

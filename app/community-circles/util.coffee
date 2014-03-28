@@ -11,6 +11,11 @@ communityCirclesUtil.factory "Util", ->
     catch e
       return new L.LatLng 48.1217811, 16.5633169 # Vienna calling!
 
+  randomFromTo: (from, to, float = false) ->
+    rand = Math.random() * (to - from + 1) + from
+    rand = Math.floor rand if not float
+    return rand
+
   #-----------------------------------------------------------------------------
   # MAP HELPERS
   #-----------------------------------------------------------------------------
