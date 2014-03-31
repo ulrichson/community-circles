@@ -49,32 +49,32 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   #-----------------------------------------------------------------------------
   # COMMUNITY CIRCLE LAYER
   #-----------------------------------------------------------------------------
-  CommunityCirclesLayer = L.Path.extend
-    initialize: (contributions, options) ->
-      L.Path.prototype.initialize.call this, options
-      this._contributions = contributions
+  # CommunityCirclesLayer = L.Path.extend
+  #   initialize: (contributions, options) ->
+  #     L.Path.prototype.initialize.call this, options
+  #     this._contributions = contributions
 
-    getPathString: ->
-      return this._createPath()
+  #   getPathString: ->
+  #     return this._createPath()
 
-    _createPath: ->
-      self = this
-      circlesPathElement = null
-      unitedCircles = null
-      _.each this._contributions, (element) ->
-        latlng = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
-        projectedCircle = projectCircle latlng, element.properties.radius
+  #   _createPath: ->
+  #     self = this
+  #     circlesPathElement = null
+  #     unitedCircles = null
+  #     _.each this._contributions, (element) ->
+  #       latlng = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
+  #       projectedCircle = projectCircle latlng, element.properties.radius
       
-        circle = new paper.Path.Circle(new paper.Point(projectedCircle.point.x, projectedCircle.point.y), projectedCircle.radius)
+  #       circle = new paper.Path.Circle(new paper.Point(projectedCircle.point.x, projectedCircle.point.y), projectedCircle.radius)
 
-        if unitedCircles is null
-          unitedCircles = circle
-        else
-          unitedCircles = unitedCircles.unite circle
+  #       if unitedCircles is null
+  #         unitedCircles = circle
+  #       else
+  #         unitedCircles = unitedCircles.unite circle
 
-        circlesPathElement = unitedCircles.exportSVG()
+  #       circlesPathElement = unitedCircles.exportSVG()
 
-      return circlesPathElement.getAttribute "d"
+  #     return circlesPathElement.getAttribute "d"
 
   #-----------------------------------------------------------------------------
   # CUSTOM MAP CONTROLS
@@ -223,12 +223,28 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
       contributions = data.features
 
       # Community Circles
-      communitiesLayer = new CommunityCirclesLayer contributions,
-        className: "cc-map-item"
-        fill: true
-        fillColor: "#00c8c8"
-        fillOpacity: communityOpacity
-        stroke: false
+      # communitiesLayer = new CommunityCirclesLayer contributions,
+      #   className: "cc-map-item"
+      #   fill: true
+      #   fillColor: "#00c8c8"
+      #   fillOpacity: communityOpacity
+      #   stroke: false
+      # map.addLayer communitiesLayer
+
+      latlngs = []
+      _.each contributions, (contribution) ->
+        latlngs.push [contribution.geometry.coordinates[1], contribution.geometry.coordinates[0]]
+
+      # latlngs = [contribution.geometry.coordinates[1], contribution.geometry.coordinates[0]] for contribution in data
+
+      communitiesLayer = L.TileLayer.maskCanvas
+        color: "#00c8c8"
+        lineColor: "#00c8c8"
+        noMask: true
+        opacity: communityOpacity
+        radius: 200
+
+      communitiesLayer.setData latlngs
       map.addLayer communitiesLayer
       
       # Contributions and clustering
@@ -247,9 +263,6 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
       
       map.addLayer contributionsLayer
 
-    # latLngBounds = L.latLngBounds new L.LatLng(48.3290194, 16.1749), new L.LatLng(48.078705, 16.570455)
-    contributionsGeoJSON = generateRandomContributions map.getBounds(), 50
-    # console.log contributionsGeoJSON
     fakeAsyncCallback contributionsGeoJSON
 
   updateCurrentPositionMarker = (latlng) ->
@@ -405,6 +418,10 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   #-----------------------------------------------------------------------------
   # Prevents that WebView is dragged
   document.ontouchmove = (e) -> e.preventDefault()
+
+  # Demo data
+  # latLngBounds = L.latLngBounds new L.LatLng(48.3290194, 16.1749), new L.LatLng(48.078705, 16.570455)
+  contributionsGeoJSON = generateRandomContributions map.getBounds(), 50
 
   # Prevent that map doesn't receive click events from contribution overlay
   L.DomEvent.disableClickPropagation document.getElementsByClassName("contribution-detail")[0]
