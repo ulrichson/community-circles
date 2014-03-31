@@ -231,9 +231,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
       #   stroke: false
       # map.addLayer communitiesLayer
 
-      latlngs = []
-      _.each contributions, (contribution) ->
-        latlngs.push [contribution.geometry.coordinates[1], contribution.geometry.coordinates[0]]
+      # latlngs = []
+      # _.each contributions, (contribution) ->
+      #   latlngs.push [contribution.geometry.coordinates[1], contribution.geometry.coordinates[0]]
 
       # latlngs = [contribution.geometry.coordinates[1], contribution.geometry.coordinates[0]] for contribution in data
 
@@ -244,7 +244,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
         opacity: communityOpacity
         radius: 200
 
-      communitiesLayer.setData latlngs
+      communitiesLayer.setData data
       map.addLayer communitiesLayer
       
       # Contributions and clustering

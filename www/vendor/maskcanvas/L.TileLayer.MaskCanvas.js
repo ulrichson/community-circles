@@ -50,26 +50,26 @@ L.TileLayer.MaskCanvas = L.TileLayer.Canvas.extend({
         return tile;
     },
 
-
+    // dataset <GeoJSON>
     setData: function(dataset) {
         var self = this;
 
+        self._maxRadius = Number.MIN_VALUE;
 
-        this.bounds = new L.LatLngBounds(dataset);
+        latlngs = [];
+        dataset.features.forEach(function(d) {
+            latlngs.push([d.geometry.coordinates[1], d.geometry.coordinates[0]]);
+        });
 
+        this.bounds = new L.LatLngBounds(latlngs);
         this._quad = new QuadTree(this._boundsToQuery(this.bounds), false, 6, 6);
 
-        var first = dataset[0];
-        var xc = 1, yc = 0;
-        if (first instanceof L.LatLng) {
-            xc = "lng";
-            yc = "lat";
-        }
-
-        dataset.forEach(function(d) {
+        dataset.features.forEach(function(d) {
+            self._maxRadius = Math.max(self._maxRadius, d.properties.radius);
             self._quad.insert({
-                x: d[xc], //lng
-                y: d[yc] //lat
+                x: d.geometry.coordinates[0], //lng
+                y: d.geometry.coordinates[1], //lat
+                r: d.properties.radius
             });
         });
 
@@ -116,7 +116,7 @@ L.TileLayer.MaskCanvas = L.TileLayer.Canvas.extend({
         coordinates.forEach(function(coords) {
             p = self._tilePoint(ctx, coords);
             g.beginPath();
-            g.arc(p[0], p[1], self._getRadius(), 0, Math.PI * 2);
+            g.arc(p[0], p[1], self.projectRadius(coords.r), 0, Math.PI * 2);
             g.fill();
             if (self.options.lineColor) {
                 g.stroke();
@@ -151,6 +151,14 @@ L.TileLayer.MaskCanvas = L.TileLayer.Canvas.extend({
         this._radius = Math.max(Math.round(point.x - point2.x), 1);
     },
 
+    projectRadius: function(r) {
+        var ll, ll2, lr, point, radius;
+        ll = this._latlng;
+        lr = (r / 40075017) * 360 / Math.cos(L.LatLng.DEG_TO_RAD * ll.lat);
+        ll2 = new L.LatLng(ll.lat, ll.lng - lr);
+        return this._map.latLngToLayerPoint(ll).x - this._map.latLngToLayerPoint(ll2).x;
+      },
+
     // the radius of a circle can be either absolute in pixels or in meters
     _getRadius: function() {
         if (this.options.useAbsoluteRadius) {
@@ -177,7 +185,7 @@ L.TileLayer.MaskCanvas = L.TileLayer.Canvas.extend({
         }
 
         // padding
-        var pad = new L.Point(this._getRadius(), this._getRadius());
+        var pad = new L.Point(this.projectRadius(this._maxRadius), this.projectRadius(this._maxRadius));
         nwPoint = nwPoint.subtract(pad);
         sePoint = sePoint.add(pad);
 
