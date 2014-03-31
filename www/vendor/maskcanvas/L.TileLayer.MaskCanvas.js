@@ -1,7 +1,6 @@
 L.TileLayer.MaskCanvas = L.TileLayer.Canvas.extend({
     options: {
         radius: 5,
-        useAbsoluteRadius: true,  // true: radius in meters, false: radius in pixels
         color: '#000',
         opacity: 0.5,
         noMask: false,  // true results in normal (filled) circled, instead masked circles
@@ -134,38 +133,12 @@ L.TileLayer.MaskCanvas = L.TileLayer.Canvas.extend({
         };
     },
 
-    _getLatRadius: function () {
-        return (this.options.radius / 40075017) * 360;
-    },
-
-    _getLngRadius: function () {
-        return this._getLatRadius() / Math.cos(L.LatLng.DEG_TO_RAD * this._latlng.lat);
-    },
-
-    // call to update the radius
-    projectLatlngs: function () {
-        var lngRadius = this._getLngRadius(),
-            latlng2 = new L.LatLng(this._latlng.lat, this._latlng.lng - lngRadius, true),
-            point2 = this._map.latLngToLayerPoint(latlng2),
-            point = this._map.latLngToLayerPoint(this._latlng);
-        this._radius = Math.max(Math.round(point.x - point2.x), 1);
-    },
-
     projectRadius: function(r) {
         var ll, ll2, lr, point, radius;
         ll = this._latlng;
         lr = (r / 40075017) * 360 / Math.cos(L.LatLng.DEG_TO_RAD * ll.lat);
         ll2 = new L.LatLng(ll.lat, ll.lng - lr);
         return this._map.latLngToLayerPoint(ll).x - this._map.latLngToLayerPoint(ll2).x;
-      },
-
-    // the radius of a circle can be either absolute in pixels or in meters
-    _getRadius: function() {
-        if (this.options.useAbsoluteRadius) {
-            return this._radius;
-        } else{
-            return this.options.radius;
-        }
     },
 
     _draw: function (ctx) {
@@ -177,12 +150,9 @@ L.TileLayer.MaskCanvas = L.TileLayer.Canvas.extend({
 
         var nwPoint = ctx.tilePoint.multiplyBy(tileSize);
         var sePoint = nwPoint.add(new L.Point(tileSize, tileSize));
-
-        if (this.options.useAbsoluteRadius) {
-            var centerPoint = nwPoint.add(new L.Point(tileSize/2, tileSize/2));
-            this._latlng = this._map.unproject(centerPoint);
-            this.projectLatlngs();
-        }
+        var centerPoint = nwPoint.add(new L.Point(tileSize/2, tileSize/2));
+        
+        this._latlng = this._map.unproject(centerPoint);
 
         // padding
         var pad = new L.Point(this.projectRadius(this._maxRadius), this.projectRadius(this._maxRadius));
