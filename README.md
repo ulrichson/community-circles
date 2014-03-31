@@ -75,3 +75,8 @@ Editor
 ------
 
 Indent using spaces, space width: 2
+
+Contributors
+------------
+
+- [Leaflet MaskCanvas](https://github.com/domoritz/leaflet-maskcanvas) by [domoritz](https://github.com/domoritz)
