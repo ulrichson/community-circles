@@ -47,36 +47,6 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   $scope.contribution = {}
 
   #-----------------------------------------------------------------------------
-  # COMMUNITY CIRCLE LAYER
-  #-----------------------------------------------------------------------------
-  # CommunityCirclesLayer = L.Path.extend
-  #   initialize: (contributions, options) ->
-  #     L.Path.prototype.initialize.call this, options
-  #     this._contributions = contributions
-
-  #   getPathString: ->
-  #     return this._createPath()
-
-  #   _createPath: ->
-  #     self = this
-  #     circlesPathElement = null
-  #     unitedCircles = null
-  #     _.each this._contributions, (element) ->
-  #       latlng = new L.LatLng element.geometry.coordinates[1], element.geometry.coordinates[0]
-  #       projectedCircle = projectCircle latlng, element.properties.radius
-      
-  #       circle = new paper.Path.Circle(new paper.Point(projectedCircle.point.x, projectedCircle.point.y), projectedCircle.radius)
-
-  #       if unitedCircles is null
-  #         unitedCircles = circle
-  #       else
-  #         unitedCircles = unitedCircles.unite circle
-
-  #       circlesPathElement = unitedCircles.exportSVG()
-
-  #     return circlesPathElement.getAttribute "d"
-
-  #-----------------------------------------------------------------------------
   # CUSTOM MAP CONTROLS
   #-----------------------------------------------------------------------------
   LocateControl = L.Control.extend
@@ -221,21 +191,6 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
     fakeAsyncCallback = (data) ->
       $scope.$apply -> $scope.loading = false
       contributions = data.features
-
-      # Community Circles
-      # communitiesLayer = new CommunityCirclesLayer contributions,
-      #   className: "cc-map-item"
-      #   fill: true
-      #   fillColor: "#00c8c8"
-      #   fillOpacity: communityOpacity
-      #   stroke: false
-      # map.addLayer communitiesLayer
-
-      # latlngs = []
-      # _.each contributions, (contribution) ->
-      #   latlngs.push [contribution.geometry.coordinates[1], contribution.geometry.coordinates[0]]
-
-      # latlngs = [contribution.geometry.coordinates[1], contribution.geometry.coordinates[0]] for contribution in data
 
       communitiesLayer = L.TileLayer.maskCanvas
         color: "#00c8c8"
@@ -399,9 +354,6 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
     location: "/views/poi/index.html"
     id: "poiView"
   poiWebView.preload()
-
-  # Paper for SVG union on community rendering
-  paper.setup()
 
   tileLayer = Util.createTileLayer()
 
