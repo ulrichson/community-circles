@@ -239,7 +239,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
 
       communitiesLayer = L.TileLayer.maskCanvas
         color: "#00c8c8"
-        lineColor: "#00c8c8"
+        lineWidth: 0
         noMask: true
         opacity: communityOpacity
         radius: 200
