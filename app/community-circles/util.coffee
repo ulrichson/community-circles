@@ -54,6 +54,13 @@ communityCirclesUtil.factory "Util", ->
       unloadInvisibleTiles: false
       updateWhenIdle: true
 
+    # return L.tileLayer "http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png",
+    #   detectRetina: true
+    #   reuseTiles: true
+    #   subdomains: "otile1 otile2 otile3 otile4".split " "
+    #   unloadInvisibleTiles: false
+    #   updateWhenIdle: true
+
   createPositionMarker: (latlng, radius) ->
     positionMarker = new L.LayerGroup
 

@@ -37,14 +37,14 @@ steroids.config.tabBar.tabs = [
 ]
 
 # steroids.config.tabBar.tintColor = "#00a8b3"
-steroids.config.tabBar.tabTitleColor = "#00a8b3"
-steroids.config.tabBar.selectedTabTintColor = "#00a8b3"
+steroids.config.tabBar.tabTitleColor = "#00A8B3"
+steroids.config.tabBar.selectedTabTintColor = "#00A8B3"
 # steroids.config.tabBar.selectedTabBackgroundImage = "icons/pill@2x.png"
 
 # steroids.config.tabBar.backgroundImage = ""
 
 # -- Navigation Bar --
-steroids.config.navigationBar.tintColor = "#00c8c8"
+steroids.config.navigationBar.tintColor = "#00A8B3"
 steroids.config.navigationBar.titleColor = "#ffffff"
 steroids.config.navigationBar.buttonTintColor = "#ffffff"
 steroids.config.navigationBar.buttonTitleColor = "#ffffff"

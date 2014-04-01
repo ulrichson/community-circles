@@ -18,7 +18,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
 
   markerDiameter = 40
   mapPreviewHeight = 80
-  communityOpacity = 0.2
+  communityOpacity = 0.4
+  communityColor = "#3FD1D1"
+  contributionColor = "#00A8B3"
   animationDuration = 0.5
 
   communities = []
@@ -164,7 +166,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
       .attr("width", markerDiameter)
       .attr("height", markerDiameter)
       .append("path")
-      .attr("fill", "#00c8c8")
+      .attr("fill", contributionColor)
       .attr("transform", "translate(#{markerDiameter / 2 }, #{markerDiameter / 2})")
       .attr("d", d3.svg.arc()
         .startAngle(0)
@@ -193,11 +195,10 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
       contributions = data.features
 
       communitiesLayer = L.TileLayer.maskCanvas
-        color: "#00c8c8"
+        color: communityColor;
         lineWidth: 0
         noMask: true
         opacity: communityOpacity
-        radius: 200
 
       communitiesLayer.setData data
       map.addLayer communitiesLayer
