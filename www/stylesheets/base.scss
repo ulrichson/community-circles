@@ -132,3 +132,20 @@ input, textarea, [contenteditable] * {
 .grayscale {
   @include grayscale(100%);
 }
+
+
+/*******************************************************************************
+* MARKER
+*******************************************************************************/
+.current-position-marker-icon {
+  background-image: url(/icons/marker-icon-current-position.svg);
+  background-size: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  -webkit-animation-name:            rotate;
+  -webkit-animation-duration:        5s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+}

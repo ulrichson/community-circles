@@ -61,7 +61,7 @@ communityCirclesUtil.factory "Util", ->
     #   unloadInvisibleTiles: false
     #   updateWhenIdle: true
 
-  createPositionMarker: (latlng, radius) ->
+  createPositionMarker: (latlng, radius, size = 40) ->
     positionMarker = new L.LayerGroup
 
     if radius?
@@ -71,14 +71,15 @@ communityCirclesUtil.factory "Util", ->
         fillColor: "#004855"
         fillOpacity: 0.2
         opacity: 1
-        weight: 1
+        weight: 0
       positionMarker.addLayer c
 
     pm = new L.Marker latlng,
-      icon: L.icon
-        iconUrl: "/icons/marker-icon-current-position@2x.png"
-        iconSize: [32, 32]
-        iconAnchor: [16, 16]
+      icon: L.divIcon
+        className: "current-position-marker"
+        iconSize: [size, size]
+        iconAnchor: [size / 2, size / 2]
+        html: "<div class=\"current-position-marker-icon\"></div>"
     positionMarker.addLayer pm
 
     return positionMarker
