@@ -1,5 +1,4 @@
 poiApp = angular.module "poiApp", [
-  "mgcrea.pullToRefresh",
   "communityCirclesGame",
   "communityCirclesUtil",
   "communityCirclesLog",
