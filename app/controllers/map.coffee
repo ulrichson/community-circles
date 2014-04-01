@@ -96,16 +96,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
       # Pulse
       iconNode = d3.select(e.layer._icon)
       e.layer.pulseInterval = setInterval ->
-        radius = projectCircle(e.layer._latlng, e.layer.feature.properties.radius).radius
-        if radius > markerDiameter / 2
-          pulse iconNode, radius, pulseDuration
-          setTimeout ->
-            pulse iconNode, radius, pulseDuration
-          , 200
-          setTimeout ->
-            pulse iconNode, radius, pulseDuration
-          , 400
+        tripplePulse iconNode, e.layer._latlng, e.layer.feature.properties.radius
       , pulseDuration
+      tripplePulse iconNode, e.layer._latlng, e.layer.feature.properties.radius
 
   map.on "layerremove", (e) ->
     clearInterval e.layer.pulseInterval if e.layer.pulseInterval?
@@ -157,6 +150,17 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
      .style("opacity", opacity)
      .duration(duration)
      # .each "end", -> blink parent, duration, if opacity is 0 then 1 else 0
+
+  tripplePulse = (n, ll, r) ->
+    radius = projectCircle(ll, r).radius
+    if radius > markerDiameter / 2
+      pulse n, radius, pulseDuration
+      setTimeout ->
+        pulse n, radius, pulseDuration
+      , 200
+      setTimeout ->
+        pulse n, radius, pulseDuration
+      , 400
 
   pulse = (parent, r, duration, strokeWidth = 1.5) ->
     parent.append("svg")
