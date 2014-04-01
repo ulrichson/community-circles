@@ -373,7 +373,8 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
 
   # Demo data
   # latLngBounds = L.latLngBounds new L.LatLng(48.3290194, 16.1749), new L.LatLng(48.078705, 16.570455)
-  contributionsGeoJSON = generateRandomContributions map.getBounds(), 50
+  latLngBounds = map.getBounds()
+  contributionsGeoJSON = generateRandomContributions latLngBounds, 50
 
   # Prevent that map doesn't receive click events from contribution overlay
   L.DomEvent.disableClickPropagation document.getElementsByClassName("contribution-detail")[0]
