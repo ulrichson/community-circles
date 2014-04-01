@@ -2,7 +2,7 @@
   <div ng-controller="IndexCtrl">
     <div class="spinner" ng-show="loading"></div>
     <div id="map"></div>
-    <div id="poi-list" class="container" pull-to-refresh="reset()">
+    <div id="poi-list" class="container">
       <p><strong>Where are you?</strong></p>
       <div class="list-group">
         <a class="list-group-item" ng-repeat="poi in pois | orderBy:'location.distance'" ng-class="{ 'active': selectedPoi.id == poi.id }" ng-click="choose(poi)">
