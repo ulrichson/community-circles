@@ -204,6 +204,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
       
       # Contributions and clustering
       contributionsLayer = new L.MarkerClusterGroup
+        iconCreateFunction: (cluster) ->
+          return new L.DivIcon
+            html: "<div class=\"contribution-marker-cluster\"><span>#{cluster.getChildCount()}</span></div>"
         showCoverageOnHover: false
 
       geoJsonLayer = L.geoJson data,

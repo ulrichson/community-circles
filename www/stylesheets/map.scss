@@ -1,5 +1,7 @@
 @import 'base.scss';
 
+$controlShadow: 0 1px 0px rgba(255, 255, 255, 0.8), 0 2px 0px rgba(0, 0, 0, 0.4);
+
 /*******************************************************************************
 * MAP
 *******************************************************************************/
@@ -13,7 +15,7 @@
 
 .map-button {
   color: $cc-dark; 
-  text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8), 0 2px 0px rgba(0, 0, 0, 0.4);
+  text-shadow: $controlShadow;
 }
 
 .map-button:active {
@@ -23,7 +25,9 @@
 /*******************************************************************************
 * CONTRIBUTION MARKER
 *******************************************************************************/
-.contribution-maker {
+$contrubutionMarkerDiameter: 40px;
+
+.contribution-marker {
   cursor: inherit;
   position: relative;
 }
@@ -55,6 +59,33 @@
   background-image: url(/icons/contribution/poll.svg);
 }
 
+.contribution-marker-cluster {
+  background-color: $cc-dark;
+  border-radius: $contrubutionMarkerDiameter;
+  box-shadow: $controlShadow;
+  color: #ffffff;
+  height: $contrubutionMarkerDiameter;
+  line-height: $contrubutionMarkerDiameter;
+  margin-left: -$contrubutionMarkerDiameter/2;
+  margin-top: -$contrubutionMarkerDiameter/2;
+  text-align: center;
+  width: $contrubutionMarkerDiameter;
+}
+
+.contribution-marker.cluster:active {
+  background-color: $cc-main;
+}
+
+.contribution-marker-cluster span {
+  font-weight: 300;
+  font-size: 1.4em;
+}
+
+.leaflet-div-icon {
+  background-color: transparent;
+  border-style: none;
+}
+
 /*******************************************************************************
 * CONTRIBUTION DETAIL
 *******************************************************************************/
@@ -62,11 +93,9 @@ $dropshadowColor: rgba(0, 0, 0, 0.4);
 $dropshadowWidth: 25px;
 
 .contribution-detail {
-  // bottom: 0;
   left: 0;
   overflow-x: hidden;
   overflow-y: auto;
-  // padding: $content-padding;
   position: absolute;
   right: 0;
   top: 80px - $dropshadowWidth;
