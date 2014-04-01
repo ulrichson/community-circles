@@ -21,7 +21,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   communityOpacity = 0.4
   communityColor = "#3FD1D1"
   contributionColor = "#00A8B3"
-  animationDuration = 0.5
+  baseAnimationDuration = 500
+  animationDuration = 0.3
+  pulseDuration = baseAnimationDuration * 6
 
   communities = []
   contributions = []
@@ -82,6 +84,33 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   #-----------------------------------------------------------------------------
   # MAP EVENTS
   #-----------------------------------------------------------------------------
+  map.on "layeradd", (e) ->
+    # console.log e if e.layer.feature?
+    if e.layer.feature? and e.layer.feature.properties.health < Game.healthAlertThreshold
+      # Blink
+      svgElement = d3.select e.layer._icon.getElementsByClassName("contribution-health")[0]
+      e.layer.blinkInterval = setInterval ->
+        blink svgElement, baseAnimationDuration, 
+      , baseAnimationDuration
+
+      # Pulse
+      iconNode = d3.select(e.layer._icon)
+      e.layer.pulseInterval = setInterval ->
+        radius = projectCircle(e.layer._latlng, e.layer.feature.properties.radius).radius
+        if radius > markerDiameter / 2
+          pulse iconNode, radius, pulseDuration
+          setTimeout ->
+            pulse iconNode, radius, pulseDuration
+          , 200
+          setTimeout ->
+            pulse iconNode, radius, pulseDuration
+          , 400
+      , pulseDuration
+
+  map.on "layerremove", (e) ->
+    clearInterval e.layer.pulseInterval if e.layer.pulseInterval?
+    clearInterval e.layer.blinkInterval if e.layer.blinkInterval?
+
   map.on "locationfound", (e) ->
     Log.i "Location found: #{e.latlng.lat}, #{e.latlng.lng}"
     $scope.$apply -> $scope.loading = false
@@ -122,6 +151,36 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
     radius = point.x - map.latLngToLayerPoint(ll2).x
     return point: point, radius: radius
 
+  blink = (parent, duration) ->
+    opacity = if parent.style("opacity") < 0.01 then 1 else 0
+    parent.transition()
+     .style("opacity", opacity)
+     .duration(duration)
+     # .each "end", -> blink parent, duration, if opacity is 0 then 1 else 0
+
+  pulse = (parent, r, duration, strokeWidth = 1.5) ->
+    parent.append("svg")
+    .attr("width", r * 2)
+    .attr("height", r * 2)
+    .style("position", "absolute")
+    .style("left", markerDiameter / 2 - r)
+    .style("top", markerDiameter / 2 - r)
+    .append("circle")
+    .attr("class", "pulse")
+    .attr("r", markerDiameter / 2)
+    .attr("cx", r)
+    .attr("cy", r)
+    .attr("fill-opacity", 0)
+    .attr("stroke", contributionColor)
+    .attr("stroke-width", strokeWidth)
+    .transition()
+    .attr("r", r - strokeWidth / 2)
+    .style("opacity", 0)
+    .ease("cubic-out")
+    .duration(duration)
+    .each "end", ->
+      d3.select(this).remove()
+
   locate = ->
     $scope.loading = true
     map.locate
@@ -129,37 +188,6 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
       watch: true
 
   createContributionMarker = (feature, latlng) ->
-    #     # Indicate low health
-    #     baseDuration = 500
-    #     blink = (parent, opacity) ->
-    #       opacity ?= 0
-    #       parent.transition()
-    #        .style("opacity", opacity)
-    #        .duration(baseDuration)
-    #        .each "end", -> blink parent, if opacity is 0 then 1 else 0
-
-    #     pulse = (parent) ->
-    #       signal = d3.select(parent).append("circle")
-    #         .attr("class", "pulse")
-    #         .attr("r", markerDiameter)
-    #         .attr("cx", markerDiameter / 2)
-    #         .attr("cy", markerDiameter / 2)
-    #         .attr("fill-opacity", 0)
-    #         .attr("stroke", "#00c8c8")
-    #         .attr("stroke-width", 2)
-    #         .transition()
-    #         .attr("r", projectCircle(latlng, contribution.radius).radius)
-    #         .style("opacity", 0)
-    #         .ease("cubic-out")
-    #         .duration(baseDuration * 6)
-    #         .each "end", ->
-    #           d3.select(this).remove()
-    #           # pulse parent
-
-    #     if contribution.health < Game.healthAlertThreshold
-    #       blink healthProgress
-    #       pulse domNode
-
     healthProgress = d3.select(document.createElement("div"))
     healthProgress.append("svg")
       .attr("class", "contribution-health")
