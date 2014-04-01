@@ -1,6 +1,7 @@
 @import 'base.scss';
 
 $controlShadow: 0 1px 0px rgba(255, 255, 255, 0.8), 0 2px 0px rgba(0, 0, 0, 0.4);
+$contrubutionMarkerDiameter: 40px;
 
 /*******************************************************************************
 * MAP
@@ -25,13 +26,6 @@ $controlShadow: 0 1px 0px rgba(255, 255, 255, 0.8), 0 2px 0px rgba(0, 0, 0, 0.4)
 /*******************************************************************************
 * CONTRIBUTION MARKER
 *******************************************************************************/
-$contrubutionMarkerDiameter: 40px;
-
-.contribution-marker {
-  cursor: inherit;
-  position: relative;
-}
-
 .contribution-icon {
   bottom: 0;
   background-size: 100%;
