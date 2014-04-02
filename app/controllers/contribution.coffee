@@ -1,6 +1,7 @@
 contributionApp = angular.module "contributionApp", [
   "communityCirclesApp",
   "communityCirclesUtil",
+  "communityCirclesLog",
   "ContributionModel",
   "ngTouch",
   "angularMoment",
@@ -76,7 +77,7 @@ contributionApp.controller "ShowCtrl", ($scope, $filter, Util, ContributionResta
 #-------------------------------------------------------------------------------
 # New: http://localhost/views/contribution/new.html
 #------------------------------------------------------------------------------- 
-contributionApp.controller "NewCtrl", ($scope, Util, ContributionRestangular) ->
+contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangular) ->
   $scope.message_id = "contributionNewCtrl"
 
   $scope.loading = false
