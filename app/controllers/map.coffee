@@ -25,6 +25,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   animationDuration = 0.3
   pulseDuration = baseAnimationDuration * 6
 
+  # Detect double-clicks for contribution marker
+  contributionClickCount = 0
+
   communities = []
   contributions = []
 
@@ -122,27 +125,35 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
     Log.e "Leaflet error: #{e.message}"
 
   contributionMarkerClicked = (e) ->
+    contributionClickCount++
     targetBoundingBox = e.target._icon.getBoundingClientRect()
-    # Check if click is inside marker
-    if targetBoundingBox.left < e.originalEvent.clientX < targetBoundingBox.right and
-    targetBoundingBox.top < e.originalEvent.clientY < targetBoundingBox.bottom
-      if not selectedContributionMarker
-        # Hide everything, except selected contribution
-        map.removeControl locateControl
-        map.removeControl newContributionControl
-        map.removeLayer currentPositionMarker
-        map.removeLayer communitiesLayer
-        _.each contributionMarkers, (marker) ->
-          if marker is e.target
-            selectedContributionMarker = e.target
-          else
-            contributionsLayer.removeLayer marker
 
-        id = parseInt e.target.feature.properties.id
-        $scope.showContributionDetail id
-      else
-        $scope.hideContributionDetail()
-        $scope.$apply()
+    # 200ms delay to wait for possible doube-clicks.
+    # Allows to double-click zoom into the map, although marker was clicked.
+    setTimeout ->
+      # Check if click is inside marker
+      if contributionClickCount is 1 and
+      targetBoundingBox.left < e.originalEvent.clientX < targetBoundingBox.right and
+      targetBoundingBox.top < e.originalEvent.clientY < targetBoundingBox.bottom
+        if not selectedContributionMarker
+          # Hide everything, except selected contribution
+          map.removeControl locateControl
+          map.removeControl newContributionControl
+          map.removeLayer currentPositionMarker
+          map.removeLayer communitiesLayer
+          _.each contributionMarkers, (marker) ->
+            if marker is e.target
+              selectedContributionMarker = e.target
+            else
+              contributionsLayer.removeLayer marker
+
+          id = parseInt e.target.feature.properties.id
+          $scope.showContributionDetail id
+        else
+          $scope.hideContributionDetail()
+          $scope.$apply()
+      contributionClickCount = 0
+    , 200
 
   #-----------------------------------------------------------------------------
   # INTERNAL FUNCTIONS
@@ -256,6 +267,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
       geoJsonLayer = L.geoJson data,
         onEachFeature: (feature, layer) ->
           layer.on "click", contributionMarkerClicked
+          layer.on "dblclick", -> console.log "dblclick"
         pointToLayer: (feature, latlng) ->
           contributionMarker = createContributionMarker feature, latlng
           contributionMarkers.push contributionMarker
