@@ -85,20 +85,22 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   # MAP EVENTS
   #-----------------------------------------------------------------------------
   map.on "layeradd", (e) ->
-    # console.log e if e.layer.feature?
     if e.layer.feature? and e.layer.feature.properties.health < Game.healthAlertThreshold
-      # Blink
+      latlng = e.layer._latlng
+      radius = e.layer.feature.properties.radius
+      iconNode = d3.select(e.layer._icon)
       svgElement = d3.select e.layer._icon.getElementsByClassName("contribution-health")[0]
+
+      # Blink
       e.layer.blinkInterval = setInterval ->
-        blink svgElement, baseAnimationDuration, 
+        blink svgElement, baseAnimationDuration if map.getBounds().pad(0.1).contains latlng # don't animate when marker is outside
       , baseAnimationDuration
 
       # Pulse
-      iconNode = d3.select(e.layer._icon)
       e.layer.pulseInterval = setInterval ->
-        tripplePulse iconNode, e.layer._latlng, e.layer.feature.properties.radius
+        tripplePulse iconNode, latlng, radius if map.getBounds().pad(0.1).contains latlng # don't animate when marker is outside
       , pulseDuration
-      tripplePulse iconNode, e.layer._latlng, e.layer.feature.properties.radius
+      tripplePulse iconNode, latlng, radius
 
   map.on "layerremove", (e) ->
     clearInterval e.layer.pulseInterval if e.layer.pulseInterval?
