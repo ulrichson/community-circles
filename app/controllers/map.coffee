@@ -122,24 +122,27 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
     Log.e "Leaflet error: #{e.message}"
 
   contributionMarkerClicked = (e) ->
-    console.log e
-    if not selectedContributionMarker
-      # Hide everything, except selected contribution
-      map.removeControl locateControl
-      map.removeControl newContributionControl
-      map.removeLayer currentPositionMarker
-      map.removeLayer communitiesLayer
-      _.each contributionMarkers, (marker) ->
-        if marker is e.target
-          selectedContributionMarker = e.target
-        else
-          contributionsLayer.removeLayer marker
+    targetBoundingBox = e.target._icon.getBoundingClientRect()
+    # Check if click is inside marker
+    if targetBoundingBox.left < e.originalEvent.clientX < targetBoundingBox.right and
+    targetBoundingBox.top < e.originalEvent.clientY < targetBoundingBox.bottom
+      if not selectedContributionMarker
+        # Hide everything, except selected contribution
+        map.removeControl locateControl
+        map.removeControl newContributionControl
+        map.removeLayer currentPositionMarker
+        map.removeLayer communitiesLayer
+        _.each contributionMarkers, (marker) ->
+          if marker is e.target
+            selectedContributionMarker = e.target
+          else
+            contributionsLayer.removeLayer marker
 
-      id = parseInt e.target.feature.properties.id
-      $scope.showContributionDetail id
-    else
-      $scope.hideContributionDetail()
-      $scope.$apply()
+        id = parseInt e.target.feature.properties.id
+        $scope.showContributionDetail id
+      else
+        $scope.hideContributionDetail()
+        $scope.$apply()
 
   #-----------------------------------------------------------------------------
   # INTERNAL FUNCTIONS
