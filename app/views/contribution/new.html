@@ -1,6 +1,8 @@
 <div ng-app="contributionApp">
   <div ng-controller="NewCtrl">
-    <div class="spinner" ng-show="loading"></div>
+    <div class="loading-full" ng-show="loading">
+      <i class="fa fa-4x fa-spinner fa-spin fa-inverse"></i>
+    </div>
     <div class="full-background-image" ng-style="bgImageStyle"></div>
     <div class="contribution-type">
       <div class=" btn-group btn-group-justified">
@@ -32,8 +34,8 @@
           <textarea class="form-control" ng-model="contribution.description" rows="3" placeholder="Description"></textarea>
         </div>
         <!-- <div class="btn-group"> -->
-        <a class="btn btn-primary btn-lg" ng-click="choosePhoto()"><span class="fui-photo"></span></a>
-        <a class="btn btn-primary btn-lg" ng-click="choosePoi()"><span class="fui-location"></span></a>
+        <button class="btn btn-default" ng-click="choosePhoto()"><i class="fa fa-camera"></i> Add Image</button>
+        <button class="btn btn-default" ng-click="choosePoi()"><i class="fa fa-map-marker"></i> Add Location</button>
         <!-- </div> -->
       </form>
     </div>
