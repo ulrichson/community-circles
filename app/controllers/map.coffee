@@ -163,27 +163,27 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
       , 400
 
   pulse = (parent, r, duration, strokeWidth = 1.5) ->
-    parent.append("svg")
-    .attr("width", r * 2)
-    .attr("height", r * 2)
-    .style("position", "absolute")
-    .style("left", markerDiameter / 2 - r)
-    .style("top", markerDiameter / 2 - r)
-    .append("circle")
-    .attr("class", "pulse")
-    .attr("r", markerDiameter / 2)
-    .attr("cx", r)
-    .attr("cy", r)
-    .attr("fill-opacity", 0)
-    .attr("stroke", contributionColor)
-    .attr("stroke-width", strokeWidth)
-    .transition()
-    .attr("r", r - strokeWidth / 2)
-    .style("opacity", 0)
-    .ease("cubic-out")
-    .duration(duration)
-    .each "end", ->
-      d3.select(this).remove()
+    svg = parent.append("svg")
+    svg.attr("width", r * 2)
+      .attr("height", r * 2)
+      .style("position", "absolute")
+      .style("left", markerDiameter / 2 - r)
+      .style("top", markerDiameter / 2 - r)
+      .append("circle")
+      .attr("class", "pulse")
+      .attr("r", markerDiameter / 2)
+      .attr("cx", r)
+      .attr("cy", r)
+      .attr("fill-opacity", 0)
+      .attr("stroke", contributionColor)
+      .attr("stroke-width", strokeWidth)
+      .transition()
+      .attr("r", r - strokeWidth / 2)
+      .style("opacity", 0)
+      .ease("cubic-out")
+      .duration(duration)
+      .each "end", ->
+        svg.remove()
 
   locate = ->
     $scope.loading = true
