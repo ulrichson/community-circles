@@ -38,7 +38,6 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   contributionMarkers = []
   selectedContributionMarker = null
   currentPositionMarker = null
-  zoomBefore = null
 
   # Map controls
   locateControl = null
@@ -119,12 +118,19 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
     $scope.$apply -> $scope.loading = false
     Log.w "Could not determine position (code=#{e.code}). #{e.message}"
 
+  map.on "zoomstart", (e) ->
+    # Fade out all pulse animations
+    d3.selectAll(".contribution-pulse").transition()
+      .style("opacity", 0)
+      .duration(100)
+
   map.on "error", (e) ->
     $scope.$apply -> $scope.loading = false
     alert "Sorry, the map cannot be loaded at the moment"
     Log.e "Leaflet error: #{e.message}"
 
   contributionMarkerClicked = (e) ->
+    # Log.d "click"
     contributionClickCount++
     targetBoundingBox = e.target._icon.getBoundingClientRect()
 
@@ -132,9 +138,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
     # Allows to double-click zoom into the map, although marker was clicked.
     setTimeout ->
       # Check if click is inside marker
-      if contributionClickCount is 1 and
-      targetBoundingBox.left < e.originalEvent.clientX < targetBoundingBox.right and
-      targetBoundingBox.top < e.originalEvent.clientY < targetBoundingBox.bottom
+      if contributionClickCount is 1 #and
+      # targetBoundingBox.left < e.originalEvent.clientX < targetBoundingBox.right and
+      # targetBoundingBox.top < e.originalEvent.clientY < targetBoundingBox.bottom
         if not selectedContributionMarker
           # Hide everything, except selected contribution
           map.removeControl locateControl
@@ -165,12 +171,11 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
     radius = point.x - map.latLngToLayerPoint(ll2).x
     return point: point, radius: radius
 
-  blink = (parent, duration) ->
-    opacity = if parent.style("opacity") < 0.01 then 1 else 0
-    parent.transition()
+  blink = (node, duration) ->
+    opacity = if node.style("opacity") < 0.01 then 1 else 0
+    node.transition()
      .style("opacity", opacity)
      .duration(duration)
-     # .each "end", -> blink parent, duration, if opacity is 0 then 1 else 0
 
   tripplePulse = (n, ll, r) ->
     radius = projectCircle(ll, r).radius
@@ -183,16 +188,19 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
         pulse n, radius, pulseDuration
       , 400
 
-  pulse = (parent, r, duration, strokeWidth = 1.5) ->
+  pulse = (node, r, duration, strokeWidth = 1.5) ->
+    transform = node.style("-webkit-transform")
+    parent = d3.select node.node().parentNode
     svg = parent.append("svg")
     svg.attr("width", r * 2)
       .attr("height", r * 2)
       .style("position", "absolute")
-      .style("left", markerDiameter / 2 - r)
-      .style("top", markerDiameter / 2 - r)
+      .style("left", -r)
+      .style("top", -r)
       .style("z-index", -1)
+      .style("-webkit-transform", transform)
       .append("circle")
-      .attr("class", "pulse")
+      .attr("class", "contribution-pulse")
       .attr("r", markerDiameter / 2)
       .attr("cx", r)
       .attr("cy", r)
@@ -262,12 +270,14 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
         iconCreateFunction: (cluster) ->
           return new L.DivIcon
             html: "<div class=\"contribution-marker-cluster\"><span>#{cluster.getChildCount()}</span></div>"
+        maxClusterRadius: markerDiameter + 5
+        removeOutsideVisibleBounds: true
         showCoverageOnHover: false
+        zoomToBoundsOnClick: false
 
       geoJsonLayer = L.geoJson data,
         onEachFeature: (feature, layer) ->
           layer.on "click", contributionMarkerClicked
-          layer.on "dblclick", -> console.log "dblclick"
         pointToLayer: (feature, latlng) ->
           contributionMarker = createContributionMarker feature, latlng
           contributionMarkers.push contributionMarker
@@ -335,17 +345,13 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
     $scope.contribution = _.filter(contributions, (e) -> return e.properties.id is id)[0]
     $scope.contribution.properties.area = Util.formatAreaSqKm $scope.contribution.properties.radius * $scope.contribution.properties.radius * Math.PI
     
-    zoomBefore = map.getZoom()
-
     # Pan map to contribution and offset it on top
     latlng = new L.LatLng $scope.contribution.geometry.coordinates[1], $scope.contribution.geometry.coordinates[0]
     offset = [0, -(map.getSize().y / 2 - mapPreviewHeight / 2)]
     x = map.latLngToContainerPoint(latlng).x - offset[0]
     y = map.latLngToContainerPoint(latlng).y - offset[1]
     point = map.containerPointToLatLng [x, y]
-    map.panTo point,
-      animate: true
-      duration: animationDuration
+    map.setView point
     
     map.dragging.disable()
     map.touchZoom.disable()
@@ -357,9 +363,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
 
   $scope.hideContributionDetail = ->
     latlng = new L.LatLng $scope.contribution.geometry.coordinates[1], $scope.contribution.geometry.coordinates[0]
-    map.panTo latlng,
-      animate: true
-      duration: animationDuration
+    map.setView latlng
     
     map.dragging.enable()
     map.touchZoom.enable()
