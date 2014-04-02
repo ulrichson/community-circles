@@ -179,6 +179,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
       .style("position", "absolute")
       .style("left", markerDiameter / 2 - r)
       .style("top", markerDiameter / 2 - r)
+      .style("z-index", -1)
       .append("circle")
       .attr("class", "pulse")
       .attr("r", markerDiameter / 2)
