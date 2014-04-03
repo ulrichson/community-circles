@@ -4,7 +4,7 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 32 48" enable-background="new 0 0 32 48" xml:space="preserve">
 <g id="shape">
-	<path fill="#3FD1D1" d="M16,0C7.163,0,0,7.163,0,16c0,16,16,32,16,32s16-16,16-32C32,7.163,24.837,0,16,0z"/>
+	<path fill="#004855" d="M16,0C7.163,0,0,7.163,0,16c0,16,16,32,16,32s16-16,16-32C32,7.163,24.837,0,16,0z"/>
 	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="16" y1="0" x2="16" y2="48">
 		<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
 		<stop  offset="1" style="stop-color:#000000;stop-opacity:0.2"/>

@@ -1,17 +1,23 @@
 /*******************************************************************************
-* TWITTER BOOSTRAP
-*******************************************************************************/
-@import "../components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap";
-
-/*******************************************************************************
 * COLOR SCHEME
 *******************************************************************************/
-$cc-lighter: #3FD1D1;
-$cc-light: #00C8C8;
-$cc-main: #00A8B3;
-$cc-dark: #004855;
-$cc-darker: #212B37;
+$cc-lighter:      #3fd1d1; // what are u good for?
+$cc-light:        #00c8c8; // indicates primary action, active
+$cc-main:         #00a8b3; // base color
+$cc-dark:         #004855; // elements that cause an action
+$cc-darker:       #212b37; // text, static elements
 
+/*******************************************************************************
+* TWITTER BOOSTRAP
+*******************************************************************************/
+$brand-primary:   $cc-light !default;
+
+@import "../components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap";
+
+
+/*******************************************************************************
+* OTHER VARIABLES
+*******************************************************************************/
 $content-padding: 10px;
 
 /*******************************************************************************
