@@ -2,83 +2,67 @@
   {
     "id": 1,
     "code": "happy",
-    "name": "Happy"
+    "name": "happy"
   },
   {
     "id": 2,
     "code": "unhappy",
-    "name": "Unhappy"
+    "name": "unhappy"
   },{
     "id": 3,
     "code": "crying",
-    "name": "Crying"
+    "name": "sad"
   },{
     "id": 4,
     "code": "angry",
-    "name": "Angry"
+    "name": "angry"
   },{
     "id": 5,
-    "code": "pirate",
-    "name": "Pirate"
+    "code": "intelligent",
+    "name": "smart"
   },{
     "id": 6,
-    "code": "intelligent",
-    "name": "Intelligent"
+    "code": "blinking",
+    "name": "ironic"
   },{
     "id": 7,
-    "code": "naughty",
-    "name": "Naughty"
+    "code": "overhappy",
+    "name": "overhappy"
   },{
     "id": 8,
-    "code": "blinking",
-    "name": "Blinking"
+    "code": "inlove",
+    "name": "in love"
   },{
     "id": 9,
-    "code": "overhappy",
-    "name": "Overhappy"
+    "code": "shocked",
+    "name": "shocked"
   },{
     "id": 10,
-    "code": "inlove",
-    "name": "In love"
+    "code": "confused",
+    "name": "confused"
   },{
     "id": 11,
-    "code": "shocked",
-    "name": "Shocked"
+    "code": "silent",
+    "name": "silent"
   },{
     "id": 12,
-    "code": "kissing",
-    "name": "Kissing"
+    "code": "king",
+    "name": "royal"
   },{
     "id": 13,
-    "code": "confused",
-    "name": "Confused"
+    "code": "thief",
+    "name": "sneaky"
   },{
     "id": 14,
-    "code": "vampire",
-    "name": "Vampire"
+    "code": "toothy",
+    "name": "childish"
   },{
     "id": 15,
-    "code": "silent",
-    "name": "Silent"
+    "code": "sleepy",
+    "name": "tired"
   },{
     "id": 16,
-    "code": "king",
-    "name": "King"
-  },{
-    "id": 17,
-    "code": "thief",
-    "name": "Thief"
-  },{
-    "id": 18,
-    "code": "toothy",
-    "name": "Toothy"
-  },{
-    "id": 19,
-    "code": "sleepy",
-    "name": "Sleepy"
-  },{
-    "id": 20,
     "code": "sealed",
-    "name": "Sealed"
+    "name": "sealed"
   }
 ]
