@@ -1,67 +1,51 @@
 [
   {
-    "id": 1,
     "code": "happy",
     "name": "happy"
   },
   {
-    "id": 2,
     "code": "unhappy",
     "name": "unhappy"
   },{
-    "id": 3,
     "code": "crying",
     "name": "sad"
   },{
-    "id": 4,
     "code": "angry",
     "name": "angry"
   },{
-    "id": 5,
-    "code": "intelligent",
-    "name": "smart"
-  },{
-    "id": 6,
-    "code": "blinking",
-    "name": "ironic"
-  },{
-    "id": 7,
     "code": "overhappy",
     "name": "overhappy"
   },{
-    "id": 8,
-    "code": "inlove",
-    "name": "in love"
-  },{
-    "id": 9,
     "code": "shocked",
     "name": "shocked"
   },{
-    "id": 10,
     "code": "confused",
     "name": "confused"
   },{
-    "id": 11,
+    "code": "inlove",
+    "name": "in love"
+  },{
+    "code": "intelligent",
+    "name": "smart"
+  },{
+    "code": "blinking",
+    "name": "ironic"
+  },{
     "code": "silent",
     "name": "silent"
   },{
-    "id": 12,
     "code": "king",
     "name": "royal"
   },{
-    "id": 13,
     "code": "thief",
     "name": "sneaky"
   },{
-    "id": 14,
     "code": "toothy",
     "name": "childish"
   },{
-    "id": 15,
     "code": "sleepy",
     "name": "tired"
   },{
-    "id": 16,
     "code": "sealed",
     "name": "sealed"
   }

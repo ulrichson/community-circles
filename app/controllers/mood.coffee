@@ -1,9 +1,14 @@
-moodApp = angular.module("moodApp", ["MoodModel", "ngTouch"])
+moodApp = angular.module "moodApp", [
+  "communityCirclesUtil",
+  "communityCirclesLog",
+  "MoodModel",
+  "ngTouch"
+]
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/mood/index.html
 #------------------------------------------------------------------------------- 
-moodApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, MoodRestangular) ->
+moodApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, MoodRestangular) ->
   
   MoodRestangular.all("mood").getList().then (moods) ->
     $scope.moods = moods
@@ -12,14 +17,22 @@ moodApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, MoodRestangul
     $location.hash $scope.selectedMood
     $anchorScroll()
 
-  $scope.choose = (mood) ->
-    window.postMessage
-      recipient: "contributionView"
-      mood: mood
-    $scope.selectedMood = mood
-    steroids.layers.pop()
+  visibilityChanged = ->
+    return
 
-  window.addEventListener "message", (event) ->
-    if event.data.recipient is "moodView"
-      if event.data.command is "reset"
-        $scope.$apply -> $scope.selectedMood = null
+  selectMood = (mood) ->
+    Util.send "contributionNewCtrl", "setMood", mood.name
+    $scope.selectedMood = mood.code
+
+  unselectMood = ->
+    Util.send "contributionNewCtrl", "setMood", null
+    $scope.selectedMood = null
+    return
+
+  $scope.choose = (mood) ->
+    if $scope.selectedMood? and $scope.selectedMood is mood.code
+      unselectMood()
+    else
+      selectMood mood
+
+  document.addEventListener "visibilitychange", visibilityChanged, false
