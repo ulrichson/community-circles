@@ -118,11 +118,13 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
     $scope.$apply -> $scope.loading = false
     Log.w "Could not determine position (code=#{e.code}). #{e.message}"
 
-  map.on "zoomstart", (e) ->
-    # Fade out all pulse animations
-    d3.selectAll(".contribution-pulse").transition()
-      .style("opacity", 0)
-      .duration(100)
+  # map.on "zoomstart", (e) ->
+  #   # Fade out all pulse animations
+  #   pulses = d3.selectAll(".contribution-pulse-container")
+  #   # console.log pulses
+  #   pulses.transition()
+  #     .style("opacity", 0)
+  #     .duration(100)
 
   map.on "error", (e) ->
     $scope.$apply -> $scope.loading = false
@@ -180,35 +182,37 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   tripplePulse = (n, ll, r) ->
     radius = projectCircle(ll, r).radius
     if radius > markerDiameter / 2
-      pulse n, radius, pulseDuration
+      point = map.latLngToLayerPoint ll
+      pulse n, point, radius, pulseDuration
       setTimeout ->
-        pulse n, radius, pulseDuration
+        pulse n, point, radius, pulseDuration
       , 200
       setTimeout ->
-        pulse n, radius, pulseDuration
+        pulse n, point, radius, pulseDuration
       , 400
 
-  pulse = (node, r, duration, strokeWidth = 1.5) ->
-    transform = node.style("-webkit-transform")
+  pulse = (node, point, radius, duration, strokeWidth = 1.5) ->
     parent = d3.select node.node().parentNode
     svg = parent.append("svg")
-    svg.attr("width", r * 2)
-      .attr("height", r * 2)
+    svg.attr("width", radius * 2)
+      .attr("height", radius * 2)
+      .attr("class", "contribution-pulse-container")
       .style("position", "absolute")
-      .style("left", -r)
-      .style("top", -r)
+      .style("left", -radius)
+      .style("top", -radius)
       .style("z-index", -1)
-      .style("-webkit-transform", transform)
+      # .style("-webkit-transform", L.DomUtil.getTranslateString point)
+      .style("-webkit-transform", node.style("-webkit-transform"))
       .append("circle")
       .attr("class", "contribution-pulse")
       .attr("r", markerDiameter / 2)
-      .attr("cx", r)
-      .attr("cy", r)
+      .attr("cx", radius)
+      .attr("cy", radius)
       .attr("fill-opacity", 0)
       .attr("stroke", contributionColor)
       .attr("stroke-width", strokeWidth)
       .transition()
-      .attr("r", r - strokeWidth / 2)
+      .attr("r", radius - strokeWidth / 2)
       .style("opacity", 0)
       .ease("cubic-out")
       .duration(duration)
