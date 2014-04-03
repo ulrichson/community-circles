@@ -13,14 +13,13 @@ communityCirclesApp.run ->
   # Native UI
   steroids.view.navigationBar.show "Community Circles"
 
-  buttonNotifications = new steroids.buttons.NavigationBarButton
-  # buttonNotifications.title = "Notifications"
-  buttonNotifications.imagePath = "/icons/mail@2x.png"
-  buttonNotifications.onTap = ->
-    steroids.modal.show new steroids.views.WebView "/views/notification/index.html"
+  # buttonNotifications = new steroids.buttons.NavigationBarButton
+  # buttonNotifications.imagePath = "/icons/mail@2x.png"
+  # buttonNotifications.onTap = ->
+  #   steroids.modal.show new steroids.views.WebView "/views/notification/index.html"
 
-  steroids.view.navigationBar.setButtons
-    right: [buttonNotifications]
+  # steroids.view.navigationBar.setButtons
+  #   right: [buttonNotifications]
 
 #-------------------------------------------------------------------------------
 # APP PROPERTIES AND METHODS
