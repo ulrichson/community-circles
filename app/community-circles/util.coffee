@@ -49,8 +49,8 @@ communityCirclesUtil.factory "Util", ->
   createTileLayer: ->
     return L.tileLayer "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
       detectRetina: true
-      maxNativeZoom: 18
-      maxZoom: 20
+      # maxNativeZoom: 18
+      # maxZoom: 20
       reuseTiles: true
       subdomains: "a b c d".split " "
       unloadInvisibleTiles: false

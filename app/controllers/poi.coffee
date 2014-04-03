@@ -132,12 +132,14 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
         poiMarker.data = venue
         oms.addListener "click", (marker) ->
           if not _.contains spiderfiedMarkers, marker
+            # if $scope.selectedPoi? and $scope.selectedPoi.id is marker.data.id
+            #   unselectPois()
+            # else
             selectPoi marker.data
 
             # Scroll to selected element
             $location.hash marker.data.id
             $anchorScroll()
-
             $scope.$apply()
 
         venuesLayer.addLayer poiMarker
