@@ -1,8 +1,9 @@
-/* ----------------------------------
+/*!
  * Ratchet's Gruntfile
- * Licensed under The MIT License
- * http://opensource.org/licenses/MIT
- * ---------------------------------- */
+ * http://goratchet.com
+ * Copyright 2014 Connor Sears
+ * Licensed under MIT (https://github.com/twbs/ratchet/blob/master/LICENSE)
+ */
 
 /* jshint node: true */
 module.exports = function(grunt) {
@@ -14,6 +15,8 @@ module.exports = function(grunt) {
   RegExp.quote = function (string) {
     return string.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
   };
+
+  var generateRatchiconsData = require('./grunt/ratchicons-data-generator.js');
 
   // Project configuration.
   grunt.initConfig({
@@ -30,11 +33,15 @@ module.exports = function(grunt) {
             ' * =====================================================\n' +
             ' * Ratchet v<%= pkg.version %> (<%= pkg.homepage %>)\n' +
             ' * Copyright <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
-            ' * Licensed under <%= pkg.license %>.\n' +
+            ' * Licensed under <%= pkg.license %> (https://github.com/twbs/ratchet/blob/master/LICENSE)\n' +
             ' *\n' +
             ' * v<%= pkg.version %> designed by @connors.\n' +
             ' * =====================================================\n' +
             ' */\n',
+
+    clean: {
+      dist: ['<%= meta.distPath %>', '<%= meta.docsPath %>']
+    },
 
     concat: {
       ratchet: {
@@ -50,10 +57,6 @@ module.exports = function(grunt) {
           'js/toggles.js'
         ],
         dest: '<%= meta.distPath %>js/<%= pkg.name %>.js'
-      },
-      docs: {
-        src: '<%= meta.distPath %>js/<%= pkg.name %>.js',
-        dest: '<%= meta.docsPath %>js/<%= pkg.name %>.js'
       }
     },
 
@@ -73,28 +76,44 @@ module.exports = function(grunt) {
       }
     },
 
+    csscomb: {
+      options: {
+        config: 'sass/.csscomb.json'
+      },
+      dist: {
+        files: {
+          '<%= meta.distPath %>/css/<%= pkg.name %>.css': '<%= meta.distPath %>/css/<%= pkg.name %>.css',
+          '<%= meta.distPath %>/css/<%= pkg.name %>-theme-android.css': '<%= meta.distPath %>/css/<%= pkg.name %>-theme-android.css',
+          '<%= meta.distPath %>/css/<%= pkg.name %>-theme-ios.css': '<%= meta.distPath %>/css/<%= pkg.name %>-theme-ios.css'
+        }
+      },
+      docs: {
+        files: {
+          '<%= meta.docsAssetsPath %>/css/docs.css': '<%= meta.docsAssetsPath %>/css/docs.css'
+        }
+      }
+    },
+
     copy: {
       fonts: {
         expand: true,
         src: 'fonts/*',
-        dest: 'dist/'
+        dest: '<%= meta.distPath %>/'
       },
       docs: {
         expand: true,
-        cwd: 'dist',
+        cwd: '<%= meta.distPath %>',
         src: [
           '**/*'
         ],
-        dest: 'docs/dist'
+        dest: '<%= meta.docsPath %>'
       }
     },
 
     cssmin: {
       options: {
         banner: '', // set to empty; see bellow
-        keepSpecialComments: '*', // set to '*' because we already add the banner in sass
-        noAdvanced: true, // disable advanced optimizations since it causes many issues
-        report: 'min'
+        keepSpecialComments: '*' // set to '*' because we already add the banner in sass
       },
       ratchet: {
         src: '<%= meta.distPath %>css/<%= pkg.name %>.css',
@@ -103,7 +122,7 @@ module.exports = function(grunt) {
       theme: {
         files: {
           '<%= meta.distPath %>css/<%= pkg.name %>-theme-ios.min.css': '<%= meta.distPath %>css/<%= pkg.name %>-theme-ios.css',
-          '<%= meta.distPath %>css/<%= pkg.name %>-theme-android.min.css' : '<%= meta.distPath %>css/<%= pkg.name %>-theme-android.css'
+          '<%= meta.distPath %>css/<%= pkg.name %>-theme-android.min.css': '<%= meta.distPath %>css/<%= pkg.name %>-theme-android.css'
         }
       },
       docs: {
@@ -120,11 +139,10 @@ module.exports = function(grunt) {
         banner: '<%= banner %>',
         compress: true,
         mangle: true,
-        preserveComments: false,
-        report: 'min'
+        preserveComments: false
       },
       ratchet: {
-        src: '<%= meta.distPath %>js/<%= pkg.name %>.js',
+        src: '<%= concat.ratchet.dest %>',
         dest: '<%= meta.distPath %>js/<%= pkg.name %>.min.js'
       },
       docs: {
@@ -154,13 +172,45 @@ module.exports = function(grunt) {
         jshintrc: 'js/.jshintrc'
       },
       grunt: {
-        src: 'Gruntfile.js'
+        src: ['Gruntfile.js', 'grunt/*.js']
       },
       src: {
         src: 'js/*.js'
       },
       docs: {
-        src: ['docs/assets/js/docs.js', 'docs/assets/js/fingerblast.js']
+        src: ['<%= meta.docsAssetsPath %>/js/docs.js', '<%= meta.docsAssetsPath %>/js/fingerblast.js']
+      }
+    },
+
+    jscs: {
+      options: {
+        config: 'js/.jscsrc'
+      },
+      grunt: {
+        src: '<%= jshint.grunt.src %>'
+      },
+      src: {
+        src: '<%= jshint.src.src %>'
+      },
+      docs: {
+        src: '<%= jshint.docs.src %>'
+      }
+    },
+
+    csslint: {
+      options: {
+        csslintrc: 'sass/.csslintrc'
+      },
+      src: [
+        '<%= meta.distPath %>/css/<%= pkg.name %>.css',
+        '<%= meta.distPath %>/css/<%= pkg.name %>-theme-android.css',
+        '<%= meta.distPath %>/css/<%= pkg.name %>-theme-ios.css'
+      ],
+      docs: {
+        options: {
+          ids: false
+        },
+        src: ['<%= meta.docsAssetsPath %>/css/docs.css']
       }
     },
 
@@ -195,16 +245,19 @@ module.exports = function(grunt) {
   });
 
   // Load the plugins
-  require('load-grunt-tasks')(grunt, {scope: 'devDependencies'});
+  require('load-grunt-tasks')(grunt, { scope: 'devDependencies' });
+  require('time-grunt')(grunt);
 
   // Default task(s).
-  grunt.registerTask('dist-css', ['sass', 'cssmin']);
+  grunt.registerTask('dist-css', ['sass', 'csscomb', 'cssmin']);
   grunt.registerTask('dist-js', ['concat', 'uglify']);
-  grunt.registerTask('dist', ['dist-css', 'dist-js', 'copy']);
+  grunt.registerTask('dist', ['clean', 'dist-css', 'dist-js', 'copy', 'build-ratchicons-data']);
   grunt.registerTask('validate-html', ['jekyll', 'validation']);
   grunt.registerTask('build', ['dist']);
   grunt.registerTask('default', ['dist']);
-  grunt.registerTask('test', ['dist', 'jshint', 'validate-html']);
+  grunt.registerTask('test', ['dist', 'csslint', 'jshint', 'jscs', 'validate-html']);
+
+  grunt.registerTask('build-ratchicons-data', generateRatchiconsData);
 
   // Version numbering task.
   // grunt change-version-number --oldver=A.B.C --newver=X.Y.Z

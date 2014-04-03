@@ -11,31 +11,31 @@
 // --------------------------------------------------
 
 // Type
-$font-family-default: 'Roboto', sans-serif;
-$font-size-default: 18px;
-$font-weight: 500;
-$font-weight-light: 400;
-$line-height-default: 22px;
+$font-family-default: 'Roboto', sans-serif !global;
+$font-size-default: 18px !global;
+$font-weight: 500 !global;
+$font-weight-light: 400 !global;
+$line-height-default: 22px !global;
 
 // Colors
 //
 // Main theme colors
-$primary-color:  #33b5e5;
-$chrome-color:   #dddddd;
-$text-color:     #222;
+$primary-color:  #33b5e5 !global;
+$chrome-color:   #dddddd !global;
+$text-color:     #222 !global;
 
 // Action colors
-$default-color:  #999;
-$positive-color: #99cc00;
-$negative-color: #ff4444;
+$default-color:  #999 !global;
+$positive-color: #99cc00 !global;
+$negative-color: #ff4444 !global;
 
 // Bars
-$bar-base-height: 50px;
-$bar-tab-height:  50px;
+$bar-base-height: 50px !global;
+$bar-tab-height:  50px !global;
 
 // Borders
-$border-default: 1px solid #b1b1b1;
-$border-radius: 2px;
+$border-default: 1px solid #b1b1b1 !global;
+$border-radius: 2px !global;
 
 
 // Base
@@ -96,8 +96,8 @@ a {
   &:active,
   &.active {
     color: $text-color;
-    border: 0;
     background-color: $default-color;
+    border: 0;
     @include box-shadow(inset 0 -1px 0 rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.2));
   }
 }
@@ -109,8 +109,8 @@ a {
 // Primary button (Default color is blue)
 .btn-primary {
   color: #fff;
-  border: 0;
   background-color: $primary-color;
+  border: 0;
 
   &:active,
   &.active {
@@ -123,69 +123,69 @@ a {
 // Positive button (Default color is green)
 .btn-positive {
   color: #fff;
-  border: 0;
   background-color: $positive-color;
+  border: 0;
 
   &:active,
   &.active {
     color: #fff;
-    border: 0;
     background-color: darken($positive-color, 10%);
+    border: 0;
   }
 }
 
 // Negative button (Default color is red)
 .btn-negative {
   color: #fff;
-  border: 0;
   background-color: $negative-color;
+  border: 0;
 
   &:active,
   &.active {
     color: #fff;
-    border: 0;
     background-color: darken($negative-color, 10%);
+    border: 0;
   }
 }
 
 // Outlined buttons
 .btn-outlined {
-  border: 1px solid $default-color;
   background-color: transparent;
+  border: 1px solid $default-color;
   @include box-shadow(none);
 
 
   &.btn-primary {
-    border: 1px solid $primary-color;
     color: $primary-color;
+    border: 1px solid $primary-color;
 
     &:active {
-      border: 1px solid $primary-color;
       background-color: $primary-color;
+      border: 1px solid $primary-color;
     }
   }
   &.btn-positive {
-    border: 1px solid $positive-color;
     color: $positive-color;
+    border: 1px solid $positive-color;
 
     &:active {
-      border: 1px solid $positive-color;
       background-color: $positive-color;
+      border: 1px solid $positive-color;
     }
   }
   &.btn-negative {
-    border: 1px solid $negative-color;
     color: $negative-color;
+    border: 1px solid $negative-color;
 
     &:active {
-      border: 1px solid $negative-color;
       background-color: $negative-color;
+      border: 1px solid $negative-color;
     }
   }
   // Active states
   &:active {
-    border: 1px solid $default-color;
     background-color: $default-color;
+    border: 1px solid $default-color;
     @include box-shadow(none);
   }
   &.btn-primary:active,
@@ -262,8 +262,8 @@ a {
   .bar-footer,
   .bar-footer-secondary,
   .bar-footer-secondary-tab {
-    border-bottom: 0;
     border-top: $border-default;
+    border-bottom: 0;
     @include box-shadow(inset 0 -2px 0 $primary-color);
   }
 }
@@ -313,9 +313,9 @@ a {
   .btn-link {
     top: 0;
     padding: 0;
-    color: $primary-color;
     font-size: $font-size-default;
     line-height: 49px;
+    color: $primary-color;
 
     &:active,
     &.active {
@@ -415,9 +415,9 @@ a {
 // --------------------------------------------------
 
 .card {
+  background-color: transparent;
   border-color: #d9d9d9;
   border-radius: $border-radius;
-  background-color: transparent;
 }
 
 
@@ -435,6 +435,7 @@ a {
       background-image: none;
     }
     > a:not(.btn):active {
+      color: inherit;
       background-color: #e0e0e0;
 
       .icon {
@@ -449,9 +450,26 @@ a {
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
+    background-color: transparent;
     border-top: 0;
     border-bottom: 2px solid #a9a9a9;
-    background-color: transparent;
+  }
+}
+
+// Table-views with buttons, badges and toggles
+// --------------------------------------------------
+.table-view-cell,
+.table-view-cell > a {
+  // Android has no cheverons so don't bump the buttons, badges, or toggles over.
+  .navigate-left,
+  .navigate-right,
+  .push-left,
+  .push-right {
+    > .btn,
+    > .badge,
+    > .toggle {
+      right: 15px;
+    }
   }
 }
 
@@ -512,7 +530,12 @@ textarea,
 
 // To use labels with input groups, wrap a label and an input in an .input-row
 .input-row {
+  height: 40px; // Matches the height of inputs.
   border-bottom: 1px solid #d9d9d9;
+}
+.input-row label {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 // Remove bottom border on last input-row to avoid double bottom border
 .input-row label + input {
@@ -656,9 +679,9 @@ textarea,
 .toggle {
   width: 104px;
   height: 28px;
+  background-color: #d7d7d7;
   border: 2px solid #d7d7d7;
   border-radius: 0;
-  background-color: #d7d7d7;
 
   // Sliding handle
   .toggle-handle {
@@ -666,9 +689,9 @@ textarea,
     left: 0;
     width: 50px;
     height: 24px;
+    background-color: #bebebe;
     border: 1px solid #b5b5b5;
     border-radius: 2px;
-    background-color: #bebebe;
     @include box-shadow(inset 0 1px 0 rgba(255,255,255,.3), inset 0 -1px 0 rgba(0,0,0,.1));
   }
   &:before {
@@ -681,8 +704,8 @@ textarea,
 
   // Active state for toggle
   &.active {
-    border: 2px solid #d7d7d7;
     background-color: #d7d7d7;
+    border: 2px solid #d7d7d7;
 
     .toggle-handle {
       margin-right: 2px;
@@ -691,8 +714,8 @@ textarea,
       @include transform(translate3d(50px,0,0));
     }
     &:before {
-      left: auto;
       right: 14px;
+      left: auto;
       color: #fff;
     }
   }
@@ -702,7 +725,7 @@ textarea,
 // Push icons
 // --------------------------------------------------
 
-// Deprecated `push-left` and `push-right` as of 2.0.1
+// Deprecated `push-left` and `push-right` as of 2.0.2
 .navigate-left:after,
 .push-left:after {
   content: '';
@@ -716,17 +739,17 @@ textarea,
 // Ratchicons for Android
 // --------------------------------------------------
 
-.icon-caret:before { content: '\e800'; }
+.icon-caret:before         { content: '\e800'; }
 .icon-down:before,
-.icon-down-nav:before { content: '\e801'; }
-.icon-download:before { content: '\e802'; }
+.icon-down-nav:before      { content: '\e801'; }
+.icon-download:before      { content: '\e802'; }
 .icon-left:before,
-.icon-left-nav:before { content: '\e803'; }
+.icon-left-nav:before      { content: '\e803'; }
 .icon-more-vertical:before { content: '\e804'; }
-.icon-more:before { content: '\e805'; }
+.icon-more:before          { content: '\e805'; }
 .icon-right:before,
-.icon-right-nav:before { content: '\e806'; }
-.icon-search:before { content: '\e807'; }
-.icon-share:before { content: '\e808'; }
+.icon-right-nav:before     { content: '\e806'; }
+.icon-search:before        { content: '\e807'; }
+.icon-share:before         { content: '\e808'; }
 .icon-up:before,
-.icon-up-nav:before { content: '\e809'; }
+.icon-up-nav:before        { content: '\e809'; }

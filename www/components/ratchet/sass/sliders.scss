@@ -17,15 +17,15 @@
     position: relative;
     font-size: 0; // Remove spaces from inline-block children
     white-space: nowrap;
-    @include transition(all 0 linear);
+    @include transition(all 0s linear);
 
     // Individual slide
     .slide {
       display: inline-block;
-      vertical-align: top; // Ensure that li always aligns to top
       width: 100%;
       height: 100%;
       font-size: 14px;
+      vertical-align: top; // Ensure that li always aligns to top
     }
   }
 }

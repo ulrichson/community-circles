@@ -1,14 +1,18 @@
-/* ----------------------------------
- * Segmented controls v2.0.1
- * Licensed under The MIT License
- * http://opensource.org/licenses/MIT
- * ---------------------------------- */
+/* ========================================================================
+ * Ratchet: segmented-controllers.js v2.0.2
+ * http://goratchet.com/components#segmentedControls
+ * ========================================================================
+ * Copyright 2014 Connor Sears
+ * Licensed under MIT (https://github.com/twbs/ratchet/blob/master/LICENSE)
+ * ======================================================================== */
 
 !(function () {
   'use strict';
 
   var getTarget = function (target) {
-    var i, segmentedControls = document.querySelectorAll('.segmented-control .control-item');
+    var i;
+    var segmentedControls = document.querySelectorAll('.segmented-control .control-item');
+
     for (; target && target !== document; target = target.parentNode) {
       for (i = segmentedControls.length; i--;) {
         if (segmentedControls[i] === target) {

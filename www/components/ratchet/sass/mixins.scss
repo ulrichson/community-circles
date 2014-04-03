@@ -22,8 +22,8 @@
 @mixin clearfix() {
   &:before,
   &:after {
-    content: " "; // 1
     display: table; // 2
+    content: " "; // 1
   }
   &:after {
     clear: both;
@@ -37,16 +37,25 @@
 }
 
 // Gradients
-@mixin gradient($color-form, $color-to) {
-  background: $color-form; // Old browsers
-  background: -moz-linear-gradient(top, $color-form 0%, $color-to 100%); // FF3.6+
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$color-form), color-stop(100%,$color-to)); // Chrome,Safari4+
-  background: -webkit-linear-gradient(top, $color-form 0%, $color-to 100%); // Chrome10+,Safari5.1+
-  background: -o-linear-gradient(top, $color-form 0%, $color-to 100%); // Opera 11.10+
-  background: -ms-linear-gradient(top, $color-form 0%, $color-to 100%); // IE10+
-  background: linear-gradient(to bottom, $color-form 0%, $color-to 100%); // W3C
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color-form', endColorstr='$color-to',GradientType=0 ); // IE6-9
-
+@mixin linear-gradient($color-from, $color-to) {
+  background-color: $color-from; // Old browsers
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$color-from), color-stop(100%,$color-to)); // Chrome, Safari4+
+  background-image: -webkit-linear-gradient(top, $color-from 0%, $color-to 100%);           // Chrome10+, Safari5.1+
+  background-image:    -moz-linear-gradient(top, $color-from 0%, $color-to 100%);           // FF3.6+
+  background-image:     -ms-linear-gradient(top, $color-from 0%, $color-to 100%);           // IE10+
+  background-image:      -o-linear-gradient(top, $color-from 0%, $color-to 100%);           // Opera 11.10+
+  background-image:         linear-gradient(to bottom, $color-from 0%, $color-to 100%);     // W3C
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$color-from}', endColorstr='#{$color-to}', GradientType=0 ); // IE6-9
+}
+@mixin directional-gradient($color-from, $color-to, $deg: 45deg) {
+  background-color: $color-from; // Old browsers
+  background-image: -webkit-gradient(linear, left bottom, right top, color-stop(0%,$color-from), color-stop(100%,$color-to)); // Chrome, Safari4+
+  background-image: -webkit-linear-gradient(45deg, $color-from 0%, $color-to 100%);           // Chrome10+, Safari5.1+
+  background-image:    -moz-linear-gradient(45deg, $color-from 0%, $color-to 100%);           // FF3.6+
+  background-image:     -ms-linear-gradient(45deg, $color-from 0%, $color-to 100%);           // IE10+
+  background-image:      -o-linear-gradient(45deg, $color-from 0%, $color-to 100%);           // Opera 11.10+
+  background-image:         linear-gradient(45deg, $color-from 0%, $color-to 100%);     // W3C
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$color-from}', endColorstr='#{$color-to}', GradientType=1 ); // IE6-9
 }
 
 
@@ -112,7 +121,7 @@
   } @else if $type == double {
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='1'><rect fill='#{$color}' x='0' y='0' width='100%' height='0.5'/></svg>"),
                       url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='1'><rect fill='#{$color}' x='0' y='0' width='100%' height='0.5'/></svg>");
-    background-position: $offset 100%, $offset 0%;
+    background-position: $offset 100%, $offset 0;
   }
   background-repeat: no-repeat;
 }

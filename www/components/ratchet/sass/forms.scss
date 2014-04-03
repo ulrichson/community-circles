@@ -30,6 +30,7 @@ input[type="tel"],
 input[type="color"] {
   width: 100%;
   height: 35px;
+  -webkit-appearance: none;
   padding: 0 15px;
   margin-bottom: 15px;
   line-height: $line-height-default;
@@ -37,7 +38,6 @@ input[type="color"] {
   border: $border-default;
   border-radius: 3px;
   outline: none;
-  -webkit-appearance: none;
 }
 
 // Rounded search input
@@ -45,7 +45,10 @@ input[type="search"] {
   padding: 0 10px;
   font-size: 16px;
   border-radius: 20px;
-  box-sizing: border-box; // Override content-box in normalize
+  // Override content-box in normalize
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
 }
 input[type="search"]:focus {
   text-align: left;
@@ -77,8 +80,8 @@ select {
   margin-bottom: 0;
   background-color: transparent;
   border-top: 0;
-  border-left: 0;
   border-right: 0;
+  border-left: 0;
   border-radius: 0;
   @include box-shadow(none);
 }
@@ -89,6 +92,7 @@ select {
 // To use labels with input groups, wrap a label and an input in an .input-row
 .input-row {
   overflow: hidden;
+  height: 35px; // Matches the height of inputs.
   border-bottom: $border-default;
 }
 
@@ -96,7 +100,7 @@ select {
 .input-row label {
   float: left;
   width: 35%;
-  padding: 10px 15px;
+  padding: 8px 15px;
   font-family: $font-family-default;
   line-height: 1.1; // Put the text on the baseline.
 }

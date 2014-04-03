@@ -1,9 +1,11 @@
-/* ----------------------------------
- * PUSH v2.0.1
- * Licensed under The MIT License
- * inspired by chris's jquery.pjax.js
- * http://opensource.org/licenses/MIT
- * ---------------------------------- */
+/* ========================================================================
+ * Ratchet: push.js v2.0.2
+ * http://goratchet.com/components#push
+ * ========================================================================
+ * inspired by @defunkt's jquery.pjax.js
+ * Copyright 2014 Connor Sears
+ * Licensed under MIT (https://github.com/twbs/ratchet/blob/master/LICENSE)
+ * ======================================================================== */
 
 /* global _gaq: true */
 
@@ -13,7 +15,7 @@
   var noop = function () {};
 
 
-  // Pushstate cacheing
+  // Pushstate caching
   // ==================
 
   var isScrolling;
@@ -21,9 +23,9 @@
   var cacheMapping   = sessionStorage;
   var domCache       = {};
   var transitionMap  = {
-    'slide-in'  : 'slide-out',
-    'slide-out' : 'slide-in',
-    'fade'      : 'fade'
+    slideIn  : 'slide-out',
+    slideOut : 'slide-in',
+    fade     : 'fade'
   };
 
   var bars = {
@@ -392,7 +394,9 @@
   };
 
   var findTarget = function (target) {
-    var i, toggles = document.querySelectorAll('a');
+    var i;
+    var toggles = document.querySelectorAll('a');
+
     for (; target && target !== document; target = target.parentNode) {
       for (i = toggles.length; i--;) {
         if (toggles[i] === target) {
@@ -453,7 +457,8 @@
     }
 
     data.title = head.querySelector('title');
-    data.title = data.title && data.title.innerText.trim();
+    var text = 'innerText' in data.title ? 'innerText' : 'textContent';
+    data.title = data.title && data.title[text].trim();
 
     if (options.transition) {
       data = extendWithDom(data, '.content', body);

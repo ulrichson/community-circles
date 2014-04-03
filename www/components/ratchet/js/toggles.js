@@ -1,8 +1,11 @@
-/* ----------------------------------
- * TOGGLE v2.0.1
- * Licensed under The MIT License
- * http://opensource.org/licenses/MIT
- * ---------------------------------- */
+/* ========================================================================
+ * Ratchet: toggles.js v2.0.2
+ * http://goratchet.com/components#toggles
+ * ========================================================================
+   Adapted from Brad Birdsall's swipe
+ * Copyright 2014 Connor Sears
+ * Licensed under MIT (https://github.com/twbs/ratchet/blob/master/LICENSE)
+ * ======================================================================== */
 
 !(function () {
   'use strict';
@@ -13,7 +16,9 @@
   var toggle    = false;
 
   var findToggle = function (target) {
-    var i, toggles = document.querySelectorAll('.toggle');
+    var i;
+    var toggles = document.querySelectorAll('.toggle');
+
     for (; target && target !== document; target = target.parentNode) {
       for (i = toggles.length; i--;) {
         if (toggles[i] === target) {
@@ -76,7 +81,7 @@
 
     handle.style.webkitTransform = 'translate3d(' + distanceX + 'px,0,0)';
 
-    toggle.classList[(distanceX > (toggleWidth/2 - handleWidth/2)) ? 'add' : 'remove']('active');
+    toggle.classList[(distanceX > (toggleWidth / 2 - handleWidth / 2)) ? 'add' : 'remove']('active');
   });
 
   window.addEventListener('touchend', function (e) {
@@ -88,7 +93,7 @@
     var toggleWidth = toggle.clientWidth;
     var handleWidth = handle.clientWidth;
     var offset      = (toggleWidth - handleWidth);
-    var slideOn     = (!touchMove && !toggle.classList.contains('active')) || (touchMove && (distanceX > (toggleWidth/2 - handleWidth/2)));
+    var slideOn     = (!touchMove && !toggle.classList.contains('active')) || (touchMove && (distanceX > (toggleWidth / 2 - handleWidth / 2)));
 
     if (slideOn) {
       handle.style.webkitTransform = 'translate3d(' + offset + 'px,0,0)';

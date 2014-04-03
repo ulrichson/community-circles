@@ -1,8 +1,10 @@
-/* ----------------------------------
- * POPOVER v2.0.1
- * Licensed under The MIT License
- * http://opensource.org/licenses/MIT
- * ---------------------------------- */
+/* ========================================================================
+ * Ratchet: popovers.js v2.0.2
+ * http://goratchet.com/components#popovers
+ * ========================================================================
+ * Copyright 2014 Connor Sears
+ * Licensed under MIT (https://github.com/twbs/ratchet/blob/master/LICENSE)
+ * ======================================================================== */
 
 !(function () {
   'use strict';
@@ -10,7 +12,9 @@
   var popover;
 
   var findPopovers = function (target) {
-    var i, popovers = document.querySelectorAll('a');
+    var i;
+    var popovers = document.querySelectorAll('a');
+
     for (; target && target !== document; target = target.parentNode) {
       for (i = popovers.length; i--;) {
         if (popovers[i] === target) {
@@ -53,7 +57,7 @@
       popover = null;
     }
 
-    if (popover == null) {
+    if (popover === null) {
       return;
     }
 
@@ -79,6 +83,5 @@
   };
 
   window.addEventListener('touchend', showHidePopover);
-  window.addEventListener('click', showHidePopover);
 
 }());

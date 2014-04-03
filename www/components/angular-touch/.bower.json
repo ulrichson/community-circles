@@ -1,16 +1,16 @@
 {
   "name": "angular-touch",
-  "version": "1.2.16-build.64+sha.245de33",
+  "version": "1.2.16-build.76+sha.7e4e696",
   "main": "./angular-touch.js",
   "dependencies": {
-    "angular": "1.2.16-build.64+sha.245de33"
+    "angular": "1.2.16-build.76+sha.7e4e696"
   },
   "homepage": "https://github.com/angular/bower-angular-touch",
-  "_release": "1.2.16-build.64+sha.245de33",
+  "_release": "1.2.16-build.76+sha.7e4e696",
   "_resolution": {
     "type": "version",
-    "tag": "v1.2.16-build.64+sha.245de33",
-    "commit": "d852177ec3c1f4252bb3a83b400d86dcaaa43a6a"
+    "tag": "v1.2.16-build.76+sha.7e4e696",
+    "commit": "478d04fb9a3d8add34a77b4b21990c838c6bc408"
   },
   "_source": "git://github.com/angular/bower-angular-touch.git",
   "_target": "~1.2.10",
