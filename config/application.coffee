@@ -49,7 +49,7 @@ steroids.config.navigationBar.titleColor = "#ffffff"
 steroids.config.navigationBar.buttonTintColor = "#ffffff"
 steroids.config.navigationBar.buttonTitleColor = "#ffffff"
 
-# steroids.config.navigationBar.portrait.backgroundImage = "images/navbar_portrait@2x.png"
+steroids.config.navigationBar.portrait.backgroundImage = "images/navbar_portrait@2x.png"
 # steroids.config.navigationBar.landscape.backgroundImage = "images/navbar_landscape@2x.png"
 
 # -- Android Loading Screen
