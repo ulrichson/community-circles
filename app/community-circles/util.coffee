@@ -16,6 +16,11 @@ communityCirclesUtil.factory "Util", ->
     rand = Math.floor rand if not float
     return rand
 
+  _: (str, length = -1) ->
+    if length is -1 or str.length <= length
+      return str
+    else return "#{str.substr 0, length}..."
+
   #-----------------------------------------------------------------------------
   # MAP HELPERS
   #-----------------------------------------------------------------------------
