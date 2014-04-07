@@ -11,7 +11,7 @@ communityCirclesApp.run ->
   steroids.modal.show new steroids.views.WebView "/views/login/index.html" unless window.localStorage.getItem("loggedIn") is "true"
   
   # Native UI
-  steroids.view.navigationBar.show "Community Circles"
+  steroids.view.navigationBar.show ""
 
   # buttonNotifications = new steroids.buttons.NavigationBarButton
   # buttonNotifications.imagePath = "/icons/mail@2x.png"
