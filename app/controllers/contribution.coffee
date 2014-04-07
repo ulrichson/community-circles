@@ -98,12 +98,12 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
 
   # Camera failure callback
   cameraError = (message) ->
-    debug.warn "Capturing the photo failed: #{message}"
+    Log.w "Capturing the photo failed: #{message}"
     $scope.$apply -> $scope.loading = false
 
   # File system failure callback
   fileError = (error) ->
-    debug.warn "File system error: #{error}"
+    Log.w "File system error: #{error}"
     $scope.$apply -> $scope.loading = false
 
   # Move the selected photo from Cordova's default tmp folder to Steroids's user files folder
@@ -136,8 +136,8 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
   #-----------------------------------------------------------------------------
   # UI CALLBACKS
   #-----------------------------------------------------------------------------
-  $scope.choosePhoto = ->
-    navigator.notification.confirm null,
+  $scope.choosePhoto = (msg) ->
+    navigator.notification.confirm "Select source below",
       (buttonIndex) ->
         return if buttonIndex is 3
         options = {}
@@ -160,11 +160,12 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
             targetWidth: 640
         navigator.camera.getPicture imageUriReceived, cameraError, options
         $scope.$apply -> $scope.loading = true
-      "Which photo should be added?",
+      msg,
       ["From library", "Capture photo", "Cancel"]
 
   $scope.removePhoto = ->
     $scope.imageSrc = null
+    $scope.bgImageStyle = {}
 
   $scope.chooseMood = ->
     Util.enter "moodView"
@@ -205,11 +206,18 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
   #-----------------------------------------------------------------------------
   # CUSTOM NATIVE UI BAHAVIOR
   #-----------------------------------------------------------------------------
-  # TODO: on back show confirmation dialog, if data was set 
+  visibilityChanged = ->
+    buttonAdd = new steroids.buttons.NavigationBarButton
+    buttonAdd.title = "Add"
+    buttonAdd.onTap = ->
+      alert "not implemented"
 
+    steroids.view.navigationBar.setButtons
+      right: [buttonAdd]
   #-----------------------------------------------------------------------------
   # RUN
   #-----------------------------------------------------------------------------
+  document.addEventListener "visibilitychange", visibilityChanged, false
   Util.consume $scope
 
 

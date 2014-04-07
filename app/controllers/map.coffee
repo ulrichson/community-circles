@@ -109,7 +109,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
     clearInterval e.layer.blinkInterval if e.layer.blinkInterval?
 
   map.on "locationfound", (e) ->
-    Log.i "Location found: #{e.latlng.lat}, #{e.latlng.lng}"
+    # Log.i "Location found: #{e.latlng.lat}, #{e.latlng.lng}"
     $scope.$apply -> $scope.loading = false
     drawCommunities e.latlng
     updateCurrentPositionMarker e.latlng

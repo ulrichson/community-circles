@@ -14,11 +14,23 @@ $brand-primary:   $cc-light !default;
 
 @import "../components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap";
 
-
 /*******************************************************************************
 * OTHER VARIABLES
 *******************************************************************************/
 $content-padding: 10px;
+
+/*******************************************************************************
+* CUSTOM COMPONENTS
+*******************************************************************************/
+.btn-circle {
+  width: 80px;
+  height: 80px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.42;
+  border-radius: 40px;
+}
 
 /*******************************************************************************
 * MIXINS
@@ -55,7 +67,7 @@ $content-padding: 10px;
   filter: grayscale($grayscale);
 }
 
-@mixin fade() {
+@mixin soften() {
   -webkit-filter: grayscale(80%) brightness(1.2);
   -moz-filter: grayscale(80%) brightness(1.2);
   -ms-filter: grayscale(80%) brightness(1.2);
@@ -129,7 +141,11 @@ input, textarea, [contenteditable] * {
   right: 0;
   top: 0;
   z-index: -1;
-  @include fade();
+  @include soften();
+}
+
+.soften {
+  @include soften();
 }
 
 .blur {

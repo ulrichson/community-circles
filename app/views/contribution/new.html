@@ -3,9 +3,8 @@
     <div class="loading-full" ng-show="loading">
       <i class="fa fa-4x fa-spinner fa-spin fa-inverse"></i>
     </div>
-    <div class="full-background-image" ng-style="bgImageStyle"></div>
     <div class="contribution-type">
-      <div class=" btn-group btn-group-justified">
+      <div class="btn-group btn-group-justified">
         <a class="btn btn-default" ng-class="{active: contribution.type == 'opinion'}" ng-click="contribution.type = 'opinion'">
           <span class="li_megaphone"></span><br>
           <small>Opinion</small>
@@ -24,7 +23,23 @@
         </a>
       </div>
     </div>
-    <!-- <img id="photo" width="100%" ng-src="{{ imageSrc }}" ng-hide="loading"> -->
+    <div class="contribution-photo text-center" ng-style="bgImageStyle" ng-class="{darken: imageSrc}">
+      <button ng-if="!imageSrc" class="btn btn-primary btn-circle" ng-click="choosePhoto('Which photo should be added?')"><i class="fa fa-3x fa-camera"></i></button>
+      <button ng-if="imageSrc" ng-click="removePhoto()" type="button" class="close btn-remove-photo" aria-hidden="true">&times;</button>
+      <img ng-if="imageSrc" ng-click="choosePhoto('Do you want to replace your photo?')" src="{{ imageSrc }}" alt="photo" class="img-circle" width="80" height="80">
+    </div>    
+    <div class="contribution-meta container">
+      <div class="btn-group btn-group-justified">
+        <a type="button" class="btn btn-primary" ng-click="choosePoi()">
+          <i class="fa fa-map-marker"></i>&nbsp;
+          <span ng-if="!contribution.poi">I'm at ...</span>
+          <span ng-if="contribution.poi">{{ contribution.poi }}</span>
+        <a type="button" class="btn btn-primary" ng-click="chooseMood()">
+          <span ng-if="!contribution.mood">feeling ...</span>
+          <span ng-if="contribution.mood">{{ contribution.mood.name }}&nbsp;</span><span ng-if="contribution.mood" class="contribution-mood-icon icomatic">{{ contribution.mood.code }}filled</span>
+        </a>
+      </div>
+    </div>
     <div class="contribution-input">
       <form role="form">
         <div class="form-group">
@@ -33,18 +48,7 @@
         <div class="form-group">
           <textarea class="form-control" ng-model="contribution.description" rows="3" placeholder="Description"></textarea>
         </div>
-        <!-- <div class="btn-group"> -->
-        <button class="btn btn-default" ng-click="choosePhoto()"><i class="fa fa-camera"></i> Add Image</button>
-        <button class="btn btn-default" ng-click="choosePoi()"><i class="fa fa-map-marker"></i> Add Location</button>
-        <!-- </div> -->
       </form>
-    </div>
-    <div class="container">
-      <!-- <p>Photo URI: {{ imageSrc }}</p> -->
-      <button type="button" class="btn btn-default btn-block" ng-click="chooseMood()">I'm feeling {{ contribution.mood && contribution.mood || '...' }}</button>
-      <button type="button" class="btn btn-default btn-block" ng-click="choosePoi()">I'm at {{ contribution.poi && contribution.poi || '...' }}</button>
-      <button type="button" class="btn btn-default btn-block" ng-click="create(contribution)">Add</button>
-      <!-- <button type="button" class="btn btn-default btn-block" ng-click="close()">Cancel</button> -->
     </div>
   </div>
 </div>

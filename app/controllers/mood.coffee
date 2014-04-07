@@ -21,7 +21,7 @@ moodApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, MoodRes
     return
 
   selectMood = (mood) ->
-    Util.send "contributionNewCtrl", "setMood", mood.name
+    Util.send "contributionNewCtrl", "setMood", mood
     $scope.selectedMood = mood.code
 
   unselectMood = ->
