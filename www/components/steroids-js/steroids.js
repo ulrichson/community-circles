@@ -1,4 +1,4 @@
-/*! steroids-js - v3.1.7 - 2014-03-05 15:00 */
+/*! steroids-js - v3.1.8 - 2014-04-03 14:29 */
 (function(window){
 var Bridge,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
@@ -773,18 +773,11 @@ Animation = (function() {
   }
 
   Animation.prototype.perform = function(options, callbacks) {
-    var _ref, _ref1;
     if (options == null) {
       options = {};
     }
     if (callbacks == null) {
       callbacks = {};
-    }
-    if (window.orientation !== 0 && ((_ref = this.transition) === "slideFromRight" || _ref === "slideFromLeft" || _ref === "slideFromTop" || _ref === "slideFromBottom")) {
-      if ((_ref1 = callbacks.onFailure) != null) {
-        _ref1.call();
-      }
-      return;
     }
     return steroids.nativeBridge.nativeCall({
       method: "performTransition",
@@ -793,7 +786,8 @@ Animation = (function() {
         curve: options.curve || this.curve,
         duration: options.duration || this.duration
       },
-      successCallbacks: [callbacks.onSuccess],
+      successCallbacks: [callbacks.onSuccess, callbacks.onAnimationStarted],
+      recurringCallbacks: [callbacks.onAnimationEnded],
       failureCallbacks: [callbacks.onFailure]
     });
   };
@@ -887,6 +881,21 @@ App = (function() {
     if (callbacks.onSuccess != null) {
       return callbacks.onSuccess(mode);
     }
+  };
+
+  App.prototype.getNSUserDefaults = function(options, callbacks) {
+    if (options == null) {
+      options = {};
+    }
+    if (callbacks == null) {
+      callbacks = {};
+    }
+    return steroids.nativeBridge.nativeCall({
+      method: "getNSUserDefaults",
+      parameters: {},
+      successCallbacks: [callbacks.onSuccess],
+      failureCallbacks: [callbacks.onFailure]
+    });
   };
 
   return App;
@@ -1553,6 +1562,51 @@ NavigationBar = (function() {
     return (_ref = this.buttonCallbacks[options.location]) != null ? typeof _ref[_name = options.index] === "function" ? _ref[_name]() : void 0 : void 0;
   };
 
+  NavigationBar.prototype.setAppearance = (function() {
+    var appearancePropertyNames, camelcasedNavBarAppearancePropertyName, optionsToAppearanceParams, ucfirst;
+    appearancePropertyNames = ['portraitBackgroundImage', 'landscapeBackgroundImage', 'tintColor', 'titleTextColor', 'titleShadowColor', 'buttonTintColor', 'buttonTitleTextColor', 'buttonTitleShadowColor'];
+    camelcasedNavBarAppearancePropertyName = function(appearancePropertyName) {
+      return 'navBar' + ucfirst(appearancePropertyName);
+    };
+    ucfirst = function(string) {
+      if ((string != null ? string.length : void 0) > 0) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      } else {
+        return "";
+      }
+    };
+    optionsToAppearanceParams = function(options) {
+      var appearance, propertyName, _i, _len;
+      appearance = {};
+      for (_i = 0, _len = appearancePropertyNames.length; _i < _len; _i++) {
+        propertyName = appearancePropertyNames[_i];
+        if (options[propertyName] != null) {
+          appearance[camelcasedNavBarAppearancePropertyName(propertyName)] = options[propertyName];
+        }
+      }
+      return {
+        appearance: appearance
+      };
+    };
+    return function(options, callbacks) {
+      if (options == null) {
+        options = {};
+      }
+      if (callbacks == null) {
+        callbacks = {};
+      }
+      steroids.debug("steroids.navigationBar.setAppearance options: " + (JSON.stringify(options)) + " callbacks: " + (JSON.stringify(callbacks)));
+      return steroids.on("ready", function() {
+        return steroids.nativeBridge.nativeCall({
+          method: "setAppearance",
+          parameters: optionsToAppearanceParams(options),
+          successCallbacks: [callbacks.onSuccess],
+          failureCallbacks: [callbacks.onFailure]
+        });
+      });
+    };
+  })();
+
   NavigationBar.prototype.update = function(options, callbacks) {
     var _this = this;
     if (options == null) {
@@ -1581,6 +1635,9 @@ NavigationBar = (function() {
       }
       if (options.overrideBackButton != null) {
         params.overrideBackButton = options.overrideBackButton;
+      }
+      if (options.backButton != null) {
+        params.backButton = options.backButton.toParams();
       }
       if (options.buttons != null) {
         locations = ["right", "left"];
@@ -1625,6 +1682,23 @@ NavigationBar = (function() {
 
 StatusBar = (function() {
   function StatusBar() {}
+
+  StatusBar.prototype.onTap = function(options, callbacks) {
+    if (options == null) {
+      options = {};
+    }
+    if (callbacks == null) {
+      callbacks = {};
+    }
+    this.onTap = options;
+    return steroids.nativeBridge.nativeCall({
+      method: "setupStatusBarOnTap",
+      parameters: {},
+      successCallbacks: [callbacks.onSuccess],
+      recurringCallbacks: [this.onTap],
+      failureCallbacks: [callbacks.onFailure]
+    });
+  };
 
   StatusBar.prototype.hide = function(options, callbacks) {
     if (options == null) {
@@ -1764,6 +1838,23 @@ TabBar = (function() {
     });
   };
 
+  TabBar.prototype.currentTab = {
+    update: function(options, callbacks) {
+      if (options == null) {
+        options = {};
+      }
+      if (callbacks == null) {
+        callbacks = {};
+      }
+      return steroids.nativeBridge.nativeCall({
+        method: "updateTab",
+        parameters: options,
+        successCallbacks: [callbacks.onSuccess],
+        failureCallbacks: [callbacks.onFailure]
+      });
+    }
+  };
+
   TabBar.prototype.update = function(options, callbacks) {
     var parameters, scale, _i, _ref;
     if (options == null) {
@@ -1901,6 +1992,20 @@ WebView = (function() {
     });
   };
 
+  WebView.prototype.displayLoading = function(options, callbacks) {
+    if (options == null) {
+      options = {};
+    }
+    if (callbacks == null) {
+      callbacks = {};
+    }
+    return steroids.nativeBridge.nativeCall({
+      method: "displayTransitionHelper",
+      successCallbacks: [callbacks.onSuccess],
+      failureCallbacks: [callbacks.onFailure]
+    });
+  };
+
   WebView.prototype.setAllowedRotations = function(options, callbacks) {
     var _ref,
       _this = this;
@@ -1954,6 +2059,26 @@ WebView = (function() {
       parameters: {
         color: newColor
       },
+      successCallbacks: [callbacks.onSuccess],
+      failureCallbacks: [callbacks.onFailure]
+    });
+  };
+
+  WebView.prototype.updateKeyboard = function(options, callbacks) {
+    var params;
+    if (options == null) {
+      options = {};
+    }
+    if (callbacks == null) {
+      callbacks = {};
+    }
+    params = {};
+    if (options.accessoryBarEnabled != null) {
+      params.accessoryBarEnabled = options.accessoryBarEnabled;
+    }
+    return steroids.nativeBridge.nativeCall({
+      method: "updateKeyboard",
+      parameters: params,
       successCallbacks: [callbacks.onSuccess],
       failureCallbacks: [callbacks.onFailure]
     });
@@ -2146,7 +2271,7 @@ AuthorizationCodeFlow = (function(_super) {
     this.xhrAccessTokenParams = {
       client_id: this.options.clientID,
       client_secret: this.options.clientSecret,
-      redirect_uri: this.callbackUrl,
+      redirect_uri: this.options.callbackUrl,
       grant_type: "authorization_code"
     };
     request = new XMLHttpRequest();
@@ -2821,7 +2946,7 @@ PostMessage = (function() {
 
 }).call(this);
 ;window.steroids = {
-  version: "3.1.7",
+  version: "3.1.8",
   Animation: Animation,
   File: File,
   views: {
