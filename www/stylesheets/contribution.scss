@@ -122,7 +122,7 @@ $contribution-type-diameter: 64px;
   font-size: 2.2em;
   position: absolute;
   right: 0;
-  top: 3px;
+  top: 1px;
 }
 
 .contribution-input {
@@ -132,6 +132,18 @@ $contribution-type-diameter: 64px;
   padding-left: 1em;
   padding-right: 1em;
   padding-top: 1em;
+}
+
+.contribution-title {
+  margin-bottom: 0;
+}
+
+.contribution-title .form-control {
+  @include border-bottom-radius(0);
+}
+
+.contribution-meta .btn {
+  @include border-top-radius(0);
 }
 
 .rn-carousel-container {

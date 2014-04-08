@@ -41,16 +41,16 @@
     </div>    
     <div class="contribution-input">
       <form role="form" name="contribution_form" novalidate>
-        <div class="form-group" ng-class="{'has-error': contribution_form.title.$dirty && contribution_form.title.$invalid}">
+        <span class="text-center help-block has-error" ng-show='contribution_form.title.$dirty && contribution_form.title.$error.required')>A title is required</span>
+        <div class="contribution-title form-group" ng-class="{'has-error': contribution_form.title.$dirty && contribution_form.title.$invalid}">
           <input type="text" name ="title" class="form-control text-center input-lg" ng-model="contribution.title" placeholder="Please enter a title" required />
-          <span class="text-center help-block has-error" ng-show='contribution_form.title.$dirty && contribution_form.title.$error.required')>A title is required</span>
         </div>
         <div class="contribution-meta">
           <div class="btn-group btn-group-justified">
-            <a type="button" class="btn btn-lg btn-primary touchfix" ng-click="choosePoi()" touchend="alert('touchend')" touchcancel="alert('touchcancel')">
+            <a type="button" class="btn btn-primary touchfix" ng-click="choosePoi()" touchend="alert('touchend')" touchcancel="alert('touchcancel')">
               <span ng-if="!contribution.poi">I'm at …</span>
               <span ng-if="contribution.poi"><strong>{{ contribution.poi | cut:10 }}</strong></span>
-            <a type="button" class="btn btn-lg btn-primary touchfix" ng-click="chooseMood()">
+            <a type="button" class="btn btn-primary touchfix" ng-click="chooseMood()">
               <span ng-if="!contribution.mood">feeling ...</span>
               <span ng-if="contribution.mood"><strong>{{ contribution.mood.name }}</strong>&nbsp;</span><span ng-if="contribution.mood" class="contribution-mood-icon icomatic">{{ contribution.mood.code }}filled</span>
             </a>
