@@ -68,7 +68,7 @@ $contribution-type-diameter: 64px;
 .contribution-type span,
 .contribution-type small {
   position: relative;
-  top: 10px;
+  top: 8px;
 }
 
 .contribution-type {
@@ -79,15 +79,21 @@ $contribution-type-diameter: 64px;
 }
 
 .contribution-type > li.active > a {
-  background-color: $brand-primary;
+  background-color: $cc-light;
 }
 
 .contribution-type > li.active > a,
-.contribution-type > li > a:active,
 .contribution-type > li > a:hover,
-.contribution-type > li > a:focus   {
+.contribution-type > li > a:focus {
+  border-color: $cc-light;
   color: #ffffff;
   text-decoration: none;
+}
+
+.contribution-type > li > a:active,
+.contribution-type > li.active > a:active {
+  background-color: $cc-dark;
+  border-color: $cc-dark;
 }
 
 .contribution-type > li {
@@ -97,10 +103,14 @@ $contribution-type-diameter: 64px;
   width: 25%;
 }
 
+.contribution-type > li > a {
+  color: $cc-light;
+}
+
 .contribution-type > li > a,
 .contribution-type > li.active > a {
-  border: 2px solid $brand-primary;
-  border-radius: 50%;
+  border: 2px solid $cc-light;
+  border-radius: $contribution-type-diameter / 2;
   display: block;
   height: $contribution-type-diameter;
   margin: 0 auto;
