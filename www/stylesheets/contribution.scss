@@ -7,9 +7,44 @@ body {
 .contribution-photo {
   background-color: $gray-lighter;
   background-size: cover;
-  padding: 20px 0;
+  height: 120px;
   position: relative;
   overflow: hidden;
+}
+
+.contribution-photo-preview {
+  background-size: cover;
+  border-radius: 40px;
+  height: 80px;
+  width: 80px;
+}
+
+.contribution-photo .background {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+}
+
+.contribution-photo .content {
+  bottom: 20px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 20px;
+  z-index: 20;
+}
+
+.btn-remove-photo {
+  color: #ffffff;
+  font-size: 3em;
+  right: 10px;
+  position: absolute;
+  text-shadow: #000000 0px 1px 0px;
+  top: 0;
+  z-index: 30;
 }
 
 .contribution-meta {
@@ -41,13 +76,6 @@ body {
   padding-left: 1em;
   padding-right: 1em;
   padding-top: 1em;
-}
-
-.btn-remove-photo {
-  font-size: 2em;
-  right: 5px;
-  position: absolute;
-  top: 0;
 }
 
 .rn-carousel-container {

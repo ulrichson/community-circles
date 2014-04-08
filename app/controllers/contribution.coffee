@@ -115,7 +115,7 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
     # steroids.app variables require the Steroids ready event to be fired, so ensure that
     steroids.on "ready", ->
       targetDirURI = "file://" + steroids.app.absoluteUserFilesPath
-      fileName = "contribution_photo.png"
+      fileName = "contribution_photo_#{new Date().getTime()}.png"
 
       window.resolveLocalFileSystemURI(
         targetDirURI
