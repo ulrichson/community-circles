@@ -5,25 +5,25 @@
     </div>
     <div class="container">
       <ul class="contribution-type">
-        <li ng-class="{active: contribution.type == 'opinion'}" ng-click="contribution.type = 'opinion'">
+        <li class="center-block" ng-class="{active: contribution.type == 'opinion'}" ng-click="contribution.type = 'opinion'">
           <a class="text-center" href="#">
             <span class="li_megaphone"></span><br>
             <small>Opinion</small>
           </a>
         </li>
-        <li ng-class="{active: contribution.type == 'poll'}" ng-click="contribution.type = 'poll'">
+        <li class="center-block" ng-class="{active: contribution.type == 'poll'}" ng-click="contribution.type = 'poll'">
           <a class="text-center" href="#">
             <span class="li_bubble"></span><br>
             <small>Poll</small>
           </a>
         </li>
-        <li ng-class="{active: contribution.type == 'issue'}" ng-click="contribution.type = 'issue'">
+        <li class="center-block" ng-class="{active: contribution.type == 'issue'}" ng-click="contribution.type = 'issue'">
           <a class="text-center" href="#">
             <span class="li_fire"></span><br>
             <small>Issue</small>
           </a>
         </li>
-        <li ng-class="{active: contribution.type == 'idea'}" ng-click="contribution.type = 'idea'">
+        <li class="center-block" ng-class="{active: contribution.type == 'idea'}" ng-click="contribution.type = 'idea'">
           <a class="text-center" href="#">
             <span class="li_bulb"></span><br>
             <small>Idea</small>
@@ -51,12 +51,14 @@
       </div>
     </div>
     <div class="contribution-input">
-      <form role="form">
-        <div class="form-group">
-          <input type="text" class="form-control" ng-model="contribution.title" placeholder="Title" />
+      <form role="form" name="contribution_form" novalidate>
+        <div class="form-group" ng-class="{'has-error': contribution_form.title.$dirty && contribution_form.title.$invalid}">
+          <input type="text" name ="title" class="form-control" ng-model="contribution.title" placeholder="Please provide a title" required />
+          <span class="help-block has-error" ng-show='contribution_form.title.$dirty && contribution_form.title.$error.required')>A title is required</span>
         </div>
-        <div class="form-group">
-          <textarea class="form-control" ng-model="contribution.description" rows="3" placeholder="Description"></textarea>
+        <div class="form-group" ng-class="{'has-error': contribution_form.description.$dirty && contribution_form.description.$invalid}">
+          <textarea class="form-control" name="description" ng-model="contribution.description" rows="3" placeholder="Please give a short description" required></textarea>
+          <span class="help-block has-error" ng-show='contribution_form.description.$dirty && contribution_form.description.$error.required')>A descrption is required</span>
         </div>
       </form>
     </div>
