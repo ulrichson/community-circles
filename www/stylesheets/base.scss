@@ -14,6 +14,10 @@ $brand-primary:   $cc-light !default;
 
 @import "../components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap";
 
+.form-control {
+  height: inherit !important;
+}
+
 /*******************************************************************************
 * OTHER VARIABLES
 *******************************************************************************/

@@ -90,6 +90,7 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
   $scope.contribution.poi = null
   $scope.contribution.type = null
   $scope.contribution.mood = null
+  $scope.contribution.pollOptions = []
 
   #-----------------------------------------------------------------------------
   # CAMERA HANDLNG
@@ -136,6 +137,14 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
   #-----------------------------------------------------------------------------
   # UI CALLBACKS
   #-----------------------------------------------------------------------------
+  $scope.addPollOption = ->
+    # alert $scope.contribution.pollOption
+    $scope.contribution.pollOptions.push $scope.contribution.pollOption
+    $scope.contribution.pollOption = ""
+
+  $scope.removePollOption = (pollOption) ->
+    $scope.contribution.pollOptions = _.without $scope.contribution.pollOptions, pollOption
+
   $scope.choosePhoto = (msg) ->
     navigator.notification.confirm "Select source below",
       (buttonIndex) ->
@@ -219,10 +228,6 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
   #-----------------------------------------------------------------------------
   document.addEventListener "visibilitychange", visibilityChanged, false
   Util.consume $scope
-  
-  # Prevents that WebView is dragged
-  document.ontouchmove = (e) -> e.preventDefault()
-
 
 #-------------------------------------------------------------------------------
 # Edit: http://localhost/views/contribution/edit.html
