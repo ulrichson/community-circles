@@ -219,6 +219,9 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
   #-----------------------------------------------------------------------------
   document.addEventListener "visibilitychange", visibilityChanged, false
   Util.consume $scope
+  
+  # Prevents that WebView is dragged
+  document.ontouchmove = (e) -> e.preventDefault()
 
 
 #-------------------------------------------------------------------------------

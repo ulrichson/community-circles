@@ -1,8 +1,10 @@
 @import 'base.scss';
 
-body {
-  padding-bottom: 70px;
-}
+$contribution-type-diameter: 64px;
+
+// body {
+//   padding-bottom: 70px;
+// }
 
 .contribution-photo {
   background-color: $gray-lighter;
@@ -56,16 +58,60 @@ body {
 }
 
 .contribution-type a {
-  border-radius: 0;
+  // border-radius: 0;
 }
 
 .contribution-type span {
   font-size: 2em;
 }
 
+.contribution-type span,
+.contribution-type small {
+  position: relative;
+  top: 10px;
+}
+
+.contribution-type {
+  height: $contribution-type-diameter;
+  margin: 15px 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.contribution-type > li.active > a {
+  background-color: $brand-primary;
+}
+
+.contribution-type > li.active > a,
+.contribution-type > li > a:active,
+.contribution-type > li > a:hover,
+.contribution-type > li > a:focus   {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.contribution-type > li {
+  float: left;
+  margin: 0;
+  padding: 0;
+  width: 25%;
+}
+
+.contribution-type > li > a,
+.contribution-type > li.active > a {
+  border: 2px solid $brand-primary;
+  border-radius: 50%;
+  display: block;
+  height: $contribution-type-diameter;
+  margin: 0 auto;
+  padding: 0;
+  width: $contribution-type-diameter;
+}
+
 .contribution-mood-icon {
   font-size: 2.2em;
   position: absolute;
+  right: 2px;
   top: 1px;
 }
 
