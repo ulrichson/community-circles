@@ -16,11 +16,6 @@ communityCirclesUtil.factory "Util", ->
     rand = Math.floor rand if not float
     return rand
 
-  _: (str, length = -1) ->
-    if length is -1 or str.length <= length
-      return str
-    else return "#{str.substr 0, length}..."
-
   #-----------------------------------------------------------------------------
   # MAP HELPERS
   #-----------------------------------------------------------------------------
@@ -135,3 +130,16 @@ communityCirclesUtil.factory "Util", ->
 
   return: ->
     steroids.layers.pop()
+
+# http://stackoverflow.com/questions/18095727/how-can-i-limit-the-length-of-a-string-that-displays-with-when-using-angularj
+angular.module("ng").filter "cut", ->
+  (value, max, wordwise, tail) ->
+    return "" unless value
+    max = parseInt max, 10
+    return value unless max
+    return value if value.length <= max
+    value = value.substr 0, max
+    if wordwise
+      lastspace = value.lastIndexOf " "
+      value = value.substr 0, lastspace unless lastspace is -1
+    value + (tail or " …")

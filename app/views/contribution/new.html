@@ -34,12 +34,11 @@
     <div class="contribution-meta container">
       <div class="btn-group btn-group-justified">
         <a type="button" class="btn btn-primary" ng-click="choosePoi()">
-          <i class="fa fa-map-marker"></i>&nbsp;
-          <span ng-if="!contribution.poi">I'm at ...</span>
-          <span ng-if="contribution.poi">{{ contribution.poi }}</span>
+          <span ng-if="!contribution.poi">I'm at …</span>
+          <span ng-if="contribution.poi"><strong>{{ contribution.poi | cut:10 }}</strong></span>
         <a type="button" class="btn btn-primary" ng-click="chooseMood()">
           <span ng-if="!contribution.mood">feeling ...</span>
-          <span ng-if="contribution.mood">{{ contribution.mood.name }}&nbsp;</span><span ng-if="contribution.mood" class="contribution-mood-icon icomatic">{{ contribution.mood.code }}filled</span>
+          <span ng-if="contribution.mood"><strong>{{ contribution.mood.name }}</strong>&nbsp;</span><span ng-if="contribution.mood" class="contribution-mood-icon icomatic">{{ contribution.mood.code }}filled</span>
         </a>
       </div>
     </div>
