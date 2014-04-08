@@ -142,4 +142,4 @@ angular.module("ng").filter "cut", ->
     if wordwise
       lastspace = value.lastIndexOf " "
       value = value.substr 0, lastspace unless lastspace is -1
-    value + (tail or " …")
+    value + (tail or "…")
