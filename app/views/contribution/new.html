@@ -33,31 +33,31 @@
   <div class="contribution-photo text-center">
     <div class="background" ng-style="bgImageStyle" ng-class="{background: imageSrc}"></div>
     <div class="content">
-      <button ng-if="!imageSrc" class="btn btn-primary btn-circle" ng-click="choosePhoto('Which photo should be added?')"><i class="fa fa-3x fa-camera"></i></button>
+      <button ng-if="!imageSrc" class="btn btn-default btn-circle" ng-click="choosePhoto('Which photo should be added?')"><i class="fa fa-3x fa-camera"></i></button>
       <div ng-if="imageSrc" ng-click="choosePhoto('Do you want to replace your photo?')" ng-style="bgImageStyle" class="contribution-photo-preview center-block"></div>
     </div>
     <button ng-if="imageSrc" ng-click="removePhoto()" type="button" class="close btn-remove-photo" aria-hidden="true">&times;</button>
   </div>    
   <div class="contribution-input">
     <form role="form" name="contribution_form" novalidate>
-      <span class="text-center help-block has-error" ng-show='contribution_form.title.$dirty && contribution_form.title.$error.required')>A title is required</span>
       <div class="contribution-title form-group" ng-class="{'has-error': contribution_form.title.$dirty && contribution_form.title.$invalid}">
+        <span class="text-center help-block has-error" ng-show='contribution_form.title.$dirty && contribution_form.title.$error.required')>A title is required</span>
         <input type="text" name ="title" class="form-control text-center input-lg" ng-model="contribution.title" placeholder="Please enter a title" required />
       </div>
       <div class="contribution-meta">
         <div class="btn-group btn-group-justified">
-          <a type="button" class="btn btn-primary touchfix" ng-click="choosePoi()" touchend="alert('touchend')" touchcancel="alert('touchcancel')">
-            <span ng-if="!contribution.poi">I'm at …</span>
+          <a type="button" class="btn btn touchfix" ng-click="choosePoi()" ng-class="{'btn-default': !contribution.poi, 'btn-primary': contribution.poi}">
+            <span ng-if="!contribution.poi"><em>I'm at …</em></span>
             <span ng-if="contribution.poi"><strong>{{ contribution.poi | cut:10 }}</strong></span>
-          <a type="button" class="btn btn-primary touchfix" ng-click="chooseMood()">
-            <span ng-if="!contribution.mood">feeling ...</span>
+          <a type="button" class="btn touchfix" ng-click="chooseMood()" ng-class="{'btn-default': !contribution.mood, 'btn-primary': contribution.mood}">
+            <span ng-if="!contribution.mood"><em>feeling …</em></span>
             <span ng-if="contribution.mood"><strong>{{ contribution.mood.name }}</strong>&nbsp;</span><span ng-if="contribution.mood" class="contribution-mood-icon icomatic">{{ contribution.mood.code }}filled</span>
           </a>
         </div>
       </div>
       <div class="well well-sm" ng-if="contribution.type != 'poll'" class="form-group" ng-class="{'has-error': contribution_form.description.$dirty && contribution_form.description.$invalid}">
-        <textarea class="form-control" name="description" ng-model="contribution.description" rows="3" placeholder="Please give a short description" required></textarea>
         <span class="help-block has-error" ng-show='contribution_form.description.$dirty && contribution_form.description.$error.required')>A descrption is required</span>
+        <textarea class="form-control" name="description" ng-model="contribution.description" rows="3" placeholder="Please give a short description" required></textarea>
       </div>
       <div class="well well-sm" ng-if="contribution.type == 'poll'">
         <ul class="list-group" ng-show="contribution.pollOptions.length > 0">

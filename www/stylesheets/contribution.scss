@@ -138,6 +138,11 @@ $contribution-type-diameter: 64px;
   margin-bottom: 0;
 }
 
+.contribution-title input {
+  color: $brand-primary;
+  font-weight: bold;
+}
+
 .contribution-title .form-control {
   @include border-bottom-radius(0);
 }
