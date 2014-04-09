@@ -328,9 +328,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   # UI EVENTS
   #-----------------------------------------------------------------------------
   $scope.newContribution = ->
-    steroids.layers.push new steroids.views.WebView
-      location: "/views/contribution/new.html"
-      id: "newContributionView"
+    Util.enter "newContributionView"
 
   $scope.locate = ->
     locate()
@@ -420,6 +418,11 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
     location: "/views/poi/index.html"
     id: "poiView"
   poiWebView.preload()
+
+  loginWebView = new steroids.views.WebView
+    location: "/views/login/index.html"
+    id: "loginView"
+  loginWebView.preload()
 
   tileLayer = Util.createTileLayer()
 
