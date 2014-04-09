@@ -1,4 +1,3 @@
-# util = window.Util
 mapApp = angular.module "mapApp", [
   "communityCirclesApp",
   "communityCirclesGame",
