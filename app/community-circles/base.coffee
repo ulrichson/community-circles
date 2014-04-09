@@ -1,4 +1,4 @@
-communityCirclesApp = angular.module("communityCirclesApp", [])
+communityCirclesApp = angular.module "communityCirclesApp", []
 
 #-------------------------------------------------------------------------------
 # APP INITIALIZATIOM
