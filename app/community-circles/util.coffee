@@ -131,6 +131,25 @@ communityCirclesUtil.factory "Util", ->
   return: ->
     steroids.layers.pop()
 
+communityCirclesUtil.controller "MessageCtrl", ($scope) ->
+
+  # Check for internet connection
+  onDeviceReady = ->
+    $scope.connectionIsNone = navigator.connection.type is Connection.NONE
+    $scope.$apply()
+    document.addEventListener "online", onOnline, false
+    document.addEventListener "offline", onOffline, false
+
+  onOnline = ->
+    $scope.connectionIsNone = false
+    $scope.$apply()
+
+  onOffline = ->
+    $scope.connectionIsNone = true
+    $scope.$apply()
+
+  document.addEventListener "deviceready", onDeviceReady, false
+
 # http://stackoverflow.com/questions/18095727/how-can-i-limit-the-length-of-a-string-that-displays-with-when-using-angularj
 angular.module("ng").filter "cut", ->
   (value, max, wordwise, tail) ->
