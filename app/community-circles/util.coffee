@@ -131,24 +131,38 @@ communityCirclesUtil.factory "Util", ->
   return: ->
     steroids.layers.pop()
 
-communityCirclesUtil.controller "MessageCtrl", ($scope) ->
+communityCirclesUtil.controller "MessageCtrl", ($scope, Log) ->
+
+  states = null
+  $scope.connectionIsNone = false
+
+  setConnectivityMessage = ->
+    if !states
+      states = {}
+      states[Connection.UNKNOWN]  = "not available";
+      states[Connection.ETHERNET] = "Ethernet";
+      states[Connection.WIFI]     = "WiFi";
+      states[Connection.CELL]     = "Cell";
+      states[Connection.CELL_2G]  = "Cell 2G";
+      states[Connection.CELL_3G]  = "Cell 3G";
+      states[Connection.CELL_4G]  = "Cell 4G";
+      states[Connection.NONE]     = "none";
+
+    networkState = navigator.connection.type
+    # DO NOT SET THIS MESSAGE
+    # Callback seems to be buggy, it fires "online", although iOS 7.1 is in Airplane Mode
+    # $scope.connectionIsNone = networkState is Connection.NONE
+    Log.d "Connection type is #{states[networkState]}"
+    $scope.$apply()
 
   # Check for internet connection
   onDeviceReady = ->
-    $scope.connectionIsNone = navigator.connection.type is Connection.NONE
-    $scope.$apply()
-    document.addEventListener "online", onOnline, false
-    document.addEventListener "offline", onOffline, false
-
-  onOnline = ->
-    $scope.connectionIsNone = false
-    $scope.$apply()
-
-  onOffline = ->
-    $scope.connectionIsNone = true
-    $scope.$apply()
+    setConnectivityMessage()
+    document.addEventListener "online", setConnectivityMessage, false
+    document.addEventListener "offline", setConnectivityMessage, false
 
   document.addEventListener "deviceready", onDeviceReady, false
+  document.addEventListener "visibilitychange", setConnectivityMessage, false
 
 # http://stackoverflow.com/questions/18095727/how-can-i-limit-the-length-of-a-string-that-displays-with-when-using-angularj
 angular.module("ng").filter "cut", ->

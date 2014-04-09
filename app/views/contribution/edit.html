@@ -1,19 +1,14 @@
-<div ng-app="contributionApp">
+<div ng-controller="EditCtrl">
+  <div class="spinner" ng-show="loading"></div>
+  <div class="content-padded">
+    <h1>Edit</h1>
 
-  <div ng-controller="EditCtrl">
-    <div class="spinner" ng-show="loading"></div>
-    <div class="content-padded">
-      <h1>Edit</h1>
+    <form class="simple-form">
+      Name: <input type="text" ng-model="contribution.name" /><br />
+      Description: <input type="text" ng-model="contribution.description" /><br />
 
-      <form class="simple-form">
-        Name: <input type="text" ng-model="contribution.name" /><br />
-        Description: <input type="text" ng-model="contribution.description" /><br />
-
-        <a class="topcoat-button" ng-click="update(contribution)">Update</a>
-        <a class="topcoat-button" ng-click="close()">Cancel</a>
-      </form>
-    </div>
-
+      <a class="topcoat-button" ng-click="update(contribution)">Update</a>
+      <a class="topcoat-button" ng-click="close()">Cancel</a>
+    </form>
   </div>
-
 </div>

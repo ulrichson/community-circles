@@ -1,9 +1,9 @@
-profileApp = angular.module("profileApp", ["communityCirclesApp", "ngTouch"])
+profileApp = angular.module "profileApp", ["communityCirclesApp", "communityCirclesUtil", "ngTouch"]
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/profile/index.html
 #------------------------------------------------------------------------------- 
-profileApp.controller "IndexCtrl", ($scope, app) ->
+profileApp.controller "IndexCtrl", ($scope, app, Util) ->
   $scope.loggedIn = app.loggedIn()
 
   $scope.logout = ->

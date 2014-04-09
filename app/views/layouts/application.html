@@ -77,7 +77,10 @@
     })();
   </script>
 </head>
-<body>
+<body ng-app="<%= yield.controller %>App">
+  <div ng-controller="MessageCtrl" ng-show="connectionIsNone" class="alert alert-danger">
+    <strong>No internet connection!</strong> Please check your connection settings on your device.
+  </div>
   <%= yield.view %>
 </body>
 </html>

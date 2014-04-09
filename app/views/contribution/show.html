@@ -1,33 +1,31 @@
-<div ng-app="contributionApp">
-  <div ng-controller="ShowCtrl">
-    <div class="spinner" ng-show="loading"></div>
-    <p class="bg-info" ng-show="debug">{{ debug }}</p>
-    <ul rn-carousel rn-carousel-indicator>
-      <li><img src="holder.js/320x200/gray/auto"></li><li><img src="holder.js/320x200/gray/auto"></li><li><img src="holder.js/320x200/gray/auto"></li>
-    </ul>
-    <div class="navbar navbar-fixed-bottom navbar-default">
-      <div class="container">
-        <div class="navbar-form">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Comment...">
-            <span class="input-group-btn">
-              <button class="btn btn-primary" type="button">Send</button>
-            </span>
-          </div>
+<div ng-controller="ShowCtrl">
+  <div class="spinner" ng-show="loading"></div>
+  <p class="bg-info" ng-show="debug">{{ debug }}</p>
+  <ul rn-carousel rn-carousel-indicator>
+    <li><img src="holder.js/320x200/gray/auto"></li><li><img src="holder.js/320x200/gray/auto"></li><li><img src="holder.js/320x200/gray/auto"></li>
+  </ul>
+  <div class="navbar navbar-fixed-bottom navbar-default">
+    <div class="container">
+      <div class="navbar-form">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Comment...">
+          <span class="input-group-btn">
+            <button class="btn btn-primary" type="button">Send</button>
+          </span>
         </div>
       </div>
     </div>
-    <div class="container">
-      <h3 class="text-center">{{contribution.title}}<br><small>by <strong>{{ contribution.creator }}</strong> <em am-time-ago="contribution.created"></em></small></h3>
-      <div class="well well-sm">{{contribution.description}}</div>
-      <ul class="media-list">
-        <li class="media" ng-repeat="comment in comments">
-          <div class="media-body">
-            <h4 class="media-heading"><img class="img-circle" src="holder.js/30x30/gray" alt="{{ comment.creator }}"> {{ comment.creator }} <small am-time-ago="comment.created"></small></h4>
-            <p>{{ comment.text }}</p>
-          </div>
-        <li>
-      </ul>
-    </div>
+  </div>
+  <div class="container">
+    <h3 class="text-center">{{contribution.title}}<br><small>by <strong>{{ contribution.creator }}</strong> <em am-time-ago="contribution.created"></em></small></h3>
+    <div class="well well-sm">{{contribution.description}}</div>
+    <ul class="media-list">
+      <li class="media" ng-repeat="comment in comments">
+        <div class="media-body">
+          <h4 class="media-heading"><img class="img-circle" src="holder.js/30x30/gray" alt="{{ comment.creator }}"> {{ comment.creator }} <small am-time-ago="comment.created"></small></h4>
+          <p>{{ comment.text }}</p>
+        </div>
+      <li>
+    </ul>
   </div>
 </div>

@@ -1,16 +1,7 @@
-<div ng-app="contributionApp">
-  
-  <div ng-controller="MessageCtrl" ng-show="connectionIsNone" class="alert alert-danger">
-    <strong>No internet connection!</strong> Please check your connection settings on your device.
+<div ng-controller="IndexCtrl">
+  <div class="spinner" ng-show="loading"></div>
+  {{ length }}
+  <div class="list-group">
+    <a href="#" class="list-group-item" ng-click="open(contribution.id)" ng-repeat="contribution in contributions | orderBy: 'created'">{{ contribution.title }}</a>
   </div>
-
-  <div ng-controller="IndexCtrl">
-    <div class="spinner" ng-show="loading"></div>
-    {{ length }}
-    <div class="list-group">
-      <a href="#" class="list-group-item" ng-click="open(contribution.id)" ng-repeat="contribution in contributions | orderBy: 'created'">{{ contribution.title }}</a>
-    </div>
-
-  </div>
-
 </div>

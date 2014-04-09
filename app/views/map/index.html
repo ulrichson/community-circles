@@ -1,20 +1,18 @@
-<div ng-app="mapApp">
-  <div ng-controller="IndexCtrl">
-    <div class="loading-full" ng-show="loading">
-      <i class="fa fa-4x fa-spinner fa-spin fa-inverse"></i>
-    </div>
-    <div id="map"></div>
-    <div class="contribution-detail" ng-show="contributionSelected" ng-swipe-down="hideContributionDetail()">
-      <div class="contribution-detail-inner">
-        <button type="button" class="contribution-close close" aria-hidden="true" ng-click="hideContributionDetail()"><i class="fa fa-chevron-down"></i></button>
-        <div class="text-center">
-          <img src="holder.js/500x500/gray/auto" class="contribution-preview-image center-block img-responsive img-circle" alt="{{ contribution.properties.title }}" ng-click="openContribution()">
-          <h3 class="contribution-meta">
-            {{ contribution.properties.title }}<br />
-            <small>by {{ contribution.properties.creator }} <span am-time-ago="contribution.properties.created"></span></small>
-          </h3>
-          <span class="badge">{{ contribution.properties.area }}&nbsp;km<sup>2</sup></span>
-        </div>
+<div ng-controller="IndexCtrl">
+  <div class="loading-full" ng-show="loading">
+    <i class="fa fa-4x fa-spinner fa-spin fa-inverse"></i>
+  </div>
+  <div id="map"></div>
+  <div class="contribution-detail" ng-show="contributionSelected" ng-swipe-down="hideContributionDetail()">
+    <div class="contribution-detail-inner">
+      <button type="button" class="contribution-close close" aria-hidden="true" ng-click="hideContributionDetail()"><i class="fa fa-chevron-down"></i></button>
+      <div class="text-center">
+        <img src="holder.js/500x500/gray/auto" class="contribution-preview-image center-block img-responsive img-circle" alt="{{ contribution.properties.title }}" ng-click="openContribution()">
+        <h3 class="contribution-meta">
+          {{ contribution.properties.title }}<br />
+          <small>by {{ contribution.properties.creator }} <span am-time-ago="contribution.properties.created"></span></small>
+        </h3>
+        <span class="badge">{{ contribution.properties.area }}&nbsp;km<sup>2</sup></span>
       </div>
     </div>
   </div>

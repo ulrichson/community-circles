@@ -1,77 +1,75 @@
-<div ng-app="contributionApp">
-  <div ng-controller="NewCtrl">
-    <div class="loading-full" ng-show="loading">
-      <i class="fa fa-4x fa-spinner fa-spin fa-inverse"></i>
+<div ng-controller="NewCtrl">
+  <div class="loading-full" ng-show="loading">
+    <i class="fa fa-4x fa-spinner fa-spin fa-inverse"></i>
+  </div>
+  <div class="container">
+    <ul class="contribution-type">
+      <li class="center-block" ng-class="{active: contribution.type == 'opinion'}" ng-click="contribution.type = 'opinion'">
+        <a class="text-center" href="#">
+          <span class="li_megaphone"></span><br>
+          <small>Opinion</small>
+        </a>
+      </li>
+      <li class="center-block" ng-class="{active: contribution.type == 'poll'}" ng-click="contribution.type = 'poll'">
+        <a class="text-center" href="#">
+          <span class="li_bubble"></span><br>
+          <small>Poll</small>
+        </a>
+      </li>
+      <li class="center-block" ng-class="{active: contribution.type == 'issue'}" ng-click="contribution.type = 'issue'">
+        <a class="text-center" href="#">
+          <span class="li_fire"></span><br>
+          <small>Issue</small>
+        </a>
+      </li>
+      <li class="center-block" ng-class="{active: contribution.type == 'idea'}" ng-click="contribution.type = 'idea'">
+        <a class="text-center" href="#">
+          <span class="li_bulb"></span><br>
+          <small>Idea</small>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="contribution-photo text-center">
+    <div class="background" ng-style="bgImageStyle" ng-class="{background: imageSrc}"></div>
+    <div class="content">
+      <button ng-if="!imageSrc" class="btn btn-primary btn-circle" ng-click="choosePhoto('Which photo should be added?')"><i class="fa fa-3x fa-camera"></i></button>
+      <div ng-if="imageSrc" ng-click="choosePhoto('Do you want to replace your photo?')" ng-style="bgImageStyle" class="contribution-photo-preview center-block"></div>
     </div>
-    <div class="container">
-      <ul class="contribution-type">
-        <li class="center-block" ng-class="{active: contribution.type == 'opinion'}" ng-click="contribution.type = 'opinion'">
-          <a class="text-center" href="#">
-            <span class="li_megaphone"></span><br>
-            <small>Opinion</small>
-          </a>
-        </li>
-        <li class="center-block" ng-class="{active: contribution.type == 'poll'}" ng-click="contribution.type = 'poll'">
-          <a class="text-center" href="#">
-            <span class="li_bubble"></span><br>
-            <small>Poll</small>
-          </a>
-        </li>
-        <li class="center-block" ng-class="{active: contribution.type == 'issue'}" ng-click="contribution.type = 'issue'">
-          <a class="text-center" href="#">
-            <span class="li_fire"></span><br>
-            <small>Issue</small>
-          </a>
-        </li>
-        <li class="center-block" ng-class="{active: contribution.type == 'idea'}" ng-click="contribution.type = 'idea'">
-          <a class="text-center" href="#">
-            <span class="li_bulb"></span><br>
-            <small>Idea</small>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="contribution-photo text-center">
-      <div class="background" ng-style="bgImageStyle" ng-class="{background: imageSrc}"></div>
-      <div class="content">
-        <button ng-if="!imageSrc" class="btn btn-primary btn-circle" ng-click="choosePhoto('Which photo should be added?')"><i class="fa fa-3x fa-camera"></i></button>
-        <div ng-if="imageSrc" ng-click="choosePhoto('Do you want to replace your photo?')" ng-style="bgImageStyle" class="contribution-photo-preview center-block"></div>
+    <button ng-if="imageSrc" ng-click="removePhoto()" type="button" class="close btn-remove-photo" aria-hidden="true">&times;</button>
+  </div>    
+  <div class="contribution-input">
+    <form role="form" name="contribution_form" novalidate>
+      <span class="text-center help-block has-error" ng-show='contribution_form.title.$dirty && contribution_form.title.$error.required')>A title is required</span>
+      <div class="contribution-title form-group" ng-class="{'has-error': contribution_form.title.$dirty && contribution_form.title.$invalid}">
+        <input type="text" name ="title" class="form-control text-center input-lg" ng-model="contribution.title" placeholder="Please enter a title" required />
       </div>
-      <button ng-if="imageSrc" ng-click="removePhoto()" type="button" class="close btn-remove-photo" aria-hidden="true">&times;</button>
-    </div>    
-    <div class="contribution-input">
-      <form role="form" name="contribution_form" novalidate>
-        <span class="text-center help-block has-error" ng-show='contribution_form.title.$dirty && contribution_form.title.$error.required')>A title is required</span>
-        <div class="contribution-title form-group" ng-class="{'has-error': contribution_form.title.$dirty && contribution_form.title.$invalid}">
-          <input type="text" name ="title" class="form-control text-center input-lg" ng-model="contribution.title" placeholder="Please enter a title" required />
+      <div class="contribution-meta">
+        <div class="btn-group btn-group-justified">
+          <a type="button" class="btn btn-primary touchfix" ng-click="choosePoi()" touchend="alert('touchend')" touchcancel="alert('touchcancel')">
+            <span ng-if="!contribution.poi">I'm at …</span>
+            <span ng-if="contribution.poi"><strong>{{ contribution.poi | cut:10 }}</strong></span>
+          <a type="button" class="btn btn-primary touchfix" ng-click="chooseMood()">
+            <span ng-if="!contribution.mood">feeling ...</span>
+            <span ng-if="contribution.mood"><strong>{{ contribution.mood.name }}</strong>&nbsp;</span><span ng-if="contribution.mood" class="contribution-mood-icon icomatic">{{ contribution.mood.code }}filled</span>
+          </a>
         </div>
-        <div class="contribution-meta">
-          <div class="btn-group btn-group-justified">
-            <a type="button" class="btn btn-primary touchfix" ng-click="choosePoi()" touchend="alert('touchend')" touchcancel="alert('touchcancel')">
-              <span ng-if="!contribution.poi">I'm at …</span>
-              <span ng-if="contribution.poi"><strong>{{ contribution.poi | cut:10 }}</strong></span>
-            <a type="button" class="btn btn-primary touchfix" ng-click="chooseMood()">
-              <span ng-if="!contribution.mood">feeling ...</span>
-              <span ng-if="contribution.mood"><strong>{{ contribution.mood.name }}</strong>&nbsp;</span><span ng-if="contribution.mood" class="contribution-mood-icon icomatic">{{ contribution.mood.code }}filled</span>
-            </a>
-          </div>
+      </div>
+      <div class="well well-sm" ng-if="contribution.type != 'poll'" class="form-group" ng-class="{'has-error': contribution_form.description.$dirty && contribution_form.description.$invalid}">
+        <textarea class="form-control" name="description" ng-model="contribution.description" rows="3" placeholder="Please give a short description" required></textarea>
+        <span class="help-block has-error" ng-show='contribution_form.description.$dirty && contribution_form.description.$error.required')>A descrption is required</span>
+      </div>
+      <div class="well well-sm" ng-if="contribution.type == 'poll'">
+        <ul class="list-group" ng-show="contribution.pollOptions.length > 0">
+          <li class="list-group-item" ng-repeat="pollOption in contribution.pollOptions"><button type="button" class="close" aria-hidden="true" ng-click="removePollOption(pollOption)"><i class="fa fa-minus-circle"></i></button>{{ pollOption }}</li>
+        </ul>
+        <div class="input-group">
+          <input type="text" name="pollOption" class="form-control" placeholder="Add poll option" ng-model="contribution.pollOption" required>
+          <span class="input-group-btn">
+            <button class="btn btn-primary" type="button" ng-click="addPollOption()" ng-disabled="contribution_form.pollOption.$invalid"><i class="fa fa-plus-circle"></i>&nbsp;Add</button>
+          </span>
         </div>
-        <div class="well well-sm" ng-if="contribution.type != 'poll'" class="form-group" ng-class="{'has-error': contribution_form.description.$dirty && contribution_form.description.$invalid}">
-          <textarea class="form-control" name="description" ng-model="contribution.description" rows="3" placeholder="Please give a short description" required></textarea>
-          <span class="help-block has-error" ng-show='contribution_form.description.$dirty && contribution_form.description.$error.required')>A descrption is required</span>
-        </div>
-        <div class="well well-sm" ng-if="contribution.type == 'poll'">
-          <ul class="list-group" ng-show="contribution.pollOptions.length > 0">
-            <li class="list-group-item" ng-repeat="pollOption in contribution.pollOptions"><button type="button" class="close" aria-hidden="true" ng-click="removePollOption(pollOption)"><i class="fa fa-minus-circle"></i></button>{{ pollOption }}</li>
-          </ul>
-          <div class="input-group">
-            <input type="text" name="pollOption" class="form-control" placeholder="Add poll option" ng-model="contribution.pollOption" required>
-            <span class="input-group-btn">
-              <button class="btn btn-primary" type="button" ng-click="addPollOption()" ng-disabled="contribution_form.pollOption.$invalid"><i class="fa fa-plus-circle"></i>&nbsp;Add</button>
-            </span>
-          </div>
-        </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 </div>
