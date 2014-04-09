@@ -60,6 +60,7 @@
         <textarea class="form-control" name="description" ng-model="contribution.description" rows="3" placeholder="Please give a short description" required></textarea>
       </div>
       <div class="well well-sm" ng-if="contribution.type == 'poll'">
+        <button class="btn btn-primary btn-block" ng-click="addPollOptionPrompt()"><i class="fa fa-plus-circle"></i>&nbsp;Add poll option</button>
         <ul class="list-group" ng-show="contribution.pollOptions.length > 0">
           <li class="list-group-item" ng-repeat="pollOption in contribution.pollOptions"><button type="button" class="close" aria-hidden="true" ng-click="removePollOption(pollOption)"><i class="fa fa-minus-circle"></i></button>{{ pollOption }}</li>
         </ul>

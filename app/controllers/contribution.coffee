@@ -142,6 +142,13 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
     $scope.contribution.pollOptions.push $scope.contribution.pollOption
     $scope.contribution.pollOption = ""
 
+  $scope.addPollOptionPrompt = ->
+    onPrompt = (results) ->
+      if results.buttonIndex is 1
+        $scope.contribution.pollOptions.push results.input1
+        $scope.$apply()
+    navigator.notification.prompt "Please enter in the field below.", onPrompt, "Add poll option", ["Add", "Cancel"], new String()
+
   $scope.removePollOption = (pollOption) ->
     $scope.contribution.pollOptions = _.without $scope.contribution.pollOptions, pollOption
 
@@ -241,7 +248,7 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
           missing = "your location"
         else if $scope.contribution.poi?
           missing = "your mood"
-          
+
         msg = "Adding #{missing} gives your contribution more meaning and increases your radius!"
 
       if error
