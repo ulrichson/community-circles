@@ -393,40 +393,10 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
 
   # ATTENTION: this must only be called ONCE, therefore needs to be moved, if
   #            map view isn't the initial view anymore
+  Util.preloadViews()
 
-  backgroundWebView = new steroids.views.WebView
-    location: "backgroundServices.html"
-    id: "backgroundService"
-  backgroundWebView.preload()
-
-  moodWebView = new steroids.views.WebView 
-    location: "/views/mood/index.html"
-    id: "moodView"
-  moodWebView.preload()
-
-  newContributionWebView = new steroids.views.WebView 
-    location: "/views/contribution/new.html"
-    id: "newContributionView"
-  newContributionWebView.preload()
-
-  showContributionWebView = new steroids.views.WebView
-    location: "/views/contribution/show.html"
-    id: "mapShowContributionView"
-  showContributionWebView.preload()
-
-  poiWebView = new steroids.views.WebView
-    location: "/views/poi/index.html"
-    id: "poiView"
-  poiWebView.preload()
-
-  loginWebView = new steroids.views.WebView
-    location: "/views/login/index.html"
-    id: "loginView"
-  loginWebView.preload()
-
-  tileLayer = Util.createTileLayer()
-
-  tileLayer.addTo map
+  # Create Tile Layer
+  Util.createTileLayer().addTo map
 
   locateControl = new LocateControl()
   newContributionControl = new NewContributionControl()

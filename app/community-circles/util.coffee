@@ -26,10 +26,41 @@ communityCirclesUtil.factory "Util", ->
 
   login: ->
     window.localStorage.setItem "loggedIn", "true"
-    
+
   #-----------------------------------------------------------------------------
   # UI HELPERS
   #-----------------------------------------------------------------------------
+  preloadViews: ->
+    backgroundWebView = new steroids.views.WebView
+      location: "backgroundServices.html"
+      id: "backgroundService"
+    backgroundWebView.preload()
+
+    moodWebView = new steroids.views.WebView 
+      location: "/views/mood/index.html"
+      id: "moodView"
+    moodWebView.preload()
+
+    newContributionWebView = new steroids.views.WebView 
+      location: "/views/contribution/new.html"
+      id: "newContributionView"
+    newContributionWebView.preload()
+
+    showContributionWebView = new steroids.views.WebView
+      location: "/views/contribution/show.html"
+      id: "mapShowContributionView"
+    showContributionWebView.preload()
+
+    poiWebView = new steroids.views.WebView
+      location: "/views/poi/index.html"
+      id: "poiView"
+    poiWebView.preload()
+
+    loginWebView = new steroids.views.WebView
+      location: "/views/login/index.html"
+      id: "loginView"
+    loginWebView.preload()
+
   logout: ->
     window.localStorage.setItem "loggedIn", "false"
     steroids.view.setBackgroundColor "#00a8b3"
