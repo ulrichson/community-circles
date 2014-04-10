@@ -1,4 +1,9 @@
 communityCirclesUtil = angular.module("communityCirclesUtil", [])
+
+communityCirclesUtil.run ->
+  if !@key?
+    alert "app/community-circles/keys.coffee is missing!"
+
 communityCirclesUtil.factory "Util", ->
 
   formatAreaSqKm: (area) ->
@@ -15,6 +20,49 @@ communityCirclesUtil.factory "Util", ->
     rand = Math.random() * (to - from + 1) + from
     rand = Math.floor rand if not float
     return rand
+
+  loggedIn: ->
+    return window.localStorage.getItem("loggedIn") is "true"
+
+  login: ->
+    window.localStorage.setItem "loggedIn", true
+
+  #-----------------------------------------------------------------------------
+  # UI HELPERS
+  #-----------------------------------------------------------------------------
+  logout: ->
+    window.localStorage.setItem "loggedIn", false
+    steroids.view.setBackgroundColor "#00a8b3"
+    loginView = new steroids.views.WebView
+      location: ""
+      id: "loginView"
+      
+    steroids.layers.push
+      view: loginView
+      navigationBar: false
+      tabBar: false
+      animation: new steroids.Animation
+        transition: "flipHorizontalFromRight"
+
+  autoRestoreView: ({ showNavigationBar }  = {}) ->
+    showNavigationBar ?= true
+
+    restore = ->
+      if showNavigationBar
+        steroids.view.navigationBar.show()
+      else
+        steroids.view.navigationBar.hide()
+
+      steroids.view.setBackgroundColor "#00a8b3"
+
+    onVisibilityChange = ->
+      if !document.hidden
+        # alert "restore"
+        restore()
+
+    document.addEventListener "visibilitychange", onVisibilityChange, false
+
+    restore()
 
   #-----------------------------------------------------------------------------
   # MAP HELPERS

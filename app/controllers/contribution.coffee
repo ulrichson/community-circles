@@ -216,52 +216,54 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
     $scope.contribution.mood = mood
 
   #-----------------------------------------------------------------------------
-  # WINDOW MESSAGES
+  # NATIVE UI
   #-----------------------------------------------------------------------------
+  buttonAdd = new steroids.buttons.NavigationBarButton
+  buttonAdd.title = "Add"
 
   #-----------------------------------------------------------------------------
-  # CUSTOM NATIVE UI BAHAVIOR
+  # EVENTS
   #-----------------------------------------------------------------------------
-  visibilityChanged = ->
-    buttonAdd = new steroids.buttons.NavigationBarButton
-    buttonAdd.title = "Add"
+  onVisibilityChange = ->
+    if !document.hidden
+      steroids.view.navigationBar.setButtons
+          right: [buttonAdd]
 
-    onConfirm = (buttonIndex) ->
-      if buttonIndex is 2
-        return
-      else if buttonIndex is 1
-        alert "not implemented"
+  onConfirm = (buttonIndex) ->
+    if buttonIndex is 2
+      return
+    else if buttonIndex is 1
+      alert "not implemented"
 
-    buttonAdd.onTap = ->
-      error = false
-      title = null
-      msg = null
-      if !$scope.imageSrc?
-        error = true
-        title = "Do you want to include a photo?"
-        msg = "Adding a photo gives your contribution more meaning and increases your radius!"
-      else if !$scope.contribution.poi? or !$scope.contribution.mood?
-        error = true
-        title = "Do you want to provide additional information?"
-        missing = "your location and mood"
-        if $scope.contribution.mood?
-          missing = "your location"
-        else if $scope.contribution.poi?
-          missing = "your mood"
+  buttonAdd.onTap = ->
+    error = false
+    title = null
+    msg = null
+    if !$scope.imageSrc?
+      error = true
+      title = "Do you want to include a photo?"
+      msg = "Adding a photo gives your contribution more meaning and increases your radius!"
+    else if !$scope.contribution.poi? or !$scope.contribution.mood?
+      error = true
+      title = "Do you want to provide additional information?"
+      missing = "your location and mood"
+      if $scope.contribution.mood?
+        missing = "your location"
+      else if $scope.contribution.poi?
+        missing = "your mood"
 
-        msg = "Adding #{missing} gives your contribution more meaning and increases your radius!"
+      msg = "Adding #{missing} gives your contribution more meaning and increases your radius!"
 
-      if error
-        navigator.notification.confirm msg, onConfirm, title, ["Proceed anyway", "Edit contribution"]
-      else
-        alert "not implemented"
+    if error
+      navigator.notification.confirm msg, onConfirm, title, ["Proceed anyway", "Edit contribution"]
+    else
+      alert "not implemented"
 
-    steroids.view.navigationBar.setButtons
-      right: [buttonAdd]
   #-----------------------------------------------------------------------------
   # RUN
   #-----------------------------------------------------------------------------
-  document.addEventListener "visibilitychange", visibilityChanged, false
+  document.addEventListener "visibilitychange", onVisibilityChange, false
+
   Util.consume $scope
 
 #-------------------------------------------------------------------------------

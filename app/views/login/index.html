@@ -1,8 +1,18 @@
-<div class="container" ng-app="loginApp">
-  <div ng-controller="IndexCtrl">
-    <div class="form-group"><input type="text" ng-model="login.user" class="form-control" placeholder="User" /></div>
-    <div class="form-group"><input type="password" ng-model="login.password" class="form-control" placeholder="Password" /></div>
-    <button class="btn btn-block btn-primary" ng-click="login()">Login</button>
-    <button class="btn btn-block btn-primary" ng-click="register()">Register</button>
+<div ng-controller="IndexCtrl" class="container">
+  <div class="login-logo text-center">
+    <img src="/images/cc-logo-white.png" alt "Community Circles Logo" width="50%">
   </div>
+  <form role="form">
+    <div class="form-group">
+      <div class="left-inner-addon">
+        <i class="icon-user"></i>
+        <input type="text" ng-model="login.user" class="form-control input-lg" placeholder="User" required />
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="password" ng-model="login.password" class="form-control input-lg" placeholder="Password" required />
+    </div>
+  </form>
+  <button class="btn btn-block btn-primary" ng-click="login()">Login</button>
+  <button class="btn btn-block btn-primary" ng-click="register()">Register</button>
 </div>

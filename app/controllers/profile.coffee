@@ -12,10 +12,12 @@ profileApp.controller "IndexCtrl", ($scope, app, Util, Log) ->
   $scope.loggedIn = app.loggedIn()
 
   $scope.logout = ->
-    app.logout()
+    Util.logout()
 
   $scope.settings = ->
     steroids.modal.show new steroids.views.WebView "/views/settings/index.html"
 
   $scope.imprint = ->
     steroids.modal.show new steroids.views.WebView "/views/imprint/index.html"
+
+  Util.autoRestoreView()

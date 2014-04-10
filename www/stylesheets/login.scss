@@ -1,1 +1,9 @@
 @import 'base.scss';
+
+body {
+  background-color: $cc-main;
+}
+
+.login-logo {
+  padding: 20px 0;
+}

@@ -447,4 +447,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
 
   # Prevent that map doesn't receive click events from contribution overlay
   L.DomEvent.disableClickPropagation document.getElementsByClassName("contribution-detail")[0]
+
+  Util.autoRestoreView()
+
   locate()
