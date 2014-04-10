@@ -25,13 +25,13 @@ communityCirclesUtil.factory "Util", ->
     return window.localStorage.getItem("loggedIn") is "true"
 
   login: ->
-    window.localStorage.setItem "loggedIn", true
-
+    window.localStorage.setItem "loggedIn", "true"
+    
   #-----------------------------------------------------------------------------
   # UI HELPERS
   #-----------------------------------------------------------------------------
   logout: ->
-    window.localStorage.setItem "loggedIn", false
+    window.localStorage.setItem "loggedIn", "false"
     steroids.view.setBackgroundColor "#00a8b3"
     loginView = new steroids.views.WebView
       location: ""

@@ -451,3 +451,6 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   Util.autoRestoreView()
 
   locate()
+
+  if not Util.loggedIn()
+    Util.logout()

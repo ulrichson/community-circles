@@ -4,7 +4,7 @@
 steroids.config.name = "Community Circles Mobile"
 
 # -- Initial Location --
-# steroids.config.location = "http://localhost/views/map/index.html"
+# steroids.config.location = "http://localhost/views/login/index.html"
 
 # -- Tab Bar --
 steroids.config.tabBar.enabled = true
@@ -14,21 +14,21 @@ steroids.config.tabBar.tabs = [
     icon: "icons/location@2x.png"
     location: "http://localhost/views/map/index.html"
   },
-  {
-    title: "Nearby"
-    icon: "icons/paperplane@2x.png"
-    location: "http://localhost/views/contribution/index.html?view=nearby"
-  },
-  {
-    title: "Top"
-    icon: "icons/star@2x.png"
-    location: "http://localhost/views/contribution/index.html?view=top"
-  },
-  {
-    title: "Search"
-    icon: "icons/search@2x.png"
-    location: "http://localhost/views/contribution/index.html?view=search"
-  },
+  # {
+  #   title: "Nearby"
+  #   icon: "icons/paperplane@2x.png"
+  #   location: "http://localhost/views/contribution/index.html?view=nearby"
+  # },
+  # {
+  #   title: "Top"
+  #   icon: "icons/star@2x.png"
+  #   location: "http://localhost/views/contribution/index.html?view=top"
+  # },
+  # {
+  #   title: "Search"
+  #   icon: "icons/search@2x.png"
+  #   location: "http://localhost/views/contribution/index.html?view=search"
+  # },
   {
     title: "Profile"
     icon: "icons/user@2x.png"
