@@ -23,6 +23,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   baseAnimationDuration = 500
   animationDuration = 0.3
   pulseDuration = baseAnimationDuration * 6
+  contributionDetailVisible = false
 
   # Detect double-clicks for contribution marker
   contributionClickCount = 0
@@ -85,6 +86,11 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   #-----------------------------------------------------------------------------
   # MAP EVENTS
   #-----------------------------------------------------------------------------
+  map.on "click", (e) ->
+    if contributionDetailVisible
+      $scope.hideContributionDetail()
+      $scope.$apply()
+
   map.on "layeradd", (e) ->
     if e.layer.feature? and e.layer.feature.properties.health < Game.healthAlertThreshold
       latlng = e.layer._latlng
@@ -360,9 +366,13 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
     map.scrollWheelZoom.disable()
     map.tap.disable() if map.tap
 
+    # Wait for the animation
+    setTimeout ( -> contributionDetailVisible = true), animationDuration
+
     $scope.$apply()
 
   $scope.hideContributionDetail = ->
+    contributionDetailVisible = false
     latlng = new L.LatLng $scope.contribution.geometry.coordinates[1], $scope.contribution.geometry.coordinates[0]
     map.setView latlng
     
