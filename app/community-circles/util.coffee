@@ -75,11 +75,11 @@ communityCirclesUtil.factory "Util", ->
       animation: new steroids.Animation
         transition: "flipHorizontalFromRight"
 
-  autoRestoreView: ({ showNavigationBar }  = {}) ->
-    showNavigationBar ?= true
+  autoRestoreView: ({ navigationBar }  = {}) ->
+    navigationBar ?= true
 
     restore = ->
-      if showNavigationBar
+      if navigationBar
         steroids.view.navigationBar.show()
       else
         steroids.view.navigationBar.hide()
@@ -202,10 +202,16 @@ communityCirclesUtil.factory "Util", ->
   #-----------------------------------------------------------------------------
   # VIEW NAVIGATION
   #-----------------------------------------------------------------------------
-  enter: (viewId) ->
-    steroids.layers.push new steroids.views.WebView
-      location: ""
-      id: viewId
+  enter: (viewId, { navigationBar, tabBar } = {}) ->
+    navigationBar ?= true
+    tabBar ?= true
+
+    steroids.layers.push
+      navigationBar: navigationBar
+      tabBar: tabBar
+      view: new steroids.views.WebView
+        location: ""
+        id: viewId
 
   return: ->
     steroids.layers.pop()
