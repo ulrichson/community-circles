@@ -1,7 +1,8 @@
 loginApp = angular.module "loginApp", [
   "communityCirclesUtil",
   "communityCirclesLog",
-  "ngTouch"
+  "ngTouch",
+  "ngAnimate"
 ]
 
 #-------------------------------------------------------------------------------

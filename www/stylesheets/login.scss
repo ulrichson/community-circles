@@ -44,3 +44,11 @@ body {
 .form .input-group.last {
     margin-bottom: 15px;
 }
+
+.ng-hide-remove {
+    @include animation(fadeIn 1s);
+}
+ 
+.ng-hide-add {
+    @include animation(fadeOut 1s);
+}
