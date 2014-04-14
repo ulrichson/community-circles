@@ -42,7 +42,7 @@
     <form role="form" name="contribution_form" novalidate>
       <div class="contribution-title form-group" ng-class="{'has-error': contribution_form.title.$dirty && contribution_form.title.$invalid}">
         <span class="text-center help-block has-error" ng-show='contribution_form.title.$dirty && contribution_form.title.$error.required')>A title is required</span>
-        <input type="text" name ="title" class="form-control text-center input-lg" ng-model="contribution.title" placeholder="Please enter a title" required />
+        <input type="text" name ="title" class="form-control text-center input-lg" ng-model="contribution.title" placeholder="Tap to enter a title" required />
       </div>
       <div class="contribution-meta">
         <div class="btn-group btn-group-justified">
@@ -59,17 +59,17 @@
         <span class="help-block has-error" ng-show='contribution_form.description.$dirty && contribution_form.description.$error.required')>A descrption is required</span>
         <textarea class="form-control" name="description" ng-model="contribution.description" rows="3" placeholder="Please give a short description" required></textarea>
       </div>
-      <div class="well well-sm" ng-if="contribution.type == 'poll'">
+      <div class="well well-sm contribution-poll" ng-if="contribution.type == 'poll'">
         <button class="btn btn-primary btn-block" ng-click="addPollOptionPrompt()"><i class="fa fa-plus-circle"></i>&nbsp;Add poll option</button>
         <ul class="list-group" ng-show="contribution.pollOptions.length > 0">
           <li class="list-group-item" ng-repeat="pollOption in contribution.pollOptions"><button type="button" class="close" aria-hidden="true" ng-click="removePollOption(pollOption)"><i class="fa fa-minus-circle"></i></button>{{ pollOption }}</li>
         </ul>
-        <div class="input-group">
+<!--         <div class="input-group">
           <input type="text" name="pollOption" class="form-control" placeholder="Add poll option" ng-model="contribution.pollOption" required>
           <span class="input-group-btn">
-            <button class="btn btn-primary" type="button" ng-click="addPollOption()" ng-disabled="contribution_form.pollOption.$invalid"><i class="fa fa-plus-circle"></i>&nbsp;Add</button>
+            <button class="btn btn-primary" type="button" ng-click="addPollOption()" ng-disabled="contribution_form.pollOption.$invalid"><i class="fa fa-plus-circle fa-fw"></i>&nbsp;Add</button>
           </span>
-        </div>
+        </div> -->
       </div>
     </form>
   </div>

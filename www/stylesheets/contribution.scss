@@ -134,21 +134,26 @@ $contribution-type-diameter: 64px;
   padding-top: 1em;
 }
 
-.contribution-title {
-  margin-bottom: 0;
-}
+// .contribution-title {
+//   margin-bottom: 0;
+// }
 
 .contribution-title input {
   color: $brand-primary;
   font-weight: bold;
 }
 
-.contribution-title .form-control {
-  @include border-bottom-radius(0);
-}
+// .contribution-title .form-control {
+//   @include border-bottom-radius(0);
+// }
 
-.contribution-meta .btn {
-  @include border-top-radius(0);
+// .contribution-meta .btn {
+//   @include border-top-radius(0);
+// }
+
+.contribution-poll ul {
+  margin-bottom: 0;
+  margin-top: 10px;
 }
 
 .rn-carousel-container {

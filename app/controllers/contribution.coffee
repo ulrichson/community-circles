@@ -145,7 +145,7 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
   $scope.addPollOptionPrompt = ->
     onPrompt = (results) ->
       if results.buttonIndex is 1
-        $scope.contribution.pollOptions.push results.input1
+        $scope.contribution.pollOptions.push results.input1 if results.input1 isnt ""
         $scope.$apply()
     navigator.notification.prompt "Please enter in the field below.", onPrompt, "Add poll option", ["Add", "Cancel"], new String()
 
