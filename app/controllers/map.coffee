@@ -334,7 +334,8 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   # UI EVENTS
   #-----------------------------------------------------------------------------
   $scope.newContribution = ->
-    Util.enter "newContributionView"
+    Util.enter "newContributionView",
+      tabBar: false
 
   $scope.locate = ->
     locate()
