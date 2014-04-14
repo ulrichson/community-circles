@@ -33,7 +33,7 @@
   <div class="contribution-photo text-center">
     <div class="background" ng-style="bgImageStyle" ng-class="{background: imageSrc}"></div>
     <div class="content">
-      <button ng-if="!imageSrc" class="btn btn-default btn-circle" ng-click="choosePhoto('Which photo should be added?')"><i class="fa fa-3x fa-camera"></i></button>
+      <button ng-if="!imageSrc" class="btn btn-primary btn-circle" ng-click="choosePhoto('Which photo should be added?')"><i class="fa fa-3x fa-camera"></i></button>
       <div ng-if="imageSrc" ng-click="choosePhoto('Do you want to replace your photo?')" ng-style="bgImageStyle" class="contribution-photo-preview center-block"></div>
     </div>
     <button ng-if="imageSrc" ng-click="removePhoto()" type="button" class="close btn-remove-photo" aria-hidden="true">&times;</button>
@@ -46,10 +46,10 @@
       </div>
       <div class="contribution-meta">
         <div class="btn-group btn-group-justified">
-          <a type="button" class="btn btn touchfix" ng-click="choosePoi()" ng-class="{'btn-default': !contribution.poi, 'btn-primary': contribution.poi}">
+          <a type="button" class="btn btn-primary" ng-click="choosePoi()" ng-class="{'active': contribution.poi}">
             <span ng-if="!contribution.poi"><em>I'm at …</em></span>
             <span ng-if="contribution.poi"><strong>{{ contribution.poi | cut:10 }}</strong></span>
-          <a type="button" class="btn touchfix" ng-click="chooseMood()" ng-class="{'btn-default': !contribution.mood, 'btn-primary': contribution.mood}">
+          <a type="button" class="btn btn-primary" ng-click="chooseMood()" ng-class="{'active': contribution.mood}">
             <span ng-if="!contribution.mood"><em>feeling …</em></span>
             <span ng-if="contribution.mood"><strong>{{ contribution.mood.name }}</strong>&nbsp;</span><span ng-if="contribution.mood" class="contribution-mood-icon icomatic">{{ contribution.mood.code }}filled</span>
           </a>
