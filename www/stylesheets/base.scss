@@ -12,6 +12,9 @@ $cc-darker:       #212b37; // text, static elements
 *******************************************************************************/
 $brand-primary:   $cc-light !default;
 
+$btn-default-border: #333;
+$btn-primary-border: $brand-primary;
+
 // Core variables and mixins
 @import "../components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/variables";
 @import "../components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/mixins";
@@ -63,6 +66,40 @@ $brand-primary:   $cc-light !default;
   }
 }
 
+.btn-link {
+  color: $link-color;
+  font-weight: normal;
+  cursor: pointer;
+  border-radius: 0;
+
+  &,
+  &:active,
+  &[disabled],
+  fieldset[disabled] & {
+    background-color: transparent;
+    @include box-shadow(none);
+  }
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    border-color: transparent;
+  }
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+    background-color: transparent;
+  }
+  &[disabled],
+  fieldset[disabled] & {
+    &:hover,
+    &:focus {
+      color: $btn-link-disabled-color;
+      text-decoration: none;
+    }
+  }
+}
+
 // Reset
 @import "../components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/normalize";
 @import "../components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/print";
@@ -109,8 +146,25 @@ $brand-primary:   $cc-light !default;
 @import "../components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/utilities";
 @import "../components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/responsive-utilities";
 
-.form-control {
-  height: inherit !important;
+/*******************************************************************************
+* FLAT
+*******************************************************************************/
+.form-control,
+.form-control:focus {
+  outline: none;
+  border-bottom: 1px solid $gray-lighter;
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+  @include box-shadow(none !important);
+}
+
+.input-group-addon {
+  border: none !important;
+}
+
+.well {
+  border: none !important;
 }
 
 /*******************************************************************************
@@ -129,18 +183,6 @@ $content-padding: 10px;
   font-size: 12px;
   line-height: 1.42;
   border-radius: 40px;
-}
-
-.left-inner-addon {
-    position: relative;
-}
-.left-inner-addon input {
-    padding-left: 30px;    
-}
-.left-inner-addon i {
-    position: absolute;
-    padding: 10px 12px;
-    pointer-events: none;
 }
 
 /*******************************************************************************
