@@ -2,8 +2,45 @@
 
 body {
   background-color: $cc-main;
+  color: #ffffff;
 }
 
 .login-logo {
-  padding: 20px 0;
+  padding: 40px 0;
+}
+
+.btn-link,
+.btn-link:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.form .input-group.first > .input-group-addon {
+  border-bottom-left-radius: 0;
+}
+
+.form .input-group.first > .form-control {
+  border-top: none;
+  border-bottom-right-radius: 0;
+}
+
+.form .input-group.last > .input-group-addon {
+  border-top-left-radius: 0;
+}
+
+.form .input-group.last > .form-control {
+  border-bottom: none;
+  border-top-right-radius: 0;
+}
+
+.form .input-group.between > .input-group-addon {
+  @include border-left-radius(0);
+}
+
+.form .input-group.between > .form-control {
+  @include border-right-radius(0);
+}
+
+.form .input-group.last {
+    margin-bottom: 15px;
 }

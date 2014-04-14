@@ -2,17 +2,31 @@
   <div class="login-logo text-center">
     <img src="/images/cc-logo-white.png" alt "Community Circles Logo" width="50%">
   </div>
-  <form role="form">
-    <div class="form-group">
-      <div class="left-inner-addon">
-        <i class="icon-user"></i>
-        <input type="text" ng-model="login.user" class="form-control input-lg" placeholder="User" required />
-      </div>
+  <form class="form" role="form" ng-show="loginVisible">
+    <div class="input-group first">
+      <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+      <input ng-model="login.user" class="form-control" type="text" placeholder="User" required />
     </div>
-    <div class="form-group">
-      <input type="password" ng-model="login.password" class="form-control input-lg" placeholder="Password" required />
+    <div class="input-group last">
+      <span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
+      <input ng-model="login.password" class="form-control" type="password" placeholder="Password" required />
     </div>
+    <button class="btn btn-primary btn-block" ng-click="login()">Login</button>
   </form>
-  <button class="btn btn-block btn-primary" ng-click="login()">Login</button>
-  <button class="btn btn-block btn-primary" ng-click="register()">Register</button>
+  <form class="form" role="form" ng-show="!loginVisible">
+    <div class="input-group first">
+      <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+      <input type="text" ng-model="register.user" class="form-control" placeholder="User" required />
+    </div>
+    <div class="input-group between">
+      <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
+      <input type="email" ng-model="register.email" class="form-control" placeholder="E-Mail" required />
+    </div>
+    <div class="input-group last">
+      <span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
+      <input type="password" ng-model="register.password" class="form-control" placeholder="Password" required />
+    </div>
+    <button class="btn btn-primary btn-block" ng-click="register()">Register</button>
+  </form>
+  <button class="btn btn-link pull-right" ng-click="switchView()">{{ buttonText }}</button>
 </div>
