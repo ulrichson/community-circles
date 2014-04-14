@@ -11,7 +11,7 @@ steroids.config.tabBar.enabled = true
 steroids.config.tabBar.tabs = [
   {
     title: "Map"
-    icon: "icons/location@2x.png"
+    icon: "icons/tabbar/location@2x.png"
     location: "http://localhost/views/map/index.html"
   },
   # {
@@ -31,13 +31,13 @@ steroids.config.tabBar.tabs = [
   # },
   {
     title: "Profile"
-    icon: "icons/user@2x.png"
+    icon: "icons/tabbar/user@2x.png"
     location: "http://localhost/views/profile/index.html"
   }
 ]
 
 # steroids.config.tabBar.tintColor = "#00a8b3"
-steroids.config.tabBar.tabTitleColor = "#00A8B3"
+# steroids.config.tabBar.tabTitleColor = "#00A8B3"
 steroids.config.tabBar.selectedTabTintColor = "#00A8B3"
 # steroids.config.tabBar.selectedTabBackgroundImage = "icons/pill@2x.png"
 
