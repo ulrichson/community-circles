@@ -115,7 +115,7 @@ $dropshadowWidth: 25px;
 .contribution-detail-inner {
   background-color: #ffffff;
   margin: $dropshadowWidth 0;
-  padding: $content-padding;
+  padding: 10px;
   position: relative;
   z-index: 200;
 }
@@ -157,5 +157,5 @@ $dropshadowWidth: 25px;
 }
 
 .contribution-meta {
-  margin: $content-padding;
+  margin: 10px;
 }

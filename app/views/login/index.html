@@ -11,7 +11,7 @@
       <span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
       <input ng-model="login.password" class="form-control" type="password" placeholder="Password" required />
     </div>
-    <button class="btn btn-primary btn-block" ng-click="login()">Login</button>
+    <button class="btn btn-default btn-block btn-outline btn-inverted" ng-click="login()">Login</button>
   </form>
   <form class="form" role="form" ng-show="!loginVisible">
     <div class="input-group first">
@@ -26,7 +26,7 @@
       <span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
       <input type="password" ng-model="register.password" class="form-control" placeholder="Password" required />
     </div>
-    <button class="btn btn-primary btn-block" ng-click="register()">Register</button>
+    <button class="btn btn-default btn-block btn-outline btn-inverted" ng-click="register()">Register</button>
   </form>
   <button class="btn btn-link pull-right" ng-click="switchView()">{{ buttonText }}</button>
 </div>

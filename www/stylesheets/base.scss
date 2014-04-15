@@ -9,21 +9,43 @@
 $cc-lighter:      #3fd1d1; // what are u good for?
 $cc-light:        #00c8c8; // indicates primary action, active
 $cc-main:         #00a8b3; // base color
-$cc-dark:         #004855; // elements that cause an action
+$cc-dark:         #004855; // elements that cause an action (?)
 $cc-darker:       #212b37; // text, static elements
 
 /*******************************************************************************
 * TWITTER BOOSTRAP
 *******************************************************************************/
-$brand-primary:   $cc-light !default;
+$brand-primary:             $cc-light !default;
+$brand-success:             #5cb85c !default;
+$brand-info:                #5bc0de !default;
+$brand-warning:             #f0ad4e !default;
+$brand-danger:              #d9534f !default;
 
-$btn-default-border: #333;
-$btn-primary-border: $brand-primary;
+$font-size-base:            16px !default;
+
+$border-radius-base:        3px !default;
+$border-radius-large:       5px !default;
+$border-radius-small:       2px !default;
+
+$btn-default-color:         $cc-dark !default;
+$btn-default-border:        $cc-dark !default;
+$btn-primary-border:        $brand-primary !default;
+$btn-success-border:        $brand-success !default;
+$btn-info-border:           $brand-info !default;
+$btn-warning-border:        $brand-warning !default;
+$btn-danger-border:         $brand-danger !default;
 
 // Core variables and mixins
 @import "../components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/variables";
 @import "../components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/mixins";
 
+/*******************************************************************************
+* HOVER MOBILE WORKAROUND
+* ------------------------------------------------------------------------------
+* The code below overrides the default button mixins in order to handle the
+* :hover differently. Basically, it removes the :hover states which can lead to
+* confusion on mobile devices when switchinig between WebViews.
+*******************************************************************************/
 @mixin button-variant($color, $background, $border) {
   color: $color;
   background-color: $background;
@@ -68,40 +90,6 @@ $btn-primary-border: $brand-primary;
   .badge {
     color: $background;
     background-color: $color;
-  }
-}
-
-.btn-link {
-  color: $link-color;
-  font-weight: normal;
-  cursor: pointer;
-  border-radius: 0;
-
-  &,
-  &:active,
-  &[disabled],
-  fieldset[disabled] & {
-    background-color: transparent;
-    @include box-shadow(none);
-  }
-  &,
-  &:hover,
-  &:focus,
-  &:active {
-    border-color: transparent;
-  }
-  &:hover,
-  &:focus {
-    text-decoration: underline;
-    background-color: transparent;
-  }
-  &[disabled],
-  fieldset[disabled] & {
-    &:hover,
-    &:focus {
-      color: $btn-link-disabled-color;
-      text-decoration: none;
-    }
   }
 }
 
@@ -152,8 +140,49 @@ $btn-primary-border: $brand-primary;
 @import "../components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/responsive-utilities";
 
 /*******************************************************************************
-* FLAT
+* FLATTEN BOOTSTRAP
 *******************************************************************************/
+.btn {
+  &:active,
+  &.active {
+    @include box-shadow(none !important);
+  }
+}
+
+.btn-link {
+  color: $link-color;
+  font-weight: normal;
+  cursor: pointer;
+  border-radius: 0;
+
+  &,
+  &:active,
+  &[disabled],
+  fieldset[disabled] & {
+    background-color: transparent;
+    @include box-shadow(none);
+  }
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    border-color: transparent;
+  }
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+    background-color: transparent;
+  }
+  &[disabled],
+  fieldset[disabled] & {
+    &:hover,
+    &:focus {
+      color: $btn-link-disabled-color;
+      text-decoration: none;
+    }
+  }
+}
+
 .form-control,
 .form-control:focus {
   outline: none;
@@ -173,12 +202,7 @@ $btn-primary-border: $brand-primary;
 }
 
 /*******************************************************************************
-* OTHER VARIABLES
-*******************************************************************************/
-$content-padding: 10px;
-
-/*******************************************************************************
-* CUSTOM COMPONENTS
+* BOOTSTRAP EXTENSIONS
 *******************************************************************************/
 .btn-circle {
   width: 80px;
@@ -188,6 +212,46 @@ $content-padding: 10px;
   font-size: 12px;
   line-height: 1.42;
   border-radius: 40px;
+}
+
+// http://bootsnipp.com/snippets/featured/bootstrap-outline-buttons
+.btn-outline {
+  background-color: transparent;
+}
+
+.btn-default.btn-outline.btn-inverted {
+  border-color: #ffffff;
+  color: #ffffff;
+
+  &:active,
+  &.active {
+    background-color: #ffffff;
+    color: $btn-default-color;
+  }
+}
+
+.btn-default.btn-outline {
+  color: $btn-default-color;
+}
+
+.btn-primary.btn-outline {
+  color: $brand-primary;
+}
+
+.btn-success.btn-outline {
+  color: $brand-success;
+}
+
+.btn-info.btn-outline {
+  color: $brand-info;
+}
+
+.btn-warning.btn-outline {
+  color: $brand-warning;
+}
+
+.btn-danger.btn-outline {
+  color: $brand-danger;
 }
 
 /*******************************************************************************
