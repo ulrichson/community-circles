@@ -71,6 +71,10 @@ $contribution-type-diameter: 64px;
   top: 8px;
 }
 
+.contribution-type small {
+  font-size: 10px;
+}
+
 .contribution-type {
   height: $contribution-type-diameter;
   margin: 15px 0;
