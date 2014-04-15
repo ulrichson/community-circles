@@ -52,3 +52,10 @@ body {
 .ng-hide-add {
     @include animation(fadeOut 1s);
 }
+
+#btn-register {
+  bottom: 10px;
+  left: 0;
+  position: absolute;
+  right: 0;
+}

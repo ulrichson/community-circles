@@ -299,7 +299,7 @@ $btn-danger-border:         $brand-danger !default;
   &:active,
   &.active {
     background-color: #ffffff;
-    color: $btn-default-color;
+    color: $btn-default-color !important;
   }
 }
 
