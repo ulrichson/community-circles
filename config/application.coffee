@@ -11,7 +11,7 @@ steroids.config.tabBar.enabled = true
 steroids.config.tabBar.tabs = [
   {
     title: "Map"
-    icon: "icons/tabbar/location@2x.png"
+    icon: "icons/tabbar/map@2x.png"
     location: "http://localhost/views/map/index.html"
   },
   # {
