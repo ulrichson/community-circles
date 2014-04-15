@@ -113,7 +113,7 @@ $contribution-type-diameter: 64px;
 
 .contribution-type > li > a,
 .contribution-type > li.active > a {
-  border: 2px solid $cc-light;
+  border: 1px solid $cc-light;
   border-radius: $contribution-type-diameter / 2;
   display: block;
   height: $contribution-type-diameter;

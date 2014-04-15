@@ -46,12 +46,12 @@
       </div>
       <div class="contribution-meta">
         <div class="btn-group btn-group-justified">
-          <a type="button" class="btn btn-primary" ng-click="choosePoi()" ng-class="{'active': contribution.poi}">
+          <a type="button" class="btn btn-primary btn-outline" ng-click="choosePoi()" ng-class="{'active': contribution.poi}">
             <span ng-if="!contribution.poi"><em>I'm at …</em></span>
-            <span ng-if="contribution.poi"><strong>{{ contribution.poi | cut:10 }}</strong></span>
-          <a type="button" class="btn btn-primary" ng-click="chooseMood()" ng-class="{'active': contribution.mood}">
+            <span ng-if="contribution.poi">{{ contribution.poi | cut:10 }}</span>
+          <a type="button" class="btn btn-primary btn-outline" ng-click="chooseMood()" ng-class="{'active': contribution.mood}">
             <span ng-if="!contribution.mood"><em>feeling …</em></span>
-            <span ng-if="contribution.mood"><strong>{{ contribution.mood.name }}</strong>&nbsp;</span><span ng-if="contribution.mood" class="contribution-mood-icon icomatic">{{ contribution.mood.code }}filled</span>
+            <span ng-if="contribution.mood">{{ contribution.mood.name }}&nbsp;</span><span ng-if="contribution.mood" class="contribution-mood-icon icomatic">{{ contribution.mood.code }}filled</span>
           </a>
         </div>
       </div>

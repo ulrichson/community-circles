@@ -183,6 +183,14 @@ $btn-danger-border:         $brand-danger !default;
   }
 }
 
+.btn-group > .btn:first-child {
+  border-left-style: solid;
+}
+
+.btn-group > .btn {
+  border-left-style: none;
+}
+
 .form-control,
 .form-control:focus {
   outline: none;
@@ -217,6 +225,71 @@ $btn-danger-border:         $brand-danger !default;
 // http://bootsnipp.com/snippets/featured/bootstrap-outline-buttons
 .btn-outline {
   background-color: transparent;
+
+  &:active,
+  &.active {
+    color: #ffffff !important;
+  }
+}
+
+.btn-default.btn-outline {
+  color: $btn-default-color;
+
+  &:active,
+  &.active {
+    background-color: $btn-default-color;
+    border-color: $btn-default-color;
+  }
+}
+
+.btn-primary.btn-outline {
+  color: $brand-primary;
+
+  &:active,
+  &.active {
+    background-color: $brand-primary;
+    border-color: $brand-primary;
+  }
+}
+
+.btn-success.btn-outline {
+  color: $brand-success;
+
+  &:active,
+  &.active {
+    background-color: $brand-success;
+    border-color: $brand-success;
+  }
+}
+
+.btn-info.btn-outline {
+  color: $brand-info;
+
+  &:active,
+  &.active {
+    background-color: $brand-info;
+    border-color: $brand-info;
+  }
+}
+
+.btn-warning.btn-outline {
+  color: $brand-warning;
+
+  &:active,
+  &.active {
+    background-color: $brand-warning;
+    border-color: $brand-warning;
+  }
+}
+
+.btn-danger.btn-outline {
+  color: $brand-danger;
+
+  &:active,
+  &.active {
+    background-color: $brand-danger;
+    border-color: $brand-danger;
+  }
 }
 
 .btn-default.btn-outline.btn-inverted {
@@ -228,30 +301,6 @@ $btn-danger-border:         $brand-danger !default;
     background-color: #ffffff;
     color: $btn-default-color;
   }
-}
-
-.btn-default.btn-outline {
-  color: $btn-default-color;
-}
-
-.btn-primary.btn-outline {
-  color: $brand-primary;
-}
-
-.btn-success.btn-outline {
-  color: $brand-success;
-}
-
-.btn-info.btn-outline {
-  color: $brand-info;
-}
-
-.btn-warning.btn-outline {
-  color: $brand-warning;
-}
-
-.btn-danger.btn-outline {
-  color: $brand-danger;
 }
 
 /*******************************************************************************
