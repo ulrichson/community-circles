@@ -6,6 +6,13 @@ communityCirclesUtil.run ->
 
 communityCirclesUtil.factory "Util", ->
 
+  # Color scheme
+  ccLighter: "#3fd1d1"
+  ccLight: "#00c8c8"
+  ccMain: "#00a8b3"
+  ccDark: "#004855"
+  ccDarker: "#212b37"
+
   formatAreaSqKm: (area) ->
     return "#{(area/1000000).toFixed(2)}"
 

@@ -18,8 +18,8 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   markerDiameter = 40
   mapPreviewHeight = 80
   communityOpacity = 0.4
-  communityColor = "#3FD1D1"
-  contributionColor = "#00A8B3"
+  communityColor = Util.ccLighter
+  contributionColor = Util.ccLight
   baseAnimationDuration = 500
   animationDuration = 0.3
   pulseDuration = baseAnimationDuration * 6
