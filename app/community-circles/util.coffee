@@ -1,8 +1,19 @@
-communityCirclesUtil = angular.module("communityCirclesUtil", [])
+communityCirclesUtil = angular.module "communityCirclesUtil", ["communityCirclesLog"]
 
-communityCirclesUtil.run ->
+communityCirclesUtil.run (Log) ->
   if !@key?
     alert "app/community-circles/keys.coffee is missing!"
+
+  successHandler: ->
+    Log.i "Google Analytics Plugin is initialized"
+
+  errorHandler: ->
+    Log.e "Google Analytics Plugin couldn't be initialized"
+
+  if window.GAPlugin?
+    window.GAPlugin.init successHandler, errorHandler, @keys.GOOGLE_ANALYTICS_ID, 10
+  else
+    Log.e "Google Analytics Plugin is not available"
 
 communityCirclesUtil.factory "Util", ->
 
@@ -229,6 +240,9 @@ communityCirclesUtil.controller "MessageCtrl", ($scope, Log) ->
   $scope.connectionIsNone = false
 
   setConnectivityMessage = ->
+
+    return if !Connection?
+
     if !states
       states = {}
       states[Connection.UNKNOWN]  = "not available";
