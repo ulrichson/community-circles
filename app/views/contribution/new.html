@@ -31,7 +31,7 @@
     </ul>
   </div>
   <div class="contribution-photo text-center">
-    <div class="background" ng-style="bgImageStyle" ng-class="{background: imageSrc}"></div>
+    <div ng-class="{background: imageSrc}" ng-style="bgImageStyle"></div>
     <div class="content">
       <button ng-if="!imageSrc" class="btn btn-primary btn-circle" ng-click="choosePhoto('Which photo should be added?')"><i class="fa fa-3x fa-camera"></i></button>
       <div ng-if="imageSrc" ng-click="choosePhoto('Do you want to replace your photo?')" ng-style="bgImageStyle" class="contribution-photo-preview center-block"></div>
