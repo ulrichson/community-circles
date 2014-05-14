@@ -1,5 +1,6 @@
 communityCirclesUtil = angular.module "communityCirclesUtil", ["communityCirclesLog"]
 
+# Executed for each module that includes Util
 communityCirclesUtil.run (Log) ->
   if !@key?
     alert "app/community-circles/keys.coffee is missing!"
@@ -14,6 +15,9 @@ communityCirclesUtil.run (Log) ->
     window.GAPlugin.init successHandler, errorHandler, @keys.GOOGLE_ANALYTICS_ID, 10
   else
     Log.e "Google Analytics Plugin is not available"
+
+  # Only allow portrait mode
+  steroids.view.setAllowedRotations [-90, 90]
 
 communityCirclesUtil.factory "Util", ->
 
