@@ -45,11 +45,11 @@ Provide a `private.coffee` file in `app/community-circles/` with following conte
 
 ```
 @key =
-  FOURSQUARE_CLIENT_ID: <client_id>
-  FOURSQAURE_CLIENT_SECTRET: <client_secret>
+  FOURSQUARE_CLIENT_ID: "<client_id>#"
+  FOURSQAURE_CLIENT_SECTRET: "<client_secret>"
 
-  @config =
-    SUPPORT_EMAIL: "<contact_email>"
+@config =
+  SUPPORT_EMAIL: "<contact_email>"
 ```
 
 The client needs severeal API keys, e.g. from Foursquare.
