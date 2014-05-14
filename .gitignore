@@ -4,4 +4,4 @@
 node_modules
 community-circles-mobile.keystore
 cloud.json
-keys.coffee
+private.coffee

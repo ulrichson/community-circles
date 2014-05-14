@@ -3,14 +3,12 @@ Community Circles
 
 Mobile client for Community Circles
 
-Install
--------
+Setup
+-----
 
-- If `dist` folder in `www/components/mapbox.js/` doesn't exist, run `make` inside folder.
-  Afterwards a build of mapbox.js is in `dist`, however `node_modules` in the same directory must be removed (`rm -rf node_modules`, otherwise steroids has troubles with malformed coffee scripts).
 - Run `npm install` and `bower install` in project root folder.
 
-The app uses following custom PhoneGap plugins:
+The app uses following custom PhoneGap plugins **(currently not)**:
 
 - [PhoneGap-Geofencing](https://github.com/radshag/PhoneGap-Geofencing)
 - [Cordova LocalNotification-Plugin](https://github.com/katzer/cordova-plugin-local-notifications)
@@ -41,19 +39,50 @@ Upload this file, specify a password and use `ccm_keystore_alias` as alias name.
 
 Afterwards you can press `Build Scanner` and upload to your phone.
 
-**API Keys**
+**Private Settings**
 
-The client needs severeal API keys, e.g. from Foursquare.
-
-- To create a Foursquare app go to [https://foursquare.com/developers/register](https://foursquare.com/developers/register).
-
-Provide a `key.coffee` file in `app/community-circles/` with following content:
+Provide a `private.coffee` file in `app/community-circles/` with following content:
 
 ```
 @key =
   FOURSQUARE_CLIENT_ID: <client_id>
   FOURSQAURE_CLIENT_SECTRET: <client_secret>
+
+  @config =
+    SUPPORT_EMAIL: "<contact_email>"
 ```
+
+The client needs severeal API keys, e.g. from Foursquare.
+
+- To create a Foursquare app go to [https://foursquare.com/developers/register](https://foursquare.com/developers/register).
+
+**Exclude components from SASS compiler**
+
+Steroids will compile all SASS files through a grunt task, however in the `components` folder it's not unusual, that packages contain SASS files causing compilation errors.
+Therefore, you will need to exlude them by adding following code in `/node_modules/grunt-steroids/tasks/steroids-compile-sass.coffee` (neccessary, since `node_module` is in `.gitignore`): in the section of `grunt.extendConfig` add the `'!components/**'` to the *second* `src` field. It should look something like this:
+
+```
+grunt.extendConfig
+  sass:
+    dist:
+      files: [
+        {
+          expand: true
+          cwd: 'app/'
+          src: ['**/*.scss', '**/*.sass']
+          dest: 'dist/'
+          ext: '.css'
+        }
+        {
+          expand: true
+          cwd: 'www/'
+          src: ['**/*.scss', '**/*.sass', '!components/**']
+          dest: 'dist/'
+          ext: '.css'
+        }
+      ]
+```
+
 
 Debug
 -----

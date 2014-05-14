@@ -8,8 +8,9 @@ profileApp = angular.module "profileApp", [
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/profile/index.html
 #------------------------------------------------------------------------------- 
-profileApp.controller "IndexCtrl", ($scope, app, Util, Log) ->
+profileApp.controller "IndexCtrl", ($scope, app, Util, Log, Config) ->
   $scope.loggedIn = app.loggedIn()
+  $scope.supportEmail = Config.SUPPORT_EMAIL
 
   $scope.logout = ->
     Util.logout()

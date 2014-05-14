@@ -1,6 +1,8 @@
 <div ng-controller="IndexCtrl" class="container">
   <h1>Profile</h1>
-  <p>LoggedIn: {{ loggedIn }}</p>
+  <p>Thank you for supporting the <em>Community Circles</em> trial!<p>
+  <p>Do you have any troubles or want to send feedback? Feel free contact the <em>Support</em>.</p>
+  <a class="btn btn-default btn-block" href="mailto:{{ supportEmail }}?subject=Support%20request">Support</a>
   <a class="btn btn-default btn-block" ng-click="logout()">Logout</a>
   <!-- <a class="btn btn-default btn-block" ng-click="settings()">Settings</a> -->
   <!-- <a class="btn btn-default btn-block" ng-click="imprint()">Imprint</a> -->
