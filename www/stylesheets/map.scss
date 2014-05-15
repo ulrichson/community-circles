@@ -2,6 +2,7 @@
 
 $controlShadow: 0 1px 0px rgba(255, 255, 255, 0.8), 0 2px 0px rgba(0, 0, 0, 0.4);
 $contrubutionMarkerDiameter: 40px;
+$contributionClusterMarkerDiameter: $contrubutionMarkerDiameter * 0.75;
 
 /*******************************************************************************
 * MAP
@@ -49,20 +50,20 @@ $contrubutionMarkerDiameter: 40px;
 }
 
 .contribution-marker-cluster {
-  background-color: $cc-lighter;
-  border-radius: $contrubutionMarkerDiameter;
+  background-color: $cc-light;
+  border-radius: $contributionClusterMarkerDiameter;
   // box-shadow: $controlShadow;
   color: #ffffff;
-  height: $contrubutionMarkerDiameter;
-  line-height: $contrubutionMarkerDiameter;
-  margin-left: -$contrubutionMarkerDiameter/2;
-  margin-top: -$contrubutionMarkerDiameter/2;
+  height: $contributionClusterMarkerDiameter;
+  line-height: $contributionClusterMarkerDiameter;
+  margin-left: -$contributionClusterMarkerDiameter/2;
+  margin-top: -$contributionClusterMarkerDiameter/2;
   text-align: center;
-  width: $contrubutionMarkerDiameter;
+  width: $contributionClusterMarkerDiameter;
 }
 
-.contribution-marker.cluster:active {
-  background-color: $cc-main;
+.contribution-marker-cluster:active {
+  background-color: $cc-dark;
 }
 
 .contribution-marker-cluster span {
