@@ -14,13 +14,8 @@ $contrubutionMarkerDiameter: 40px;
   width: 100%;
 }
 
-.map-button {
-  color: $cc-dark; 
-  text-shadow: $controlShadow;
-}
-
-.map-button:active {
-  color: $cc-main;
+.btn-map {
+  box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.3);
 }
 
 /*******************************************************************************

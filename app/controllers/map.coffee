@@ -57,12 +57,11 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   #-----------------------------------------------------------------------------
   LocateControl = L.Control.extend
     options:
-      position: "bottomleft"
+      position: "topright"
 
     onAdd: (map) ->
-      this._container = L.DomUtil.create "span", "cc-locate-control map-button fa-stack fa-lg fa-2x"
-      this._container.appendChild L.DomUtil.create "i", "fa fa-circle-o fa-stack-2x"
-      this._container.appendChild L.DomUtil.create "i", "fa fa-location-arrow fa-stack-1x"
+      this._container = L.DomUtil.create "button", "btn btn-map btn-default"
+      this._container.appendChild L.DomUtil.create "i", "fa fa-location-arrow"
       L.DomEvent.addListener this._container, "click", (e) ->
         L.DomEvent.stopPropagation e
         map.setView Util.lastKnownPosition()
@@ -71,12 +70,11 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
 
   NewContributionControl = L.Control.extend
     options:
-      position: "bottomleft"
+      position: "topright"
 
     onAdd: (map) ->
-      this._container = L.DomUtil.create "span", "cc-locate-control map-button fa-stack fa-lg fa-2x"
-      this._container.appendChild L.DomUtil.create "i", "fa fa-circle-o fa-stack-2x"
-      this._container.appendChild L.DomUtil.create "i", "fa fa-plus fa-stack-1x"
+      this._container = L.DomUtil.create "button", "btn btn-map btn-default"
+      this._container.appendChild L.DomUtil.create "i", "fa fa-plus"
       L.DomEvent.addListener this._container, "click", (e) ->
         L.DomEvent.stopPropagation e
         $scope.newContribution()
