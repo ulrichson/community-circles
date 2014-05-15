@@ -4,6 +4,12 @@
 @import "animate";
 
 /*******************************************************************************
+* GLOBAL VARIABLES
+*******************************************************************************/
+$dropshadowColor: rgba(0, 0, 0, 0.3);
+$dropshadowWidth: 25px;
+
+/*******************************************************************************
 * COLOR SCHEME
 *******************************************************************************/
 $cc-lighter:      #3fd1d1; // what are u good for?
@@ -25,9 +31,9 @@ $font-size-base:            16px !default;
 $font-size-large:           ceil(($font-size-base * 1.25));
 $font-size-small:           ceil(($font-size-base * 0.85));
 
-$font-size-h1:              floor(($font-size-base * 1.8));
+$font-size-h1:              floor(($font-size-base * 1.6));
 $font-size-h2:              floor(($font-size-base * 1.4));
-$font-size-h3:              ceil(($font-size-base * 1.20));
+$font-size-h3:              ceil(($font-size-base * 1.2));
 $font-size-h4:              ceil(($font-size-base * 1.15));
 $font-size-h5:              $font-size-base !default;
 $font-size-h6:              ceil(($font-size-base * 0.85));
@@ -43,6 +49,9 @@ $btn-success-border:        $brand-success !default;
 $btn-info-border:           $brand-info !default;
 $btn-warning-border:        $brand-warning !default;
 $btn-danger-border:         $brand-danger !default;
+
+$list-group-bg:             #fff !default;
+$list-group-hover-bg:       $list-group-bg !default;
 
 // Core variables and mixins
 @import "../components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap/variables";
@@ -216,6 +225,17 @@ $btn-danger-border:         $brand-danger !default;
 
 .well {
   border: none !important;
+}
+
+.list-group-item {
+  border-color: $gray-lighter;
+  border-left-style: none;
+  border-right-style: none;
+
+  &:first-child,
+  &:last-child {
+    border-radius: 0;
+  }
 }
 
 /*******************************************************************************
