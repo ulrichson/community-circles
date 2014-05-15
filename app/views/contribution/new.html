@@ -3,7 +3,7 @@
     <i class="fa fa-4x fa-spinner fa-spin fa-inverse"></i>
   </div>
   <div class="container">
-    <p class="text-center text-danger center-block" ng-show="showError && !contribution.type">A contribution type is requred</p>
+    <p class="text-center text-danger center-block" ng-show="hasError && !contribution.type">A contribution type is requred</p>
     <ul class="contribution-type">
       <li class="center-block" ng-class="{active: contribution.type == 'opinion'}" ng-click="contribution.type = 'opinion'">
         <a class="text-center" href="#">
@@ -40,8 +40,8 @@
     <button ng-if="imageSrc" ng-click="removePhoto()" type="button" class="close btn-remove-photo" aria-hidden="true">&times;</button>
   </div>    
   <div class="contribution-input">
-    <div class="contribution-title form-group" ng-class="{'has-error': showError && !contribution.title}">
-      <span class="text-center help-block has-error" ng-show="showError && !contribution.title">A title is required</span>
+    <div class="contribution-title form-group" ng-class="{'has-error': hasError && !contribution.title}">
+      <span class="text-center help-block has-error" ng-show="hasError && !contribution.title">A title is required</span>
       <input type="text" name ="title" class="form-control text-center input-lg" ng-model="contribution.title" placeholder="Tap to enter a title" required />
     </div>
     <div class="contribution-meta">
@@ -55,12 +55,12 @@
         </a>
       </div>
     </div>
-    <div class="well well-sm" ng-if="contribution.type != 'poll'" class="form-group" ng-class="{'has-error': showError && !contribution.description}">
-      <span class="text-center help-block has-error" ng-show="showError && !contribution.description">A descrption is required</span>
+    <div class="well well-sm" ng-if="contribution.type != 'poll'" class="form-group" ng-class="{'has-error': hasError && !contribution.description}">
+      <span class="text-center help-block has-error" ng-show="hasError && !contribution.description">A descrption is required</span>
       <textarea class="form-control" name="description" ng-model="contribution.description" rows="3" placeholder="Please give a short description" required></textarea>
     </div>
     <div class="well well-sm contribution-poll" ng-if="contribution.type == 'poll'">
-      <p class="text-center text-danger center-block" ng-show="showError && contribution.pollOptions.length < 2">At least two poll options are required</p>
+      <p class="text-center text-danger center-block" ng-show="hasError && contribution.pollOptions.length < 2">At least two poll options are required</p>
       <button class="btn btn-primary btn-block" ng-click="addPollOptionPrompt()"><i class="fa fa-plus-circle"></i>&nbsp;Add poll option</button>
       <ul class="list-group" ng-show="contribution.pollOptions.length > 0">
         <li class="list-group-item" ng-repeat="pollOption in contribution.pollOptions"><button type="button" class="close" aria-hidden="true" ng-click="removePollOption(pollOption)"><i class="fa fa-minus-circle"></i></button>{{ pollOption }}</li>

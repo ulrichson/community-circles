@@ -218,9 +218,7 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
 
   $scope.reset = ->
     $scope.contribution = {}
-    $scope.contribution.poi = null
     $scope.contribution.type = null
-    $scope.contribution.mood = null
     $scope.contribution.pollOptions = []
     $scope.removePhoto()
 
@@ -228,6 +226,7 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
     Util.send "poiIndexCtrl", "reset"
 
     $scope.hasError = false
+    window.scrollTo 0, 0
 
   #-----------------------------------------------------------------------------
   # NATIVE UI
@@ -260,7 +259,7 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
 
     if error
       alertCallback = ->
-        $scope.showError = true
+        $scope.hasError = true
         $scope.$apply()
       navigator.notification.alert "Oops, there's something missing!\nPlease check the comments below.", alertCallback, "Something is missing", "Got it!"
     else
