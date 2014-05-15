@@ -2,22 +2,20 @@ communityCirclesUtil = angular.module "communityCirclesUtil", ["communityCircles
 
 # Executed for each module that includes Util
 communityCirclesUtil.run (Log) ->
-  if !@config?
-    alert "app/community-circles/private.coffee is missing!"
-
-  successHandler: ->
-    Log.i "Google Analytics Plugin is initialized"
-
-  errorHandler: ->
-    Log.e "Google Analytics Plugin couldn't be initialized"
-
-  if window.GAPlugin?
-    window.GAPlugin.init successHandler, errorHandler, @keys.GOOGLE_ANALYTICS_ID, 10
-  else
-    Log.e "Google Analytics Plugin is not available"
+  if !@config? or !@key?
+    alert "app/community-circles/private.coffee is missing or malformed!"
 
   # Only allow portrait mode
   steroids.view.setAllowedRotations [0, 180]
+
+  # Track UI visibility changes
+  onDeviceReady = ->
+    uiInfo = "[Date: #{(new Date()).toISOString()}; Location: #{window.location.href}; ViewId: #{window.AG_VIEW_ID}; ScreenId: #{window.AG_SCREEN_ID}]"
+    deviceInfo = "[Model: #{window.device.model}; Cordova: #{window.device.cordova}; Platform: #{window.device.platform}; UUID: #{window.device.uuid}; Version: #{window.device.version}]"
+    trackVisibilityChange = ->
+      steroids.logger.log "#{uiInfo} #{deviceInfo} #{document.visibilityState} (hidden=#{document.hidden})"
+    document.addEventListener "visibilitychange", trackVisibilityChange, false
+  document.addEventListener "deviceready", onDeviceReady, false
 
 communityCirclesUtil.constant "Config",
   SUPPORT_EMAIL: @config.SUPPORT_EMAIL
@@ -252,14 +250,14 @@ communityCirclesUtil.controller "MessageCtrl", ($scope, Log) ->
 
     if !states
       states = {}
-      states[Connection.UNKNOWN]  = "not available";
-      states[Connection.ETHERNET] = "Ethernet";
-      states[Connection.WIFI]     = "WiFi";
-      states[Connection.CELL]     = "Cell";
-      states[Connection.CELL_2G]  = "Cell 2G";
-      states[Connection.CELL_3G]  = "Cell 3G";
-      states[Connection.CELL_4G]  = "Cell 4G";
-      states[Connection.NONE]     = "none";
+      states[Connection.UNKNOWN]  = "not available"
+      states[Connection.ETHERNET] = "Ethernet"
+      states[Connection.WIFI]     = "WiFi"
+      states[Connection.CELL]     = "Cell"
+      states[Connection.CELL_2G]  = "Cell 2G"
+      states[Connection.CELL_3G]  = "Cell 3G"
+      states[Connection.CELL_4G]  = "Cell 4G"
+      states[Connection.NONE]     = "none"
 
     networkState = navigator.connection.type
     # DO NOT SET THIS MESSAGE

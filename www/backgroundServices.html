@@ -11,7 +11,13 @@
   <script>
     document.addEventListener("deviceready", onDeviceReady, false);
 
-    function onDeviceReady() {   
+    function onDeviceReady() {
+      var deviceInfo = "[Model: " + device.model +
+        "; Cordova: " + device.cordova +
+        "; Platform: " + device.platform +
+        "; UUID: " + device.uuid +
+        "; Version: " + device.version + "]";
+
       console.debug("Background service initializing");
       // Preload static views
       // var moodView = new steroids.views.WebView({location: "/views/mood/index.html", id: "moodView");
@@ -22,9 +28,99 @@
       // Position watcher
       var positionWatcherId = navigator.geolocation.watchPosition(function(position) {
         // console.debug("Received position at " + position.coords.latitude + " " + position.coords.longitude);
-        // steroids.logger.log("DEBUG - Received position at " + position.coords.latitude + " " + position.coords.longitude);
+        // steroids.logger.log(deviceInfo + " DEBUG - Received position at " + position.coords.latitude + " " + position.coords.longitude);
         window.localStorage.setItem("lastKnownPosition", JSON.stringify(position));
       });
+
+      document.addEventListener("pause", onPause, false);
+
+      function onPause() {
+          steroids.logger.log(deviceInfo + " pause");
+          // Parse.Analytics.track("pause", deviceInfo);
+      }
+
+      document.addEventListener("resume", onResume, false);
+
+      function onResume() {
+          steroids.logger.log(deviceInfo + " resume");
+          // Parse.Analytics.track("resume", deviceInfo);
+      }
+
+      document.addEventListener("active", onActive, false);
+
+      function onActive() {
+          steroids.logger.log(deviceInfo + " active");
+          // Parse.Analytics.track("active", deviceInfo);
+      }
+
+      document.addEventListener("online", onOnline, false);
+
+      function onOnline() {
+          var networkState = navigator.connection.type;
+          var states = {};
+          
+          states[Connection.UNKNOWN]  = "not available";
+          states[Connection.ETHERNET] = "Ethernet";
+          states[Connection.WIFI]     = "WiFi";
+          states[Connection.CELL]     = "Cell";
+          states[Connection.CELL_2G]  = "Cell 2G";
+          states[Connection.CELL_3G]  = "Cell 3G";
+          states[Connection.CELL_4G]  = "Cell 4G";
+          states[Connection.NONE]     = "none";
+
+          steroids.logger.log(deviceInfo + " online (" + states[networkState] + ")");
+          // Parse.Analytics.track("online (" + states[networkState] + ")", deviceInfo);
+      }
+
+      document.addEventListener("offline", onOffline, false);
+
+      function onOffline() {
+          steroids.logger.log(deviceInfo + " offline");
+          // Parse.Analytics.track("offline", deviceInfo);
+      }
+
+      document.addEventListener("backbutton", onBackKeyDown, false);
+
+      function onBackKeyDown() {
+          steroids.logger.log(deviceInfo + " backbutton");
+          // Parse.Analytics.track("backbutton", deviceInfo);
+      }
+
+      window.addEventListener("batterycritical", onBatteryCritical, false);
+
+      function onBatteryCritical(info) {
+          steroids.logger.log(deviceInfo + " battery level critical: " + info.level + "%");
+          // Parse.Analytics.track("battery level critical: " + info.level + "%", deviceInfo);
+      }
+
+      window.addEventListener("batterylow", onBatteryLow, false);
+
+      function onBatteryLow(info) {
+          steroids.logger.log(deviceInfo + " battery level low: " + info.level + "%");
+          // Parse.Analytics.track("battery level low: " + info.level + "%", deviceInfo);
+      }
+
+      window.addEventListener("batterystatus", onBatteryStatus, false);
+
+      function onBatteryStatus(info) {
+          steroids.logger.log(deviceInfo + " battery level: " + info.level + " isPlugged: " + info.isPlugged);
+          // Parse.Analytics.track("battery level: " + info.level + " isPlugged: " + info.isPlugged, deviceInfo);
+      }
+
+      document.addEventListener("menubutton", onMenuKeyDown, false);
+
+      function onMenuKeyDown() {
+          steroids.logger.log(deviceInfo + " menubutton");
+          // Parse.Analytics.track("menubutton", deviceInfo);
+      }
+
+      document.addEventListener("searchbutton", onSearchKeyDown, false);
+
+      function onSearchKeyDown() {
+          steroids.logger.log(deviceInfo + " searchbutton");
+          // Parse.Analytics.track("searchbutton", deviceInfo);
+      }
+
     }
   </script>
 </body>
