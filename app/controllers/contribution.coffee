@@ -82,6 +82,7 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
 
   $scope.loading = false
   $scope.bgImageStyle = {}
+  $scope.hasError = false
 
   #-----------------------------------------------------------------------------
   # CONTRIBUTION PROPERTIES
@@ -215,6 +216,15 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
   $scope.setMood = (mood) ->
     $scope.contribution.mood = mood
 
+  $scope.reset = ->
+    $scope.contribution = {}
+    $scope.contribution.poi = null
+    $scope.contribution.type = null
+    $scope.contribution.mood = null
+    $scope.contribution.pollOptions = []
+    $scope.removePhoto()
+    $scope.hasError = false
+
   #-----------------------------------------------------------------------------
   # NATIVE UI
   #-----------------------------------------------------------------------------
@@ -237,27 +247,41 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
 
   buttonAdd.onTap = ->
     error = false
-    title = null
-    msg = null
-    if !$scope.imageSrc?
-      error = true
-      title = "Do you want to include a photo?"
-      msg = "Adding a photo gives your contribution more meaning and increases your radius!"
-    else if !$scope.contribution.poi? or !$scope.contribution.mood?
-      error = true
-      title = "Do you want to provide additional information?"
-      missing = "your location and mood"
-      if $scope.contribution.mood?
-        missing = "your location"
-      else if $scope.contribution.poi?
-        missing = "your mood"
 
-      msg = "Adding #{missing} gives your contribution more meaning and increases your radius!"
+    # Check form
+    error = not $scope.contribution.type or
+    not $scope.contribution.title or
+    ($scope.contribution.type is "poll" and $scope.contribution.pollOptions.length < 2) or
+    ($scope.contribution.type isnt "poll" and not $scope.contribution.description)
 
     if error
-      navigator.notification.confirm msg, onConfirm, title, ["Proceed anyway", "Edit contribution"]
+      alertCallback = ->
+        $scope.showError = true
+        $scope.$apply()
+      navigator.notification.alert "Oops, there's something missing!\nPlease check the comments below.", alertCallback, "Something is missing", "Got it!"
     else
-      alert "not implemented"
+      # Meta parameter incentive messages
+      title = null
+      msg = null
+      if !$scope.imageSrc?
+        error = true
+        title = "Do you want to include a photo?"
+        msg = "Adding a photo gives your contribution more meaning and increases your radius!"
+      else if !$scope.contribution.poi? or !$scope.contribution.mood?
+        error = true
+        title = "Do you want to provide additional information?"
+        missing = "your location and mood"
+        if $scope.contribution.mood?
+          missing = "your location"
+        else if $scope.contribution.poi?
+          missing = "your mood"
+
+        msg = "Adding #{missing} gives your contribution more meaning and increases your radius!"
+
+      if error
+        navigator.notification.confirm msg, onConfirm, title, ["Proceed anyway", "Edit contribution"]
+      else
+        alert "not implemented"
 
   #-----------------------------------------------------------------------------
   # RUN
