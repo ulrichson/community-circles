@@ -11,13 +11,14 @@ poiApp = angular.module "poiApp", [
 #------------------------------------------------------------------------------- 
 poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Log, PoiRestangular) ->
 
+  $scope.message_id = "poiIndexCtrl"
+
   iconSize = [28, 42]
   iconAnchor = [14, 42]
   iconLongerSide = if iconSize[0] > iconSize[1] then iconSize[0] else iconSize[1]
   paddingTopLeft = [iconSize[0] / 2 + 10, iconSize[1] + 10]
   paddingBottomRight = [iconSize[0] / 2 + 10, 10]
 
-  $scope.message_id = "poiIndexCtrl"
   $scope.loading = false
 
   latLngOnLocate = null
@@ -98,7 +99,9 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
       selectPoi poi
 
   $scope.reset = (keepSelected = false) ->
-    unselectPois() unless keepSelected
+    if not keepSelected
+      unselectPois()
+      window.scrollTo 0, 0
     locate()
 
   map.dragging.disable()

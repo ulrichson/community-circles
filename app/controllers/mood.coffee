@@ -10,6 +10,8 @@ moodApp = angular.module "moodApp", [
 #------------------------------------------------------------------------------- 
 moodApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, MoodRestangular) ->
   
+  $scope.message_id = "moodIndexCtrl"
+
   MoodRestangular.all("mood").getList().then (moods) ->
     $scope.moods = moods
 
@@ -35,4 +37,9 @@ moodApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, MoodRes
     else
       selectMood mood
 
+  $scope.reset = ->
+    unselectMood()
+    window.scrollTo 0, 0
+
+  Util.consume $scope
   document.addEventListener "visibilitychange", visibilityChanged, false

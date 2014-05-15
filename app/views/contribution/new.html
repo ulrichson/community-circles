@@ -40,40 +40,32 @@
     <button ng-if="imageSrc" ng-click="removePhoto()" type="button" class="close btn-remove-photo" aria-hidden="true">&times;</button>
   </div>    
   <div class="contribution-input">
-    <form role="form" name="contribution_form" novalidate>
-      <div class="contribution-title form-group" ng-class="{'has-error': showError && !contribution.title}">
-        <span class="text-center help-block has-error" ng-show="showError && !contribution.title">A title is required</span>
-        <input type="text" name ="title" class="form-control text-center input-lg" ng-model="contribution.title" placeholder="Tap to enter a title" required />
+    <div class="contribution-title form-group" ng-class="{'has-error': showError && !contribution.title}">
+      <span class="text-center help-block has-error" ng-show="showError && !contribution.title">A title is required</span>
+      <input type="text" name ="title" class="form-control text-center input-lg" ng-model="contribution.title" placeholder="Tap to enter a title" required />
+    </div>
+    <div class="contribution-meta">
+      <div class="btn-group btn-group-justified">
+        <a type="button" class="btn btn-primary btn-outline" ng-click="choosePoi()" ng-class="{'active': contribution.poi}">
+          <span ng-if="!contribution.poi"><em>I'm at …</em></span>
+          <span ng-if="contribution.poi">{{ contribution.poi | cut:10 }}</span>
+        <a type="button" class="btn btn-primary btn-outline" ng-click="chooseMood()" ng-class="{'active': contribution.mood}">
+          <span ng-if="!contribution.mood"><em>feeling …</em></span>
+          <span ng-if="contribution.mood">{{ contribution.mood.name }}&nbsp;</span><span ng-if="contribution.mood" class="contribution-mood-icon icomatic">{{ contribution.mood.code }}filled</span>
+        </a>
       </div>
-      <div class="contribution-meta">
-        <div class="btn-group btn-group-justified">
-          <a type="button" class="btn btn-primary btn-outline" ng-click="choosePoi()" ng-class="{'active': contribution.poi}">
-            <span ng-if="!contribution.poi"><em>I'm at …</em></span>
-            <span ng-if="contribution.poi">{{ contribution.poi | cut:10 }}</span>
-          <a type="button" class="btn btn-primary btn-outline" ng-click="chooseMood()" ng-class="{'active': contribution.mood}">
-            <span ng-if="!contribution.mood"><em>feeling …</em></span>
-            <span ng-if="contribution.mood">{{ contribution.mood.name }}&nbsp;</span><span ng-if="contribution.mood" class="contribution-mood-icon icomatic">{{ contribution.mood.code }}filled</span>
-          </a>
-        </div>
-      </div>
-      <div class="well well-sm" ng-if="contribution.type != 'poll'" class="form-group" ng-class="{'has-error': showError && !contribution.description}">
-        <span class="text-center help-block has-error" ng-show="showError && !contribution.description">A descrption is required</span>
-        <textarea class="form-control" name="description" ng-model="contribution.description" rows="3" placeholder="Please give a short description" required></textarea>
-      </div>
-      <div class="well well-sm contribution-poll" ng-if="contribution.type == 'poll'">
-        <p class="text-center text-danger center-block" ng-show="showError && contribution.pollOptions.length < 2">At least two poll options are required</p>
-        <button class="btn btn-primary btn-block" ng-click="addPollOptionPrompt()"><i class="fa fa-plus-circle"></i>&nbsp;Add poll option</button>
-        <ul class="list-group" ng-show="contribution.pollOptions.length > 0">
-          <li class="list-group-item" ng-repeat="pollOption in contribution.pollOptions"><button type="button" class="close" aria-hidden="true" ng-click="removePollOption(pollOption)"><i class="fa fa-minus-circle"></i></button>{{ pollOption }}</li>
-        </ul>
-<!--         <div class="input-group">
-          <input type="text" name="pollOption" class="form-control" placeholder="Add poll option" ng-model="contribution.pollOption" required>
-          <span class="input-group-btn">
-            <button class="btn btn-primary" type="button" ng-click="addPollOption()" ng-disabled="contribution_form.pollOption.$invalid"><i class="fa fa-plus-circle fa-fw"></i>&nbsp;Add</button>
-          </span>
-        </div> -->
-      </div>
-    </form>
+    </div>
+    <div class="well well-sm" ng-if="contribution.type != 'poll'" class="form-group" ng-class="{'has-error': showError && !contribution.description}">
+      <span class="text-center help-block has-error" ng-show="showError && !contribution.description">A descrption is required</span>
+      <textarea class="form-control" name="description" ng-model="contribution.description" rows="3" placeholder="Please give a short description" required></textarea>
+    </div>
+    <div class="well well-sm contribution-poll" ng-if="contribution.type == 'poll'">
+      <p class="text-center text-danger center-block" ng-show="showError && contribution.pollOptions.length < 2">At least two poll options are required</p>
+      <button class="btn btn-primary btn-block" ng-click="addPollOptionPrompt()"><i class="fa fa-plus-circle"></i>&nbsp;Add poll option</button>
+      <ul class="list-group" ng-show="contribution.pollOptions.length > 0">
+        <li class="list-group-item" ng-repeat="pollOption in contribution.pollOptions"><button type="button" class="close" aria-hidden="true" ng-click="removePollOption(pollOption)"><i class="fa fa-minus-circle"></i></button>{{ pollOption }}</li>
+      </ul>
+    </div>
     <hr />
     <button class="btn btn-default btn-block" ng-click="reset()">Reset contribution</button>
   </div>

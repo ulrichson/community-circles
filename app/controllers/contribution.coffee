@@ -223,6 +223,10 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
     $scope.contribution.mood = null
     $scope.contribution.pollOptions = []
     $scope.removePhoto()
+
+    Util.send "moodIndexCtrl", "reset"
+    Util.send "poiIndexCtrl", "reset"
+
     $scope.hasError = false
 
   #-----------------------------------------------------------------------------
