@@ -22,6 +22,15 @@ $brand-warning:             #f0ad4e !default;
 $brand-danger:              #d9534f !default;
 
 $font-size-base:            16px !default;
+$font-size-large:           ceil(($font-size-base * 1.25));
+$font-size-small:           ceil(($font-size-base * 0.85));
+
+$font-size-h1:              floor(($font-size-base * 1.8));
+$font-size-h2:              floor(($font-size-base * 1.4));
+$font-size-h3:              ceil(($font-size-base * 1.20));
+$font-size-h4:              ceil(($font-size-base * 1.15));
+$font-size-h5:              $font-size-base !default;
+$font-size-h6:              ceil(($font-size-base * 0.85));
 
 $border-radius-base:        3px !default;
 $border-radius-large:       5px !default;
