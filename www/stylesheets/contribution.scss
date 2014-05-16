@@ -2,6 +2,10 @@
 
 $contribution-type-diameter: 64px;
 
+.list-group {
+  margin-bottom: 0;
+}
+
 .contribution-photo {
   background-color: $gray-lighter;
   background-image: url(/images/placeholder_photo@2x.png);
@@ -134,31 +138,11 @@ $contribution-type-diameter: 64px;
   top: 1px;
 }
 
-.contribution-input {
-  /*background-color: #415b76;*/
-  margin-bottom: 0.5em;
-  padding-bottom: 1em;
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-top: 1em;
-}
-
-// .contribution-title {
-//   margin-bottom: 0;
-// }
-
 .contribution-title input {
   color: $brand-primary;
   font-weight: bold;
+  margin-bottom: 10px;
 }
-
-// .contribution-title .form-control {
-//   @include border-bottom-radius(0);
-// }
-
-// .contribution-meta .btn {
-//   @include border-top-radius(0);
-// }
 
 .contribution-poll ul {
   margin-bottom: 0;
