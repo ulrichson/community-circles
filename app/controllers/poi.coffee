@@ -104,6 +104,9 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
       window.scrollTo 0, 0
     locate()
 
+  $scope.unselect = ->
+    unselectPois()
+
   map.dragging.disable()
   map.touchZoom.disable()
   map.doubleClickZoom.disable()

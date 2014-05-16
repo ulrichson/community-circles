@@ -41,5 +41,8 @@ moodApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, MoodRes
     unselectMood()
     window.scrollTo 0, 0
 
+  $scope.unselect = ->
+    unselectMood()
+
   Util.consume $scope
   document.addEventListener "visibilitychange", visibilityChanged, false

@@ -2,35 +2,33 @@
   <div class="loading-full" ng-show="loading">
     <i class="fa fa-4x fa-spinner fa-spin fa-inverse"></i>
   </div>
-  <div class="container">
-    <p class="text-center text-danger center-block" ng-show="hasError && !contribution.type">A contribution type is requred</p>
-    <ul class="contribution-type">
-      <li class="center-block" ng-class="{active: contribution.type == 'opinion'}" ng-click="contribution.type = 'opinion'">
-        <a class="text-center" href="#">
-          <span class="li_megaphone"></span><br>
-          <small>Opinion</small>
-        </a>
-      </li>
-      <li class="center-block" ng-class="{active: contribution.type == 'poll'}" ng-click="contribution.type = 'poll'">
-        <a class="text-center" href="#">
-          <span class="li_bubble"></span><br>
-          <small>Poll</small>
-        </a>
-      </li>
-      <li class="center-block" ng-class="{active: contribution.type == 'issue'}" ng-click="contribution.type = 'issue'">
-        <a class="text-center" href="#">
-          <span class="li_fire"></span><br>
-          <small>Issue</small>
-        </a>
-      </li>
-      <li class="center-block" ng-class="{active: contribution.type == 'idea'}" ng-click="contribution.type = 'idea'">
-        <a class="text-center" href="#">
-          <span class="li_bulb"></span><br>
-          <small>Idea</small>
-        </a>
-      </li>
-    </ul>
-  </div>
+  <p class="text-center text-danger center-block" ng-show="hasError && !contribution.type">A contribution type is requred</p>
+  <ul class="contribution-type">
+    <li class="center-block" ng-class="{active: contribution.type == 'opinion'}" ng-click="contribution.type = 'opinion'">
+      <a class="text-center" href="#">
+        <span class="li_megaphone"></span><br>
+        <small>Opinion</small>
+      </a>
+    </li>
+    <li class="center-block" ng-class="{active: contribution.type == 'poll'}" ng-click="contribution.type = 'poll'">
+      <a class="text-center" href="#">
+        <span class="li_bubble"></span><br>
+        <small>Poll</small>
+      </a>
+    </li>
+    <li class="center-block" ng-class="{active: contribution.type == 'issue'}" ng-click="contribution.type = 'issue'">
+      <a class="text-center" href="#">
+        <span class="li_fire"></span><br>
+        <small>Issue</small>
+      </a>
+    </li>
+    <li class="center-block" ng-class="{active: contribution.type == 'idea'}" ng-click="contribution.type = 'idea'">
+      <a class="text-center" href="#">
+        <span class="li_bulb"></span><br>
+        <small>Idea</small>
+      </a>
+    </li>
+  </ul>
   <div class="contribution-photo text-center">
     <div ng-class="{background: imageSrc}" ng-style="bgImageStyle"></div>
     <div class="content">
@@ -44,22 +42,38 @@
       <span class="text-center help-block has-error" ng-show="hasError && !contribution.title">A title is required</span>
       <input type="text" name ="title" class="form-control text-center input-lg" ng-model="contribution.title" placeholder="Tap to enter a title" required />
     </div>
-    <div class="contribution-meta">
-      <div class="btn-group btn-group-justified">
-        <a type="button" class="btn btn-primary btn-outline" ng-click="choosePoi()" ng-class="{'active': contribution.poi}">
-          <span ng-if="!contribution.poi"><em>I'm at …</em></span>
-          <span ng-if="contribution.poi">{{ contribution.poi | cut:10 }}</span>
-        <a type="button" class="btn btn-primary btn-outline" ng-click="chooseMood()" ng-class="{'active': contribution.mood}">
-          <span ng-if="!contribution.mood"><em>feeling …</em></span>
-          <span ng-if="contribution.mood">{{ contribution.mood.name }}&nbsp;</span><span ng-if="contribution.mood" class="contribution-mood-icon icomatic">{{ contribution.mood.code }}filled</span>
-        </a>
-      </div>
-    </div>
-    <div class="well well-sm" ng-if="contribution.type != 'poll'" class="form-group" ng-class="{'has-error': hasError && !contribution.description}">
+  </div>
+  <div class="contribution-meta">
+    <!-- <div class="btn-group btn-group-justified">
+      <a type="button" class="btn btn-primary btn-outline" ng-click="choosePoi()" ng-class="{'active': contribution.poi}">
+        <span ng-if="!contribution.poi"><em>I'm at …</em></span>
+        <span ng-if="contribution.poi">{{ contribution.poi | cut:10 }}</span>
+      <a type="button" class="btn btn-primary btn-outline" ng-click="chooseMood()" ng-class="{'active': contribution.mood}">
+        <span ng-if="!contribution.mood"><em>feeling …</em></span>
+        <span ng-if="contribution.mood">{{ contribution.mood.name }}&nbsp;</span><span ng-if="contribution.mood" class="contribution-mood-icon icomatic">{{ contribution.mood.code }}filled</span>
+      </a>
+    </div> -->
+    <ul class="list-group">
+      <li class="list-group-item"  ng-click="choosePoi()">
+        <button type="button" class="close" aria-hidden="true"><i class="fa fa-angle-right"></i></button>
+        <i class="fa fa-map-marker"></i>&nbsp;
+        <span ng-if="!contribution.poi">I'm at …</span>
+        <span ng-if="contribution.poi">I'm at <strong>{{ contribution.poi }}</strong></span>
+      </li>
+      <li class="list-group-item" ng-click="chooseMood()">
+        <button type="button" class="close" aria-hidden="true"><i class="fa fa-angle-right"></i></button>
+        <i class="fa fa-smile-o"></i>&nbsp;
+        <span ng-if="!contribution.mood">I'm feeling …</span>
+        <span ng-if="contribution.mood">I'm feeling <strong>{{ contribution.mood.name }}&nbsp;</span></strong>&nbsp;<span ng-if="contribution.mood" class="mood-icon icomatic">{{ contribution.mood.code }}filled</span>
+      </li>
+    </ul>
+  </div>
+  <div class="container">
+    <div ng-if="contribution.type != 'poll'" class="form-group" ng-class="{'has-error': hasError && !contribution.description}">
       <span class="text-center help-block has-error" ng-show="hasError && !contribution.description">A descrption is required</span>
-      <textarea class="form-control" name="description" ng-model="contribution.description" rows="3" placeholder="Please give a short description" required></textarea>
+      <textarea class="form-control" name="description" ng-model="contribution.description" rows="3" placeholder="Tap to enter a description" required></textarea>
     </div>
-    <div class="well well-sm contribution-poll" ng-if="contribution.type == 'poll'">
+    <div ng-if="contribution.type == 'poll'">
       <p class="text-center text-danger center-block" ng-show="hasError && contribution.pollOptions.length < 2">At least two poll options are required</p>
       <button class="btn btn-primary btn-block" ng-click="addPollOptionPrompt()"><i class="fa fa-plus-circle"></i>&nbsp;Add poll option</button>
       <ul class="list-group" ng-show="contribution.pollOptions.length > 0">
