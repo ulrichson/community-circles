@@ -279,7 +279,7 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
         convert: "geojson"
     ).success (data) ->
       contributions = data.features
-      Log.d JSON.stringify contributions
+      # Log.d JSON.stringify contributions
 
       # communitiesLayer = L.TileLayer.maskCanvas
       #   color: communityColor;
