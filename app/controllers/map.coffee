@@ -4,7 +4,7 @@ mapApp = angular.module "mapApp", [
   "communityCirclesUtil",
   "communityCirclesLog",
   "ngTouch",
-  "CommunityModel",
+  "ContributionModel",
   "ngAnimate",
   "angularMoment",
   "swipe"
@@ -13,7 +13,7 @@ mapApp = angular.module "mapApp", [
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/map/index.html
 #------------------------------------------------------------------------------- 
-mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, CommunityRestangular) ->
+mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, ContributionRestangular) ->
 
   markerDiameter = 40
   mapPreviewHeight = 80
@@ -28,11 +28,10 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   # Detect double-clicks for contribution marker
   contributionClickCount = 0
 
-  communities = []
-  contributions = []
+  contributions = null
 
   # Map Layer
-  communitiesLayer = null
+  # communitiesLayer = null
   contributionsLayer = null
 
   contributionMarkers = []
@@ -64,7 +63,8 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
       this._container.appendChild L.DomUtil.create "i", "fa fa-location-arrow"
       L.DomEvent.addListener this._container, "click", (e) ->
         L.DomEvent.stopPropagation e
-        map.setView Util.lastKnownPosition()
+        # map.setView Util.lastKnownPosition()
+        locate()
 
       return this._container
 
@@ -114,7 +114,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   map.on "locationfound", (e) ->
     # Log.i "Location found: #{e.latlng.lat}, #{e.latlng.lng}"
     $scope.$apply -> $scope.loading = false
-    drawCommunities e.latlng
+    loadContributions()
     updateCurrentPositionMarker e.latlng
 
   map.on "locationerror", (e) ->
@@ -151,14 +151,14 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
           map.removeControl locateControl
           map.removeControl newContributionControl
           map.removeLayer currentPositionMarker
-          map.removeLayer communitiesLayer
+          # map.removeLayer communitiesLayer
           _.each contributionMarkers, (marker) ->
             if marker is e.target
               selectedContributionMarker = e.target
             else
               contributionsLayer.removeLayer marker
 
-          id = parseInt e.target.feature.properties.id
+          id = parseInt e.target.feature.id
           $scope.showContributionDetail id
         else
           $scope.hideContributionDetail()
@@ -225,8 +225,9 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   locate = ->
     $scope.loading = true
     map.locate
-      enableHighAccuracy: true
-      watch: true
+      setView: true
+      # enableHighAccuracy: true
+      # watch: true
 
   createContributionMarker = (feature, latlng) ->
     healthProgress = d3.select(document.createElement("div"))
@@ -247,30 +248,47 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
       icon: L.divIcon
         className: "contribution-marker"
         iconSize: [markerDiameter, markerDiameter]
-        html: "#{healthProgress.node().innerHTML}<div class=\"contribution-icon contribution-icon-#{feature.properties.type}\"></div>"
+        html: "#{healthProgress.node().innerHTML}<div class=\"contribution-icon contribution-icon-#{Util.convertContributionType feature.properties.type}\"></div>"
     return svgMarker
 
   # Helper function for loading map data with spinner
-  drawCommunities = (position) ->
+  loadContributions =  ->
     $scope.loading = true
 
-    map.removeLayer communitiesLayer unless communitiesLayer is null
+    # map.removeLayer communitiesLayer unless communitiesLayer is null
     map.removeLayer contributionsLayer unless contributionsLayer is null
 
     contributionMarkers = []
 
-    fakeAsyncCallback = (data) ->
-      $scope.$apply -> $scope.loading = false
+    mapBounds = map.getBounds()
+    # contributions = ContributionRestangular.all("contribution").getList
+    #   sw_boundingbox_coordinate_lat: mapBounds.getSouthWest().lat
+    #   sw_boundingbox_coordinate_long: mapBounds.getSouthWest().lng
+    #   ne_boundingbox_coordinate_lat: mapBounds.getNorthEast().lat
+    #   ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
+    #   convert: "geojson"
+    # .then (data) ->
+    $http(
+      url: "#{Config.API_ENDPOINT}/contrib/contribution/"
+      method: "GET"
+      params:
+        sw_boundingbox_coordinate_lat: mapBounds.getSouthWest().lat
+        sw_boundingbox_coordinate_long: mapBounds.getSouthWest().lng
+        ne_boundingbox_coordinate_lat: mapBounds.getNorthEast().lat
+        ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
+        convert: "geojson"
+    ).success (data) ->
       contributions = data.features
+      Log.d JSON.stringify contributions
 
-      communitiesLayer = L.TileLayer.maskCanvas
-        color: communityColor;
-        lineWidth: 0
-        noMask: true
-        opacity: communityOpacity
+      # communitiesLayer = L.TileLayer.maskCanvas
+      #   color: communityColor;
+      #   lineWidth: 0
+      #   noMask: true
+      #   opacity: communityOpacity
 
-      communitiesLayer.setData data
-      map.addLayer communitiesLayer
+      # communitiesLayer.setData data
+      # map.addLayer communitiesLayer
       
       # Contributions and clustering
       contributionsLayer = new L.MarkerClusterGroup
@@ -294,13 +312,19 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
       
       map.addLayer contributionsLayer
 
-    fakeAsyncCallback contributionsGeoJSON
+      $scope.loading = false
+      $scope.$apply()
+    .error ->
+      Log.e "Could not load contributions"
+
+      $scope.loading = false
+      $scope.$apply()
 
   updateCurrentPositionMarker = (latlng) ->
     # Clean up
     map.removeLayer currentPositionMarker unless currentPositionMarker is null
 
-    currentPositionMarker = Util.createPositionMarker latlng, Game.initialRadius
+    currentPositionMarker = Util.createPositionMarker latlng #, Game.initialRadius
 
     map.addLayer currentPositionMarker, true
 
@@ -319,7 +343,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
       properties:
         id: i
         title: "Generated Title"
-        type: ["issue", "idea", "poll", "opinion"][Math.round(Math.random() * 3)]
+        type: ["IS", "IDEA", "PL", "OP"][Math.round(Math.random() * 3)]
         mood: "happy"
         radius: Util.randomFromTo 50, 300
         health: Math.random()
@@ -339,7 +363,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
     locate()
 
   $scope.openContribution = ->
-    Util.send "showContributionController", "loadContribution", $scope.contribution.properties.id
+    Util.send "showContributionController", "loadContribution", $scope.contribution.id
     webView = new steroids.views.WebView 
       location: "/views/contribution/show.html"
       id: "mapShowContributionView"
@@ -348,7 +372,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
 
   $scope.showContributionDetail = (id) ->
     $scope.contributionSelected = true
-    $scope.contribution = _.filter(contributions, (e) -> return e.properties.id is id)[0]
+    $scope.contribution = _.filter(contributions, (e) -> return e.id is id)[0]
     $scope.contribution.properties.area = Util.formatAreaSqKm $scope.contribution.properties.radius * $scope.contribution.properties.radius * Math.PI
     
     # Pan map to contribution and offset it on top
@@ -383,7 +407,7 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
 
     # Show contributions
     contributionsLayer.removeLayer selectedContributionMarker
-    map.addLayer communitiesLayer
+    # map.addLayer communitiesLayer
     _.each contributionMarkers, (marker) ->
       contributionsLayer.addLayer marker
     map.addLayer currentPositionMarker
@@ -419,11 +443,6 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
   # Prevents that WebView is dragged
   document.ontouchmove = (e) -> e.preventDefault()
 
-  # Demo data
-  # latLngBounds = L.latLngBounds new L.LatLng(48.3290194, 16.1749), new L.LatLng(48.078705, 16.570455)
-  latLngBounds = map.getBounds()
-  contributionsGeoJSON = generateRandomContributions latLngBounds, 50
-
   # Prevent that map doesn't receive click events from contribution overlay
   L.DomEvent.disableClickPropagation document.getElementsByClassName("contribution-detail")[0]
 
@@ -431,5 +450,5 @@ mapApp.controller "IndexCtrl", ($scope, $compile, app, Game, Util, Log, Communit
 
   locate()
 
-  if not Util.loggedIn()
-    Util.logout()
+  # if not Util.loggedIn()
+  #   Util.logout()

@@ -2,12 +2,12 @@
 if !angular?
   return
 
-module = angular.module "ContributionModel", ["communityCirclesApp", "restangular"]
+module = angular.module "ContributionModel", ["communityCirclesUtil", "restangular"]
 
-module.factory "ContributionRestangular", (Restangular) ->
+module.factory "ContributionRestangular", (Config, Restangular) ->
 
   return Restangular.withConfig (RestangularConfigurer) ->
-    RestangularConfigurer.setBaseUrl "http://localhost/data/demo"
-    RestangularConfigurer.setRequestSuffix ".json"
+    RestangularConfigurer.setBaseUrl "#{Config.API_ENDPOINT}/contrib"
+    RestangularConfigurer.setRequestSuffix "/"
     # RestangularConfigurer.setRestangularFields
     #  id: "id"

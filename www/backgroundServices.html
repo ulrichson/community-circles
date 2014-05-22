@@ -30,6 +30,15 @@
         // console.debug("Received position at " + position.coords.latitude + " " + position.coords.longitude);
         // steroids.logger.log(deviceInfo + " DEBUG - Received position at " + position.coords.latitude + " " + position.coords.longitude);
         window.localStorage.setItem("lastKnownPosition", JSON.stringify(position));
+
+        window.localStorage.setItem("position.coords.latitude", position.coords.latitude);
+        window.localStorage.setItem("position.coords.longitude", position.coords.longitude);
+        window.localStorage.setItem("position.coords.altitude", position.coords.altitude);
+        window.localStorage.setItem("position.coords.accuracy", position.coords.accuracy);
+        window.localStorage.setItem("position.coords.altitudeAccuracy", position.coords.altitudeAccuracy);
+        window.localStorage.setItem("position.coords.heading", position.coords.heading);
+        window.localStorage.setItem("position.coords.speed", position.coords.speed);
+        window.localStorage.setItem("position.timestamp", position.timestamp);
       });
 
       document.addEventListener("pause", onPause, false);

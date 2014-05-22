@@ -19,6 +19,7 @@ communityCirclesUtil.run (Log) ->
 
 communityCirclesUtil.constant "Config",
   SUPPORT_EMAIL: @config.SUPPORT_EMAIL
+  API_ENDPOINT: @config.API_ENDPOINT
 
 communityCirclesUtil.factory "Util", ->
 
@@ -28,6 +29,18 @@ communityCirclesUtil.factory "Util", ->
   ccMain: "#00a8b3"
   ccDark: "#004855"
   ccDarker: "#212b37"
+
+  convertContributionType: (code) ->
+    if code is "ID"
+      return "idea"
+    else if code is "IS"
+      return "issue"
+    else if code is "OP"
+      return "opinion"
+    else if code is "PL"
+      return "poll"
+    else
+      return "unknown"
 
   formatAreaSqKm: (area) ->
     return "#{(area/1000000).toFixed(2)}"
@@ -49,6 +62,9 @@ communityCirclesUtil.factory "Util", ->
 
   login: ->
     window.localStorage.setItem "loggedIn", "true"
+
+  userId: ->
+    return 1
 
   #-----------------------------------------------------------------------------
   # UI HELPERS
@@ -165,7 +181,10 @@ communityCirclesUtil.factory "Util", ->
     #   unloadInvisibleTiles: false
     #   updateWhenIdle: true
 
-  createPositionMarker: (latlng, radius, size = 40) ->
+  createPositionMarker: (latlng, { radius, size } = {}) ->
+    radius ?= null
+    size ?= 20
+
     positionMarker = new L.LayerGroup
 
     if radius?

@@ -6,7 +6,7 @@ contributionApp = angular.module "contributionApp", [
   "ngTouch",
   "angularMoment",
   "angular-carousel"
-] 
+]
 
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/contribution/index.html
@@ -77,7 +77,7 @@ contributionApp.controller "ShowCtrl", ($scope, $filter, Util, ContributionResta
 #-------------------------------------------------------------------------------
 # New: http://localhost/views/contribution/new.html
 #------------------------------------------------------------------------------- 
-contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangular) ->
+contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, ContributionRestangular) ->
   $scope.message_id = "contributionNewCtrl"
 
   $scope.loading = false
@@ -193,28 +193,46 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
   $scope.close = ->
     Util.return()
 
-  $scope.create = (contribution) ->
+  $scope.create = ->
     $scope.$apply -> $scope.loading = true
 
-    ContributionRestangular.all("contribution").post(contribution).then ->
-
-      # Broadcast reload message
-      msg = 
-        status: "reload"
-
-      window.postMessage msg, "*"
-
-      $scope.pop()
-      $scope.$apply -> $scope.loading = false
-    , ->
-      $scope.$apply -> $scope.loading = false
-      alert "Sorry, couldn't upload your contribution. Please try again later"
+    mood = null
+    try
+      mood = $scope.contribution.mood.name
+    catch e
+      mood = null
+    
+    ContributionRestangular.all("contribution").post(
+      title: $scope.contribution.title
+      type: $scope.contribution.type
+      description: $scope.contribution.title
+      mood: mood
+      author: Util.userId()
+      accuracy: window.localStorage.getItem "position.coords.accuracy"
+      point: "POINT (#{Util.lastKnownPosition().lng} #{Util.lastKnownPosition().lat})"
+      poi: $scope.contribution.poi
+    ).then (response) ->
+      navigator.notification.alert  "Thanks, your contribution was uploaded."
+      , ->
+        $scope.loading = false
+        $scope.reset()
+        $scope.$apply()
+        Util.return()
+      , "Successfully uploaded"
+    , (response) ->
+      Log.e "Contribution upload failed: #{JSON.stringify response.data}"
+      navigator.notification.alert  "Sorry, couldn't upload your contribution. Please try again later."
+      , ->
+        $scope.loading = false
+        $scope.$apply()
+      , "Failed to upload"
 
   $scope.setPoi = (poi) ->
     $scope.contribution.poi = poi
 
   $scope.setMood = (mood) ->
     $scope.contribution.mood = mood
+    Log.d $scope.contribution.mood.name
 
   $scope.reset = ->
     $scope.contribution = {}
@@ -246,7 +264,7 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
     if buttonIndex is 2
       return
     else if buttonIndex is 1
-      alert "not implemented"
+      $scope.create()
 
   buttonAdd.onTap = ->
     error = false
@@ -254,8 +272,8 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
     # Check form
     error = not $scope.contribution.type or
     not $scope.contribution.title or
-    ($scope.contribution.type is "poll" and $scope.contribution.pollOptions.length < 2) or
-    ($scope.contribution.type isnt "poll" and not $scope.contribution.description)
+    ($scope.contribution.type is "PL" and $scope.contribution.pollOptions.length < 2) or
+    ($scope.contribution.type isnt "PL" and not $scope.contribution.description)
 
     if error
       alertCallback = ->
@@ -284,7 +302,7 @@ contributionApp.controller "NewCtrl", ($scope, Util, Log, ContributionRestangula
       if error
         navigator.notification.confirm msg, onConfirm, title, ["Proceed anyway", "Edit contribution"]
       else
-        alert "not implemented"
+        $scope.create()
 
   #-----------------------------------------------------------------------------
   # RUN

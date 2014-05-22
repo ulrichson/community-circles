@@ -4,25 +4,25 @@
   </div>
   <p class="text-center text-danger center-block" ng-show="hasError && !contribution.type">A contribution type is requred</p>
   <ul class="contribution-type">
-    <li class="center-block" ng-class="{active: contribution.type == 'opinion'}" ng-click="contribution.type = 'opinion'">
+    <li class="center-block" ng-class="{active: contribution.type == 'OP'}" ng-click="contribution.type = 'OP'">
       <a class="text-center" href="#">
         <span class="li_megaphone"></span><br>
         <small>Opinion</small>
       </a>
     </li>
-    <li class="center-block" ng-class="{active: contribution.type == 'poll'}" ng-click="contribution.type = 'poll'">
+    <li class="center-block" ng-class="{active: contribution.type == 'PL'}" ng-click="contribution.type = 'PL'">
       <a class="text-center" href="#">
         <span class="li_bubble"></span><br>
         <small>Poll</small>
       </a>
     </li>
-    <li class="center-block" ng-class="{active: contribution.type == 'issue'}" ng-click="contribution.type = 'issue'">
+    <li class="center-block" ng-class="{active: contribution.type == 'IS'}" ng-click="contribution.type = 'IS'">
       <a class="text-center" href="#">
         <span class="li_fire"></span><br>
         <small>Issue</small>
       </a>
     </li>
-    <li class="center-block" ng-class="{active: contribution.type == 'idea'}" ng-click="contribution.type = 'idea'">
+    <li class="center-block" ng-class="{active: contribution.type == 'ID'}" ng-click="contribution.type = 'ID'">
       <a class="text-center" href="#">
         <span class="li_bulb"></span><br>
         <small>Idea</small>
@@ -42,11 +42,11 @@
       <span class="text-center help-block has-error" ng-show="hasError && !contribution.title">A title is required</span>
       <input type="text" name ="title" class="form-control text-center input-lg" ng-model="contribution.title" placeholder="Tap to enter a title" required />
     </div>
-    <div ng-if="contribution.type != 'poll'" ng-class="{'has-error': hasError && !contribution.description}">
+    <div ng-if="contribution.type != 'PL'" ng-class="{'has-error': hasError && !contribution.description}">
       <span class="text-center help-block has-error" ng-show="hasError && !contribution.description">A descrption is required</span>
       <textarea class="form-control" name="description" ng-model="contribution.description" rows="3" placeholder="Tap to enter a description" required></textarea>
     </div>
-    <div ng-if="contribution.type == 'poll'">
+    <div ng-if="contribution.type == 'PL'">
       <p class="text-center text-danger center-block" ng-show="hasError && contribution.pollOptions.length < 2">At least two poll options are required</p>
       <button class="btn btn-primary btn-block" ng-click="addPollOptionPrompt()"><i class="fa fa-plus-circle"></i>&nbsp;Add poll option</button>
       <ul class="list-group" ng-show="contribution.pollOptions.length > 0">
