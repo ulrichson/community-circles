@@ -77,7 +77,7 @@ contributionApp.controller "ShowCtrl", ($scope, $filter, Util, ContributionResta
 #-------------------------------------------------------------------------------
 # New: http://localhost/views/contribution/new.html
 #------------------------------------------------------------------------------- 
-contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, ContributionRestangular) ->
+contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, ContributionRestangular) ->
   $scope.message_id = "contributionNewCtrl"
 
   $scope.loading = false
@@ -212,13 +212,52 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, ContributionRes
       point: "POINT (#{Util.lastKnownPosition().lng} #{Util.lastKnownPosition().lat})"
       poi: $scope.contribution.poi
     ).then (response) ->
-      navigator.notification.alert  "Thanks, your contribution was uploaded."
-      , ->
-        $scope.loading = false
-        $scope.reset()
-        $scope.$apply()
-        Util.return()
-      , "Successfully uploaded"
+
+      Log.d "Contribution with id=#{response.id} was created"
+
+      # navigator.notification.alert  "Thanks, your contribution was uploaded."
+      # , ->
+      #   $scope.loading = false
+      #   $scope.reset()
+      #   $scope.$apply()
+      #   Util.return()
+      # , "Successfully uploaded"
+
+      imageURI = $scope.imageSrc
+
+      # Upload photo
+      options = new FileUploadOptions()
+      options.fileKey = "photo"
+      options.fileName = imageURI.substr imageURI.lastIndexOf("/") + 1
+      options.mimeType = "image/jpeg"
+
+      params =
+        creator: Util.userId()
+        contribution: response.id
+
+      options.params = params
+
+      uploadSuccess = ->
+        navigator.notification.alert  "Thanks, your contribution was uploaded."
+        , ->
+          $scope.loading = false
+          $scope.reset()
+          $scope.$apply()
+          Util.return()
+        , "Successfully uploaded"
+
+      uploadError = ->
+        navigator.notification.alert  "Your contribution was uploaded without your photo.\nYou can add it later."
+        , ->
+          $scope.loading = false
+          $scope.reset()
+          $scope.$apply()
+          Util.return()
+        , "Photo missing"
+
+      ft = new FileTransfer()
+      ft.upload imageURI, encodeURI("#{Config.API_ENDPOINT}/photo/"), uploadSuccess, uploadError, options
+
     , (response) ->
       Log.e "Contribution upload failed: #{JSON.stringify response.data}"
       navigator.notification.alert  "Sorry, couldn't upload your contribution. Please try again later."
