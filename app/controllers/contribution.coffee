@@ -97,6 +97,7 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
   # CAMERA HANDLNG
   #-----------------------------------------------------------------------------
   $scope.imageSrc = null
+  $scope.imageFullPath = null
 
   # Camera failure callback
   cameraError = (message) ->
@@ -117,7 +118,7 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
     # steroids.app variables require the Steroids ready event to be fired, so ensure that
     steroids.on "ready", ->
       targetDirURI = "file://" + steroids.app.absoluteUserFilesPath
-      fileName = "contribution_photo_#{new Date().getTime()}.png"
+      fileName = "contribution_photo_#{Util.userName()}_#{new Date().getTime()}.png"
 
       window.resolveLocalFileSystemURI(
         targetDirURI
@@ -129,6 +130,8 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
     # Store the moved file's URL into $scope.imageSrc
     fileMoved = (file) ->
       # localhost serves files from both steroids.app.userFilesPath and steroids.app.path
+      # Log.d "File located at #{JSON.stringify file}"
+      $scope.imageFullPath = file.fullPath
       $scope.imageSrc = "/" + file.name
       $scope.bgImageStyle = {
         "background-image": "url(#{$scope.imageSrc})"
@@ -215,29 +218,44 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
 
       Log.d "Contribution with id=#{response.id} was created"
 
-      # navigator.notification.alert  "Thanks, your contribution was uploaded."
-      # , ->
-      #   $scope.loading = false
-      #   $scope.reset()
-      #   $scope.$apply()
-      #   Util.return()
-      # , "Successfully uploaded"
+      if $scope.imageSrc
+        imageURI = $scope.imageSrc
 
-      imageURI = $scope.imageSrc
+        # Upload photo
+        options = new FileUploadOptions()
+        options.fileKey = "photo"
+        options.fileName = imageURI.substr imageURI.lastIndexOf("/") + 1
+        options.mimeType = "image/jpeg"
 
-      # Upload photo
-      options = new FileUploadOptions()
-      options.fileKey = "photo"
-      options.fileName = imageURI.substr imageURI.lastIndexOf("/") + 1
-      options.mimeType = "image/jpeg"
+        params =
+          creator: Util.userId()
+          contribution: response.id
 
-      params =
-        creator: Util.userId()
-        contribution: response.id
+        options.params = params
 
-      options.params = params
+        uploadSuccess = (response) ->
+          navigator.notification.alert  "Thanks, your contribution was uploaded."
+          , ->
+            $scope.loading = false
+            $scope.reset()
+            $scope.$apply()
+            Util.return()
+          , "Successfully uploaded"
 
-      uploadSuccess = ->
+        uploadError = (response) ->
+          navigator.notification.alert  "Your contribution was uploaded without your photo.\nYou can add it later. #{JSON.stringify response}"
+          , ->
+            $scope.loading = false
+            $scope.reset()
+            $scope.$apply()
+            Util.return()
+          , "Photo missing"
+
+        # Log.d "#{imageURI}: #{JSON.stringify options}"
+
+        ft = new FileTransfer()
+        ft.upload $scope.imageFullPath, encodeURI("#{Config.API_ENDPOINT}/photo/"), uploadSuccess, uploadError, options
+      else
         navigator.notification.alert  "Thanks, your contribution was uploaded."
         , ->
           $scope.loading = false
@@ -245,19 +263,6 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
           $scope.$apply()
           Util.return()
         , "Successfully uploaded"
-
-      uploadError = ->
-        navigator.notification.alert  "Your contribution was uploaded without your photo.\nYou can add it later."
-        , ->
-          $scope.loading = false
-          $scope.reset()
-          $scope.$apply()
-          Util.return()
-        , "Photo missing"
-
-      ft = new FileTransfer()
-      ft.upload imageURI, encodeURI("#{Config.API_ENDPOINT}/photo/"), uploadSuccess, uploadError, options
-
     , (response) ->
       Log.e "Contribution upload failed: #{JSON.stringify response.data}"
       navigator.notification.alert  "Sorry, couldn't upload your contribution. Please try again later."
