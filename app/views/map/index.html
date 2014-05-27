@@ -1,7 +1,7 @@
 <div ng-controller="IndexCtrl">
-  <div class="loading-full" ng-show="loading">
+<!--   <div class="loading-full" ng-show="loading">
     <i class="fa fa-4x fa-spinner fa-spin fa-inverse"></i>
-  </div>
+  </div> -->
   <div id="map"></div>
   <div class="contribution-detail" ng-show="contributionSelected" ng-swipe-down="hideContributionDetail()">
     <div class="contribution-detail-inner">
@@ -13,7 +13,7 @@
           <small>by <strong>{{ contribution.properties.user.username }}</strong> <span am-time-ago="contribution.properties.created"></span></small><br>
           <small><i class="fa fa-comment"></i> {{ contribution.properties.comments_count }}</small> <small><i class="fa fa-heart"></i> {{ contribution.properties.votes_count }}</small>
         </h3>
-
+        <button class="btn btn-xs btn-default" ng-click="openContribution()">more</button>
         <!-- <span class="badge">{{ contribution.properties.area }}&nbsp;km<sup>2</sup></span> -->
       </div>
     </div>
