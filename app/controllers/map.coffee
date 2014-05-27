@@ -132,6 +132,12 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
   #     .style("opacity", 0)
   #     .duration(100)
 
+  map.on "viewreset", (e) ->
+    loadContributions()
+
+  map.on "moveend", (e) ->
+    loadContributions()
+
   map.on "error", (e) ->
     $scope.$apply -> $scope.loading = false
     alert "Sorry, the map cannot be loaded at the moment"
