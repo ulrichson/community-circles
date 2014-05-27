@@ -21,6 +21,7 @@
     "d3": "3.4.x",
     "leaflet.markercluster": "0.4.x",
     "leaflet-dist": "0.7.x",
+    "leaflet-providers": "x",
     "angular-animate": "1.2.x",
     "holderjs": "2.3.x",
     "angular-carousel": "0.2.x",
