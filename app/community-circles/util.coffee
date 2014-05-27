@@ -21,7 +21,13 @@ communityCirclesUtil.constant "Config",
   SUPPORT_EMAIL: @config.SUPPORT_EMAIL
   API_ENDPOINT: @config.API_ENDPOINT
 
-communityCirclesUtil.factory "Util", ->
+communityCirclesUtil.constant "Key",
+  FOURSQUARE_CLIENT_ID: @key.FOURSQUARE_CLIENT_ID
+  FOURSQAURE_CLIENT_SECTRET: @key.FOURSQAURE_CLIENT_SECTRET
+  NOKIA_APP_ID: @key.NOKIA_APP_ID
+  NOKIA_APP_CODE: @key.NOKIA_APP_CODE
+
+communityCirclesUtil.factory "Util", (Key) ->
 
   # Color scheme
   ccLighter: "#3fd1d1"
@@ -90,7 +96,7 @@ communityCirclesUtil.factory "Util", ->
 
     showContributionWebView = new steroids.views.WebView
       location: "/views/contribution/show.html"
-      id: "mapShowContributionView"
+      id: "showContributionView"
     showContributionWebView.preload()
 
     poiWebView = new steroids.views.WebView
@@ -168,14 +174,12 @@ communityCirclesUtil.factory "Util", ->
     return L.latLngBounds new L.LatLng(minLat, minLng), new L.LatLng(maxLat, maxLng)
   
   createTileLayer: ->
-    return L.tileLayer "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
-      detectRetina: true
-      # maxNativeZoom: 18
-      # maxZoom: 20
-      reuseTiles: true
-      subdomains: "a b c d".split " "
-      unloadInvisibleTiles: false
-      updateWhenIdle: true
+    # return L.tileLayer "http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
+    #   detectRetina: true
+    #   reuseTiles: true
+    #   subdomains: "a b c d".split " "
+    #   unloadInvisibleTiles: false
+    #   updateWhenIdle: true
 
     # return L.tileLayer "http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png",
     #   detectRetina: true
@@ -183,6 +187,11 @@ communityCirclesUtil.factory "Util", ->
     #   subdomains: "otile1 otile2 otile3 otile4".split " "
     #   unloadInvisibleTiles: false
     #   updateWhenIdle: true
+
+    return L.tileLayer.provider "HERE.terrainDayMobile",
+      app_code: Key.NOKIA_APP_CODE
+      app_id: Key.NOKIA_APP_ID
+      detectRetina: true
 
   createPositionMarker: (latlng, { radius, size } = {}) ->
     radius ?= null
