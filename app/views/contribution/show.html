@@ -1,31 +1,42 @@
-<div ng-controller="ShowCtrl">
-  <div class="spinner" ng-show="loading"></div>
-  <p class="bg-info" ng-show="debug">{{ debug }}</p>
-  <ul rn-carousel rn-carousel-indicator>
-    <li><img src="holder.js/320x200/gray/auto"></li><li><img src="holder.js/320x200/gray/auto"></li><li><img src="holder.js/320x200/gray/auto"></li>
-  </ul>
-  <div class="navbar navbar-fixed-bottom navbar-default">
-    <div class="container">
-      <div class="navbar-form">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Comment...">
-          <span class="input-group-btn">
-            <button class="btn btn-primary" type="button">Send</button>
-          </span>
-        </div>
-      </div>
-    </div>
+<div ng-controller="ShowCtrl" class="contribution-show">
+  <div class="loading-full" ng-show="loading">
+    <i class="fa fa-4x fa-spinner fa-spin fa-inverse"></i>
   </div>
+  <!-- <p class="bg-info" ng-show="debug">{{ debug }}</p> -->
+<!--   <ul rn-carousel rn-carousel-indicator>
+    <li><img src="holder.js/320x200/gray/auto"></li><li><img src="holder.js/320x200/gray/auto"></li><li><img src="holder.js/320x200/gray/auto"></li>
+  </ul> -->
+  <img src="{{ baseUrl }}/download/?photo_id={{ contribution.photos[0] }}" alt="{{ contribution.title }}" width="100%" />
+<!--   <div class="container footer-input">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Comment..." ng-model="comment">
+      <span class="input-group-btn">
+        <button class="btn btn-primary" type="button" ng-click="sendComment()" ng-disabled="!comment">Send</button>
+      </span>
+    </div>
+  </div> -->
   <div class="container">
-    <h3 class="text-center">{{contribution.title}}<br><small>by <strong>{{ contribution.creator }}</strong> <em am-time-ago="contribution.created"></em></small></h3>
-    <div class="well well-sm">{{contribution.description}}</div>
+    <h3 class="text-center">
+      {{ contribution.title }}<br>
+      <small>by <strong>{{ contribution.user.username }}</strong> <em am-time-ago="contribution.created"></em></small><br>
+      <small><i class="fa fa-comment"></i> {{ contribution.comments_count }}</small> <small><i class="fa fa-heart"></i> {{ contribution.votes_count }}</small>
+    </h3>
+    <div class="well well-sm">{{ contribution.description }}</div>
+    <button class="btn btn-xs btn-primary" ng-click="addComment()"><i class="fa fa-comment-o"></i> Comment</button>
+    <button class="btn btn-xs btn-primary" ng-click="voteContribution()" ng-if="!hasVotedForContribution()"><i class="fa fa-heart-o"></i> Vote</button>
+    <button class="btn btn-xs btn-primary" ng-click="voteContribution()" ng-if="hasVotedForContribution()"><i class="fa fa-heart"></i> <strong>Vote</strong></button>
+    <hr />
     <ul class="media-list">
-      <li class="media" ng-repeat="comment in comments">
+      <li class="media" ng-repeat="comment in comments | orderBy: 'created'">
         <div class="media-body">
-          <h4 class="media-heading"><img class="img-circle" src="holder.js/30x30/gray" alt="{{ comment.creator }}"> {{ comment.creator }} <small am-time-ago="comment.created"></small></h4>
-          <p>{{ comment.text }}</p>
+          <h4 class="media-heading"><!-- <img class="img-circle" src="holder.js/30x30/gray" alt="{{ comment.creator }}">  -->{{ comment.user.username }} <small am-time-ago="comment.created"></small></h4>
+          <p>{{ comment.content }}</p>
+          <p><i class="fa fa-heart"></i> {{ comment.votes_count }}</p>
+          <button class="btn btn-xs btn-default" ng-click="voteComment(comment)" ng-if="!hasVotedForComment(comment)"><i class="fa fa-heart-o"></i> Vote</button>
+          <button class="btn btn-xs btn-default" ng-click="voteComment(comment)" ng-if="hasVotedForComment(comment)"><i class="fa fa-heart"></i> <strong>Vote</strong></button>
         </div>
       <li>
     </ul>
   </div>
+  <div id="bottom"></div>
 </div>

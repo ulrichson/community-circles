@@ -5,6 +5,7 @@ mapApp = angular.module "mapApp", [
   "communityCirclesLog",
   "ngTouch",
   "ContributionModel",
+  "PhotoModel",
   "ngAnimate",
   "angularMoment",
   "swipe"
@@ -13,7 +14,7 @@ mapApp = angular.module "mapApp", [
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/map/index.html
 #------------------------------------------------------------------------------- 
-mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, ContributionRestangular) ->
+mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, ContributionRestangular, PhotoRestangular) ->
 
   markerDiameter = 40
   mapPreviewHeight = 80
@@ -50,6 +51,8 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
   $scope.loading = false
   $scope.contributionSelected = false;
   $scope.contribution = {}
+
+  $scope.baseUrl = Config.API_ENDPOINT
 
   #-----------------------------------------------------------------------------
   # CUSTOM MAP CONTROLS
@@ -298,6 +301,7 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
         maxClusterRadius: markerDiameter + 5
         removeOutsideVisibleBounds: true
         showCoverageOnHover: false
+        spiderfyDistanceMultiplier: 1.6
         zoomToBoundsOnClick: false
 
       geoJsonLayer = L.geoJson data,
@@ -343,7 +347,7 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
       properties:
         id: i
         title: "Generated Title"
-        type: ["IS", "IDEA", "PL", "OP"][Math.round(Math.random() * 3)]
+        type: ["IS", "ID", "PL", "OP"][Math.round(Math.random() * 3)]
         mood: "happy"
         radius: Util.randomFromTo 50, 300
         health: Math.random()
@@ -364,11 +368,8 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
 
   $scope.openContribution = ->
     Util.send "showContributionController", "loadContribution", $scope.contribution.id
-    webView = new steroids.views.WebView 
-      location: "/views/contribution/show.html"
-      id: "mapShowContributionView"
-
-    steroids.layers.push webView
+    Util.enter "showContributionView",
+      tabBar: false
 
   $scope.showContributionDetail = (id) ->
     $scope.contributionSelected = true
@@ -388,6 +389,11 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
     map.doubleClickZoom.disable()
     map.scrollWheelZoom.disable()
     map.tap.disable() if map.tap
+
+    # PhotoRestangular.all("photo").getList(contribution: id).then (data) ->
+    #   $scope.contribution.properties.imageSrc = "#{Config.API_ENDPOINT}/download/?photo_id=#{data.id}"
+    # , (response) ->
+    #   Log.e "Couldn't fetch photo"
 
     # Wait for the animation
     setTimeout ( -> contributionDetailVisible = true), animationDuration

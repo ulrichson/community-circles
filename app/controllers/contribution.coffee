@@ -11,7 +11,7 @@ contributionApp = angular.module "contributionApp", [
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/contribution/index.html
 #------------------------------------------------------------------------------- 
-contributionApp.controller "IndexCtrl", ($scope, Util, ContributionRestangular) ->
+contributionApp.controller "IndexCtrl", ($scope, Util, Config, ContributionRestangular) ->
   $scope.contributions = []
 
   $scope.open = (id) ->
@@ -43,35 +43,112 @@ contributionApp.controller "IndexCtrl", ($scope, Util, ContributionRestangular) 
 #-------------------------------------------------------------------------------
 # Show: http://localhost/views/contribution/show.html?id=<id>
 #------------------------------------------------------------------------------- 
-contributionApp.controller "ShowCtrl", ($scope, $filter, Util, ContributionRestangular) ->
+contributionApp.controller "ShowCtrl", ($scope, $filter, $location, $anchorScroll, Util, Config, Log, ContributionRestangular) ->
   $scope.message_id = "showContributionController"
+  $scope.contribution = {}
+  $scope.comments = []
+  $scope.baseUrl = Config.API_ENDPOINT
+
+  scrollBottom = false
 
   $scope.loadContribution = (id) ->
+    $scope.contribution.id = id
+    # Log.d "Loading contribution with id #{id}"
     $scope.loading = true
-    contributions.getList().then (data) ->
-      $scope.contribution = $filter("filter")(data, {id: id})[0]
-
-      # Simple demo data
-      $scope.comments = [
-        creator: "ulrichson"
-        created: new Date()
-        text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"
-      ,
-        creator: "ulrichson"
-        created: new Date()
-        text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"
-      ,
-        creator: "ulrichson"
-        created: new Date()
-        text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"
-      ]
-
+    ContributionRestangular.all("contribution").getList(id: id).then (data) ->
+      $scope.contribution = data[0]
       $scope.loading = false
+
+      $scope.loadComments $scope.contribution.id
+
+  $scope.loadComments = (id) ->
+    $scope.loading = true
+    ContributionRestangular.all("comment").getList(contribution: id).then (data) ->
+      # Log.d JSON.stringify data
+      $scope.comments = data
+      $scope.loading = false
+
+      $scope.$apply()
+
+      if scrollBottom
+        scrollBottom = false
+        $location.hash "bottom"
+        $anchorScroll()
+
+        $scope.$apply()
+
+    , (response) ->
+      Log.e "Couldn't load comments (#{response.data.detail})"
+      $scope.loading = false
+      $scope.$apply()
+
+  $scope.addComment = ->
+    onPrompt = (results) ->
+      if results.buttonIndex is 1
+        if results.input1 isnt ""
+          $scope.comment = results.input1
+          $scope.sendComment()
+        # $scope.$apply()
+    navigator.notification.prompt new String(), onPrompt, "Enter comment", ["Send", "Cancel"], new String()
+
+  $scope.sendComment = ->
+    $scope.loading = true
+    ContributionRestangular.all("comment").post(
+      author: Util.userId()
+      content: $scope.comment
+      contribution: $scope.contribution.id
+    ).then (response) ->
+      $scope.comment = ""
+      scrollBottom = true
+      $scope.loadContribution $scope.contribution.id
+      # navigator.notification.alert  "Thanks, your comment was sent"
+      # , ->
+      #   $scope.loading = false
+      #   $location.hash "bottom"
+      #   $anchorScroll()
+      #   $scope.$apply()
+      # , "Comment sent"
+    , (response) ->
+      Log.e "Couldn't send comment (#{JSON.stringify response.data})"
+      navigator.notification.alert  "Please try again later"
+      , ->
+        $scope.loading = false
+        $scope.$apply()
+      , "Couldn't upload comment"
+
+  $scope.voteContribution = ->
+    if not $scope.hasVotedForContribution()
+      ContributionRestangular.all("votecontribution").post
+        contribution: $scope.contribution.id
+        creator: Util.userId()
+      .then (response) ->
+        # Log.d JSON.stringify response
+        $scope.loadContribution $scope.contribution.id
+        navigator.notification.alert new String(), null, "Thanks for voting"
+    else
+      navigator.notification.alert "...and removing votes isn't implemented yet ;)", null, "You have already voted"
+
+  $scope.hasVotedForContribution = ->
+    return _.contains $scope.contribution.votes, Util.userName()
+
+  $scope.voteComment = (comment) ->
+    if not $scope.hasVotedForComment comment
+      ContributionRestangular.all("votecomment").post
+        comment: comment.id
+        creator: Util.userId()
+      .then (response) ->
+        # Log.d JSON.stringify response
+        $scope.loadComments $scope.contribution.id
+        navigator.notification.alert new String(), null, "Thanks for voting"
+    else
+      navigator.notification.alert "...and removing votes isn't implemented yet ;)", null, "You have already voted"
+
+  $scope.hasVotedForComment = (comment) ->
+    return _.contains comment.votes, Util.userName()
 
   # Save current contribution id to localStorage (edit.html gets it from there)
   # localStorage.setItem "currentContributionId", steroids.view.params.id
 
-  contributions = ContributionRestangular.all "contribution"
   Util.consume $scope
 
 #-------------------------------------------------------------------------------
@@ -211,6 +288,9 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
       description: $scope.contribution.title
       mood: mood
       author: Util.userId()
+      user:
+        id: Util.userId()
+        username: Util.userName()
       accuracy: window.localStorage.getItem "position.coords.accuracy"
       point: "POINT (#{Util.lastKnownPosition().lng} #{Util.lastKnownPosition().lat})"
       poi: $scope.contribution.poi
