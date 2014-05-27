@@ -25,6 +25,8 @@ Provide a `private.coffee` file in `app/community-circles/` with following conte
 @key =
   FOURSQUARE_CLIENT_ID: "<client_id>#"
   FOURSQAURE_CLIENT_SECTRET: "<client_secret>"
+  NOKIA_APP_ID: "<app_id>"
+  NOKIA_APP_CODE: "<app_code>"
 
 @config =
   SUPPORT_EMAIL: "<contact_email>"
