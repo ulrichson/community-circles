@@ -6,7 +6,7 @@
 <!--   <ul rn-carousel rn-carousel-indicator>
     <li><img src="holder.js/320x200/gray/auto"></li><li><img src="holder.js/320x200/gray/auto"></li><li><img src="holder.js/320x200/gray/auto"></li>
   </ul> -->
-  <img src="{{ baseUrl }}/download/?photo_id={{ contribution.photos[0] }}" alt="{{ contribution.title }}" width="100%" />
+  <img ng-if="contribution.photos[0]" src="{{ baseUrl }}/download/?photo_id={{ contribution.photos[0] }}" alt="{{ contribution.title }}" width="100%" />
 <!--   <div class="container footer-input">
     <div class="input-group">
       <input type="text" class="form-control" placeholder="Comment..." ng-model="comment">

@@ -5,9 +5,13 @@
   <div id="map"></div>
   <div class="contribution-detail" ng-show="contributionSelected" ng-swipe-down="hideContributionDetail()">
     <div class="contribution-detail-inner">
-      <button type="button" class="contribution-close close" aria-hidden="true" ng-click="hideContributionDetail()"><i class="fa fa-chevron-down"></i></button>
+      <button type="button" class="contribution-close close" aria-hidden="true" ng-click="hideContributionDetail()">
+        <i class="fa fa-2x fa-angle-down" style="position: relative; opacity: 1.0; top: -10px"></i><br>
+        <i class="fa fa-2x fa-angle-down" style="position: relative; opacity: 0.7; top: -45px"></i><br>
+        <i class="fa fa-2x fa-angle-down" style="position: relative; opacity: 0.4; top: -80px"></i>
+      </button>
       <div class="text-center">
-        <img src="{{ baseUrl }}/download/?photo_id={{ contribution.properties.photos[0] }}&convert=square_200" class="contribution-preview-image center-block img-responsive img-circle" alt="{{ contribution.properties.title }}" ng-click="openContribution()" >
+        <img ng-if="contribution.properties.photos[0]" src="{{ baseUrl }}/download/?photo_id={{ contribution.properties.photos[0] }}&convert=square_200" class="contribution-preview-image center-block img-circle" alt="{{ contribution.properties.title }}" ng-click="openContribution()" >
         <h3 class="contribution-meta">
           {{ contribution.properties.title }}<br>
           <small>by <strong>{{ contribution.properties.user.username }}</strong> <span am-time-ago="contribution.properties.created"></span></small><br>
