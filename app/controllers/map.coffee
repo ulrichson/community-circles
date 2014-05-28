@@ -26,6 +26,9 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
   pulseDuration = baseAnimationDuration * 6
   contributionDetailVisible = false
 
+  currentPositionInterval = null
+  currentPositionIntervalTime = 5000
+
   # Detect double-clicks for contribution marker
   contributionClickCount = 0
 
@@ -443,7 +446,7 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
   map.addControl newContributionControl
   
   #-----------------------------------------------------------------------------
-  # RUN
+  # INIT
   #-----------------------------------------------------------------------------
   # Prevents that WebView is dragged
   document.ontouchmove = (e) -> e.preventDefault()
@@ -454,6 +457,10 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
   Util.autoRestoreView()
 
   locate()
+
+  currentPositionInterval = setInterval ->
+    updateCurrentPositionMarker Util.lastKnownPosition()
+  , currentPositionIntervalTime
 
   # if not Util.loggedIn()
   #   Util.logout()
