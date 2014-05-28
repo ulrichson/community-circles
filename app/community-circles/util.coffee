@@ -233,6 +233,28 @@ communityCirclesUtil.factory "Util", (Key) ->
     map.scrollWheelZoom.enable()
     map.tap.enable() if map.tap
 
+  generateRandomContributions: (latLngBounds, n) ->
+    type: "FeatureCollection"
+    features: ( -> return 
+    type: "Feature"
+    geometry:
+      type: "Point"
+      coordinates: [
+        latLngBounds.getSouthWest().lng + (latLngBounds.getNorthEast().lng - latLngBounds.getSouthWest().lng) * Math.random(),
+        latLngBounds.getSouthWest().lat + (latLngBounds.getNorthEast().lat - latLngBounds.getSouthWest().lat) * Math.random()
+      ]
+    properties:
+      id: i
+      title: "Generated Title"
+      type: ["IS", "ID", "PL", "OP"][Math.round(Math.random() * 3)]
+      mood: "happy"
+      radius: Util.randomFromTo 50, 300
+      health: Math.random()
+      community_id: 0
+      creator: "ulrichson"
+      craeted: new Date()
+    ) for i in [1..n]
+
   #-----------------------------------------------------------------------------
   # INTERWEBVIEW COMMUNICATION
   #-----------------------------------------------------------------------------

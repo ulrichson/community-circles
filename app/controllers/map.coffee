@@ -178,6 +178,9 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
       contributionClickCount = 0
     , 200
 
+  onVisibilityChange = ->
+    loadContributions() if not document.hidden
+
   #-----------------------------------------------------------------------------
   # INTERNAL FUNCTIONS
   #-----------------------------------------------------------------------------
@@ -265,12 +268,9 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
 
   # Helper function for loading map data with spinner
   loadContributions =  ->
+    return if $scope.contributionSelected
+
     $scope.loading = true
-
-    # map.removeLayer communitiesLayer unless communitiesLayer is null
-    map.removeLayer contributionsLayer unless contributionsLayer is null
-
-    contributionMarkers = []
 
     mapBounds = map.getBounds()
     # contributions = ContributionRestangular.all("contribution").getList
@@ -290,7 +290,12 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
         ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
         convert: "geojson"
     ).success (data) ->
+      # map.removeLayer communitiesLayer unless communitiesLayer is null
+      map.removeLayer contributionsLayer unless contributionsLayer is null
+
+      contributionMarkers = []
       contributions = data.features
+
       # Log.d JSON.stringify contributions
 
       # communitiesLayer = L.TileLayer.maskCanvas
@@ -311,7 +316,8 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
         removeOutsideVisibleBounds: true
         showCoverageOnHover: false
         spiderfyDistanceMultiplier: 1.6
-        zoomToBoundsOnClick: false
+        spiderfyOnMaxZoom: true
+        zoomToBoundsOnClick: true
 
       geoJsonLayer = L.geoJson data,
         onEachFeature: (feature, layer) ->
@@ -340,30 +346,6 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
     currentPositionMarker = Util.createPositionMarker latlng #, Game.initialRadius
 
     map.addLayer currentPositionMarker, true
-
-
-  generateRandomContributions = (latLngBounds, n) ->
-    ret = 
-      type: "FeatureCollection"
-      features: ( -> return 
-      type: "Feature"
-      geometry:
-        type: "Point"
-        coordinates: [
-          latLngBounds.getSouthWest().lng + (latLngBounds.getNorthEast().lng - latLngBounds.getSouthWest().lng) * Math.random(),
-          latLngBounds.getSouthWest().lat + (latLngBounds.getNorthEast().lat - latLngBounds.getSouthWest().lat) * Math.random()
-        ]
-      properties:
-        id: i
-        title: "Generated Title"
-        type: ["IS", "ID", "PL", "OP"][Math.round(Math.random() * 3)]
-        mood: "happy"
-        radius: Util.randomFromTo 50, 300
-        health: Math.random()
-        community_id: 0
-        creator: "ulrichson"
-        craeted: new Date()
-      ) for i in [1..n]
 
   #-----------------------------------------------------------------------------
   # UI EVENTS
@@ -444,6 +426,7 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
   #-----------------------------------------------------------------------------
   # Prevents that WebView is dragged
   document.ontouchmove = (e) -> e.preventDefault()
+  document.addEventListener "visibilitychange", onVisibilityChange, false
 
   # Prevent that map doesn't receive click events from contribution overlay
   L.DomEvent.disableClickPropagation document.getElementsByClassName("contribution-detail")[0]
@@ -454,7 +437,7 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
 
   currentPositionInterval = setInterval ->
     updateCurrentPositionMarker Util.lastKnownPosition()
-  , currentPositionIntervalTime
+  , currentPositionIntervalTime    
 
   # if not Util.loggedIn()
   #   Util.logout()
