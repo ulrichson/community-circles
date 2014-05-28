@@ -27,7 +27,16 @@ communityCirclesUtil.constant "Key",
   NOKIA_APP_ID: @key.NOKIA_APP_ID
   NOKIA_APP_CODE: @key.NOKIA_APP_CODE
 
-communityCirclesUtil.factory "Util", (Key) ->
+communityCirclesUtil.factory "UI", ->
+  alert: ({title, message, buttonName, alertCallback} = {}) ->
+    title ?= new String()
+    message ?= new String()
+    buttonName ?= "Ok"
+    alertCallback ?= null
+
+    navigator.notification.alert message, alertCallback, title, buttonName
+
+communityCirclesUtil.factory "Util", (Key, Log) ->
 
   # Color scheme
   ccLighter: "#3fd1d1"
@@ -63,17 +72,38 @@ communityCirclesUtil.factory "Util", (Key) ->
     rand = Math.floor rand if not float
     return rand
 
-  loggedIn: ->
-    return window.localStorage.getItem("loggedIn") is "true"
-
-  login: ->
+  login: (username, userId) ->
     window.localStorage.setItem "loggedIn", "true"
+    window.localStorage.setItem "login.username", username
+    window.localStorage.setItem "login.user_id", userId
+
+    Log.i "User #{username} with id=#{userId} logged in"
+
+  logout: ->
+    window.localStorage.setItem "loggedIn", "false"
+    window.localStorage.setItem "login.username", null
+    window.localStorage.setItem "login.user_id", null
+
+    steroids.view.setBackgroundColor "#00a8b3"
+    loginView = new steroids.views.WebView
+      location: ""
+      id: "loginView"
+      
+    steroids.layers.push
+      view: loginView
+      navigationBar: false
+      tabBar: false
+      animation: new steroids.Animation
+        transition: "flipHorizontalFromRight"
 
   userId: ->
-    return 1
+    return parseInt window.localStorage.getItem "login.user_id"
 
   userName: ->
-    return "ulrichson"
+    return window.localStorage.getItem "login.username"
+
+  loggedIn: ->
+    return window.localStorage.getItem("loggedIn") is "true"
 
   #-----------------------------------------------------------------------------
   # UI HELPERS
@@ -108,20 +138,6 @@ communityCirclesUtil.factory "Util", (Key) ->
       location: "/views/login/index.html"
       id: "loginView"
     loginWebView.preload()
-
-  logout: ->
-    window.localStorage.setItem "loggedIn", "false"
-    steroids.view.setBackgroundColor "#00a8b3"
-    loginView = new steroids.views.WebView
-      location: ""
-      id: "loginView"
-      
-    steroids.layers.push
-      view: loginView
-      navigationBar: false
-      tabBar: false
-      animation: new steroids.Animation
-        transition: "flipHorizontalFromRight"
 
   autoRestoreView: ({ navigationBar }  = {}) ->
     navigationBar ?= true

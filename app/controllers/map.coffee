@@ -143,7 +143,7 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
 
   map.on "error", (e) ->
     $scope.$apply -> $scope.loading = false
-    alert "Sorry, the map cannot be loaded at the moment"
+    # alert "Sorry, the map cannot be loaded at the moment"
     Log.e "Leaflet error: #{e.message}"
 
   contributionMarkerClicked = (e) ->
@@ -439,5 +439,5 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
     updateCurrentPositionMarker Util.lastKnownPosition()
   , currentPositionIntervalTime    
 
-  # if not Util.loggedIn()
-  #   Util.logout()
+  if not Util.loggedIn()
+    Util.logout()

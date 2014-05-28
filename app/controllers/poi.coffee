@@ -163,12 +163,12 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
 
       $scope.loading = false
     , (error) ->
-      alert "Sorry, could not load locations. #{JSON.stringify error}"
+      # alert "Sorry, could not load locations. #{JSON.stringify error}"
       console.error "Failed API call: #{error}"
       $scope.loading = false
 
   map.on "locationerror", (e) ->
-    alert "Sorry, cannot determine position."
+    # alert "Sorry, cannot determine position."
     console.error "Failed to get current position: {e}"
     $scope.loading = false
 

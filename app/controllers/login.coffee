@@ -1,6 +1,7 @@
 loginApp = angular.module "loginApp", [
   "communityCirclesUtil",
   "communityCirclesLog",
+  "AccountModel",
   "ngTouch",
   "ngAnimate"
 ]
@@ -8,13 +9,41 @@ loginApp = angular.module "loginApp", [
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/login/index.html
 #------------------------------------------------------------------------------- 
-loginApp.controller "IndexCtrl", ($scope, Util, Log) ->
+loginApp.controller "IndexCtrl", ($scope, $http, Util, Log, Config, UI, AccountRestangular) ->
   $scope.loginVisible = true
   $scope.buttonText = "Register"
 
+  $scope.login = {}
+
   $scope.login = ->
-    Util.login()
-    Util.return()
+    if not $scope.login.username? or not $scope.login.password?
+      UI.alert
+        message: "Please enter your crededentials!"
+      return
+
+    credentials = btoa "#{$scope.login.username}:#{$scope.login.password}"
+
+    # AccountRestangular.all("users").getList {},
+    #   "Authorization": "Basic #{credentials}"
+    # .then (response) ->
+    #   UI.alert message: "yess"
+    # , (error) ->
+    #   Log.d JSON.stringify error
+    #   UI.alert message: error.data.detail
+
+    $http
+      url: "#{Config.API_ENDPOINT}/accounts/users/"
+      method: "GET"
+      headers:
+        "Authorization": "Basic #{credentials}"
+    .success (data) ->
+      Util.login data.results[0].username, data.results[0].id      
+      steroids.layers.popAll()
+
+      $scope.login.username = null
+      $scope.login.password = null
+    .error (data) ->
+      UI.alert message: data.detail
 
   $scope.register = ->
     alert "not done yet"
