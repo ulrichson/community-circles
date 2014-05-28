@@ -394,12 +394,6 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
     map.setView point
     
     Util.disableMapInteraction map
-    
-
-    # PhotoRestangular.all("photo").getList(contribution: id).then (data) ->
-    #   $scope.contribution.properties.imageSrc = "#{Config.API_ENDPOINT}/download/?photo_id=#{data.id}"
-    # , (response) ->
-    #   Log.e "Couldn't fetch photo"
 
     # Wait for the animation
     setTimeout ( -> contributionDetailVisible = true), animationDuration
@@ -411,7 +405,7 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
     latlng = new L.LatLng $scope.contribution.geometry.coordinates[1], $scope.contribution.geometry.coordinates[0]
     map.setView latlng
     
-    Util enableMapInteraction map
+    Util.enableMapInteraction map
 
     # Show contributions
     contributionsLayer.removeLayer selectedContributionMarker
