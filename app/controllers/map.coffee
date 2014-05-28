@@ -390,11 +390,8 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
     point = map.containerPointToLatLng [x, y]
     map.setView point
     
-    map.dragging.disable()
-    map.touchZoom.disable()
-    map.doubleClickZoom.disable()
-    map.scrollWheelZoom.disable()
-    map.tap.disable() if map.tap
+    Util.disableMapInteraction map
+    
 
     # PhotoRestangular.all("photo").getList(contribution: id).then (data) ->
     #   $scope.contribution.properties.imageSrc = "#{Config.API_ENDPOINT}/download/?photo_id=#{data.id}"
@@ -411,11 +408,7 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
     latlng = new L.LatLng $scope.contribution.geometry.coordinates[1], $scope.contribution.geometry.coordinates[0]
     map.setView latlng
     
-    map.dragging.enable()
-    map.touchZoom.enable()
-    map.doubleClickZoom.enable()
-    map.scrollWheelZoom.enable()
-    map.tap.enable() if map.tap
+    Util enableMapInteraction map
 
     # Show contributions
     contributionsLayer.removeLayer selectedContributionMarker

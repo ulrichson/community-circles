@@ -107,14 +107,10 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
   $scope.unselect = ->
     unselectPois()
 
-  map.dragging.disable()
-  map.touchZoom.disable()
-  map.doubleClickZoom.disable()
-  map.scrollWheelZoom.disable()
-
-  Util.consume $scope
-
+  Util.disableMapInteraction map
   Util.createTileLayer().addTo map
+  Util.consume $scope
+  
   locate()
 
   map.on "locationfound", (e) ->

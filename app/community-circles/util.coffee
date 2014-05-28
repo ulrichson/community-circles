@@ -219,6 +219,20 @@ communityCirclesUtil.factory "Util", (Key) ->
 
     return positionMarker
 
+  disableMapInteraction: (map) ->
+    map.dragging.disable()
+    map.touchZoom.disable()
+    map.doubleClickZoom.disable()
+    map.scrollWheelZoom.disable()
+    map.tap.disable() if map.tap
+
+  enableMapInteraction: (map) ->
+    map.dragging.enable()
+    map.touchZoom.enable()
+    map.doubleClickZoom.enable()
+    map.scrollWheelZoom.enable()
+    map.tap.enable() if map.tap
+
   #-----------------------------------------------------------------------------
   # INTERWEBVIEW COMMUNICATION
   #-----------------------------------------------------------------------------
