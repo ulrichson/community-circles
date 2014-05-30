@@ -1,5 +1,4 @@
 profileApp = angular.module "profileApp", [
-  "communityCirclesApp",
   "communityCirclesUtil",
   "communityCirclesLog",
   "ngTouch"
@@ -8,8 +7,8 @@ profileApp = angular.module "profileApp", [
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/profile/index.html
 #------------------------------------------------------------------------------- 
-profileApp.controller "IndexCtrl", ($scope, app, Util, Log, Config) ->
-  $scope.loggedIn = app.loggedIn()
+profileApp.controller "IndexCtrl", ($scope, Util, Log, Config) ->
+  $scope.username = Util.userName()
   $scope.supportEmail = Config.SUPPORT_EMAIL
 
   $scope.logout = ->
