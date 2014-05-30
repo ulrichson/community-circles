@@ -31,6 +31,8 @@ loginApp.controller "IndexCtrl", ($scope, $http, Util, Log, Config, UI, AccountR
     #   Log.d JSON.stringify error
     #   UI.alert message: error.data.detail
 
+    $scope.requesting = true
+
     $http
       url: "#{Config.API_ENDPOINT}/accounts/users/"
       method: "GET"
@@ -42,8 +44,10 @@ loginApp.controller "IndexCtrl", ($scope, $http, Util, Log, Config, UI, AccountR
 
       $scope.login.username = null
       $scope.login.password = null
+      $scope.requesting = false
     .error (data) ->
       UI.alert message: data.detail
+      $scope.requesting = false
 
   $scope.register = ->
     alert "not done yet"
