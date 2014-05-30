@@ -79,20 +79,18 @@ communityCirclesUtil.factory "Util", (Key, Log) ->
 
     Log.i "User #{username} with id=#{userId} logged in"
 
+  dismissLogin: ->
+    steroids.initialView.dismiss
+      animation: new steroids.Animation
+        transition: "flipHorizontalFromRight"
+
   logout: ->
     window.localStorage.setItem "loggedIn", "false"
     window.localStorage.setItem "login.username", null
     window.localStorage.setItem "login.user_id", null
 
-    steroids.view.setBackgroundColor "#00a8b3"
-    loginView = new steroids.views.WebView
-      location: ""
-      id: "loginView"
-      
-    steroids.layers.push
-      view: loginView
-      navigationBar: false
-      tabBar: false
+    steroids.view.setBackgroundColor "#00a8b3"      
+    steroids.initialView.show
       animation: new steroids.Animation
         transition: "flipHorizontalFromRight"
 
@@ -134,10 +132,10 @@ communityCirclesUtil.factory "Util", (Key, Log) ->
       id: "poiView"
     poiWebView.preload()
 
-    loginWebView = new steroids.views.WebView
-      location: "/views/login/index.html"
-      id: "loginView"
-    loginWebView.preload()
+    # loginWebView = new steroids.views.WebView
+    #   location: "/views/login/index.html"
+    #   id: "loginView"
+    # loginWebView.preload()
 
   autoRestoreView: ({ navigationBar }  = {}) ->
     navigationBar ?= true

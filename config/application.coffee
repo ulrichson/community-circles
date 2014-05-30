@@ -6,6 +6,11 @@ steroids.config.name = "Community Circles Mobile"
 # -- Initial Location --
 # steroids.config.location = "http://localhost/views/login/index.html"
 
+# -- Initial Location --
+steroids.config.initialView =
+  id: "loginView"
+  location: "http://localhost/views/login/index.html"
+
 # -- Tab Bar --
 steroids.config.tabBar.enabled = true
 steroids.config.tabBar.tabs = [

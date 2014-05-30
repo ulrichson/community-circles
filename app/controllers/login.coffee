@@ -39,8 +39,9 @@ loginApp.controller "IndexCtrl", ($scope, $http, Util, Log, Config, UI, AccountR
       headers:
         "Authorization": "Basic #{credentials}"
     .success (data) ->
-      Util.login data.results[0].username, data.results[0].id      
-      steroids.layers.popAll()
+      Util.login data.results[0].username, data.results[0].id
+      Util.dismissLogin()     
+      # steroids.layers.popAll()
 
       $scope.login.username = null
       $scope.login.password = null
@@ -61,3 +62,8 @@ loginApp.controller "IndexCtrl", ($scope, $http, Util, Log, Config, UI, AccountR
       $scope.buttonText = "Register"
 
   steroids.view.setBackgroundColor "#00a8b3"
+
+  Log.d "login view"
+
+  # Util.preloadViews()
+  # Util.dismissLogin() if Util.loggedIn()
