@@ -39,7 +39,8 @@ loginApp.controller "IndexCtrl", ($scope, $http, Util, Log, Config, UI, AccountR
       headers:
         "Authorization": "Basic #{credentials}"
     .success (data) ->
-      Util.login data.results[0].username, data.results[0].id      
+      Util.login data.results[0].username, data.results[0].id
+      Util.send "profileIndexCtrl", "setUserName", data.results[0].username
       steroids.layers.popAll()
 
       $scope.login.username = null

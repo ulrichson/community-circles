@@ -8,6 +8,7 @@ profileApp = angular.module "profileApp", [
 # Index: http://localhost/views/profile/index.html
 #------------------------------------------------------------------------------- 
 profileApp.controller "IndexCtrl", ($scope, Util, Log, Config) ->
+  $scope.message_id = "profileIndexCtrl"
   $scope.username = Util.userName()
   $scope.supportEmail = Config.SUPPORT_EMAIL
 
@@ -21,3 +22,8 @@ profileApp.controller "IndexCtrl", ($scope, Util, Log, Config) ->
     steroids.modal.show new steroids.views.WebView "/views/imprint/index.html"
 
   Util.autoRestoreView()
+
+  $scope.setUserName = (username) ->
+    $scope.username = username
+
+  Util.consume $scope
