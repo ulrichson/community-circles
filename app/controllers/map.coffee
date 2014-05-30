@@ -16,6 +16,8 @@ mapApp = angular.module "mapApp", [
 #------------------------------------------------------------------------------- 
 mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, ContributionRestangular, PhotoRestangular) ->
 
+  $scope.message_id = "mapIndexCtrl"
+
   markerDiameter = 40
   mapPreviewHeight = 80
   communityOpacity = 0.4
@@ -384,6 +386,8 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
 
   $scope.hideContributionDetail = ->
     contributionDetailVisible = false
+    $scope.contributionSelected = false
+
     latlng = new L.LatLng $scope.contribution.geometry.coordinates[1], $scope.contribution.geometry.coordinates[0]
     map.setView latlng
     
@@ -400,7 +404,6 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
     map.addControl newContributionControl
     
     selectedContributionMarker = null
-    $scope.contributionSelected = false
 
   #-----------------------------------------------------------------------------
   # INITIALIZE
@@ -431,6 +434,7 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
   # Prevent that map doesn't receive click events from contribution overlay
   L.DomEvent.disableClickPropagation document.getElementsByClassName("contribution-detail")[0]
 
+  Util.consume $scope
   Util.autoRestoreView()
 
   locate()

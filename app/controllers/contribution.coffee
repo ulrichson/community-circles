@@ -319,6 +319,7 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
             $scope.loading = false
             $scope.reset()
             $scope.$apply()
+            Util.send "mapIndexCtrl", "locate"
             Util.return()
           , "Successfully uploaded"
 
