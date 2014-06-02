@@ -14,7 +14,7 @@ mapApp = angular.module "mapApp", [
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/map/index.html
 #------------------------------------------------------------------------------- 
-mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, ContributionRestangular, PhotoRestangular) ->
+mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, UI, ContributionRestangular, PhotoRestangular) ->
 
   $scope.message_id = "mapIndexCtrl"
 
@@ -435,7 +435,7 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
   L.DomEvent.disableClickPropagation document.getElementsByClassName("contribution-detail")[0]
 
   Util.consume $scope
-  Util.autoRestoreView()
+  UI.autoRestoreView()
 
   locate()
 

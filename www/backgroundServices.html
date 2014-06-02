@@ -41,28 +41,28 @@
         window.localStorage.setItem("position.timestamp", position.timestamp);
       });
 
-      document.addEventListener("pause", onPause, false);
+      // document.addEventListener("pause", onPause, false);
 
       function onPause() {
           steroids.logger.log(deviceInfo + " pause");
           // Parse.Analytics.track("pause", deviceInfo);
       }
 
-      document.addEventListener("resume", onResume, false);
+      // document.addEventListener("resume", onResume, false);
 
       function onResume() {
           steroids.logger.log(deviceInfo + " resume");
           // Parse.Analytics.track("resume", deviceInfo);
       }
 
-      document.addEventListener("active", onActive, false);
+      // document.addEventListener("active", onActive, false);
 
       function onActive() {
           steroids.logger.log(deviceInfo + " active");
           // Parse.Analytics.track("active", deviceInfo);
       }
 
-      document.addEventListener("online", onOnline, false);
+      // document.addEventListener("online", onOnline, false);
 
       function onOnline() {
           var networkState = navigator.connection.type;
@@ -81,49 +81,49 @@
           // Parse.Analytics.track("online (" + states[networkState] + ")", deviceInfo);
       }
 
-      document.addEventListener("offline", onOffline, false);
+      // document.addEventListener("offline", onOffline, false);
 
       function onOffline() {
           steroids.logger.log(deviceInfo + " offline");
           // Parse.Analytics.track("offline", deviceInfo);
       }
 
-      document.addEventListener("backbutton", onBackKeyDown, false);
+      // document.addEventListener("backbutton", onBackKeyDown, false);
 
       function onBackKeyDown() {
           steroids.logger.log(deviceInfo + " backbutton");
           // Parse.Analytics.track("backbutton", deviceInfo);
       }
 
-      window.addEventListener("batterycritical", onBatteryCritical, false);
+      // window.addEventListener("batterycritical", onBatteryCritical, false);
 
       function onBatteryCritical(info) {
           steroids.logger.log(deviceInfo + " battery level critical: " + info.level + "%");
           // Parse.Analytics.track("battery level critical: " + info.level + "%", deviceInfo);
       }
 
-      window.addEventListener("batterylow", onBatteryLow, false);
+      // window.addEventListener("batterylow", onBatteryLow, false);
 
       function onBatteryLow(info) {
           steroids.logger.log(deviceInfo + " battery level low: " + info.level + "%");
           // Parse.Analytics.track("battery level low: " + info.level + "%", deviceInfo);
       }
 
-      window.addEventListener("batterystatus", onBatteryStatus, false);
+      // window.addEventListener("batterystatus", onBatteryStatus, false);
 
       function onBatteryStatus(info) {
           steroids.logger.log(deviceInfo + " battery level: " + info.level + " isPlugged: " + info.isPlugged);
           // Parse.Analytics.track("battery level: " + info.level + " isPlugged: " + info.isPlugged, deviceInfo);
       }
 
-      document.addEventListener("menubutton", onMenuKeyDown, false);
+      // document.addEventListener("menubutton", onMenuKeyDown, false);
 
       function onMenuKeyDown() {
           steroids.logger.log(deviceInfo + " menubutton");
           // Parse.Analytics.track("menubutton", deviceInfo);
       }
 
-      document.addEventListener("searchbutton", onSearchKeyDown, false);
+      // document.addEventListener("searchbutton", onSearchKeyDown, false);
 
       function onSearchKeyDown() {
           steroids.logger.log(deviceInfo + " searchbutton");

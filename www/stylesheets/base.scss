@@ -413,7 +413,7 @@ $list-group-hover-bg:       $list-group-bg !default;
 }
 
 .loading-full {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba($cc-main, 0.5);
   display: table;
   height: 100%;
   position: absolute;

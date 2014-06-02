@@ -9,7 +9,7 @@ poiApp = angular.module "poiApp", [
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/poi/index.html
 #------------------------------------------------------------------------------- 
-poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Log, PoiRestangular) ->
+poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Log, UI, PoiRestangular) ->
 
   $scope.message_id = "poiIndexCtrl"
 
@@ -195,3 +195,5 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
     spiderfiedMarkers = null
 
   document.addEventListener "visibilitychange", visibilityChanged, false
+
+  UI.autoRestoreView()

@@ -20,6 +20,7 @@ communityCirclesUtil.run (Log) ->
 communityCirclesUtil.constant "Config",
   SUPPORT_EMAIL: @config.SUPPORT_EMAIL
   API_ENDPOINT: @config.API_ENDPOINT
+  VERSION: "v1.0.1"
 
 communityCirclesUtil.constant "Key",
   FOURSQUARE_CLIENT_ID: @key.FOURSQUARE_CLIENT_ID
@@ -35,6 +36,26 @@ communityCirclesUtil.factory "UI", ->
     alertCallback ?= null
 
     navigator.notification.alert message, alertCallback, title, buttonName
+
+  autoRestoreView: ({ navigationBar, backgroundColor }  = {}) ->
+    navigationBar ?= true
+    backgroundColor ?= "#ffffff"
+
+    restore = ->
+      if navigationBar
+        steroids.view.navigationBar.show()
+      else
+        steroids.view.navigationBar.hide()
+
+      steroids.view.setBackgroundColor backgroundColor
+
+    onVisibilityChange = ->
+      if !document.hidden
+        restore()
+
+    document.addEventListener "visibilitychange", onVisibilityChange, false
+
+    restore()
 
 communityCirclesUtil.factory "Util", (Key, Log) ->
 
@@ -77,12 +98,17 @@ communityCirclesUtil.factory "Util", (Key, Log) ->
     window.localStorage.setItem "login.username", username
     window.localStorage.setItem "login.user_id", userId
 
-    Log.i "User #{username} with id=#{userId} logged in"
+    Log.i "User #{username} with id=#{userId} logged in (localStorage: login.user_id=#{window.localStorage.getItem "login.user_id"}, login.username=#{window.localStorage.getItem "login.username"})"
 
   logout: ->
+    userId = window.localStorage.getItem "login.user_id"
+    username = window.localStorage.getItem "login.username"
+
     window.localStorage.setItem "loggedIn", "false"
-    window.localStorage.setItem "login.username", null
-    window.localStorage.setItem "login.user_id", null
+    window.localStorage.removeItem "login.username"
+    window.localStorage.removeItem "login.user_id"
+
+    Log.i "User #{username} with id=#{userId} logged out (localStorage: login.user_id=#{window.localStorage.getItem "login.user_id"}, login.username=#{window.localStorage.getItem "login.username"})"
 
     steroids.view.setBackgroundColor "#00a8b3"
     loginView = new steroids.views.WebView
@@ -97,7 +123,7 @@ communityCirclesUtil.factory "Util", (Key, Log) ->
         transition: "flipHorizontalFromRight"
 
   userId: ->
-    return parseInt window.localStorage.getItem "login.user_id"
+    return window.localStorage.getItem "login.user_id"
 
   userName: ->
     return window.localStorage.getItem "login.username"
@@ -138,26 +164,6 @@ communityCirclesUtil.factory "Util", (Key, Log) ->
       location: "/views/login/index.html"
       id: "loginView"
     loginWebView.preload()
-
-  autoRestoreView: ({ navigationBar }  = {}) ->
-    navigationBar ?= true
-
-    restore = ->
-      if navigationBar
-        steroids.view.navigationBar.show()
-      else
-        steroids.view.navigationBar.hide()
-
-      steroids.view.setBackgroundColor "#00a8b3"
-
-    onVisibilityChange = ->
-      if !document.hidden
-        # alert "restore"
-        restore()
-
-    document.addEventListener "visibilitychange", onVisibilityChange, false
-
-    restore()
 
   #-----------------------------------------------------------------------------
   # MAP HELPERS
@@ -346,8 +352,8 @@ communityCirclesUtil.controller "MessageCtrl", ($scope, Log) ->
     # DO NOT SET THIS MESSAGE
     # Callback seems to be buggy, it fires "online", although iOS 7.1 is in Airplane Mode
     # $scope.connectionIsNone = networkState is Connection.NONE
-    Log.d "Connection type is #{states[networkState]}"
-    $scope.$apply()
+    # Log.d "Connection type is #{states[networkState]}"
+    # $scope.$apply()
 
   # Check for internet connection
   onDeviceReady = ->

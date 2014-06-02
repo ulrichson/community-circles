@@ -31,8 +31,7 @@
         <div class="media-body">
           <h4 class="media-heading">
             <!-- <img class="img-circle" src="holder.js/30x30/gray" alt="{{ comment.creator }}">  -->
-            {{ comment.user.username }}&nbsp;
-            <small am-time-ago="comment.created"></small>
+            {{ comment.user.username }}&nbsp;<small am-time-ago="comment.created"></small>
             <small> | <i class="fa fa-heart"></i> {{ comment.votes_count }}</small>
           </h4>
           <p>{{ comment.content }}</p>

@@ -43,7 +43,7 @@ contributionApp.controller "IndexCtrl", ($scope, Util, Config, ContributionResta
 #-------------------------------------------------------------------------------
 # Show: http://localhost/views/contribution/show.html?id=<id>
 #------------------------------------------------------------------------------- 
-contributionApp.controller "ShowCtrl", ($scope, $filter, $location, $anchorScroll, Util, Config, Log, ContributionRestangular) ->
+contributionApp.controller "ShowCtrl", ($scope, $filter, $location, $anchorScroll, Util, Config, Log, UI, ContributionRestangular) ->
   $scope.message_id = "showContributionController"
   $scope.contribution = {}
   $scope.comments = []
@@ -93,6 +93,7 @@ contributionApp.controller "ShowCtrl", ($scope, $filter, $location, $anchorScrol
 
   $scope.sendComment = ->
     $scope.loading = true
+    Log.d "User with id=#{Util.userId()} is sending a comment"
     ContributionRestangular.all("comment").post(
       author: Util.userId()
       content: $scope.comment
@@ -150,6 +151,7 @@ contributionApp.controller "ShowCtrl", ($scope, $filter, $location, $anchorScrol
   # localStorage.setItem "currentContributionId", steroids.view.params.id
 
   Util.consume $scope
+  UI.autoRestoreView()
 
 #-------------------------------------------------------------------------------
 # New: http://localhost/views/contribution/new.html
@@ -285,7 +287,7 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
     ContributionRestangular.all("contribution").post(
       title: $scope.contribution.title
       type: $scope.contribution.type
-      description: $scope.contribution.title
+      description: $scope.contribution.description
       mood: mood
       author: Util.userId()
       user:
@@ -430,11 +432,13 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
         $scope.create()
 
   #-----------------------------------------------------------------------------
-  # RUN
+  # INIT
   #-----------------------------------------------------------------------------
   document.addEventListener "visibilitychange", onVisibilityChange, false
 
   Util.consume $scope
+
+  steroids.view.setBackgroundColor "#ffffff"
 
 #-------------------------------------------------------------------------------
 # Edit: http://localhost/views/contribution/edit.html
