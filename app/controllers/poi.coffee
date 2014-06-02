@@ -41,8 +41,9 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
 
   visibilityChanged = ->
     # POIs are prefetched, however, reload if you moved too far
-    if document.visibilityState is "visible" and latLngOnLocate isnt null and Util.lastKnownPosition().distanceTo(latLngOnLocate) > Game.initialRadius / 4
-      Log.d "Distance since last visit: #{Util.lastKnownPosition().distanceTo(latLngOnLocate)}m"
+    # if document.visibilityState is "visible" and latLngOnLocate isnt null and Util.lastKnownPosition().distanceTo(latLngOnLocate) > Game.initialRadius / 4
+    # Log.d "Distance since last visit: #{Util.lastKnownPosition().distanceTo(latLngOnLocate)}m"
+    if not document.hidden
       $scope.reset true
 
   unselectPois = ->
