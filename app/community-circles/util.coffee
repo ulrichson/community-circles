@@ -1,5 +1,21 @@
 communityCirclesUtil = angular.module "communityCirclesUtil", ["communityCirclesLog"]
 
+communityCirclesUtil.directive "imgLoadingSpinner", ->
+  restrict: "A"
+  # scope:
+  #   ngSrc: "="
+  link: (scope, element) ->
+    element.on "load", ->
+    # element.bind "load", ->
+      element.css visibility: "visible"
+      node = document.getElementById("img-loading-spinner")
+      parent = node.parentNode
+      parent.removeChild node
+
+    scope.$watch "ngSrc", ->
+      element.css visibility: "hidden"
+      element.after "<p id=\"img-loading-spinner\" style=\"text-align: center\">Loading image...</p>"
+
 # Executed for each module that includes Util
 communityCirclesUtil.run (Log) ->
   if !@config? or !@key?
@@ -20,7 +36,7 @@ communityCirclesUtil.run (Log) ->
 communityCirclesUtil.constant "Config",
   SUPPORT_EMAIL: @config.SUPPORT_EMAIL
   API_ENDPOINT: @config.API_ENDPOINT
-  VERSION: "v1.0.1"
+  VERSION: "v1.0.2"
 
 communityCirclesUtil.constant "Key",
   FOURSQUARE_CLIENT_ID: @key.FOURSQUARE_CLIENT_ID

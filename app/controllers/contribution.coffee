@@ -55,8 +55,11 @@ contributionApp.controller "ShowCtrl", ($scope, $filter, $location, $anchorScrol
     $scope.contribution.id = id
     # Log.d "Loading contribution with id #{id}"
     $scope.loading = true
+    $scope.imageSrc = null
+
     ContributionRestangular.all("contribution").getList(id: id).then (data) ->
       $scope.contribution = data[0]
+      $scope.imageSrc = "#{Config.API_ENDPOINT}/download/?photo_id=#{$scope.contribution.photos[0]}" if $scope.contribution.photos[0]
       $scope.loading = false
 
       $scope.loadComments $scope.contribution.id

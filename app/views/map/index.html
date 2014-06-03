@@ -11,7 +11,7 @@
         <i class="fa fa-angle-down" style="position: relative; opacity: 0.4; top: -35px"></i>
       </button>
       <div class="text-center">
-        <img ng-if="contribution.properties.photos[0]" src="{{ baseUrl }}/download/?photo_id={{ contribution.properties.photos[0] }}&convert=square_200" class="contribution-preview-image center-block img-circle" alt="{{ contribution.properties.title }}" ng-click="openContribution()" >
+        <img ng-if="imageSrc" ng-src="{{ imageSrc }}" class="contribution-preview-image center-block img-circle" alt="{{ contribution.properties.title }}" ng-click="openContribution()" img-loading-spinner >
         <h3 class="contribution-meta">
           {{ contribution.properties.title }}<br>
           <small>by <strong>{{ contribution.properties.user.username }}</strong> <span am-time-ago="contribution.properties.created"></span></small><br>
