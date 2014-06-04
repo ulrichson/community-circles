@@ -43,11 +43,14 @@ contributionApp.controller "IndexCtrl", ($scope, Util, Config, ContributionResta
 #-------------------------------------------------------------------------------
 # Show: http://localhost/views/contribution/show.html?id=<id>
 #------------------------------------------------------------------------------- 
-contributionApp.controller "ShowCtrl", ($scope, $filter, $location, $anchorScroll, Util, Config, Log, ContributionRestangular) ->
+contributionApp.controller "ShowCtrl", ($scope, $filter, $location, $anchorScroll, Util, Config, Log, UI, ContributionRestangular) ->
   $scope.message_id = "showContributionController"
   $scope.contribution = {}
   $scope.comments = []
   $scope.baseUrl = Config.API_ENDPOINT
+
+  $scope.imageWidth = screen.width
+  $scope.imageHeight = $scope.imageWidth
 
   scrollBottom = false
 
@@ -55,8 +58,11 @@ contributionApp.controller "ShowCtrl", ($scope, $filter, $location, $anchorScrol
     $scope.contribution.id = id
     # Log.d "Loading contribution with id #{id}"
     $scope.loading = true
+    $scope.imageSrc = null
+
     ContributionRestangular.all("contribution").getList(id: id).then (data) ->
       $scope.contribution = data[0]
+      $scope.imageSrc = "#{Config.API_ENDPOINT}/download/?photo_id=#{$scope.contribution.photos[0]}&convert=square_640" if $scope.contribution.photos[0]
       $scope.loading = false
 
       $scope.loadComments $scope.contribution.id
@@ -93,6 +99,7 @@ contributionApp.controller "ShowCtrl", ($scope, $filter, $location, $anchorScrol
 
   $scope.sendComment = ->
     $scope.loading = true
+    Log.d "User with id=#{Util.userId()} is sending a comment"
     ContributionRestangular.all("comment").post(
       author: Util.userId()
       content: $scope.comment
@@ -150,6 +157,7 @@ contributionApp.controller "ShowCtrl", ($scope, $filter, $location, $anchorScrol
   # localStorage.setItem "currentContributionId", steroids.view.params.id
 
   Util.consume $scope
+  UI.autoRestoreView()
 
 #-------------------------------------------------------------------------------
 # New: http://localhost/views/contribution/new.html
@@ -195,7 +203,7 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
     # steroids.app variables require the Steroids ready event to be fired, so ensure that
     steroids.on "ready", ->
       targetDirURI = "file://" + steroids.app.absoluteUserFilesPath
-      fileName = "contribution_photo_#{Util.userName()}_#{new Date().getTime()}.png"
+      fileName = "contribution_photo_#{Util.userName()}_#{new Date().getTime()}.jpg"
 
       window.resolveLocalFileSystemURI(
         targetDirURI
@@ -285,7 +293,7 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
     ContributionRestangular.all("contribution").post(
       title: $scope.contribution.title
       type: $scope.contribution.type
-      description: $scope.contribution.title
+      description: $scope.contribution.description
       mood: mood
       author: Util.userId()
       user:
@@ -430,11 +438,13 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
         $scope.create()
 
   #-----------------------------------------------------------------------------
-  # RUN
+  # INIT
   #-----------------------------------------------------------------------------
   document.addEventListener "visibilitychange", onVisibilityChange, false
 
   Util.consume $scope
+
+  steroids.view.setBackgroundColor "#ffffff"
 
 #-------------------------------------------------------------------------------
 # Edit: http://localhost/views/contribution/edit.html

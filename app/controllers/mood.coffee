@@ -8,7 +8,7 @@ moodApp = angular.module "moodApp", [
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/mood/index.html
 #------------------------------------------------------------------------------- 
-moodApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, MoodRestangular) ->
+moodApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, UI, MoodRestangular) ->
   
   $scope.message_id = "moodIndexCtrl"
 
@@ -46,3 +46,5 @@ moodApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, MoodRes
 
   Util.consume $scope
   document.addEventListener "visibilitychange", visibilityChanged, false
+
+  UI.autoRestoreView()

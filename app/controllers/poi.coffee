@@ -9,7 +9,7 @@ poiApp = angular.module "poiApp", [
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/poi/index.html
 #------------------------------------------------------------------------------- 
-poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Log, PoiRestangular) ->
+poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Log, UI, PoiRestangular) ->
 
   $scope.message_id = "poiIndexCtrl"
 
@@ -41,8 +41,9 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
 
   visibilityChanged = ->
     # POIs are prefetched, however, reload if you moved too far
-    if document.visibilityState is "visible" and latLngOnLocate isnt null and Util.lastKnownPosition().distanceTo(latLngOnLocate) > Game.initialRadius / 4
-      Log.d "Distance since last visit: #{Util.lastKnownPosition().distanceTo(latLngOnLocate)}m"
+    # if document.visibilityState is "visible" and latLngOnLocate isnt null and Util.lastKnownPosition().distanceTo(latLngOnLocate) > Game.initialRadius / 4
+    # Log.d "Distance since last visit: #{Util.lastKnownPosition().distanceTo(latLngOnLocate)}m"
+    if not document.hidden
       $scope.reset true
 
   unselectPois = ->
@@ -194,3 +195,5 @@ poiApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, Game, Lo
     spiderfiedMarkers = null
 
   document.addEventListener "visibilitychange", visibilityChanged, false
+
+  UI.autoRestoreView()

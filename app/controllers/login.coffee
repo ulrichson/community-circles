@@ -14,10 +14,12 @@ loginApp.controller "IndexCtrl", ($scope, $http, Util, Log, Config, UI, AccountR
   $scope.buttonText = "Register"
 
   $scope.login = {}
+  $scope.register = {}
 
   $scope.login = ->
     if not $scope.login.username? or not $scope.login.password?
       UI.alert
+        title: "Cannot login"
         message: "Please enter your crededentials!"
       return
 
@@ -40,18 +42,56 @@ loginApp.controller "IndexCtrl", ($scope, $http, Util, Log, Config, UI, AccountR
         "Authorization": "Basic #{credentials}"
     .success (data) ->
       Util.login data.results[0].username, data.results[0].id
-      Util.dismissLogin()     
-      # steroids.layers.popAll()
-
-      $scope.login.username = null
-      $scope.login.password = null
-      $scope.requesting = false
+      Util.dismissLogin()
+      $scope.reset()
     .error (data) ->
       UI.alert message: data.detail
       $scope.requesting = false
 
   $scope.register = ->
-    alert "not done yet"
+    if not $scope.register.username or not $scope.register.email or not $scope.register.password
+      UI.alert 
+        title: "You are not done yet"
+        message: "Please enter all details!"
+      return
+
+    if not $scope.register.username.match Config.REGEX_USERNAME
+      UI.alert 
+        title: "Your username is invalid"
+        message: "It may contain letters, numbers, the characters '-', '_' and '.' but no special characters."
+      return
+
+    $scope.requesting = true
+    AccountRestangular.all("register").post
+      username: $scope.register.username
+      email: $scope.register.email
+      password: $scope.register.password
+    .then (response) ->
+      Util.login response.username, response.id
+      Util.dismissLogin()
+      $scope.reset()
+    , (response) ->
+      $scope.requesting = false
+      # Log.e JSON.stringify response
+      title = "Sorry, an error occured"
+      msg = "Please try again later."
+
+      # if response.hasOwnProperty "data"
+      #   if response.data.hasOwnProperty "password"
+      #     title = "Error with password"
+      #     msg = response.data.password
+
+      #   if response.data.hasOwnProperty "email"
+      #     title = "Error with email"
+      #     msg = response.data.email
+
+      #   if response.data.hasOwnProperty "username"
+      #     title = "Error with username"
+      #     msg = response.data.username
+
+      UI.alert
+        title: title
+        message: msg
 
   $scope.switchView = ->
     if $scope.loginVisible
@@ -61,9 +101,20 @@ loginApp.controller "IndexCtrl", ($scope, $http, Util, Log, Config, UI, AccountR
       $scope.loginVisible = true
       $scope.buttonText = "Register"
 
+  $scope.reset = ->
+    $scope.loginVisible = true
+    $scope.login.username = null
+    $scope.login.password = null
+    $scope.register.username = null
+    $scope.register.email = null
+    $scope.register.password = null
+    $scope.requesting = false
+
   steroids.view.setBackgroundColor "#00a8b3"
 
-  Log.d "login view"
-
   # Util.preloadViews()
-  # Util.dismissLogin() if Util.loggedIn()
+  Util.dismissLogin() if Util.loggedIn()
+
+  # UI.autoRestoreView
+  #   backgroundColor: "#00a8b3"
+  #   navigationBar: false

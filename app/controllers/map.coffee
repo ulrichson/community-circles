@@ -14,7 +14,7 @@ mapApp = angular.module "mapApp", [
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/map/index.html
 #------------------------------------------------------------------------------- 
-mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, ContributionRestangular, PhotoRestangular) ->
+mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, UI, ContributionRestangular, PhotoRestangular) ->
 
   $scope.message_id = "mapIndexCtrl"
 
@@ -150,6 +150,7 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
 
   contributionMarkerClicked = (e) ->
     # Log.d "click"
+    $scope.$apply -> $scope.imageSrc = null
     contributionClickCount++
     targetBoundingBox = e.target._icon.getBoundingClientRect()
 
@@ -368,7 +369,8 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
     $scope.contributionSelected = true
     $scope.contribution = _.filter(contributions, (e) -> return e.id is id)[0]
     $scope.contribution.properties.area = Util.formatAreaSqKm $scope.contribution.properties.radius * $scope.contribution.properties.radius * Math.PI
-    
+    $scope.imageSrc = "#{Config.API_ENDPOINT}/download/?photo_id=#{$scope.contribution.properties.photos[0]}&convert=square_200"
+
     # Pan map to contribution and offset it on top
     latlng = new L.LatLng $scope.contribution.geometry.coordinates[1], $scope.contribution.geometry.coordinates[0]
     offset = [0, -(map.getSize().y / 2 - mapPreviewHeight / 2)]
@@ -435,7 +437,7 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, Con
   L.DomEvent.disableClickPropagation document.getElementsByClassName("contribution-detail")[0]
 
   Util.consume $scope
-  Util.autoRestoreView()
+  UI.autoRestoreView()
 
   locate()
 

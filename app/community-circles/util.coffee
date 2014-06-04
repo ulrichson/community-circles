@@ -1,5 +1,46 @@
 communityCirclesUtil = angular.module "communityCirclesUtil", ["communityCirclesLog"]
 
+communityCirclesUtil.directive "imgLoadingSpinner", (Log) ->
+  restrict: "A"
+  link: (scope, element) ->
+    width = 0
+    height = 0
+    isCircle = false
+    wrapper = null
+    spinner = null
+
+    element.on "load", ->
+      element.css visibility: "visible"
+      spinner.style.display = "none"
+
+    scope.$watch "ngSrc", ->
+      width = element[0].getAttribute "width"
+      height = element[0].getAttribute "height"
+      isCircle = element[0].className.indexOf("img-circle") > -1
+
+      wrapper = document.createElement "div"
+      wrapper.style.width = "#{width}px"
+      wrapper.style.height = "#{height}px"
+      wrapper.style.display = "inline-block"
+      wrapper.style.position = "relative"
+      wrapper.className = if isCircle then "img-loading-spinner-wrapper img-circle" else "img-loading-spinner-wrapper"
+
+      spinner = document.createElement "div"
+      spinner.style.width = "#{width}px"
+      spinner.style.height = "#{height}px"
+      spinner.className = "img-loading-spinner"
+      spinner.style.position = "absolute"
+      
+      wrapper.appendChild spinner
+      element.wrap wrapper
+
+      element.css visibility: "hidden"
+      spinner.style.display = "block"
+
+    scope.$on "$destroy", ->
+      Log.d "remove"
+      angular.element(wrapper).remove()
+
 # Executed for each module that includes Util
 communityCirclesUtil.run (Log) ->
   if !@config? or !@key?
@@ -20,6 +61,8 @@ communityCirclesUtil.run (Log) ->
 communityCirclesUtil.constant "Config",
   SUPPORT_EMAIL: @config.SUPPORT_EMAIL
   API_ENDPOINT: @config.API_ENDPOINT
+  REGEX_USERNAME: /^[a-zA-Z0-9\-\_\.]+$/
+  VERSION: "v1.0.3"
 
 communityCirclesUtil.constant "Key",
   FOURSQUARE_CLIENT_ID: @key.FOURSQUARE_CLIENT_ID
@@ -35,6 +78,26 @@ communityCirclesUtil.factory "UI", ->
     alertCallback ?= null
 
     navigator.notification.alert message, alertCallback, title, buttonName
+
+  autoRestoreView: ({ navigationBar, backgroundColor }  = {}) ->
+    navigationBar ?= true
+    backgroundColor ?= "#ffffff"
+
+    restore = ->
+      if navigationBar
+        steroids.view.navigationBar.show()
+      else
+        steroids.view.navigationBar.hide()
+
+      steroids.view.setBackgroundColor backgroundColor
+
+    onVisibilityChange = ->
+      if !document.hidden
+        restore()
+
+    document.addEventListener "visibilitychange", onVisibilityChange, false
+
+    restore()
 
 communityCirclesUtil.factory "Util", (Key, Log) ->
 
@@ -77,17 +140,28 @@ communityCirclesUtil.factory "Util", (Key, Log) ->
     window.localStorage.setItem "login.username", username
     window.localStorage.setItem "login.user_id", userId
 
-    Log.i "User #{username} with id=#{userId} logged in"
+    Log.i "User #{username} with id=#{userId} logged in (localStorage: login.user_id=#{window.localStorage.getItem "login.user_id"}, login.username=#{window.localStorage.getItem "login.username"})"
 
-  dismissLogin: ->
+  dismissLogin: ({onSuccess, onFailure} = {}) ->
+
+    onSuccess ?= null
+    onFailure ?= null
+
     steroids.initialView.dismiss
       animation: new steroids.Animation
         transition: "flipHorizontalFromRight"
+      onSuccess: onSuccess
+      onFailure: onFailure
 
   logout: ->
+    userId = window.localStorage.getItem "login.user_id"
+    username = window.localStorage.getItem "login.username"
+
     window.localStorage.setItem "loggedIn", "false"
-    window.localStorage.setItem "login.username", null
-    window.localStorage.setItem "login.user_id", null
+    window.localStorage.removeItem "login.username"
+    window.localStorage.removeItem "login.user_id"
+
+    Log.i "User #{username} with id=#{userId} logged out (localStorage: login.user_id=#{window.localStorage.getItem "login.user_id"}, login.username=#{window.localStorage.getItem "login.username"})"
 
     steroids.view.setBackgroundColor "#00a8b3"      
     steroids.initialView.show
@@ -95,7 +169,7 @@ communityCirclesUtil.factory "Util", (Key, Log) ->
         transition: "flipHorizontalFromRight"
 
   userId: ->
-    return parseInt window.localStorage.getItem "login.user_id"
+    return window.localStorage.getItem "login.user_id"
 
   userName: ->
     return window.localStorage.getItem "login.username"
@@ -136,26 +210,6 @@ communityCirclesUtil.factory "Util", (Key, Log) ->
     #   location: "/views/login/index.html"
     #   id: "loginView"
     # loginWebView.preload()
-
-  autoRestoreView: ({ navigationBar }  = {}) ->
-    navigationBar ?= true
-
-    restore = ->
-      if navigationBar
-        steroids.view.navigationBar.show()
-      else
-        steroids.view.navigationBar.hide()
-
-      steroids.view.setBackgroundColor "#00a8b3"
-
-    onVisibilityChange = ->
-      if !document.hidden
-        # alert "restore"
-        restore()
-
-    document.addEventListener "visibilitychange", onVisibilityChange, false
-
-    restore()
 
   #-----------------------------------------------------------------------------
   # MAP HELPERS
@@ -344,8 +398,8 @@ communityCirclesUtil.controller "MessageCtrl", ($scope, Log) ->
     # DO NOT SET THIS MESSAGE
     # Callback seems to be buggy, it fires "online", although iOS 7.1 is in Airplane Mode
     # $scope.connectionIsNone = networkState is Connection.NONE
-    Log.d "Connection type is #{states[networkState]}"
-    $scope.$apply()
+    # Log.d "Connection type is #{states[networkState]}"
+    # $scope.$apply()
 
   # Check for internet connection
   onDeviceReady = ->
