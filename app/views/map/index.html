@@ -11,10 +11,10 @@
         <i class="fa fa-angle-down" style="position: relative; opacity: 0.4; top: -35px"></i>
       </button>
       <div class="text-center">
-        <img ng-if="imageSrc" ng-src="{{ imageSrc }}" class="contribution-preview-image center-block img-circle" alt="{{ contribution.properties.title }}" ng-click="openContribution()" img-loading-spinner >
+        <img ng-show="imageSrc" ng-src="{{ imageSrc }}" class="contribution-preview-image center-block img-circle" alt="{{ contribution.properties.title }}" ng-click="openContribution()" width="200" height="200" img-loading-spinner >
         <h3 class="contribution-meta">
           {{ contribution.properties.title }}<br>
-          <small>by <strong>{{ contribution.properties.user.username }}</strong> <span am-time-ago="contribution.properties.created"></span></small><br>
+          <small>by <strong>{{ contribution.properties.user.username }}</strong> <span am-time-ago="contribution.properties.created"></span></small><!-- <small ng-show="contribution.properties.poi || contribution.properties.mood"><span ng-show="contribution.properties.poi"> at <em>{{ contribution.properties.poi }}</em></span><span ng-show="contribution.properties.mood"> feeling <em>{{ contribution.properties.mood }}</em></span></small> --><br>
           <small><i class="fa fa-comment"></i> {{ contribution.properties.comments_count }}</small> <small><i class="fa fa-heart"></i> {{ contribution.properties.votes_count }}</small>
         </h3>
         <button class="btn btn-xs btn-default" ng-click="openContribution()">more</button>

@@ -6,7 +6,9 @@
 <!--   <ul rn-carousel rn-carousel-indicator>
     <li><img src="holder.js/320x200/gray/auto"></li><li><img src="holder.js/320x200/gray/auto"></li><li><img src="holder.js/320x200/gray/auto"></li>
   </ul> -->
-  <img ng-if="imageSrc" ng-src="{{ imageSrc }}" alt="{{ contribution.title }}" width="100%" img-loading-spinner />
+  <div>
+    <img ng-if="imageSrc" ng-src="{{ imageSrc }}" alt="{{ contribution.title }}" width="{{ imageWidth }}" height="{{ imageHeight }}" img-loading-spinner />
+  </div>
 <!--   <div class="container footer-input">
     <div class="input-group">
       <input type="text" class="form-control" placeholder="Comment..." ng-model="comment">
@@ -18,7 +20,7 @@
   <div class="container">
     <h3 class="text-center">
       {{ contribution.title }}<br>
-      <small>by <strong>{{ contribution.user.username }}</strong> <em am-time-ago="contribution.created"></em></small><br>
+      <small>by <strong>{{ contribution.user.username }}</strong> <em am-time-ago="contribution.created"></em></small><small ng-show="contribution.poi || contribution.mood"><span ng-show="contribution.poi"> at <em>{{ contribution.poi }}</em></span><span ng-show="contribution.mood"> feeling <em>{{ contribution.mood }}</em></span></small><br>
       <small><i class="fa fa-comment"></i> {{ contribution.comments_count }}</small> <small><i class="fa fa-heart"></i> {{ contribution.votes_count }}</small>
     </h3>
     <div class="well well-sm">{{ contribution.description }}</div>

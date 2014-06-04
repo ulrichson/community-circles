@@ -1,20 +1,45 @@
 communityCirclesUtil = angular.module "communityCirclesUtil", ["communityCirclesLog"]
 
-communityCirclesUtil.directive "imgLoadingSpinner", ->
+communityCirclesUtil.directive "imgLoadingSpinner", (Log) ->
   restrict: "A"
-  # scope:
-  #   ngSrc: "="
   link: (scope, element) ->
+    width = 0
+    height = 0
+    isCircle = false
+    wrapper = null
+    spinner = null
+
     element.on "load", ->
-    # element.bind "load", ->
       element.css visibility: "visible"
-      node = document.getElementById("img-loading-spinner")
-      parent = node.parentNode
-      parent.removeChild node
+      spinner.style.display = "none"
 
     scope.$watch "ngSrc", ->
+      width = element[0].getAttribute "width"
+      height = element[0].getAttribute "height"
+      isCircle = element[0].className.indexOf("img-circle") > -1
+
+      wrapper = document.createElement "div"
+      wrapper.style.width = "#{width}px"
+      wrapper.style.height = "#{height}px"
+      wrapper.style.display = "inline-block"
+      wrapper.style.position = "relative"
+      wrapper.className = if isCircle then "img-loading-spinner-wrapper img-circle" else "img-loading-spinner-wrapper"
+
+      spinner = document.createElement "div"
+      spinner.style.width = "#{width}px"
+      spinner.style.height = "#{height}px"
+      spinner.className = "img-loading-spinner"
+      spinner.style.position = "absolute"
+      
+      wrapper.appendChild spinner
+      element.wrap wrapper
+
       element.css visibility: "hidden"
-      element.after "<p id=\"img-loading-spinner\" style=\"text-align: center\">Loading image...</p>"
+      spinner.style.display = "block"
+
+    scope.$on "$destroy", ->
+      Log.d "remove"
+      angular.element(wrapper).remove()
 
 # Executed for each module that includes Util
 communityCirclesUtil.run (Log) ->
@@ -36,7 +61,8 @@ communityCirclesUtil.run (Log) ->
 communityCirclesUtil.constant "Config",
   SUPPORT_EMAIL: @config.SUPPORT_EMAIL
   API_ENDPOINT: @config.API_ENDPOINT
-  VERSION: "v1.0.2"
+  REGEX_USERNAME: /^[a-zA-Z0-9\-\_\.]+$/
+  VERSION: "v1.0.3"
 
 communityCirclesUtil.constant "Key",
   FOURSQUARE_CLIENT_ID: @key.FOURSQUARE_CLIENT_ID

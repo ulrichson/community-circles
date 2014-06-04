@@ -52,10 +52,16 @@ loginApp.controller "IndexCtrl", ($scope, $http, Util, Log, Config, UI, AccountR
       $scope.requesting = false
 
   $scope.register = ->
-    if not $scope.register.username? or not $scope.register.email? or not $scope.register.password?
+    if not $scope.register.username or not $scope.register.email or not $scope.register.password
       UI.alert 
         title: "You are not done yet"
         message: "Please enter all details!"
+      return
+
+    if not $scope.register.username.match Config.REGEX_USERNAME
+      UI.alert 
+        title: "Your username is invalid"
+        message: "It may contain letters, numbers, the characters '-', '_' and '.' but no special characters."
       return
 
     $scope.requesting = true

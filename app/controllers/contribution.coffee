@@ -49,6 +49,9 @@ contributionApp.controller "ShowCtrl", ($scope, $filter, $location, $anchorScrol
   $scope.comments = []
   $scope.baseUrl = Config.API_ENDPOINT
 
+  $scope.imageWidth = screen.width
+  $scope.imageHeight = $scope.imageWidth
+
   scrollBottom = false
 
   $scope.loadContribution = (id) ->
@@ -59,7 +62,7 @@ contributionApp.controller "ShowCtrl", ($scope, $filter, $location, $anchorScrol
 
     ContributionRestangular.all("contribution").getList(id: id).then (data) ->
       $scope.contribution = data[0]
-      $scope.imageSrc = "#{Config.API_ENDPOINT}/download/?photo_id=#{$scope.contribution.photos[0]}" if $scope.contribution.photos[0]
+      $scope.imageSrc = "#{Config.API_ENDPOINT}/download/?photo_id=#{$scope.contribution.photos[0]}&convert=square_640" if $scope.contribution.photos[0]
       $scope.loading = false
 
       $scope.loadComments $scope.contribution.id
@@ -200,7 +203,7 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
     # steroids.app variables require the Steroids ready event to be fired, so ensure that
     steroids.on "ready", ->
       targetDirURI = "file://" + steroids.app.absoluteUserFilesPath
-      fileName = "contribution_photo_#{Util.userName()}_#{new Date().getTime()}.png"
+      fileName = "contribution_photo_#{Util.userName()}_#{new Date().getTime()}.jpg"
 
       window.resolveLocalFileSystemURI(
         targetDirURI

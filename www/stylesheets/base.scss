@@ -396,6 +396,21 @@ $list-group-hover-bg:       $list-group-bg !default;
   }
 }
 
+.img-loading-spinner {
+  background-image: url("../../vendor/topcoat/img/spinner2x.png");
+  background-position: center;
+  background-size: 36px;
+  background-repeat: no-repeat;
+  -webkit-animation-name:            rotate;
+  -webkit-animation-duration:        1s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+}
+
+.img-loading-spinner-wrapper {
+  background-color: $gray-lighter;
+}
+
 .spinner {
   width: 36px;
   height: 36px;
