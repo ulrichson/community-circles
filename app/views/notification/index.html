@@ -1,4 +1,13 @@
-<div ng-controller="IndexCtrl" class="content-padded">
-  <h1>Notifications</h1>
-  <a class="topcoat-button" ng-click="close()">Close</a>
+<div ng-controller="IndexCtrl">
+  <div class="container">
+    <h3>Notifications<span ng-if="notifications.length > 0"> ({{ notifications.length }})</span></h3>
+    <p ng-if="notifications.length == 0">There are no notifications for you.</p>
+  </div>
+  <ul class="list-group" ng-if="notifications.length > 0">
+    <li class="list-group-item" ng-repeat="notification in notifications | orderBy:'created':true" ng-click="openContribution(notification.ref_contribution)">
+      <!-- <button type="button" class="close" aria-hidden="true"><i class="fa fa-angle-right"></i></button> -->
+      <h4 class="list-group-item-heading">{{ notification.subject }}</h4>
+      <p class="list-group-item-text">{{ notification.message }}<br><small class="text-muted"><i class="fa fa-clock-o"></i></small>&nbsp;<small class="text-muted" am-time-ago="notification.created"></small></p>
+    </li>
+  </ul>
 </div>
