@@ -15,6 +15,11 @@ steroids.config.tabBar.tabs = [
     location: "http://localhost/views/map/index.html"
   },
   {
+    title: "Browse"
+    icon: "icons/tabbar/browse@2x.png"
+    location: "http://localhost/views/contribution/index.html"
+  },
+  {
     title: "Notifications"
     icon: "icons/tabbar/notification@2x.png"
     location: "http://localhost/views/notification/index.html"

@@ -11,34 +11,35 @@ contributionApp = angular.module "contributionApp", [
 #-------------------------------------------------------------------------------
 # Index: http://localhost/views/contribution/index.html
 #------------------------------------------------------------------------------- 
-contributionApp.controller "IndexCtrl", ($scope, Util, Config, ContributionRestangular) ->
+contributionApp.controller "IndexCtrl", ($scope, Util, UI, Log, Config, ContributionRestangular) ->
   $scope.contributions = []
-
-  $scope.open = (id) ->
-    Util.send "showContributionController", "loadContribution", id
-    webView = new steroids.views.WebView 
-      location: "/views/contribution/show.html"
-      id: "showContributionView"
-    steroids.layers.push webView
+  $scope.distance = 50000
+  $scope.baseUrl = Config.API_ENDPOINT
 
   $scope.loadContributions = ->
-    $scope.loading = true
-    contributions.getList().then (data) ->
-      $scope.length = data.length
+    latlng = Util.lastKnownPosition()
+    ContributionRestangular.all("contribution").getList
+      distance: $scope.distance
+      long: latlng.lng
+      lat: latlng.lat
+    .then (data) ->
       $scope.contributions = data
-      $scope.loading = false
 
-  contributions = ContributionRestangular.all "contribution"
+  $scope.openContribution = (contribution) ->
+    Util.send "showContributionController", "loadContribution", contribution
+    Util.enter "showContributionView",
+      tabBar: false
+
+  # Run
   $scope.loadContributions()
+  UI.autoRestoreView
+    backgroundColor: "#ffffff"
+    tabBar: true
 
-  window.addEventListener "message", (event) ->
-    if event.data.status is "reload" 
-      $scope.loadContributions()
-
-  showContributionView = new steroids.views.WebView 
-    location: "/views/contribution/show.html"
-    id: "showContributionView"
-  showContributionView.preload()
+  document.addEventListener "visibilitychange"
+  , ->
+    $scope.loadContributions()
+  , false
 
 #-------------------------------------------------------------------------------
 # Show: http://localhost/views/contribution/show.html?id=<id>
