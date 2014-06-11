@@ -62,7 +62,7 @@ communityCirclesUtil.constant "Config",
   SUPPORT_EMAIL: @config.SUPPORT_EMAIL
   API_ENDPOINT: @config.API_ENDPOINT
   REGEX_USERNAME: /^[a-zA-Z0-9\-\_\.]+$/
-  VERSION: "v1.0.5"
+  VERSION: "v1.6.0"
 
 communityCirclesUtil.constant "Key",
   FOURSQUARE_CLIENT_ID: @key.FOURSQUARE_CLIENT_ID

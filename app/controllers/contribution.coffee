@@ -154,6 +154,27 @@ contributionApp.controller "ShowCtrl", ($scope, $filter, $location, $anchorScrol
   $scope.hasVotedForComment = (comment) ->
     return _.contains comment.votes, Util.userName()
 
+  $scope.votePollOption = (poll_option) ->
+    if not $scope.hasVotedForPollOption poll_option
+      ContributionRestangular.all("votepolloption").post
+        poll_option: poll_option.id
+        creator: Util.userId()
+      .then (response) ->
+        $scope.loadContribution $scope.contribution.id
+        UI.alert message: "Thanks for voting"
+      , (response) ->
+        Log.e "Couldn't vote poll option #{JSON.stringify response}"
+        UI.alert
+          title: "You have already voted for this poll!"
+          message: "Please remove your previous vote first"
+    else
+      UI.alert
+        title: "You have already voted for this poll!"
+        message: "...and removing votes isn't implemented yet ;)"
+
+  $scope.hasVotedForPollOption = (poll_option) ->
+    return _.contains poll_option.votes, Util.userName()
+
   # Save current contribution id to localStorage (edit.html gets it from there)
   # localStorage.setItem "currentContributionId", steroids.view.params.id
 
@@ -177,7 +198,7 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
   $scope.contribution.poi = null
   $scope.contribution.type = null
   $scope.contribution.mood = null
-  $scope.contribution.pollOptions = []
+  $scope.contribution.poll_options = []
 
   #-----------------------------------------------------------------------------
   # CAMERA HANDLNG
@@ -228,19 +249,19 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
   # UI CALLBACKS
   #-----------------------------------------------------------------------------
   $scope.addPollOption = ->
-    # alert $scope.contribution.pollOption
-    $scope.contribution.pollOptions.push $scope.contribution.pollOption
-    $scope.contribution.pollOption = ""
+    # alert $scope.contribution.poll_option
+    $scope.contribution.poll_options.push $scope.contribution.poll_option
+    $scope.contribution.poll_option = ""
 
   $scope.addPollOptionPrompt = ->
     onPrompt = (results) ->
       if results.buttonIndex is 1
-        $scope.contribution.pollOptions.push results.input1 if results.input1 isnt ""
+        $scope.contribution.poll_options.push results.input1 if results.input1 isnt ""
         $scope.$apply()
     navigator.notification.prompt "Please enter in the field below.", onPrompt, "Add poll option", ["Add", "Cancel"], new String()
 
   $scope.removePollOption = (pollOption) ->
-    $scope.contribution.pollOptions = _.without $scope.contribution.pollOptions, pollOption
+    $scope.contribution.poll_options = _.without $scope.contribution.poll_options, pollOption
 
   $scope.choosePhoto = (msg) ->
     navigator.notification.confirm "Select source below",
@@ -303,6 +324,7 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
       accuracy: window.localStorage.getItem "position.coords.accuracy"
       point: "POINT (#{Util.lastKnownPosition().lng} #{Util.lastKnownPosition().lat})"
       poi: $scope.contribution.poi
+      poll_options: $scope.contribution.poll_options
     ).then (response) ->
 
       Log.d "Contribution with id=#{response.id} was created"
@@ -371,7 +393,7 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
   $scope.reset = ->
     $scope.contribution = {}
     $scope.contribution.type = null
-    $scope.contribution.pollOptions = []
+    $scope.contribution.poll_options = []
     $scope.removePhoto()
 
     Util.send "moodIndexCtrl", "reset"
@@ -406,7 +428,7 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
     # Check form
     error = not $scope.contribution.type or
     not $scope.contribution.title or
-    ($scope.contribution.type is "PL" and $scope.contribution.pollOptions.length < 2) or
+    ($scope.contribution.type is "PL" and $scope.contribution.poll_options.length < 2) or
     ($scope.contribution.type isnt "PL" and not $scope.contribution.description)
 
     if error

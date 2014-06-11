@@ -23,7 +23,15 @@
       <small>by <strong>{{ contribution.user.username }}</strong> <em am-time-ago="contribution.created"></em></small><small ng-show="contribution.poi || contribution.mood"><span ng-show="contribution.poi"> at <em>{{ contribution.poi }}</em></span><span ng-show="contribution.mood"> feeling <em>{{ contribution.mood }}</em></span></small><br>
       <small><i class="fa fa-comment"></i> {{ contribution.comments_count }}</small> <small><i class="fa fa-heart"></i> {{ contribution.votes_count }}</small>
     </h3>
-    <div class="well well-sm">{{ contribution.description }}</div>
+    <div ng-if="contribution.type != 'PL'" class="well well-sm">{{ contribution.description }}</div>
+    <div ng-if="contribution.type == 'PL'" class="well well-sm">
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="poll_option in contribution.poll_options">
+          <button type="button" class="close" aria-hidden="true" ng-if="!hasVotedForPollOption(poll_option)" ng-click="votePollOption(poll_option)"><i class="fa fa-heart-o"></i></button>
+          <button type="button" class="close" aria-hidden="true" ng-if="hasVotedForPollOption(poll_option)" ng-click="votePollOption(poll_option)"><i class="fa fa-heart text-primary"></i></button>
+          {{ poll_option.content }} | <small><i class="fa fa-heart"></i> {{ poll_option.votes_count }}</small></li>
+      </ul>
+    </div>
     <button class="btn btn-xs btn-primary" ng-click="addComment()"><i class="fa fa-comment-o"></i> Comment</button>
     <button class="btn btn-xs btn-primary" ng-click="voteContribution()" ng-if="!hasVotedForContribution()"><i class="fa fa-heart-o"></i> Vote</button>
     <button class="btn btn-xs btn-primary" ng-click="voteContribution()" ng-if="hasVotedForContribution()"><i class="fa fa-heart"></i> <strong>Vote</strong></button>

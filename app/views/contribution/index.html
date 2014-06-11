@@ -4,7 +4,7 @@
     <p ng-if="contributions.length == 0">There are no contributions within {{ distance }}m.</p>
   </div>
   <ul class="list-group" ng-if="contributions.length > 0">
-    <li class="list-group-item" ng-repeat="contribution in contributions" ng-click="openContribution(contribution.id)">
+    <li class="list-group-item" ng-repeat="contribution in contributions | orderBy:'created':true" ng-click="openContribution(contribution.id)">
       <img class="pull-left img-rounded" ng-if="contribution.photos[0]" ng-src="{{ baseUrl }}/download/?photo_id={{ contribution.photos[0] }}&convert=square_200" alt="{{ contribution.title }}" width="40" height="40">
       <h4 class="list-group-item-heading" style="margin-left: 45px">{{ contribution.title }}</h4>
       <p class="list-group-item-text" style="margin-left: 45px">by <strong>{{ contribution.user.username }}</strong> <span am-time-ago="contribution.created"></span><span ng-show="contribution.poi || contribution.mood"><span ng-show="contribution.poi"> at <em>{{ contribution.poi }}</em></span><span ng-show="contribution.mood"> feeling <em>{{ contribution.mood }}</em></span></span><br>
