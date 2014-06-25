@@ -369,7 +369,10 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, UI,
     $scope.contributionSelected = true
     $scope.contribution = _.filter(contributions, (e) -> return e.id is id)[0]
     $scope.contribution.properties.area = Util.formatAreaSqKm $scope.contribution.properties.radius * $scope.contribution.properties.radius * Math.PI
-    $scope.imageSrc = "#{Config.API_ENDPOINT}/download/?photo_id=#{$scope.contribution.properties.photos[0]}&convert=square_200"
+    if $scope.contribution.properties.photos.length > 0
+      $scope.imageSrc = "#{Config.API_ENDPOINT}/download/?photo_id=#{$scope.contribution.properties.photos[0]}&convert=square_200"
+    else
+      $scope.imageSrc = null
 
     # Pan map to contribution and offset it on top
     latlng = new L.LatLng $scope.contribution.geometry.coordinates[1], $scope.contribution.geometry.coordinates[0]
