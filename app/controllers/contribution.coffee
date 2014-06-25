@@ -388,7 +388,9 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
 
   $scope.setMood = (mood) ->
     $scope.contribution.mood = mood
-    Log.d $scope.contribution.mood.name
+
+  $scope.resetMood = ->
+    $scope.contribution.mood = null
 
   $scope.reset = ->
     $scope.contribution = {}

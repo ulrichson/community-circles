@@ -27,9 +27,8 @@ moodApp.controller "IndexCtrl", ($scope, $location, $anchorScroll, Util, UI, Moo
     $scope.selectedMood = mood.code
 
   unselectMood = ->
-    Util.send "contributionNewCtrl", "setMood", null
+    Util.send "contributionNewCtrl", "resetMood"
     $scope.selectedMood = null
-    return
 
   $scope.choose = (mood) ->
     if $scope.selectedMood? and $scope.selectedMood is mood.code
