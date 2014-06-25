@@ -5,3 +5,4 @@ node_modules
 community-circles-mobile.keystore
 cloud.json
 private.coffee
+*.log
