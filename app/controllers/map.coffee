@@ -37,7 +37,7 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, UI,
   contributions = null
 
   # Map Layer
-  # communitiesLayer = null
+  communitiesLayer = null
   contributionsLayer = null
 
   contributionMarkers = []
@@ -166,7 +166,7 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, UI,
           map.removeControl locateControl
           map.removeControl newContributionControl
           map.removeLayer currentPositionMarker
-          # map.removeLayer communitiesLayer
+          map.removeLayer communitiesLayer
           _.each contributionMarkers, (marker) ->
             if marker is e.target
               selectedContributionMarker = e.target
@@ -335,12 +335,32 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, UI,
       map.addLayer contributionsLayer
 
       $scope.loading = false
-      $scope.$apply()
     .error ->
       Log.e "Could not load contributions"
-
       $scope.loading = false
-      $scope.$apply()
+
+    $http(
+      url: "#{Config.API_ENDPOINT}/contrib/community/"
+      method: "GET"
+      params:
+        sw_boundingbox_coordinate_lat: mapBounds.getSouthWest().lat
+        sw_boundingbox_coordinate_long: mapBounds.getSouthWest().lng
+        ne_boundingbox_coordinate_lat: mapBounds.getNorthEast().lat
+        ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
+    ).success (data) ->
+      # console.log data
+      map.removeLayer communitiesLayer unless communitiesLayer is null
+      communitiesLayer = L.geoJson data,
+        style: 
+          clickable: false
+          stroke: false
+          fillColor: communityColor
+          fillOpacity: communityOpacity
+      map.addLayer communitiesLayer
+      $scope.loading = false
+    .error ->
+      Log.e "Could not load communities"
+      $scope.loading = false
 
   updateCurrentPositionMarker = (latlng) ->
     # Clean up
@@ -400,7 +420,7 @@ mapApp.controller "IndexCtrl", ($scope, $http, app, Game, Util, Log, Config, UI,
 
     # Show contributions
     contributionsLayer.removeLayer selectedContributionMarker
-    # map.addLayer communitiesLayer
+    map.addLayer communitiesLayer
     _.each contributionMarkers, (marker) ->
       contributionsLayer.addLayer marker
     map.addLayer currentPositionMarker
