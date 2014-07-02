@@ -252,9 +252,12 @@ communityCirclesUtil.factory "Util", (Key, Log) ->
     #   unloadInvisibleTiles: false
     #   updateWhenIdle: true
 
-    return L.tileLayer.provider "HERE.terrainDayMobile",
-      app_code: Key.NOKIA_APP_CODE
-      app_id: Key.NOKIA_APP_ID
+    # return L.tileLayer.provider "HERE.terrainDayMobile",
+    #   app_code: Key.NOKIA_APP_CODE
+    #   app_id: Key.NOKIA_APP_ID
+    #   detectRetina: true
+
+    return L.tileLayer.provider "OpenStreetMap.BlackAndWhite",
       detectRetina: true
 
   createPositionMarker: (latlng, { radius, size } = {}) ->
