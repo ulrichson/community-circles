@@ -1,4 +1,4 @@
-/*! steroids-js - v3.1.11 - 2014-05-22 17:28 */
+/*! steroids-js - v3.1.11 - 2014-06-09 11:39 */
 (function(window){
 var Bridge,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
@@ -12,7 +12,7 @@ Bridge = (function() {
 
   Bridge.getBestNativeBridge = function() {
     var bridgeClass, prioritizedList, _i, _len;
-    prioritizedList = [TizenBridge, WebBridge, AndroidBridge, WebsocketBridge, JSCoreBridge];
+    prioritizedList = [FreshAndroidBridge, TizenBridge, WebBridge, AndroidBridge, WebsocketBridge, JSCoreBridge];
     if (this.bestNativeBridge == null) {
       for (_i = 0, _len = prioritizedList.length; _i < _len; _i++) {
         bridgeClass = prioritizedList[_i];
@@ -173,6 +173,39 @@ Bridge = (function() {
   return Bridge;
 
 })();
+;var FreshAndroidBridge,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+FreshAndroidBridge = (function(_super) {
+  __extends(FreshAndroidBridge, _super);
+
+  function FreshAndroidBridge() {
+    this.message_handler = __bind(this.message_handler, this);
+    FreshAndroidAPIBridge.registerHandler("steroids.nativeBridge.message_handler");
+    return true;
+  }
+
+  FreshAndroidBridge.isUsable = function() {
+    return typeof FreshAndroidAPIBridge !== 'undefined';
+  };
+
+  FreshAndroidBridge.prototype.sendMessageToNative = function(message) {
+    return FreshAndroidAPIBridge.send(message);
+  };
+
+  FreshAndroidBridge.prototype.message_handler = function(msg) {
+    if ((msg != null ? msg.callback : void 0) != null) {
+      if (this.callbacks[msg.callback] != null) {
+        return this.callbacks[msg.callback].call(msg.parameters, msg.parameters);
+      }
+    }
+  };
+
+  return FreshAndroidBridge;
+
+})(Bridge);
 ;var AndroidBridge,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -3402,7 +3435,7 @@ PostMessage = (function() {
     var _base;
     this.debug("on event " + event);
     if (this["" + event + "_has_fired"] != null) {
-      this.debug("on event " + event + ", alrueady fierd");
+      this.debug("on event " + event + ", already fired");
       return callback();
     } else {
       this.debug("on event " + event + ", waiting");
