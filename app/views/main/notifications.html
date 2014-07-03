@@ -3,12 +3,15 @@
     <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="loadNotifications()"></ion-refresher>
     <ion-list ng-if="notifications.length > 0">
       <ion-item ng-repeat="notification in notifications | orderBy:'created':true">
-        <h2>{{ notification.subject }}</h2>
-        <p>
+        <h2 ng-class="{ 'text-muted': notification.is_read }">{{ notification.subject }}</h2>
+        <p ng-class="{ 'text-muted': notification.is_read }">
           {{ notification.message }}<br>
           <span class="text-muted"><i class="fa fa-clock-o"></i></span>&nbsp;<span class="text-muted" am-time-ago="notification.created"></span>
         </p>
-        <ion-option-button class="button-positive" ng-click="read(notification)"><span translate>Read</span></ion-option-button>
+        <ion-option-button class="button-positive" ng-click="read(notification)">
+          <span ng-show="!notification.is_read" translate>Read</span>
+          <span ng-show="notification.is_read" translate>Set Unread</span>
+        </ion-option-button>
         <ion-option-button class="button-assertive" ng-click="dismiss(notification)"><span translate>Dismiss</span></ion-option-button>
       </ion-item>
     </ion-list>

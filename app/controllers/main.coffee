@@ -167,12 +167,15 @@ mainApp.controller "LoginCtrl", ($scope, $http, $state, gettext, T, $ionicLoadin
 mainApp.controller "BrowseContributionsCtrl", ($scope) ->
   return
 
-mainApp.controller "NotificationCtrl", ($scope, NotificationRestangular) ->
+#-------------------------------------------------------------------------------
+# NotificationCtrl
+#-------------------------------------------------------------------------------
+mainApp.controller "NotificationCtrl", ($scope, Session, NotificationRestangular) ->
   $scope.notifications = []
 
   $scope.loadNotifications = ->
     NotificationRestangular.all("notifications").getList
-      user: 3
+      user: Session.userId()
     .then (data) ->
       $scope.notifications = data
     .finally ->

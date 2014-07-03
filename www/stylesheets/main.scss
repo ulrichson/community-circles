@@ -12,5 +12,5 @@ $calm:      $cc-lighter;
 @import "login";
 
 .text-muted {
-  color: lighten($base-color, 75%);
+  color: lighten($base-color, 75%) !important;
 }

@@ -100,6 +100,10 @@ msgstr ""
 msgid "Registering account..."
 msgstr ""
 
+#: dist/views/main/notifications.html
+msgid "Set Unread"
+msgstr ""
+
 #: dist/controllers/main.js
 msgid "Sorry, an error occured"
 msgstr ""
