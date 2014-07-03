@@ -106,5 +106,10 @@ Editor
 
 Indent using spaces, space width: 2
 
+Localization
+------------
+
+All the translation template is located in `po/template.pot`, which can be modified with e.g. [Poedit](http://poedit.net).
+
 Contributors
 ------------

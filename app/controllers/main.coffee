@@ -2,8 +2,17 @@ mainApp = angular.module "mainApp", [
   "ionic",
   "communityCirclesUtil",
   "NotificationModel",
-  "angularMoment"
+  "angularMoment",
+  "gettext"
 ]
+
+mainApp.run (amMoment, gettextCatalog) ->
+  language = "de"
+
+  if language isnt "en"
+    gettextCatalog.currentLanguage = language
+    gettextCatalog.debug = true
+    amMoment.changeLanguage language
 
 mainApp.config ($stateProvider, $urlRouterProvider) ->
   $stateProvider.state "eventmenu",

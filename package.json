@@ -3,13 +3,14 @@
   "version": "1.0.1",
   "description": "Mobile client for Community Circles.",
   "repository": "https://github.com/ulrichson/community-circles-mobile",
-  "readme":"README.md",
+  "readme": "README.md",
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "devDependencies": {
+    "grunt-angular-gettext": "^0.2.14",
     "grunt-steroids": "0.x"
   },
   "license": "none",

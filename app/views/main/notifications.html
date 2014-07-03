@@ -1,0 +1,19 @@
+<ion-view title="{{ 'Notifications' | translate }}">
+  <ion-content>
+    <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="loadNotifications()"></ion-refresher>
+    <ion-list ng-if="notifications.length > 0">
+      <ion-item ng-repeat="notification in notifications | orderBy:'created':true">
+        <h2>{{ notification.subject }}</h2>
+        <p>
+          {{ notification.message }}<br>
+          <span class="text-muted"><i class="fa fa-clock-o"></i></span>&nbsp;<span class="text-muted" am-time-ago="notification.created"></span>
+        </p>
+        <ion-option-button class="button-positive" ng-click="read(notification)"><span translate>Read</span></ion-option-button>
+        <ion-option-button class="button-assertive" ng-click="dismiss(notification)"><span translate>Dismiss</span></ion-option-button>
+      </ion-item>
+    </ion-list>
+    <p class="padding" translate>
+      There are no notifications for you.
+    </p>
+  </ion-content>
+</ion-view>

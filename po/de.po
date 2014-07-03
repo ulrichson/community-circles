@@ -1,0 +1,29 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"X-Generator: Poedit 1.6.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+
+#: app/views/main/notifications.html
+msgid "Dismiss"
+msgstr "Löschen"
+
+#: app/views/main/notifications.html
+msgid "Pull to refresh..."
+msgstr "Zum Aktualisieren ziehen..."
+
+#: app/views/main/notifications.html
+msgid "Read"
+msgstr "Gelesen"
+
+#: app/views/main/notifications.html
+msgid "There are no notifications for you."
+msgstr "Es sind keine Benachrichtigungen vorhanden."

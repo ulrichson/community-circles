@@ -9,8 +9,26 @@
 
 module.exports = function(grunt) {
 
-  grunt.loadNpmTasks("grunt-steroids");
+  grunt.initConfig({
+    nggettext_extract: {
+      pot: {
+        files: {
+          "po/template.pot": ["app/**/*.html"]
+        }
+      },
+    },
+    nggettext_compile: {
+      all: {
+        files: {
+          "dist/javascripts/translations.js": ["po/*.po"]
+        }
+      },
+    }
+  });
 
-  grunt.registerTask("default", ["steroids-make", "steroids-compile-sass"]);
+  grunt.loadNpmTasks("grunt-steroids");
+  grunt.loadNpmTasks("grunt-angular-gettext");
+
+  grunt.registerTask("default", ["steroids-make", "steroids-compile-sass", "nggettext_extract", "nggettext_compile"]);
 
 };
