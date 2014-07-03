@@ -25,6 +25,7 @@
     "angular-animate": "1.2.x",
     "holderjs": "2.3.x",
     "angular-carousel": "0.2.x",
-    "ionic": "1.0.x"
+    "ionic": "1.0.x",
+    "angular-gettext": "0.4.x"
   }
 }
