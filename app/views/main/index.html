@@ -66,6 +66,9 @@
           <ion-option-button class="button-assertive" ng-click="dismiss(notification)">Dismiss</ion-option-button>
         </ion-item>
       </ion-list>
+      <p class="padding" ng-if="notifications.length == 0">
+        There are no notifications for you.
+      </p>
     </ion-content>
   </ion-view>
 </script>
