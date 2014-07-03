@@ -1,0 +1,23 @@
+.login {
+  background-color: $cc-main;
+  color: #ffffff;
+}
+
+.login-logo {
+  padding: 40px 0;
+}
+
+.ng-hide-remove {
+    @include animation(fadeIn 1s);
+}
+ 
+.ng-hide-add {
+    @include animation(fadeOut 1s);
+}
+
+#btn-switch-view {
+  bottom: 10px;
+  left: 0;
+  position: absolute;
+  right: 0;
+}

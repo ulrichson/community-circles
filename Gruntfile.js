@@ -13,7 +13,7 @@ module.exports = function(grunt) {
     nggettext_extract: {
       pot: {
         files: {
-          "po/template.pot": ["app/**/*.html"]
+          "po/template.pot": ["dist/views/**/*.html", "dist/controllers/*.js"]
         }
       },
     },

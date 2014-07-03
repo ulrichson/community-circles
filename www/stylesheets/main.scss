@@ -1,15 +1,15 @@
-$cc-lighter:      #3fd1d1; // what are u good for?
-$cc-light:        #00c8c8; // indicates primary action, active
-$cc-main:         #00a8b3; // base color
-$cc-dark:         #004855; // elements that cause an action (?)
-$cc-darker:       #212b37; // text, static elements
+@import
+  "mixins",
+  "variables";
 
 // your variable changes can go here
-$positive:        $cc-light;
-$royal:           $cc-main;
-$calm:            $cc-lighter;
+$positive:  $cc-light;
+$royal:     $cc-main;
+$calm:      $cc-lighter;
 
 @import "../components/ionic/scss/ionic";
+
+@import "login";
 
 .text-muted {
   color: lighten($base-color, 75%);

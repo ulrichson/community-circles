@@ -1,4 +1,5 @@
-communityCirclesUtil = angular.module("communityCirclesLog", [])
+communityCirclesUtil = angular.module "communityCirclesLog", []
+
 communityCirclesUtil.factory "Log", ->
   w: (msg) ->
     console.warn msg

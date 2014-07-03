@@ -56,7 +56,7 @@ grunt.extendConfig
         {
           expand: true
           cwd: 'www/'
-          src: ['**/*.scss', '**/*.sass', '!components/**']
+          src: ['**/*.scss', '**/*.sass', '!components/**', '!**/_*.scss', '!**/_*.sass']
           dest: 'dist/'
           ext: '.css'
         }

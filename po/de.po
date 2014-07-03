@@ -1,29 +1,121 @@
 msgid ""
 msgstr ""
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.6.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: de\n"
 
-#: app/views/main/notifications.html
+#: dist/controllers/main.js
+msgid "An error occured"
+msgstr "Ein Fehler ist aufgetreten"
+
+#: dist/views/main/login.html
+msgid "Back to login"
+msgstr "Zurück zum Login"
+
+#: dist/controllers/main.js
+msgid "Cannot login"
+msgstr "Kann nicht anmelden"
+
+#: dist/views/main/notifications.html
 msgid "Dismiss"
 msgstr "Löschen"
 
-#: app/views/main/notifications.html
+#: dist/views/main/login.html
+msgid "Email"
+msgstr "E-Mail"
+
+#: dist/controllers/main.js
+msgid "Error with email"
+msgstr "Fehler bei der E-Mail"
+
+#: dist/controllers/main.js
+msgid "Error with password"
+msgstr "Fehler beim Passwort"
+
+#: dist/controllers/main.js
+msgid "Error with username"
+msgstr "Fehler beim Benutzername"
+
+#: dist/controllers/main.js
+msgid ""
+"It may contain letters, numbers, the characters '-', '_' and '.' but no "
+"special characters."
+msgstr ""
+"Es darf Buchstaben, Nummern, die Zeichen '-', '_' und '.' enthalten, aber "
+"keine Sonderzeichen."
+
+#: dist/controllers/main.js
+msgid "Logging in..."
+msgstr "Anmeldung..."
+
+#: dist/views/main/login.html
+msgid "Login"
+msgstr "Anmelden"
+
+#: dist/views/main/notifications.html
+msgid "Notifications"
+msgstr "Benachrichtigungen"
+
+#: dist/views/main/login.html
+msgid "Password"
+msgstr "Passwort"
+
+#: dist/controllers/main.js
+msgid "Please enter all details!"
+msgstr "Bitte alle Details angeben!"
+
+#: dist/controllers/main.js
+msgid "Please enter your crededentials!"
+msgstr "Bitte Zugangsdaten eingeben!"
+
+#: dist/controllers/main.js
+msgid "Please try again later."
+msgstr "Bitte später versuchen."
+
+#: dist/views/main/notifications.html
 msgid "Pull to refresh..."
 msgstr "Zum Aktualisieren ziehen..."
 
-#: app/views/main/notifications.html
+#: dist/views/main/notifications.html
 msgid "Read"
 msgstr "Gelesen"
 
-#: app/views/main/notifications.html
+#: dist/views/main/login.html
+msgid "Register"
+msgstr "Registrieren"
+
+#: dist/views/main/login.html
+msgid "Register account"
+msgstr "Zugang registrieren"
+
+#: dist/controllers/main.js
+msgid "Registering account..."
+msgstr "Zugang wird registriert..."
+
+#: dist/controllers/main.js
+msgid "Sorry, an error occured"
+msgstr "Es tut uns Leid, es ist ein Fehler aufgetreten."
+
+#: dist/views/main/notifications.html
 msgid "There are no notifications for you."
 msgstr "Es sind keine Benachrichtigungen vorhanden."
+
+#: dist/views/main/login.html
+msgid "Username"
+msgstr "Benutzername"
+
+#: dist/controllers/main.js
+msgid "You are not done yet"
+msgstr "Du bist noch nicht fertig."
+
+#: dist/controllers/main.js
+msgid "Your username is invalid"
+msgstr "Dein Benutzername ist ungültig"

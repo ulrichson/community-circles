@@ -3,22 +3,119 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: app/views/main/notifications.html
+#: dist/controllers/main.js
+msgid "An error occured"
+msgstr ""
+
+#: dist/views/main/login.html
+msgid "Back to login"
+msgstr ""
+
+#: dist/views/main/navigation-menu.html
+msgid "Browse Contributions"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Cannot login"
+msgstr ""
+
+#: dist/views/main/notifications.html
 msgid "Dismiss"
 msgstr ""
 
-#: app/views/main/notifications.html
+#: dist/views/main/login.html
+msgid "Email"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Error with email"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Error with password"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Error with username"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "It may contain letters, numbers, the characters '-', '_' and '.' but no special characters."
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Logging in..."
+msgstr ""
+
+#: dist/views/main/login.html
+msgid "Login"
+msgstr ""
+
+#: dist/views/main/navigation-menu.html
+msgid "Logout"
+msgstr ""
+
+#: dist/views/main/navigation-menu.html
+msgid "Menu"
+msgstr ""
+
+#: dist/views/main/navigation-menu.html
+#: dist/views/main/notifications.html
 msgid "Notifications"
 msgstr ""
 
-#: app/views/main/notifications.html
+#: dist/views/main/login.html
+msgid "Password"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Please enter all details!"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Please enter your crededentials!"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Please try again later."
+msgstr ""
+
+#: dist/views/main/notifications.html
 msgid "Pull to refresh..."
 msgstr ""
 
-#: app/views/main/notifications.html
+#: dist/views/main/notifications.html
 msgid "Read"
 msgstr ""
 
-#: app/views/main/notifications.html
+#: dist/views/main/login.html
+msgid "Register"
+msgstr ""
+
+#: dist/views/main/login.html
+msgid "Register account"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Registering account..."
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Sorry, an error occured"
+msgstr ""
+
+#: dist/views/main/notifications.html
 msgid "There are no notifications for you."
+msgstr ""
+
+#: dist/views/main/login.html
+msgid "Username"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "You are not done yet"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Your username is invalid"
 msgstr ""
