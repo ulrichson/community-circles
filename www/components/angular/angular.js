@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.2.20-build.280+sha.931789e
+ * @license AngularJS v1.2.20-build.283+sha.873acf8
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -68,7 +68,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.20-build.280+sha.931789e/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.20-build.283+sha.873acf8/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -1184,7 +1184,7 @@ function parseKeyValue(/**string*/keyValue) {
       key = tryDecodeURIComponent(key_value[0]);
       if ( isDefined(key) ) {
         var val = isDefined(key_value[1]) ? tryDecodeURIComponent(key_value[1]) : true;
-        if (!obj[key]) {
+        if (!hasOwnProperty.call(obj, key)) {
           obj[key] = val;
         } else if(isArray(obj[key])) {
           obj[key].push(val);
@@ -1958,7 +1958,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.20-build.280+sha.931789e',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.20-build.283+sha.873acf8',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 20,

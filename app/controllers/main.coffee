@@ -35,12 +35,18 @@ mainApp.config ($stateProvider, $urlRouterProvider) ->
       menuContent:
         templateUrl: "map.html"
         controller: "MapCtrl"
-  .state "navigation.browse-contributions",
-    url: "/browse-contributions"
+  # .state "contribution.list",
+  #   url: "/list"
+  #   views:
+  #     menuContent:
+  #       templateUrl: "contribution-list.html"
+  #       controller: "ContributionListCtrl"
+  .state "navigation.contribution-detail",
+    url: "/contribution-detail/:id"
     views:
       menuContent:
-        templateUrl: "browse-contributions.html"
-        controller: "BrowseContributionsCtrl"
+        templateUrl: "contribution.detail.html"
+        controller: "ContributionDetailCtrl"
   .state "navigation.notifications",
     url: "/notifications"
     views:
@@ -427,8 +433,6 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
         ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
         convert: "geojson"
     .success (data) ->
-      console.log data
-      
       # map.removeLayer communitiesLayer unless communitiesLayer is null
       map.removeLayer contributionsLayer unless contributionsLayer is null
 
@@ -499,14 +503,13 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
   # UI EVENTS
   #-----------------------------------------------------------------------------
   $scope.newContribution = ->
-    $state.go "new-contribution"
+    $state.go "contribution.new"
 
   $scope.locate = ->
     locate()
 
   $scope.openContribution = ->
-    UI.send "showContributionController", "loadContribution", $scope.contribution.id
-    $state.go "contribution"
+    $state.go "navigation.contribution-detail", id: $scope.contribution.id
 
   $scope.showContributionDetail = (id) ->
     $scope.contributionSelected = true
@@ -580,9 +583,9 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
   locate()
 
 #-------------------------------------------------------------------------------
-# BrowseContributionsCtrl
+# ContributionListCtrl
 #------------------------------------------------------------------------------- 
-mainApp.controller "BrowseContributionsCtrl", ($scope) ->
+mainApp.controller "ContributionListCtrl", ($scope) ->
   return
 
 #-------------------------------------------------------------------------------
@@ -610,7 +613,6 @@ mainApp.controller "NotificationCtrl", ($scope, gettext, T, $ionicLoading, $ioni
     , (data) ->
       Log.e data
     .finally ->
-      console.log "finally"
       $ionicListDelegate.closeOptionButtons()
 
   $scope.dismiss = (notification) ->
@@ -628,9 +630,9 @@ mainApp.controller "NotificationCtrl", ($scope, gettext, T, $ionicLoading, $ioni
   $scope.loadNotifications()
 
 #-------------------------------------------------------------------------------
-# ShowContributionCtrl
+# ContributionDetailCtrl
 #------------------------------------------------------------------------------- 
-mainApp.controller "ShowContributionCtrl", ($scope, $filter, $location, $anchorScroll, gettext, T, $ionicLoading, $ionicPopup, Config, Log, UI, ContributionRestangular) ->
+mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $location, $anchorScroll, gettext, T, $ionicLoading, $ionicPopup, Config, Log, UI, ContributionRestangular) ->
   $scope.message_id = "showContributionController"
   $scope.contribution = {}
   $scope.comments = []
@@ -648,6 +650,7 @@ mainApp.controller "ShowContributionCtrl", ($scope, $filter, $location, $anchorS
     ContributionRestangular.all("contribution").getList(id: id).then (data) ->
       $scope.contribution = data[0]
       $scope.imageSrc = "#{Config.API_ENDPOINT}/download/?photo_id=#{$scope.contribution.photos[0]}&convert=square_640" if $scope.contribution.photos[0]
+    .finally ->
       $ionicLoading.hide()
 
       $scope.loadComments $scope.contribution.id
@@ -763,4 +766,6 @@ mainApp.controller "ShowContributionCtrl", ($scope, $filter, $location, $anchorS
   $scope.hasVotedForPollOption = (poll_option) ->
     return _.contains poll_option.votes, Util.userName()
 
-  UI.listen $scope
+  # Init
+  # UI.listen $scope
+  $scope.loadContribution $stateParams.id

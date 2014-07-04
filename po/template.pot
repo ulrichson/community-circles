@@ -27,7 +27,7 @@ msgstr ""
 msgid "Cannot login"
 msgstr ""
 
-#: dist/views/main/contribution.html
+#: dist/views/main/contribution.detail.html
 msgid "Comment"
 msgstr ""
 
@@ -129,7 +129,7 @@ msgstr ""
 msgid "Please try again later."
 msgstr ""
 
-#: dist/views/main/contribution.html
+#: dist/views/main/contribution.detail.html
 #: dist/views/main/notifications.html
 msgid "Pull to refresh..."
 msgstr ""
@@ -174,7 +174,7 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: dist/views/main/contribution.html
+#: dist/views/main/contribution.detail.html
 msgid "Vote"
 msgstr ""
 
@@ -204,7 +204,7 @@ msgstr ""
 msgid "by"
 msgstr ""
 
-#: dist/views/main/contribution.html
+#: dist/views/main/contribution.detail.html
 msgid "feeling"
 msgstr ""
 
