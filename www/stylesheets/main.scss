@@ -9,8 +9,18 @@ $calm:      $cc-lighter;
 
 @import "../components/ionic/scss/ionic";
 
-@import "login";
+@import 
+  "login",
+  "map";
 
 .text-muted {
   color: lighten($base-color, 75%) !important;
+}
+
+.pull-left {
+  float: left;
+}
+
+.pull-right {
+  float: right;
 }

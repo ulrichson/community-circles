@@ -44,6 +44,21 @@ common.run (Log, Color) ->
   if !@config? or !@key?
     alert "app/community-circles/private.coffee is missing or malformed!"
 
+  # Fetch location
+  onDeviceReady = ->
+    if not $scope.positionWatcherId?
+      $scope.positionWatcherId = navigator.geolocation.watchPosition (position) ->
+        window.localStorage.setItem "position.coords.latitude", position.coords.latitude
+        window.localStorage.setItem "position.coords.longitude", position.coords.longitude
+        window.localStorage.setItem "position.coords.altitude", position.coords.altitude
+        window.localStorage.setItem "position.coords.accuracy", position.coords.accuracy
+        window.localStorage.setItem "position.coords.altitudeAccuracy", position.coords.altitudeAccuracy
+        window.localStorage.setItem "position.coords.heading", position.coords.heading
+        window.localStorage.setItem "position.coords.speed", position.coords.speed
+        window.localStorage.setItem "position.timestamp", position.timestamp
+
+  document.addEventListener "deviceready", onDeviceReady, false
+
   # Only allow portrait mode
   steroids.view.setAllowedRotations [0, 180]
   steroids.view.setBackgroundColor Color.ccMain
@@ -98,6 +113,14 @@ common.directive "imgLoadingSpinner", (Log) ->
 common.factory "T", (gettextCatalog) ->
   _: (str) ->
     return gettextCatalog.getString str
+
+#-------------------------------------------------------------------------------
+# Game
+#-------------------------------------------------------------------------------
+common.factory "Game", ->
+  initialRadius: 100
+  healthAlertThreshold: 0.2
+    
 #-------------------------------------------------------------------------------
 # Session
 #-------------------------------------------------------------------------------
@@ -127,3 +150,74 @@ common.factory "Session", (Log) ->
 
   loggedIn: ->
     return window.localStorage.getItem("loggedIn") is "true"
+
+#-------------------------------------------------------------------------------
+# UI
+#-------------------------------------------------------------------------------
+common.factory "UI", ->
+  #-----------------------------------------------------------------------------
+  # INTERWEBVIEW COMMUNICATION
+  #-----------------------------------------------------------------------------
+  # Example: `UI.send "myController", "sayHello", "World"` invokes the method
+  # `$scope.sayHello "World"` in `myController`. This controller must have set
+  # `$scope.message_id = "myController"` in order to receive the message. In the
+  # controller `UI.listen $scope` can be called in order to automatically
+  # receive messages and invike the corresponding method.
+  #-----------------------------------------------------------------------------
+  send: (to, command, params) ->
+    msg =
+      receiver: to
+      command: command
+      params: []
+
+    # See http://coffeescriptcookbook.com/chapters/arrays/check-type-is-array
+    typeIsArray = Array.isArray || (value) -> return {}.toString.call(value) is "[object Array]"
+
+    if typeIsArray params
+      _.each params, (p) ->
+        msg.params.push p
+    else if params?
+      msg.params.push params
+
+    window.postMessage msg
+
+  listen: (scope) ->
+    throw "$scope.message_id is not set" if not scope.message_id?
+    window.addEventListener "message", (event) ->
+      msg = event.data
+      if msg.receiver is scope.message_id
+        scope[msg.command].apply scope, msg.params
+        scope.$apply()
+
+#-------------------------------------------------------------------------------
+# Util
+#-------------------------------------------------------------------------------
+common.factory "Util", ->
+
+  convertContributionType: (code) ->
+    if code is "ID"
+      return "idea"
+    else if code is "IS"
+      return "issue"
+    else if code is "OP"
+      return "opinion"
+    else if code is "PL"
+      return "poll"
+    else
+      return "unknown"
+
+  formatAreaSqKm: (area) ->
+    return "#{(area/1000000).toFixed(2)}"
+
+  lastKnownPosition: ->
+    try
+      lat = window.localStorage.getItem position.coords.latitude
+      lng = window.localStorage.getItem position.coords.longitude
+      return new L.LatLng lat, lng
+    catch e
+      return new L.LatLng 48.1217811, 16.5633169 # Vienna calling!
+
+  randomFromTo: (from, to, float = false) ->
+    rand = Math.random() * (to - from + 1) + from
+    rand = Math.floor rand if not float
+    return rand

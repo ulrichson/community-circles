@@ -16,13 +16,24 @@
     </ion-header-bar>
     <ion-content>
       <ul class="list">
-        <a href="#/navigation/browse-contributions" class="item" menu-close translate>Browse Contributions</a>
-        <a href="#/navigation/notifications" class="item" menu-close translate>Notifications</a>
+        <a class="item item-icon-left" href="#/navigation/map" menu-close>
+          <i class="icon ion-map"></i>
+          <span translate>Map</span>
+        </a>
+        <a class="item item-icon-left" href="#/navigation/browse-contributions" menu-close>
+          <i class="icon ion-search"></i>
+          <span translate>Browse Contributions</span>
+        </a>
+        <a class="item item-icon-left" href="#/navigation/notifications" menu-close>
+          <i class="icon ion-archive"></i>
+          <span translate>Notifications</span>
+          <span class="badge badge-assertive">0</span>
+        </a>
       </ul>
-      <button class="button button-full button-light" ng-click="logout()" translate>
-        Logout
+      <button class="button button-full button-light" ng-click="logout()">
+        <i class="icon ion-log-out"></i> <span translate>Logout</span>
       </button>
     </ion-content>
   </ion-side-menu>
-  
+
 </ion-side-menus>

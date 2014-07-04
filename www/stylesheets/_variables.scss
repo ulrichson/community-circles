@@ -1,5 +1,8 @@
-$cc-lighter:      #3fd1d1 !default; // what are u good for?
-$cc-light:        #00c8c8 !default; // indicates primary action, active
-$cc-main:         #00a8b3 !default; // base color
-$cc-dark:         #004855 !default; // elements that cause an action (?)
-$cc-darker:       #212b37 !default; // text, static elements
+$cc-lighter:        #3fd1d1 !default; // what are u good for?
+$cc-light:          #00c8c8 !default; // indicates primary action, active
+$cc-main:           #00a8b3 !default; // base color
+$cc-dark:           #004855 !default; // elements that cause an action (?)
+$cc-darker:         #212b37 !default; // text, static elements
+
+$dropshadowColor:   rgba(0, 0, 0, 0.3);
+$dropshadowWidth:   25px;
