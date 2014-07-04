@@ -4,6 +4,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: dist/controllers/main.js
+msgid "...and removing votes isn't implemented yet ;)"
+msgstr ""
+
+#: dist/controllers/main.js
 msgid "An error occured"
 msgstr ""
 
@@ -16,7 +20,23 @@ msgid "Browse Contributions"
 msgstr ""
 
 #: dist/controllers/main.js
+msgid "Cancel"
+msgstr ""
+
+#: dist/controllers/main.js
 msgid "Cannot login"
+msgstr ""
+
+#: dist/views/main/contribution.html
+msgid "Comment"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Comments"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Couldn't upload comment"
 msgstr ""
 
 #: dist/views/main/notifications.html
@@ -44,6 +64,14 @@ msgid "It may contain letters, numbers, the characters '-', '_' and '.' but no s
 msgstr ""
 
 #: dist/controllers/main.js
+msgid "Loading comments..."
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Loading contribution..."
+msgstr ""
+
+#: dist/controllers/main.js
 msgid "Loading notifications..."
 msgstr ""
 
@@ -57,6 +85,11 @@ msgstr ""
 
 #: dist/views/main/navigation-menu.html
 msgid "Logout"
+msgstr ""
+
+#: dist/views/main/map.html
+#: dist/views/main/navigation-menu.html
+msgid "Map"
 msgstr ""
 
 #: dist/views/main/navigation-menu.html
@@ -73,6 +106,10 @@ msgid "Password"
 msgstr ""
 
 #: dist/controllers/main.js
+msgid "Please enter a comment"
+msgstr ""
+
+#: dist/controllers/main.js
 msgid "Please enter all details!"
 msgstr ""
 
@@ -81,9 +118,18 @@ msgid "Please enter your crededentials!"
 msgstr ""
 
 #: dist/controllers/main.js
+msgid "Please remove your previous vote first"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Please try again later"
+msgstr ""
+
+#: dist/controllers/main.js
 msgid "Please try again later."
 msgstr ""
 
+#: dist/views/main/contribution.html
 #: dist/views/main/notifications.html
 msgid "Pull to refresh..."
 msgstr ""
@@ -104,12 +150,20 @@ msgstr ""
 msgid "Registering account..."
 msgstr ""
 
+#: dist/controllers/main.js
+msgid "Send"
+msgstr ""
+
 #: dist/views/main/notifications.html
 msgid "Set Unread"
 msgstr ""
 
 #: dist/controllers/main.js
 msgid "Sorry, an error occured"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Thanks for voting"
 msgstr ""
 
 #: dist/views/main/notifications.html
@@ -120,8 +174,20 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
+#: dist/views/main/contribution.html
+msgid "Vote"
+msgstr ""
+
 #: dist/controllers/main.js
 msgid "You are not done yet"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "You have already voted"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "You have already voted for this poll!"
 msgstr ""
 
 #: dist/views/main/notifications.html
@@ -132,4 +198,16 @@ msgstr[1] ""
 
 #: dist/controllers/main.js
 msgid "Your username is invalid"
+msgstr ""
+
+#: dist/views/main/map.html
+msgid "by"
+msgstr ""
+
+#: dist/views/main/contribution.html
+msgid "feeling"
+msgstr ""
+
+#: dist/views/main/map.html
+msgid "more"
 msgstr ""
