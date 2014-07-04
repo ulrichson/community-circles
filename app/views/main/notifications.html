@@ -6,12 +6,10 @@
         <span translate translate-n="notifications.length" translate-plural="You have {{ notifications.length }} notifications">You have {{ notifications.length }} notification</span>
       </div>
       <ion-item ng-repeat="notification in notifications | orderBy: 'created': true">
-        <span class="item-note" ng-class="{ 'text-muted': notification.is_read }">
-          <i class="icon ion-ios7-clock"></i>&nbsp;<span am-time-ago="notification.created"></span>
-        </span>
         <h2 ng-class="{ 'text-muted': notification.is_read }">{{ notification.subject }}</h2>
         <p ng-class="{ 'text-muted': notification.is_read }">
-          {{ notification.message }}
+          {{ notification.message }}<br>
+          <small><i class="icon ion-ios7-clock-outline"></i>&nbsp;<span am-time-ago="notification.created"></span></small>
         </p>
         <ion-option-button class="button-positive" ng-click="read(notification)">
           <span ng-show="!notification.is_read" translate>Read</span>

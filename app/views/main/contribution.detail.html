@@ -5,7 +5,7 @@
     <div class="card list">
       <div class="item text-center">
         <h2>{{ contribution.title }}</h2>
-        <p><i class="icon icon-ios7-chatbubble"></i> {{ contribution.comments_count }} <i class="icon icon-ios7-heart"></i> {{ contribution.votes_count }}</p>
+        <p><i class="icon ion-ios7-chatbubble"></i> {{ contribution.comments_count }} <i class="icon ion-ios7-heart"></i> {{ contribution.votes_count }}</p>
       </div>
       <div class="item item-text-wrap" ng-if="contribution.type != 'PL'">
         {{ contribution.description }}
@@ -20,29 +20,29 @@
       </div>
       <div class="item" ng-show="contribution.poi || contribution.mood">
         <p>
-          <a href="#" class="subdued" ng-show="contribution.poi"><i class="icon icon-ios7-location"></i> <em>{{ contribution.poi }}</em></a>
+          <a href="#" class="subdued" ng-show="contribution.poi"><i class="icon ion-ios7-location"></i> <em>{{ contribution.poi }}</em></a>
           <a href="#" class="subdued" ng-show="contribution.poi"><span translate>feeling</span> <em>{{ contribution.mood }}</em></a>
         </p>
       </div>
       <div class="item tabs tabs-secondary tabs-icon-left">
         <a class="tab-item primary" href="#" ng-click="addComment()">
-          <i class="icon icon-ios7-chatbubble"></i> <span translate>Comment</span>
+          <i class="icon ion-ios7-chatbubble"></i> <span translate>Comment</span>
         </a>
         <a class="tab-item primary" href="#" ng-click="voteContribution()">
-          <i class="icon" ng-class="hasVotedForContribution() ? 'icon-ios7-heart' : 'icon-ios7-heart-outline'"></i> <span translate>Vote</span>
+          <i class="icon" ng-class="hasVotedForContribution() ? 'ion-ios7-heart' : 'ion-ios7-heart-outline'"></i> <span translate>Vote</span>
         </a>
       </div>
     </div>
     <div class="list" ng-if="comments.length > 0">
       <div class="item" ng-repeat="comment in comments | orderBy: 'created'">
         <span class="item-note">
-          <i class="icon ion-ios7-clock"></i>&nbsp;<span am-time-ago="comment.created"></span> | <i class="icon icon-ios7-heart"></i> {{ comment.votes_count }}
+          <i class="icon ion-ios7-clock"></i>&nbsp;<span am-time-ago="comment.created"></span> | <i class="icon ion-ios7-heart"></i> {{ comment.votes_count }}
         </span>
         <h2>{{ comment.user.username }}</h2>
         <p>{{ comment.content }}</p>
         <p>
           <a class="tab-item primary" href="#" ng-click="voteComment(comment)">
-            <i class="icon" ng-class="hasVotedForComment(comment) ? 'icon-ios7-heart' : 'icon-ios7-heart-outline'"></i> <span translate>Vote</span>
+            <i class="icon" ng-class="hasVotedForComment(comment) ? 'ion-ios7-heart' : 'ion-ios7-heart-outline'"></i> <span translate>Vote</span>
         </a>
         </p>
       </div>

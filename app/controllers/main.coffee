@@ -29,12 +29,12 @@ mainApp.config ($stateProvider, $urlRouterProvider) ->
     url: "/navigation"
     abstract: true
     templateUrl: "navigation-menu.html"
-  .state "navigation.map",
-    url: "/map"
-    views:
-      menuContent:
-        templateUrl: "map.html"
-        controller: "MapCtrl"
+  # .state "navigation.map",
+  #   url: "/map"
+  #   views:
+  #     menuContent:
+  #       templateUrl: "map.html"
+  #       controller: "MapCtrl"
   # .state "contribution.list",
   #   url: "/list"
   #   views:
