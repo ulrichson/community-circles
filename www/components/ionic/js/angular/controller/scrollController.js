@@ -39,7 +39,15 @@ function($scope, scrollViewOptions, $timeout, $window, $$scrollValueCache, $loca
 
   if (!angular.isDefined(scrollViewOptions.bouncing)) {
     ionic.Platform.ready(function() {
-      scrollView.options.bouncing = !ionic.Platform.isAndroid();
+      scrollView.options.bouncing = true;
+
+      if(ionic.Platform.isAndroid()) {
+        // No bouncing by default on Android
+        scrollView.options.bouncing = false;
+        // Faster scroll decel
+        scrollView.options.deceleration = 0.95;
+      } else {
+      }
     });
   }
 
@@ -51,11 +59,13 @@ function($scope, scrollViewOptions, $timeout, $window, $$scrollValueCache, $loca
 
   $scope.$on('$destroy', function() {
     deregisterInstance();
+    scrollView.__removeEventHandlers();
     ionic.off('resize', resize, $window);
     $window.removeEventListener('resize', resize);
     backListenDone();
     if (self._rememberScrollId) {
       $$scrollValueCache[self._rememberScrollId] = scrollView.getValues();
+      console.log($$scrollValueCache);
     }
   });
 
@@ -74,11 +84,13 @@ function($scope, scrollViewOptions, $timeout, $window, $$scrollValueCache, $loca
     if (e.defaultPrevented) { return; }
     e.preventDefault();
 
-    var viewId = historyData && historyData.viewId;
+    var viewId = historyData && historyData.viewId || $scope.$historyId;
     if (viewId) {
       $timeout(function() {
         self.rememberScrollPosition(viewId);
         self.scrollToRememberedPosition();
+
+        console.log("scrollToRememberedPosition: ",viewId, $$scrollValueCache);
 
         backListenDone = $rootScope.$on('$viewHistory.viewBack', function(e, fromViewId, toViewId) {
           //When going back from this view, forget its saved scroll position
@@ -86,7 +98,7 @@ function($scope, scrollViewOptions, $timeout, $window, $$scrollValueCache, $loca
             self.forgetScrollPosition();
           }
         });
-      }, 1, false);
+      }, 0, false);
     }
   });
 

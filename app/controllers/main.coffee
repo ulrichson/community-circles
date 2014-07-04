@@ -170,16 +170,38 @@ mainApp.controller "BrowseContributionsCtrl", ($scope) ->
 #-------------------------------------------------------------------------------
 # NotificationCtrl
 #-------------------------------------------------------------------------------
-mainApp.controller "NotificationCtrl", ($scope, Session, NotificationRestangular) ->
+mainApp.controller "NotificationCtrl", ($scope, gettext, T, $ionicLoading, $ionicListDelegate, Session, Log, NotificationRestangular) ->
   $scope.notifications = []
 
   $scope.loadNotifications = ->
+    $ionicLoading.show
+      template: T._ gettext "Loading notifications..."
     NotificationRestangular.all("notifications").getList
       user: Session.userId()
     .then (data) ->
       $scope.notifications = data
     .finally ->
-      $scope.$broadcast "scroll.refreshComplete"
+      $ionicLoading.hide()
+
+  $scope.read = (notification) ->
+    req = NotificationRestangular.one "notification", notification.id
+    req.user = Session.userId()
+    req.is_read = !notification.is_read
+    req.put().then (data) ->
+      $scope.loadNotifications()
+    , (data) ->
+      Log.e data
+    .finally ->
+      console.log "finally"
+      $ionicListDelegate.closeOptionButtons()
+
+  $scope.dismiss = (notification) ->
+    NotificationRestangular.one("notification", notification.id).remove().then (data) ->
+      $scope.loadNotifications()
+    , (data) ->
+      Log.e data
+    .finally ->
+      $ionicListDelegate.closeOptionButtons()
 
   $scope.openContribution = (contribution) ->
     return

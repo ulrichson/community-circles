@@ -16,17 +16,6 @@ angular.module("ng").filter "cut", ->
     value + (tail or "…")
 
 #-------------------------------------------------------------------------------
-# Run
-#-------------------------------------------------------------------------------
-common.run (Log) ->
-  if !@config? or !@key?
-    alert "app/community-circles/private.coffee is missing or malformed!"
-
-  # Only allow portrait mode
-  steroids.view.setAllowedRotations [0, 180]
-  steroids.view.setBackgroundColor "#ffffff"
-
-#-------------------------------------------------------------------------------
 # Constants
 #------------------------------------------------------------------------------- 
 common.constant "Config",
@@ -47,6 +36,17 @@ common.constant "Color",
   ccMain: "#00a8b3"
   ccDark: "#004855"
   ccDarker: "#212b37"
+
+#-------------------------------------------------------------------------------
+# Run
+#-------------------------------------------------------------------------------
+common.run (Log, Color) ->
+  if !@config? or !@key?
+    alert "app/community-circles/private.coffee is missing or malformed!"
+
+  # Only allow portrait mode
+  steroids.view.setAllowedRotations [0, 180]
+  steroids.view.setBackgroundColor Color.ccMain
 
 #-------------------------------------------------------------------------------
 # Directives

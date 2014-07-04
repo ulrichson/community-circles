@@ -44,6 +44,10 @@ msgid "It may contain letters, numbers, the characters '-', '_' and '.' but no s
 msgstr ""
 
 #: dist/controllers/main.js
+msgid "Loading notifications..."
+msgstr ""
+
+#: dist/controllers/main.js
 msgid "Logging in..."
 msgstr ""
 
@@ -119,6 +123,12 @@ msgstr ""
 #: dist/controllers/main.js
 msgid "You are not done yet"
 msgstr ""
+
+#: dist/views/main/notifications.html
+msgid "You have {{ notifications.length }} notification"
+msgid_plural "You have {{ notifications.length }} notifications"
+msgstr[0] ""
+msgstr[1] ""
 
 #: dist/controllers/main.js
 msgid "Your username is invalid"

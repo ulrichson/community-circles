@@ -15,6 +15,7 @@
  * <ion-checkbox ng-model="isChecked">Checkbox Label</ion-checkbox>
  * ```
  */
+
 IonicModule
 .directive('ionCheckbox', function() {
   return {

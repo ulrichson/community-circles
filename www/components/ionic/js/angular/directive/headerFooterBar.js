@@ -15,8 +15,15 @@ IonicModule
  * Can also be a subheader (lower down) if the 'bar-subheader' class is applied.
  * See [the header CSS docs](/docs/components/#subheader).
  *
- * @param {string=} align-title Where to align the title.
- * Avaialble: 'left', 'right', or 'center'.  Defaults to 'center'.
+ * Note: If you use ionHeaderBar in combination with ng-if, the surrounding content
+ * will not align correctly.  This will be fixed soon.
+ *
+ * @param {string=} align-title Where to align the title. 
+ * Available: 'left', 'right', or 'center'.  Defaults to 'center'.
+ * @param {boolean=} no-tap-scroll By default, the header bar will scroll the
+ * content to the top when tapped.  Set no-tap-scroll to true to disable this 
+ * behavior.
+ * Available: true or false.  Defaults to false.
  *
  * @usage
  * ```html
@@ -48,8 +55,11 @@ IonicModule
  * Can also be a subfooter (higher up) if the 'bar-subfooter' class is applied.
  * See [the footer CSS docs](/docs/components/#footer).
  *
+ * Note: If you use ionFooterBar in combination with ng-if, the surrounding content
+ * will not align correctly.  This will be fixed soon.
+ *
  * @param {string=} align-title Where to align the title.
- * Avaialble: 'left', 'right', or 'center'.  Defaults to 'center'.
+ * Available: 'left', 'right', or 'center'.  Defaults to 'center'.
  *
  * @usage
  * ```html
@@ -74,6 +84,9 @@ function tapScrollToTopDirective() {
     return {
       restrict: 'E',
       link: function($scope, $element, $attr) {
+        if ($attr.noTapScroll == 'true') {
+          return;
+        }
         ionic.on('tap', onTap, $element[0]);
         $scope.$on('$destroy', function() {
           ionic.off('tap', onTap, $element[0]);
@@ -98,8 +111,7 @@ function tapScrollToTopDirective() {
             bounds.left, bounds.top - 20,
             bounds.left + bounds.width, bounds.top + bounds.height
           )) {
-            var scrollCtrl = $element.controller('$ionicScroll');
-            scrollCtrl && scrollCtrl.scrollTop(true);
+            $ionicScrollDelegate.scrollTop(true);
           }
         }
       }
