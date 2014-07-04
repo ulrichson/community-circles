@@ -18,7 +18,11 @@ msgstr "Ein Fehler ist aufgetreten"
 
 #: dist/views/main/login.html
 msgid "Back to login"
-msgstr "Zurück zum Login"
+msgstr "Zurück zur Anmeldung"
+
+#: dist/views/main/navigation-menu.html
+msgid "Browse Contributions"
+msgstr "Beiträge durchsuchen"
 
 #: dist/controllers/main.js
 msgid "Cannot login"
@@ -53,6 +57,10 @@ msgstr ""
 "keine Sonderzeichen."
 
 #: dist/controllers/main.js
+msgid "Loading notifications..."
+msgstr "Lade Benachrichtigungen..."
+
+#: dist/controllers/main.js
 msgid "Logging in..."
 msgstr "Anmeldung..."
 
@@ -60,7 +68,15 @@ msgstr "Anmeldung..."
 msgid "Login"
 msgstr "Anmelden"
 
-#: dist/views/main/notifications.html
+#: dist/views/main/navigation-menu.html
+msgid "Logout"
+msgstr "Abmelden"
+
+#: dist/views/main/navigation-menu.html
+msgid "Menu"
+msgstr "Menü"
+
+#: dist/views/main/navigation-menu.html dist/views/main/notifications.html
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
@@ -80,7 +96,7 @@ msgstr "Bitte Zugangsdaten eingeben!"
 msgid "Please try again later."
 msgstr "Bitte später versuchen."
 
-#: dist/views/main/notifications.html
+#: dist/views/main/contribution.html dist/views/main/notifications.html
 msgid "Pull to refresh..."
 msgstr "Zum Aktualisieren ziehen..."
 
@@ -100,6 +116,10 @@ msgstr "Zugang registrieren"
 msgid "Registering account..."
 msgstr "Zugang wird registriert..."
 
+#: dist/views/main/notifications.html
+msgid "Set Unread"
+msgstr "Ungelesen markieren"
+
 #: dist/controllers/main.js
 msgid "Sorry, an error occured"
 msgstr "Es tut uns Leid, es ist ein Fehler aufgetreten."
@@ -115,6 +135,12 @@ msgstr "Benutzername"
 #: dist/controllers/main.js
 msgid "You are not done yet"
 msgstr "Du bist noch nicht fertig."
+
+#: dist/views/main/notifications.html
+msgid "You have {{ notifications.length }} notification"
+msgid_plural "You have {{ notifications.length }} notifications"
+msgstr[0] "Du hast {{ notifications.length }} Benachrichtung"
+msgstr[1] "Du hast {{ notifications.length }} Benachrichtungen"
 
 #: dist/controllers/main.js
 msgid "Your username is invalid"
