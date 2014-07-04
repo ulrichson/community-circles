@@ -97,13 +97,16 @@ mainApp.controller "LoginCtrl", ($scope, $http, $state, gettext, T, $ionicLoadin
       Session.login data.results[0].username, data.results[0].id
       $scope.reset()
       $ionicLoading.hide()
-      $state.go "navigation.map", {}, { reload: true }
+      $state.go "navigation.notifications"
     .error (data) ->
       $ionicPopup.alert
         title: T._ gettext "An error occured"
         template: data.detail
       $scope.requesting = false
       $ionicLoading.hide()
+
+    if Session.loggedIn()
+      $state.go "navigation.notifications"
 
   $scope.register = ->
     if not $scope.register.username or not $scope.register.email or not $scope.register.password
@@ -131,7 +134,7 @@ mainApp.controller "LoginCtrl", ($scope, $http, $state, gettext, T, $ionicLoadin
       Session.login response.username, response.id
       $scope.reset()
       $ionicLoading.hide()
-      $state.go "navigation.map", {}, { reload: true }
+      $state.go "navigation.map"
     , (response) ->
       $scope.requesting = false
       $ionicLoading.hide()
@@ -601,8 +604,11 @@ mainApp.controller "NotificationCtrl", ($scope, gettext, T, $ionicLoading, $ioni
       user: Session.userId()
     .then (data) ->
       $scope.notifications = data
+    , (data) ->
+      Log.e data
     .finally ->
       $ionicLoading.hide()
+      $scope.$broadcast "scroll.refreshComplete"
 
   $scope.read = (notification) ->
     req = NotificationRestangular.one "notification", notification.id
