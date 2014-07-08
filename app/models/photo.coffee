@@ -2,7 +2,7 @@
 if !angular?
   return
 
-module = angular.module "PhotoModel", ["communityCirclesUtil", "restangular"]
+module = angular.module "PhotoModel", ["common", "restangular"]
 
 module.factory "PhotoRestangular", (Config, Restangular) ->
 

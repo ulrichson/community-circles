@@ -52,11 +52,11 @@
     "angular-sanitize": "~1.2.17",
     "angular-ui-router": "0.2.10"
   },
-  "_release": "306fe04702",
+  "_release": "a2fe834a61",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "306fe04702ff6dcc79de1b49ed568f8e7fb2b11a"
+    "commit": "a2fe834a61aa75ee9b569d07c378681f26a9f5f9"
   },
   "_source": "git://github.com/driftyco/ionic.git",
   "_target": "master",

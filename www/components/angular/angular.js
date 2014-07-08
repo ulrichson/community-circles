@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.2.20-build.283+sha.873acf8
+ * @license AngularJS v1.2.20-build.287+sha.a0fad24
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -68,7 +68,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.20-build.283+sha.873acf8/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.20-build.287+sha.a0fad24/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -1958,7 +1958,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.20-build.283+sha.873acf8',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.20-build.287+sha.a0fad24',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 20,
@@ -15675,7 +15675,7 @@ var htmlAnchorDirective = valueFn({
             return browser.driver.getCurrentUrl().then(function(url) {
               return url.match(/\/123$/);
             });
-          }, 1000, 'page should navigate to /123');
+          }, 5000, 'page should navigate to /123');
         });
 
         xit('should execute ng-click but not reload when href empty string and name specified', function() {
@@ -15703,7 +15703,7 @@ var htmlAnchorDirective = valueFn({
             return browser.driver.getCurrentUrl().then(function(url) {
               return url.match(/\/6$/);
             });
-          }, 1000, 'page should navigate to /6');
+          }, 5000, 'page should navigate to /6');
         });
       </file>
     </example>
@@ -16439,7 +16439,7 @@ var ngFormDirective = formDirectiveFactory(true);
 */
 
 var URL_REGEXP = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/;
-var EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9-]+(\.[a-z0-9-]+)*$/i;
+var EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
 var NUMBER_REGEXP = /^\s*(\-|\+)?(\d+|(\d*(\.\d*)))\s*$/;
 
 var inputType = {
@@ -18767,29 +18767,29 @@ var ngCloakDirective = ngDirective({
  *   <file name="protractor.js" type="protractor">
  *     it('should check controller as', function() {
  *       var container = element(by.id('ctrl-as-exmpl'));
- *         expect(container.findElement(by.model('settings.name'))
+ *         expect(container.element(by.model('settings.name'))
  *           .getAttribute('value')).toBe('John Smith');
  *
  *       var firstRepeat =
- *           container.findElement(by.repeater('contact in settings.contacts').row(0));
+ *           container.element(by.repeater('contact in settings.contacts').row(0));
  *       var secondRepeat =
- *           container.findElement(by.repeater('contact in settings.contacts').row(1));
+ *           container.element(by.repeater('contact in settings.contacts').row(1));
  *
- *       expect(firstRepeat.findElement(by.model('contact.value')).getAttribute('value'))
+ *       expect(firstRepeat.element(by.model('contact.value')).getAttribute('value'))
  *           .toBe('408 555 1212');
  *
- *       expect(secondRepeat.findElement(by.model('contact.value')).getAttribute('value'))
+ *       expect(secondRepeat.element(by.model('contact.value')).getAttribute('value'))
  *           .toBe('john.smith@example.org');
  *
- *       firstRepeat.findElement(by.linkText('clear')).click();
+ *       firstRepeat.element(by.linkText('clear')).click();
  *
- *       expect(firstRepeat.findElement(by.model('contact.value')).getAttribute('value'))
+ *       expect(firstRepeat.element(by.model('contact.value')).getAttribute('value'))
  *           .toBe('');
  *
- *       container.findElement(by.linkText('add')).click();
+ *       container.element(by.linkText('add')).click();
  *
- *       expect(container.findElement(by.repeater('contact in settings.contacts').row(2))
- *           .findElement(by.model('contact.value'))
+ *       expect(container.element(by.repeater('contact in settings.contacts').row(2))
+ *           .element(by.model('contact.value'))
  *           .getAttribute('value'))
  *           .toBe('yourname@example.org');
  *     });
@@ -18848,28 +18848,28 @@ var ngCloakDirective = ngDirective({
  *    it('should check controller', function() {
  *      var container = element(by.id('ctrl-exmpl'));
  *
- *      expect(container.findElement(by.model('name'))
+ *      expect(container.element(by.model('name'))
  *          .getAttribute('value')).toBe('John Smith');
  *
  *      var firstRepeat =
- *          container.findElement(by.repeater('contact in contacts').row(0));
+ *          container.element(by.repeater('contact in contacts').row(0));
  *      var secondRepeat =
- *          container.findElement(by.repeater('contact in contacts').row(1));
+ *          container.element(by.repeater('contact in contacts').row(1));
  *
- *      expect(firstRepeat.findElement(by.model('contact.value')).getAttribute('value'))
+ *      expect(firstRepeat.element(by.model('contact.value')).getAttribute('value'))
  *          .toBe('408 555 1212');
- *      expect(secondRepeat.findElement(by.model('contact.value')).getAttribute('value'))
+ *      expect(secondRepeat.element(by.model('contact.value')).getAttribute('value'))
  *          .toBe('john.smith@example.org');
  *
- *      firstRepeat.findElement(by.linkText('clear')).click();
+ *      firstRepeat.element(by.linkText('clear')).click();
  *
- *      expect(firstRepeat.findElement(by.model('contact.value')).getAttribute('value'))
+ *      expect(firstRepeat.element(by.model('contact.value')).getAttribute('value'))
  *          .toBe('');
  *
- *      container.findElement(by.linkText('add')).click();
+ *      container.element(by.linkText('add')).click();
  *
- *      expect(container.findElement(by.repeater('contact in contacts').row(2))
- *          .findElement(by.model('contact.value'))
+ *      expect(container.element(by.repeater('contact in contacts').row(2))
+ *          .element(by.model('contact.value'))
  *          .getAttribute('value'))
  *          .toBe('yourname@example.org');
  *    });
@@ -19266,7 +19266,7 @@ forEach(
          expect(element(by.binding('list')).getText()).toBe('list=[]');
          element(by.css('#submit')).click();
          expect(element(by.binding('list')).getText()).toContain('hello');
-         expect(element(by.input('text')).getAttribute('value')).toBe('');
+         expect(element(by.model('text')).getAttribute('value')).toBe('');
        });
        it('should ignore empty strings', function() {
          expect(element(by.binding('list')).getText()).toBe('list=[]');
@@ -19621,7 +19621,7 @@ var ngIfDirective = ['$animate', function($animate) {
           return;
         }
         templateSelect.click();
-        templateSelect.element.all(by.css('option')).get(2).click();
+        templateSelect.all(by.css('option')).get(2).click();
         expect(includeElem.getText()).toMatch(/Content of template2.html/);
       });
 
@@ -19631,7 +19631,7 @@ var ngIfDirective = ['$animate', function($animate) {
           return;
         }
         templateSelect.click();
-        templateSelect.element.all(by.css('option')).get(0).click();
+        templateSelect.all(by.css('option')).get(0).click();
         expect(includeElem.isPresent()).toBe(false);
       });
     </file>
@@ -20948,11 +20948,11 @@ var ngStyleDirective = ngDirective(function(scope, element, attr) {
         expect(switchElem.getText()).toMatch(/Settings Div/);
       });
       it('should change to home', function() {
-        select.element.all(by.css('option')).get(1).click();
+        select.all(by.css('option')).get(1).click();
         expect(switchElem.getText()).toMatch(/Home Span/);
       });
       it('should select default', function() {
-        select.element.all(by.css('option')).get(2).click();
+        select.all(by.css('option')).get(2).click();
         expect(switchElem.getText()).toMatch(/default/);
       });
     </file>
@@ -21275,7 +21275,7 @@ var ngOptionsMinErr = minErr('ngOptions');
       <file name="protractor.js" type="protractor">
          it('should check ng-options', function() {
            expect(element(by.binding('{selected_color:myColor}')).getText()).toMatch('red');
-           element.all(by.select('myColor')).first().click();
+           element.all(by.model('myColor')).first().click();
            element.all(by.css('select[ng-model="myColor"] option')).first().click();
            expect(element(by.binding('{selected_color:myColor}')).getText()).toMatch('black');
            element(by.css('.nullable select[ng-model="myColor"]')).click();

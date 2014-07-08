@@ -9,12 +9,15 @@ $calm:      $cc-lighter;
 
 @import "../components/ionic/scss/ionic";
 
+$muted:     lighten($base-color, 75%);
+
 @import 
   "login",
-  "map";
+  "map",
+  "contribution";
 
 .text-muted {
-  color: lighten($base-color, 75%) !important;
+  color: $muted !important;
 }
 
 .pull-left {

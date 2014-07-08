@@ -2,7 +2,7 @@
 if !angular?
   return
 
-module = angular.module "CommunityModel", ["communityCirclesApp", "restangular"]
+module = angular.module "CommunityModel", ["common", "restangular"]
 
 module.factory "CommunityRestangular", (Restangular) ->
 

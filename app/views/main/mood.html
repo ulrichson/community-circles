@@ -1,0 +1,9 @@
+<ion-view title="{{ 'How do you feel?' | translate }}">
+  <ion-content> 
+    <!-- <h1 class="text-center"><span translate></span><button type="button" class="close" aria-hidden="true" ng-click="unselect()" ng-show="selectedMood">&times;</button></h1> -->
+    <div id="{{ mood.code }}" class="mood" ng-repeat="mood in moods" ng-class="{active: selectedMood == mood.code}" ng-click="choose(mood)">
+      <span class="mood-icon icomatic" ng-if="selectedMood == mood.code">{{ mood.code }}filled</span><span class="mood-icon icomatic" ng-if="selectedMood != mood.code">{{ mood.code }}</span><br />
+      <span class="mood-label">{{ mood.name }}</span>
+    </div>
+  </ion-content>
+</ion-viewY

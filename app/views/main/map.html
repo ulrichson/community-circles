@@ -1,12 +1,12 @@
 <ion-view title="{{ 'Map' | translate }}">
   <ion-nav-buttons side="right">
-    <button class="button button-icon button-clear ion-ios7-plus-outline" ng-click="newContribution()"></button>
+    <button class="button button-icon button-clear ion-plus-circled" ng-click="newContribution()"></button>
   </ion-nav-buttons>
   <ion-content>
     <div id="map"></div>
     <div class="contribution-detail" ng-show="contributionSelected" ng-swipe-down="hideContributionDetail()">
       <div class="contribution-detail-inner">
-        <button class="button button-clear button-dark pull-right" ng-click="hideContributionDetail()">
+        <button class="button button-clear button-dark contribution-close" ng-click="hideContributionDetail()">
           <i class="icon ion-ios7-arrow-down" style="position: relative; opacity: 1.0; top:  -5px"></i><br>
           <i class="icon ion-ios7-arrow-down" style="position: relative; opacity: 0.7; top: -40px"></i><br>
           <i class="icon ion-ios7-arrow-down" style="position: relative; opacity: 0.4; top: -75px"></i>
@@ -19,7 +19,6 @@
             <i class="icon icon-ios7-chatbubble"></i> {{ contribution.comments_count }} <i class="icon icon-ios7-heart"></i> {{ contribution.votes_count }}
           </p>
           <button class="button button-small button-outline button-positive" ng-click="openContribution()" translate>more</button>
-          <!-- <span class="badge">{{ contribution.properties.area }}&nbsp;km<sup>2</sup></span> -->
         </div>
       </div>
     </div>

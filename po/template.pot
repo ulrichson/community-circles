@@ -7,8 +7,28 @@ msgstr ""
 msgid "...and removing votes isn't implemented yet ;)"
 msgstr ""
 
+#: dist/views/main/contribution.new.html
+msgid "A contribution type is requred"
+msgstr ""
+
+#: dist/views/main/contribution.new.html
+msgid "A descrption is required"
+msgstr ""
+
+#: dist/views/main/contribution.new.html
+msgid "A title is required"
+msgstr ""
+
+#: dist/views/main/contribution.new.html
+msgid "Add poll option"
+msgstr ""
+
 #: dist/controllers/main.js
 msgid "An error occured"
+msgstr ""
+
+#: dist/views/main/contribution.new.html
+msgid "At least two poll options are required"
 msgstr ""
 
 #: dist/views/main/login.html
@@ -60,6 +80,30 @@ msgid "Error with username"
 msgstr ""
 
 #: dist/controllers/main.js
+msgid "Failed to upload"
+msgstr ""
+
+#: dist/views/main/mood.html
+msgid "How do you feel?"
+msgstr ""
+
+#: dist/views/main/contribution.new.html
+msgid "I'm at"
+msgstr ""
+
+#: dist/views/main/contribution.new.html
+msgid "I'm feeling"
+msgstr ""
+
+#: dist/views/main/contribution.new.html
+msgid "Idea"
+msgstr ""
+
+#: dist/views/main/contribution.new.html
+msgid "Issue"
+msgstr ""
+
+#: dist/controllers/main.js
 msgid "It may contain letters, numbers, the characters '-', '_' and '.' but no special characters."
 msgstr ""
 
@@ -96,9 +140,17 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
+#: dist/views/main/contribution.new.html
+msgid "New contribution"
+msgstr ""
+
 #: dist/views/main/navigation-menu.html
 #: dist/views/main/notifications.html
 msgid "Notifications"
+msgstr ""
+
+#: dist/views/main/contribution.new.html
+msgid "Opinion"
 msgstr ""
 
 #: dist/views/main/login.html
@@ -129,7 +181,10 @@ msgstr ""
 msgid "Please try again later."
 msgstr ""
 
-#: dist/views/main/contribution.detail.html
+#: dist/views/main/contribution.new.html
+msgid "Poll"
+msgstr ""
+
 #: dist/views/main/notifications.html
 msgid "Pull to refresh..."
 msgstr ""
@@ -163,7 +218,23 @@ msgid "Sorry, an error occured"
 msgstr ""
 
 #: dist/controllers/main.js
+msgid "Sorry, couldn't upload your contribution. Please try again later."
+msgstr ""
+
+#: dist/views/main/contribution.new.html
+msgid "Tap to enter a description"
+msgstr ""
+
+#: dist/views/main/contribution.new.html
+msgid "Tap to enter a title"
+msgstr ""
+
+#: dist/controllers/main.js
 msgid "Thanks for voting"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Thanks, your contribution was uploaded."
 msgstr ""
 
 #: dist/views/main/notifications.html
@@ -195,6 +266,12 @@ msgid "You have {{ notifications.length }} notification"
 msgid_plural "You have {{ notifications.length }} notifications"
 msgstr[0] ""
 msgstr[1] ""
+
+#: dist/controllers/main.js
+msgid ""
+"Your contribution was uploaded without your photo."
+"You can add it later."
+msgstr ""
 
 #: dist/controllers/main.js
 msgid "Your username is invalid"

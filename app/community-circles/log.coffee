@@ -1,6 +1,6 @@
-communityCirclesUtil = angular.module "communityCirclesLog", []
+communityCirclesLog = angular.module "communityCirclesLog", []
 
-communityCirclesUtil.factory "Log", ->
+communityCirclesLog.factory "Log", ->
   w: (msg) ->
     console.warn msg
     steroids.logger.log "WARN - #{msg}"

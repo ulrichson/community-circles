@@ -12,20 +12,14 @@
   ],
   "dependencies": {
     "steroids-js": "3.1.x",
-    "angular": "1.2.x",
     "underscore": "1.5.1",
     "restangular": "1.0.7",
-    "bootstrap-sass-official": "3.1.x",
-    "jquery": "1.11.x",
     "angular-moment": "0.6.x",
-    "d3": "3.4.x",
     "leaflet.markercluster": "0.4.x",
     "leaflet-dist": "0.7.x",
     "leaflet-providers": "x",
-    "angular-animate": "1.2.x",
-    "holderjs": "2.3.x",
-    "angular-carousel": "0.2.x",
     "ionic": "#master",
-    "angular-gettext": "0.4.x"
+    "angular-gettext": "0.4.x",
+    "angular-leaflet-directive": "0.7.x"
   }
 }

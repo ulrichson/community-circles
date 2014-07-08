@@ -2,7 +2,7 @@
 if !angular?
   return
 
-module = angular.module "NotificationModel", ["communityCirclesUtil", "restangular"]
+module = angular.module "NotificationModel", ["common", "restangular"]
 
 module.factory "NotificationRestangular", (Config, Restangular) ->
 

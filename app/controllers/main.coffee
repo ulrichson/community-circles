@@ -4,18 +4,22 @@ mainApp = angular.module "mainApp", [
   "AccountModel",
   "ContributionModel",
   "NotificationModel",
+  "MoodModel",
   "PhotoModel",
   "angularMoment",
   "gettext"
 ]
 
-mainApp.run (amMoment, gettextCatalog) ->
+mainApp.run ($rootScope, amMoment, gettextCatalog) ->
   language = "de"
 
   if language isnt "en"
     gettextCatalog.currentLanguage = language
     gettextCatalog.debug = true
     amMoment.changeLanguage language
+
+  $rootScope.$on "$stateChangeSuccess", (event, toState, toParams, fromState, fromParams) ->
+    localStorage.setItem "last_visited", toState.name if toState.name isnt "login"
 
 #-------------------------------------------------------------------------------
 # Routes
@@ -29,18 +33,18 @@ mainApp.config ($stateProvider, $urlRouterProvider) ->
     url: "/navigation"
     abstract: true
     templateUrl: "navigation-menu.html"
-  # .state "navigation.map",
-  #   url: "/map"
-  #   views:
-  #     menuContent:
-  #       templateUrl: "map.html"
-  #       controller: "MapCtrl"
-  # .state "contribution.list",
-  #   url: "/list"
-  #   views:
-  #     menuContent:
-  #       templateUrl: "contribution-list.html"
-  #       controller: "ContributionListCtrl"
+  .state "navigation.map",
+    url: "/map"
+    views:
+      menuContent:
+        templateUrl: "map.html"
+        controller: "MapCtrl"
+  .state "navigation.contribution-new",
+    url: "/contribution-new"
+    views:
+      menuContent:
+        templateUrl: "contribution.new.html"
+        controller: "ContributionNewCtrl"
   .state "navigation.contribution-detail",
     url: "/contribution-detail/:id"
     views:
@@ -53,6 +57,12 @@ mainApp.config ($stateProvider, $urlRouterProvider) ->
       menuContent:
         templateUrl: "notifications.html"
         controller: "NotificationCtrl"
+  # $stateProvider.state "mood",
+  #   url: "/mood"
+  #   views:
+  #     menuContent:
+  #       templateUrl: "mood.html"
+  #       controller: "MoodCtrl"
 
   $urlRouterProvider.otherwise "/login"
 
@@ -105,9 +115,6 @@ mainApp.controller "LoginCtrl", ($scope, $http, $state, gettext, T, $ionicLoadin
       $scope.requesting = false
       $ionicLoading.hide()
 
-    if Session.loggedIn()
-      $state.go "navigation.notifications"
-
   $scope.register = ->
     if not $scope.register.username or not $scope.register.email or not $scope.register.password
       $ionicPopup.alert 
@@ -134,7 +141,7 @@ mainApp.controller "LoginCtrl", ($scope, $http, $state, gettext, T, $ionicLoadin
       Session.login response.username, response.id
       $scope.reset()
       $ionicLoading.hide()
-      $state.go "navigation.map"
+      $state.go $state.go localStorage.getItem("last_visited") or "navigation.map"
     , (response) ->
       $scope.requesting = false
       $ionicLoading.hide()
@@ -173,10 +180,13 @@ mainApp.controller "LoginCtrl", ($scope, $http, $state, gettext, T, $ionicLoadin
     $scope.register.password = null
     $scope.requesting = false
 
+  if Session.loggedIn()
+    $state.go localStorage.getItem("last_visited") or "navigation.map"
+
 #-------------------------------------------------------------------------------
 # Map
 #------------------------------------------------------------------------------- 
-mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, UI, Util, ContributionRestangular, PhotoRestangular) ->
+mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, Util, UI, ContributionRestangular, PhotoRestangular) ->
 
   $scope.message_id = "mapIndexCtrl"
 
@@ -207,14 +217,8 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
   currentPositionMarker = null
 
   # Map controls
-  locateControl = null
+  # locateControl = null
 
-  map = new L.Map "map",
-    center: Util.lastKnownPosition()
-    zoom: 14
-    zoomControl: false
-
-  $scope.loading = false
   $scope.contributionSelected = false;
   $scope.contribution = {}
 
@@ -236,52 +240,25 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
       return this._container
       
   #-----------------------------------------------------------------------------
-  # MAP EVENTS
+  # MAP
   #-----------------------------------------------------------------------------
+  map = new L.Map "map",
+    center: Util.lastKnownPosition()
+    zoom: 14
+    zoomControl: false
+
   map.on "click", (e) ->
     if contributionDetailVisible
       $scope.hideContributionDetail()
       $scope.$apply()
 
-  map.on "layeradd", (e) ->
-    if e.layer.feature? and e.layer.feature.properties.health < Game.healthAlertThreshold
-      latlng = e.layer._latlng
-      radius = e.layer.feature.properties.radius
-      iconNode = d3.select(e.layer._icon)
-      svgElement = d3.select e.layer._icon.getElementsByClassName("contribution-health")[0]
-
-      # Blink
-      e.layer.blinkInterval = setInterval ->
-        blink svgElement, baseAnimationDuration if map.getBounds().pad(0.1).contains latlng # don't animate when marker is outside
-      , baseAnimationDuration
-
-      # Pulse
-      e.layer.pulseInterval = setInterval ->
-        tripplePulse iconNode, latlng, radius if map.getBounds().pad(0.1).contains latlng # don't animate when marker is outside
-      , pulseDuration
-      tripplePulse iconNode, latlng, radius
-
-  map.on "layerremove", (e) ->
-    clearInterval e.layer.pulseInterval if e.layer.pulseInterval?
-    clearInterval e.layer.blinkInterval if e.layer.blinkInterval?
-
   map.on "locationfound", (e) ->
     # Log.i "Location found: #{e.latlng.lat}, #{e.latlng.lng}"
-    $scope.$apply -> $scope.loading = false
     loadContributions()
     updateCurrentPositionMarker e.latlng
 
   map.on "locationerror", (e) ->
-    $scope.$apply -> $scope.loading = false
     Log.w "Could not determine position (code=#{e.code}). #{e.message}"
-
-  # map.on "zoomstart", (e) ->
-  #   # Fade out all pulse animations
-  #   pulses = d3.selectAll(".contribution-pulse-container")
-  #   # console.log pulses
-  #   pulses.transition()
-  #     .style("opacity", 0)
-  #     .duration(100)
 
   map.on "viewreset", (e) ->
     loadContributions()
@@ -290,7 +267,6 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
     loadContributions()
 
   map.on "error", (e) ->
-    $scope.$apply -> $scope.loading = false
     Log.e "Leaflet error: #{e.message}"
 
   contributionMarkerClicked = (e) ->
@@ -307,8 +283,7 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
       # targetBoundingBox.top < e.originalEvent.clientY < targetBoundingBox.bottom
         if not selectedContributionMarker
           # Hide everything, except selected contribution
-          map.removeControl locateControl
-          map.removeLayer currentPositionMarker
+          # map.removeControl locateControl
           map.removeLayer communitiesLayer
           _.each contributionMarkers, (marker) ->
             if marker is e.target
@@ -330,93 +305,21 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
   #-----------------------------------------------------------------------------
   # INTERNAL FUNCTIONS
   #-----------------------------------------------------------------------------
-  projectCircle = (ll, r) ->
-    lr = (r / 40075017) * 360 / Math.cos(L.LatLng.DEG_TO_RAD * ll.lat)
-    ll2 = new L.LatLng(ll.lat, ll.lng - lr)
-    point = map.latLngToLayerPoint(ll)
-    radius = point.x - map.latLngToLayerPoint(ll2).x
-    return point: point, radius: radius
-
-  blink = (node, duration) ->
-    opacity = if node.style("opacity") < 0.01 then 1 else 0
-    node.transition()
-     .style("opacity", opacity)
-     .duration(duration)
-
-  tripplePulse = (n, ll, r) ->
-    radius = projectCircle(ll, r).radius
-    if radius > markerDiameter / 2
-      point = map.latLngToLayerPoint ll
-      pulse n, point, radius, pulseDuration
-      setTimeout ->
-        pulse n, point, radius, pulseDuration
-      , 200
-      setTimeout ->
-        pulse n, point, radius, pulseDuration
-      , 400
-
-  pulse = (node, point, radius, duration, strokeWidth = 1.5) ->
-    parent = d3.select node.node().parentNode
-    svg = parent.append("svg")
-    svg.attr("width", radius * 2)
-      .attr("height", radius * 2)
-      .attr("class", "contribution-pulse-container")
-      .style("position", "absolute")
-      .style("left", -radius)
-      .style("top", -radius)
-      .style("z-index", -1)
-      # .style("-webkit-transform", L.DomUtil.getTranslateString point)
-      .style("-webkit-transform", node.style("-webkit-transform"))
-      .append("circle")
-      .attr("class", "contribution-pulse")
-      .attr("r", markerDiameter / 2)
-      .attr("cx", radius)
-      .attr("cy", radius)
-      .attr("fill-opacity", 0)
-      .attr("stroke", contributionColor)
-      .attr("stroke-width", strokeWidth)
-      .transition()
-      .attr("r", radius - strokeWidth / 2)
-      .style("opacity", 0)
-      .ease("cubic-out")
-      .duration(duration)
-      .each "end", ->
-        svg.remove()
-
   locate = ->
-    $scope.loading = true
     map.locate
       setView: true
       enableHighAccuracy: true
-      # watch: true
 
   createContributionMarker = (feature, latlng) ->
-    healthProgress = d3.select(document.createElement("div"))
-    healthProgress.append("svg")
-      .attr("class", "contribution-health")
-      .attr("width", markerDiameter)
-      .attr("height", markerDiameter)
-      .append("path")
-      .attr("fill", contributionColor)
-      .attr("transform", "translate(#{markerDiameter / 2 }, #{markerDiameter / 2})")
-      .attr("d", d3.svg.arc()
-        .startAngle(0)
-        .endAngle(2 * Math.PI * feature.properties.health)
-        .innerRadius(0)
-        .outerRadius(markerDiameter / 2))
-
-    svgMarker = new L.Marker latlng,
+    marker = new L.Marker latlng,
       icon: L.divIcon
         className: "contribution-marker"
         iconSize: [markerDiameter, markerDiameter]
-        html: "#{healthProgress.node().innerHTML}<div class=\"contribution-icon contribution-icon-#{Util.convertContributionType feature.properties.type}\"></div>"
-    return svgMarker
+        html: "<div class=\"contribution-icon contribution-icon-#{Util.convertContributionType feature.properties.type}\"></div>"
+    return marker
 
-  # Helper function for loading map data with spinner
   loadContributions =  ->
     return if $scope.contributionSelected
-
-    $scope.loading = true
 
     mapBounds = map.getBounds()
     # contributions = ContributionRestangular.all("contribution").getList
@@ -465,11 +368,8 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
       contributionsLayer.addLayer geoJsonLayer
       
       map.addLayer contributionsLayer
-
-      $scope.loading = false
     .error ->
       Log.e "Could not load contributions"
-      $scope.loading = false
 
     $http
       url: "#{Config.API_ENDPOINT}/contrib/community/"
@@ -489,24 +389,20 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
           fillColor: communityColor
           fillOpacity: communityOpacity
       map.addLayer communitiesLayer
-      $scope.loading = false
     .error ->
       Log.e "Could not load communities"
-      $scope.loading = false
 
   updateCurrentPositionMarker = (latlng) ->
-    # Clean up
-    map.removeLayer currentPositionMarker unless currentPositionMarker is null
-
-    currentPositionMarker = Util.createPositionMarker latlng #, Game.initialRadius
-
-    map.addLayer currentPositionMarker, true
+    if not currentPositionMarker?
+      currentPositionMarker = Util.createPositionMarker latlng
+      currentPositionMarker.addTo map
+    currentPositionMarker.setLatLng latlng 
 
   #-----------------------------------------------------------------------------
   # UI EVENTS
   #-----------------------------------------------------------------------------
   $scope.newContribution = ->
-    $state.go "contribution.new"
+    $state.go "navigation.contribution-new"
 
   $scope.locate = ->
     locate()
@@ -552,19 +448,17 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
     map.addLayer communitiesLayer
     _.each contributionMarkers, (marker) ->
       contributionsLayer.addLayer marker
-    map.addLayer currentPositionMarker
 
-    map.addControl locateControl
+    # map.addControl locateControl
     
     selectedContributionMarker = null
 
   #-----------------------------------------------------------------------------
   # INITIALIZE
   #-----------------------------------------------------------------------------
+
   Util.createTileLayer().addTo map
-
   locateControl = new LocateControl()
-
   map.addControl locateControl
 
   currentPositionInterval = setInterval ->
@@ -572,16 +466,11 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
   , currentPositionIntervalTime   
   
   # Prevents that WebView is dragged
-  document.ontouchmove = (e) -> e.preventDefault()
-  document.addEventListener "visibilitychange", onVisibilityChange, false
+  # document.ontouchmove = (e) -> e.preventDefault()
+  # document.addEventListener "visibilitychange", onVisibilityChange, false
 
   # Prevent that map doesn't receive click events from contribution overlay
   L.DomEvent.disableClickPropagation document.getElementsByClassName("contribution-detail")[0]
-
-  # UI.listen $scope 
-
-  # if not Util.loggedIn()
-  #   Util.logout()
 
   locate()
 
@@ -775,3 +664,320 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $lo
   # Init
   # UI.listen $scope
   $scope.loadContribution $stateParams.id
+
+#-------------------------------------------------------------------------------
+# ContributionNewCtrl
+#-------------------------------------------------------------------------------
+mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, $ionicLoading, $ionicPopup, Util, Log, Config, ContributionRestangular) ->
+  $scope.message_id = "contributionNewCtrl"
+
+  $scope.loading = false
+  $scope.bgImageStyle = {}
+  $scope.hasError = false
+
+  #-----------------------------------------------------------------------------
+  # CONTRIBUTION PROPERTIES
+  #-----------------------------------------------------------------------------
+  $scope.contribution = {}
+  $scope.contribution.poi = null
+  $scope.contribution.type = null
+  $scope.contribution.mood = null
+  $scope.contribution.poll_options = []
+
+  #-----------------------------------------------------------------------------
+  # CAMERA HANDLNG
+  #-----------------------------------------------------------------------------
+  $scope.imageSrc = null
+  $scope.imageFullPath = null
+
+  # Camera failure callback
+  cameraError = (message) ->
+    Log.w "Capturing the photo failed: #{message}"
+    $scope.$apply -> $scope.loading = false
+
+  # File system failure callback
+  fileError = (error) ->
+    Log.w "File system error: #{error}"
+    $scope.$apply -> $scope.loading = false
+
+  # Move the selected photo from Cordova's default tmp folder to Steroids's user files folder
+  imageUriReceived = (imageURI) ->
+    window.resolveLocalFileSystemURI imageURI, gotFileObject, fileError
+
+  gotFileObject = (file) ->
+    # Define a target directory for our file in the user files folder
+    # steroids.app variables require the Steroids ready event to be fired, so ensure that
+    steroids.on "ready", ->
+      targetDirURI = "file://" + steroids.app.absoluteUserFilesPath
+      fileName = "contribution_photo_#{Util.userName()}_#{new Date().getTime()}.jpg"
+
+      window.resolveLocalFileSystemURI(
+        targetDirURI
+        (directory) ->
+          file.moveTo directory, fileName, fileMoved, fileError
+        fileError
+      )
+
+    # Store the moved file's URL into $scope.imageSrc
+    fileMoved = (file) ->
+      # localhost serves files from both steroids.app.userFilesPath and steroids.app.path
+      # Log.d "File located at #{JSON.stringify file}"
+      $scope.imageFullPath = file.fullPath
+      $scope.imageSrc = "/" + file.name
+      $scope.bgImageStyle = {
+        "background-image": "url(#{$scope.imageSrc})"
+      }
+      $scope.$apply -> $scope.loading = false
+
+  #-----------------------------------------------------------------------------
+  # UI CALLBACKS
+  #-----------------------------------------------------------------------------
+  $scope.addPollOption = ->
+    # alert $scope.contribution.poll_option
+    $scope.contribution.poll_options.push $scope.contribution.poll_option
+    $scope.contribution.poll_option = ""
+
+  $scope.addPollOptionPrompt = ->
+    onPrompt = (results) ->
+      if results.buttonIndex is 1
+        $scope.contribution.poll_options.push results.input1 if results.input1 isnt ""
+        $scope.$apply()
+    navigator.notification.prompt "Please enter in the field below.", onPrompt, "Add poll option", ["Add", "Cancel"], new String()
+
+  $scope.removePollOption = (pollOption) ->
+    $scope.contribution.poll_options = _.without $scope.contribution.poll_options, pollOption
+
+  $scope.choosePhoto = (msg) ->
+    navigator.notification.confirm "Select source below",
+      (buttonIndex) ->
+        return if buttonIndex is 3
+        options = {}
+        if buttonIndex is 1
+          options =
+            quality: 70
+            destinationType: navigator.camera.DestinationType.IMAGE_URI
+            sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+            correctOrientation: true # Let Cordova correct the picture orientation (WebViews don't read EXIF data properly)
+            targetWidth: 640
+            popoverOptions: # iPad camera roll popover position
+              width: 768
+              height: 190
+              arrowDir: Camera.PopoverArrowDirection.ARROW_UP
+        else if buttonIndex is 2
+          options =
+            quality: 70
+            destinationType: navigator.camera.DestinationType.IMAGE_URI
+            correctOrientation: true
+            targetWidth: 640
+        navigator.camera.getPicture imageUriReceived, cameraError, options
+        $scope.$apply -> $scope.loading = true
+      msg,
+      ["From library", "Capture photo", "Cancel"]
+
+  $scope.removePhoto = ->
+    $scope.imageSrc = null
+    $scope.bgImageStyle = {}
+
+  $scope.chooseMood = ->
+    $state.go "mood"
+
+  $scope.choosePoi = ->
+    Util.enter "poiView"
+
+  $scope.close = ->
+    Util.return()
+
+  $scope.create = ->
+    $scope.$apply -> $scope.loading = true
+
+    mood = null
+    try
+      mood = $scope.contribution.mood.name
+    catch e
+      mood = null
+    
+    ContributionRestangular.all("contribution").post(
+      title: $scope.contribution.title
+      type: $scope.contribution.type
+      description: $scope.contribution.description
+      mood: mood
+      author: Util.userId()
+      user:
+        id: Util.userId()
+        username: Util.userName()
+      accuracy: window.localStorage.getItem "position.coords.accuracy"
+      point: "POINT (#{Util.lastKnownPosition().lng} #{Util.lastKnownPosition().lat})"
+      poi: $scope.contribution.poi
+      poll_options: $scope.contribution.poll_options
+    ).then (response) ->
+
+      Log.d "Contribution with id=#{response.id} was created"
+
+      if $scope.imageSrc
+        imageURI = $scope.imageSrc
+
+        # Upload photo
+        options = new FileUploadOptions()
+        options.fileKey = "photo"
+        options.fileName = imageURI.substr imageURI.lastIndexOf("/") + 1
+        options.mimeType = "image/jpeg"
+
+        params =
+          creator: Util.userId()
+          contribution: response.id
+
+        options.params = params
+
+        uploadSuccess = (response) ->
+          navigator.notification.alert T._ gettext "Thanks, your contribution was uploaded."
+          , ->
+            $scope.loading = false
+            $scope.reset()
+            $scope.$apply()
+            Util.send "mapIndexCtrl", "locate"
+            Util.return()
+          , "Successfully uploaded"
+
+        uploadError = (response) ->
+          navigator.notification.alert T._ gettext "Your contribution was uploaded without your photo.\nYou can add it later. #{JSON.stringify response}"
+          , ->
+            $scope.loading = false
+            $scope.reset()
+            $scope.$apply()
+            Util.return()
+          , "Photo missing"
+
+        # Log.d "#{imageURI}: #{JSON.stringify options}"
+
+        ft = new FileTransfer()
+        ft.upload $scope.imageFullPath, encodeURI("#{Config.API_ENDPOINT}/photo/"), uploadSuccess, uploadError, options
+      else
+        navigator.notification.alert T._ gettext "Thanks, your contribution was uploaded."
+        , ->
+          $scope.loading = false
+          $scope.reset()
+          $scope.$apply()
+          Util.return()
+        , "Successfully uploaded"
+    , (response) ->
+      Log.e "Contribution upload failed: #{JSON.stringify response.data}"
+      navigator.notification.alert T._ gettext "Sorry, couldn't upload your contribution. Please try again later."
+      , ->
+        $scope.loading = false
+        $scope.$apply()
+      , T._ gettext "Failed to upload"
+
+  $scope.setPoi = (poi) ->
+    $scope.contribution.poi = poi
+
+  $scope.setMood = (mood) ->
+    $scope.contribution.mood = mood
+
+  $scope.resetMood = ->
+    $scope.contribution.mood = null
+
+  $scope.reset = ->
+    $scope.contribution = {}
+    $scope.contribution.type = null
+    $scope.contribution.poll_options = []
+    $scope.removePhoto()
+
+    Util.send "moodIndexCtrl", "reset"
+    Util.send "poiIndexCtrl", "reset"
+
+    $scope.hasError = false
+    window.scrollTo 0, 0
+
+
+  #-----------------------------------------------------------------------------
+  # EVENTS
+  #-----------------------------------------------------------------------------
+  onConfirm = (buttonIndex) ->
+    if buttonIndex is 2
+      return
+    else if buttonIndex is 1
+      $scope.create()
+
+  # buttonAdd.onTap = ->
+  #   error = false
+
+  #   # Check form
+  #   error = not $scope.contribution.type or
+  #   not $scope.contribution.title or
+  #   ($scope.contribution.type is "PL" and $scope.contribution.poll_options.length < 2) or
+  #   ($scope.contribution.type isnt "PL" and not $scope.contribution.description)
+
+  #   if error
+  #     alertCallback = ->
+  #       $scope.hasError = true
+  #       $scope.$apply()
+  #     navigator.notification.alert "Oops, there's something missing!\nPlease check the comments below.", alertCallback, "Something is missing", "Got it!"
+  #   else
+  #     # Meta parameter incentive messages
+  #     title = null
+  #     msg = null
+  #     if !$scope.imageSrc?
+  #       error = true
+  #       title = T._ gettext "Do you want to include a photo?"
+  #       msg = T._ gettext "Adding a photo gives your contribution more meaning and increases your radius!"
+  #     else if !$scope.contribution.poi? or !$scope.contribution.mood?
+  #       error = true
+  #       title = T._ gettext "Do you want to provide additional information?"
+  #       missing = T._ gettext "your location and mood"
+  #       if $scope.contribution.mood?
+  #         missing = T._ gettext "your location"
+  #       else if $scope.contribution.poi?
+  #         missing = T._ gettext "your mood"
+
+  #       msg = T._ gettext "Adding #{missing} gives your contribution more meaning and increases your radius!"
+
+  #     if error
+  #       navigator.notification.confirm msg, onConfirm, title, ["Proceed anyway", "Edit contribution"]
+  #     else
+  #       $scope.create()
+
+  #-----------------------------------------------------------------------------
+  # INIT
+  #-----------------------------------------------------------------------------
+  # document.addEventListener "visibilitychange", onVisibilityChange, false
+
+  # Util.consume $scope
+
+  # steroids.view.setBackgroundColor "#ffffff"
+
+#-------------------------------------------------------------------------------
+# MoodCtrl
+#------------------------------------------------------------------------------- 
+mainApp.controller "MoodCtrl", ($scope, $location, $anchorScroll, UI, MoodRestangular) ->
+  
+  $scope.message_id = "moodIndexCtrl"
+
+  MoodRestangular.all("mood").getList().then (moods) ->
+    $scope.moods = moods
+
+    # Scroll to selected element
+    $location.hash $scope.selectedMood
+    $anchorScroll()
+
+  selectMood = (mood) ->
+    UI.send "contributionNewCtrl", "setMood", mood
+    $scope.selectedMood = mood.code
+
+  unselectMood = ->
+    UI.send "contributionNewCtrl", "resetMood"
+    $scope.selectedMood = null
+
+  $scope.choose = (mood) ->
+    if $scope.selectedMood? and $scope.selectedMood is mood.code
+      unselectMood()
+    else
+      selectMood mood
+
+  $scope.reset = ->
+    unselectMood()
+    window.scrollTo 0, 0
+
+  $scope.unselect = ->
+    unselectMood()
+
+  UI.listen $scope

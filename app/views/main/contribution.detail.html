@@ -1,6 +1,5 @@
 <ion-view title="{{ contribution.title }}">
   <ion-content>
-    <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="loadNotifications()"></ion-refresher>
     <img ng-if="imageSrc" ng-src="{{ imageSrc }}" alt="{{ contribution.title }}" width="{{ imageWidth }}" height="{{ imageHeight }}" class="full-image" img-loading-spinner />
     <div class="card list">
       <div class="item text-center">
