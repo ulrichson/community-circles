@@ -7,36 +7,24 @@ msgstr ""
 msgid "...and removing votes isn't implemented yet ;)"
 msgstr ""
 
-#: dist/views/main/contribution.new.html
-msgid "A contribution type is requred"
+#: dist/controllers/main.js
+msgid "Add"
 msgstr ""
 
-#: dist/views/main/contribution.new.html
-msgid "A descrption is required"
-msgstr ""
-
-#: dist/views/main/contribution.new.html
-msgid "A title is required"
-msgstr ""
-
-#: dist/views/main/contribution.new.html
+#: dist/controllers/main.js
 msgid "Add poll option"
 msgstr ""
 
 #: dist/controllers/main.js
+msgid "Adding  gives your contribution more meaning!"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Adding a photo gives your contribution more meaning!"
+msgstr ""
+
+#: dist/controllers/main.js
 msgid "An error occured"
-msgstr ""
-
-#: dist/views/main/contribution.new.html
-msgid "At least two poll options are required"
-msgstr ""
-
-#: dist/views/main/login.html
-msgid "Back to login"
-msgstr ""
-
-#: dist/views/main/navigation-menu.html
-msgid "Browse Contributions"
 msgstr ""
 
 #: dist/controllers/main.js
@@ -47,8 +35,8 @@ msgstr ""
 msgid "Cannot login"
 msgstr ""
 
-#: dist/views/main/contribution.detail.html
-msgid "Comment"
+#: dist/controllers/main.js
+msgid "Cannot upload photo"
 msgstr ""
 
 #: dist/controllers/main.js
@@ -59,12 +47,12 @@ msgstr ""
 msgid "Couldn't upload comment"
 msgstr ""
 
-#: dist/views/main/notifications.html
-msgid "Dismiss"
+#: dist/controllers/main.js
+msgid "Do you want to include a photo?"
 msgstr ""
 
-#: dist/views/main/login.html
-msgid "Email"
+#: dist/controllers/main.js
+msgid "Do you want to provide additional information?"
 msgstr ""
 
 #: dist/controllers/main.js
@@ -83,24 +71,8 @@ msgstr ""
 msgid "Failed to upload"
 msgstr ""
 
-#: dist/views/main/mood.html
-msgid "How do you feel?"
-msgstr ""
-
-#: dist/views/main/contribution.new.html
-msgid "I'm at"
-msgstr ""
-
-#: dist/views/main/contribution.new.html
-msgid "I'm feeling"
-msgstr ""
-
-#: dist/views/main/contribution.new.html
-msgid "Idea"
-msgstr ""
-
-#: dist/views/main/contribution.new.html
-msgid "Issue"
+#: dist/controllers/main.js
+msgid "Fetching venues..."
 msgstr ""
 
 #: dist/controllers/main.js
@@ -120,41 +92,11 @@ msgid "Loading notifications..."
 msgstr ""
 
 #: dist/controllers/main.js
+msgid "Locating..."
+msgstr ""
+
+#: dist/controllers/main.js
 msgid "Logging in..."
-msgstr ""
-
-#: dist/views/main/login.html
-msgid "Login"
-msgstr ""
-
-#: dist/views/main/navigation-menu.html
-msgid "Logout"
-msgstr ""
-
-#: dist/views/main/map.html
-#: dist/views/main/navigation-menu.html
-msgid "Map"
-msgstr ""
-
-#: dist/views/main/navigation-menu.html
-msgid "Menu"
-msgstr ""
-
-#: dist/views/main/contribution.new.html
-msgid "New contribution"
-msgstr ""
-
-#: dist/views/main/navigation-menu.html
-#: dist/views/main/notifications.html
-msgid "Notifications"
-msgstr ""
-
-#: dist/views/main/contribution.new.html
-msgid "Opinion"
-msgstr ""
-
-#: dist/views/main/login.html
-msgid "Password"
 msgstr ""
 
 #: dist/controllers/main.js
@@ -163,6 +105,10 @@ msgstr ""
 
 #: dist/controllers/main.js
 msgid "Please enter all details!"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Please enter in the field below."
 msgstr ""
 
 #: dist/controllers/main.js
@@ -181,24 +127,8 @@ msgstr ""
 msgid "Please try again later."
 msgstr ""
 
-#: dist/views/main/contribution.new.html
-msgid "Poll"
-msgstr ""
-
-#: dist/views/main/notifications.html
-msgid "Pull to refresh..."
-msgstr ""
-
-#: dist/views/main/notifications.html
-msgid "Read"
-msgstr ""
-
-#: dist/views/main/login.html
-msgid "Register"
-msgstr ""
-
-#: dist/views/main/login.html
-msgid "Register account"
+#: dist/controllers/main.js
+msgid "Poll option"
 msgstr ""
 
 #: dist/controllers/main.js
@@ -206,11 +136,15 @@ msgid "Registering account..."
 msgstr ""
 
 #: dist/controllers/main.js
+msgid "Select source below"
+msgstr ""
+
+#: dist/controllers/main.js
 msgid "Send"
 msgstr ""
 
-#: dist/views/main/notifications.html
-msgid "Set Unread"
+#: dist/controllers/main.js
+msgid "Something is missing"
 msgstr ""
 
 #: dist/controllers/main.js
@@ -221,12 +155,8 @@ msgstr ""
 msgid "Sorry, couldn't upload your contribution. Please try again later."
 msgstr ""
 
-#: dist/views/main/contribution.new.html
-msgid "Tap to enter a description"
-msgstr ""
-
-#: dist/views/main/contribution.new.html
-msgid "Tap to enter a title"
+#: dist/controllers/main.js
+msgid "Successfully uploaded"
 msgstr ""
 
 #: dist/controllers/main.js
@@ -235,18 +165,6 @@ msgstr ""
 
 #: dist/controllers/main.js
 msgid "Thanks, your contribution was uploaded."
-msgstr ""
-
-#: dist/views/main/notifications.html
-msgid "There are no notifications for you."
-msgstr ""
-
-#: dist/views/main/login.html
-msgid "Username"
-msgstr ""
-
-#: dist/views/main/contribution.detail.html
-msgid "Vote"
 msgstr ""
 
 #: dist/controllers/main.js
@@ -261,30 +179,22 @@ msgstr ""
 msgid "You have already voted for this poll!"
 msgstr ""
 
-#: dist/views/main/notifications.html
-msgid "You have {{ notifications.length }} notification"
-msgid_plural "You have {{ notifications.length }} notifications"
-msgstr[0] ""
-msgstr[1] ""
-
 #: dist/controllers/main.js
-msgid ""
-"Your contribution was uploaded without your photo."
-"You can add it later."
+msgid "Your contribution was uploaded without your photo."
 msgstr ""
 
 #: dist/controllers/main.js
 msgid "Your username is invalid"
 msgstr ""
 
-#: dist/views/main/map.html
-msgid "by"
+#: dist/controllers/main.js
+msgid "your location"
 msgstr ""
 
-#: dist/views/main/contribution.detail.html
-msgid "feeling"
+#: dist/controllers/main.js
+msgid "your location and mood"
 msgstr ""
 
-#: dist/views/main/map.html
-msgid "more"
+#: dist/controllers/main.js
+msgid "your mood"
 msgstr ""

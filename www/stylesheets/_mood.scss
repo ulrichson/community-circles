@@ -1,14 +1,11 @@
-@import 'base.scss';
-
 .mood {
-  color: $cc-dark;
   float: left;
   text-align: center;
   width: 33.33333333%;
 }
 
 .mood.active {
-  color: $cc-light;
+  color: $positive;
 }
 
 .mood .mood-icon {

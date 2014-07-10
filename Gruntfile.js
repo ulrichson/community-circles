@@ -23,12 +23,24 @@ module.exports = function(grunt) {
           "dist/javascripts/translations.js": ["po/*.po"]
         }
       },
+    },
+    ngtemplates: {
+      app: {
+        cwd: "app/templates",
+        src: "**.html",
+        dest: "dist/javascripts/templates.js",
+        options: {
+          module: "templates",
+          standalone: true
+        }
+      }
     }
   });
 
   grunt.loadNpmTasks("grunt-steroids");
   grunt.loadNpmTasks("grunt-angular-gettext");
+  grunt.loadNpmTasks('grunt-angular-templates');
 
-  grunt.registerTask("default", ["steroids-make", "steroids-compile-sass", "nggettext_extract", "nggettext_compile"]);
+  grunt.registerTask("default", ["steroids-make", "steroids-compile-sass", "nggettext_extract", "nggettext_compile", "ngtemplates"]);
 
 };

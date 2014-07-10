@@ -1,21 +1,17 @@
-@import 'base.scss';
-
 $mapHeight: 150px;
 $anchorOffset: 30px;
 
-#map {
+#poi-map {
   height: $mapHeight;
   box-shadow: 0 0 $dropshadowWidth $dropshadowColor;
-  position: fixed;
-  top: 0;
   width: 100%;
-  z-index: 200;
 }
 
-#poi-list {
-  margin-top: $mapHeight;
-  position: relative;
-  z-index: 100;
+.poi-list {
+  .active {
+    background-color: $positive;
+    color: #ffffff;
+  }
 }
 
 .anchor {

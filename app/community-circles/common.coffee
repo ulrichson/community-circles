@@ -30,6 +30,56 @@ common.constant "Key",
   NOKIA_APP_ID: @key.NOKIA_APP_ID
   NOKIA_APP_CODE: @key.NOKIA_APP_CODE
 
+common.value "moods", [
+    "code": "happy"
+    "name": "happy"
+  ,
+    "code": "unhappy"
+    "name": "unhappy"
+  ,
+    "code": "crying"
+    "name": "sad"
+  ,
+    "code": "angry"
+    "name": "angry"
+  ,
+    "code": "overhappy"
+    "name": "overhappy"
+  ,
+    "code": "shocked"
+    "name": "shocked"
+  ,
+    "code": "confused"
+    "name": "confused"
+  ,
+    "code": "inlove"
+    "name": "in love"
+  ,
+    "code": "intelligent"
+    "name": "smart"
+  ,
+    "code": "blinking"
+    "name": "ironic"
+  ,
+    "code": "silent"
+    "name": "silent"
+  ,
+    "code": "king"
+    "name": "royal"
+  ,
+    "code": "thief"
+    "name": "sneaky"
+  ,
+    "code": "toothy"
+    "name": "childish"
+  ,
+    "code": "sleepy"
+    "name": "tired"
+  ,
+    "code": "sealed"
+    "name": "sealed"
+  ]
+
 common.constant "Color", 
   ccLighter: "#3fd1d1"
   ccLight: "#00c8c8"

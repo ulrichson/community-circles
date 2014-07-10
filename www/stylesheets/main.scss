@@ -12,22 +12,72 @@ $calm:      $cc-lighter;
 $muted:     lighten($base-color, 75%);
 
 @import 
+  "contribution",
   "login",
   "map",
-  "contribution";
+  "mood",
+  "poi";
 
 .text-muted {
   color: $muted !important;
 }
 
-.pull-left {
-  float: left;
+.center-block {
+  @include center-block();
 }
-
 .pull-right {
-  float: right;
+  float: right !important;
+}
+.pull-left {
+  float: left !important;
 }
 
 .img-circle {
   border-radius: 50%;
+}
+
+.button-circle {
+  width: 80px;
+  height: 80px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.42;
+  border-radius: 40px;
+}
+
+//
+// Close icons
+// --------------------------------------------------
+
+
+.close {
+  float: right;
+  font-size: ($font-size-base * 1.5);
+  font-weight: $close-font-weight;
+  line-height: 1;
+  color: $close-color;
+  text-shadow: $close-text-shadow;
+  @include opacity(.2);
+
+  &:hover,
+  &:focus {
+    color: $close-color;
+    text-decoration: none;
+    cursor: pointer;
+    @include opacity(.5);
+  }
+
+  // [converter] extracted button& to button.close
+}
+
+// Additional properties for button version
+// iOS requires the button element instead of an anchor tag.
+// If you want the anchor version, it requires `href="#"`.
+button.close {
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  -webkit-appearance: none;
 }

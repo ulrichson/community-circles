@@ -1,0 +1,36 @@
+<ion-side-menus>
+    
+  <ion-pane ion-side-menu-content>
+    <ion-nav-bar class="bar-royal nav-title-slide-ios7">
+      <ion-nav-back-button class="button-clear"><i class="icon ion-ios7-arrow-back"></i> <span translate>Back</span></ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
+  </ion-pane>
+  
+  <ion-side-menu side="left">
+    <header class="bar bar-header bar-calm">
+      <h1 class="title" translate>Menu</h1>
+    </header>
+    <ion-content class="has-header">
+      <ion-list>
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.map">
+          <i class="icon ion-map"></i>
+          <span translate>Map</span>
+        </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.contribution-list">
+          <i class="icon ion-search"></i>
+          <span translate>Browse Contributions</span>
+        </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.notifications">
+          <i class="icon ion-archive"></i>
+          <span translate>Notifications</span>
+          <span class="badge badge-assertive">0</span>
+        </ion-item>
+      </ion-list>
+      <button class="button button-full button-light" ng-click="logout()">
+        <i class="icon ion-log-out"></i> <span translate>Logout</span>
+      </button>
+    </ion-content>
+  </ion-side-menu>
+
+</ion-side-menus>

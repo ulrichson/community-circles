@@ -16,9 +16,29 @@ msgstr ""
 msgid "...and removing votes isn't implemented yet ;)"
 msgstr "...und das Löschen von Stimmen ist noch nicht implementiert ;)"
 
+#: dist/views/main/contribution.new.html
+msgid "A contribution type is requred"
+msgstr "Ein Beitragstyp ist erforderlich"
+
+#: dist/views/main/contribution.new.html
+msgid "A descrption is required"
+msgstr "Die Beschreibung ist erforderlich"
+
+#: dist/views/main/contribution.new.html
+msgid "A title is required"
+msgstr "Der Titel ist erforderlich"
+
+#: dist/views/main/contribution.new.html
+msgid "Add poll option"
+msgstr "Antwortmöglichkeit hinzufügen"
+
 #: dist/controllers/main.js
 msgid "An error occured"
 msgstr "Ein Fehler ist aufgetreten"
+
+#: dist/views/main/contribution.new.html
+msgid "At least two poll options are required"
+msgstr "Mindestens zwei Antwortmöglichkeiten notwendig"
 
 #: dist/views/main/login.html
 msgid "Back to login"
@@ -69,6 +89,31 @@ msgid "Error with username"
 msgstr "Fehler beim Benutzername"
 
 #: dist/controllers/main.js
+msgid "Failed to upload"
+msgstr "Hochladen fehlgeschlagen"
+
+#: dist/views/main/mood.html
+msgid "How do you feel?"
+msgstr "Wie fühlst du dich?"
+
+#: dist/views/main/contribution.new.html
+msgid "I'm at"
+msgstr "Ich bin bei"
+
+#: dist/views/main/contribution.new.html
+#, fuzzy
+msgid "I'm feeling"
+msgstr "fühlt sich"
+
+#: dist/views/main/contribution.new.html
+msgid "Idea"
+msgstr "Idee"
+
+#: dist/views/main/contribution.new.html
+msgid "Issue"
+msgstr "Problem"
+
+#: dist/controllers/main.js
 msgid ""
 "It may contain letters, numbers, the characters '-', '_' and '.' but no "
 "special characters."
@@ -110,9 +155,18 @@ msgstr "Karte"
 msgid "Menu"
 msgstr "Menü"
 
+#: dist/views/main/contribution.new.html
+#, fuzzy
+msgid "New contribution"
+msgstr "Beiträge durchsuchen"
+
 #: dist/views/main/navigation-menu.html dist/views/main/notifications.html
 msgid "Notifications"
 msgstr "Benachrichtigungen"
+
+#: dist/views/main/contribution.new.html
+msgid "Opinion"
+msgstr "Meinung"
 
 #: dist/views/main/login.html
 msgid "Password"
@@ -144,7 +198,11 @@ msgstr "Bitte später versuchen."
 msgid "Please try again later."
 msgstr "Bitte später versuchen."
 
-#: dist/views/main/contribution.detail.html dist/views/main/notifications.html
+#: dist/views/main/contribution.new.html
+msgid "Poll"
+msgstr "Frage"
+
+#: dist/views/main/notifications.html
 msgid "Pull to refresh..."
 msgstr "Zum Aktualisieren ziehen..."
 
@@ -177,8 +235,25 @@ msgid "Sorry, an error occured"
 msgstr "Es tut uns Leid, es ist ein Fehler aufgetreten."
 
 #: dist/controllers/main.js
+msgid "Sorry, couldn't upload your contribution. Please try again later."
+msgstr ""
+"Der Beitrag konnte leider nicht hochgeladen werden. Bitte versuche es später."
+
+#: dist/views/main/contribution.new.html
+msgid "Tap to enter a description"
+msgstr "Gib hier eine Beschreibung ein"
+
+#: dist/views/main/contribution.new.html
+msgid "Tap to enter a title"
+msgstr "Gib hier einen Titel an"
+
+#: dist/controllers/main.js
 msgid "Thanks for voting"
 msgstr "Danke für die Abstimmung"
+
+#: dist/controllers/main.js
+msgid "Thanks, your contribution was uploaded."
+msgstr "Danke, dein Beitrag wurde hochgeladen."
 
 #: dist/views/main/notifications.html
 msgid "There are no notifications for you."
@@ -209,6 +284,10 @@ msgid "You have {{ notifications.length }} notification"
 msgid_plural "You have {{ notifications.length }} notifications"
 msgstr[0] "Du hast {{ notifications.length }} Benachrichtung"
 msgstr[1] "Du hast {{ notifications.length }} Benachrichtungen"
+
+#: dist/controllers/main.js
+msgid "Your contribution was uploaded without your photo.You can add it later."
+msgstr ""
 
 #: dist/controllers/main.js
 msgid "Your username is invalid"
