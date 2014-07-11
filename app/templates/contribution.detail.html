@@ -8,13 +8,16 @@
         <p>
           <span translate>by</span> <strong>{{ contribution.user.username }}</strong> <span am-time-ago="contribution.created"></span>
         </p>
-        <p>
+        <p class="no-truncate">
           <span ng-show="contribution.poi || contribution.mood">
             <span ng-show="contribution.poi"><i class="icon ion-ios7-location"></i> {{ contribution.poi }}</span>
-            <span ng-show="contribution.poi"><i class="icon icomatic {{ contribution.mood }}filled" style="font-size: 1.4em"></i>{{ contribution.mood | mood:moods }}</span>
+            <span ng-show="contribution.mood"><i class="icon icomatic {{ contribution.mood }}filled" style="font-size: 1.4em"></i>{{ contribution.mood | mood:moods }}</span>
           </span>
           <i class="icon ion-ios7-chatbubble"></i> {{ contribution.comments_count }} <i class="icon ion-ios7-heart"></i> {{ contribution.votes_count }}
         </p>
+      </div>
+      <div class="item no-padding">
+        <div id="contribution-map"></div>
       </div>
       <div class="item item-text-wrap" ng-if="contribution.type != 'PL'">
         {{ contribution.description }}
@@ -39,7 +42,7 @@
     </div>
     <div class="list" ng-if="comments.length > 0">
       <div class="item item-divider">
-        <span translate translate-n="comments.lengths" translate-plural="{{ comments.length }} comments">{{ comments.length }} comment</span>
+        <span translate translate-n="comments.length" translate-plural="{{ comments.length }} comments">{{ comments.length }} comment</span>
       </div>
       <div class="item" ng-repeat="comment in comments | orderBy: 'created'">
         <span class="item-note">

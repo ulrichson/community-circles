@@ -302,6 +302,14 @@ common.factory "Util", ->
 
     return pm
 
+  createContributionMarker: (latlng, type) ->
+    marker = new L.Marker latlng,
+      icon: L.divIcon
+        className: "contribution-marker"
+        iconSize: [40, 40]
+        html: "<div class=\"contribution-icon contribution-icon-#{this.convertContributionType type}\"></div>"
+    return marker
+
   disableMapInteraction: (map) ->
     map.dragging.disable()
     map.touchZoom.disable()
@@ -315,6 +323,13 @@ common.factory "Util", ->
     map.doubleClickZoom.enable()
     map.scrollWheelZoom.enable()
     map.tap.enable() if map.tap
+
+  pointToLatLng: (point) ->
+    try
+      matches = point.match /\d+\.?\d*|\.\d+/g
+      return L.latLng parseFloat(matches[1]), parseFloat(matches[0])
+    catch e
+      return null
 
   generateRandomContributions: (latLngBounds, n) ->
     type: "FeatureCollection"

@@ -651,7 +651,7 @@ mainApp.controller "NotificationCtrl", ($scope, gettext, $state, T, $ionicLoadin
 #-------------------------------------------------------------------------------
 # ContributionDetailCtrl
 #------------------------------------------------------------------------------- 
-mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $ionicScrollDelegate, gettext, T, $ionicLoading, $ionicPopup, Config, Log, UI, Session, ContributionRestangular) ->
+mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $ionicScrollDelegate, gettext, T, $ionicLoading, $ionicPopup, Config, Log, Util, UI, Session, ContributionRestangular) ->
   # $scope.message_id = "showContributionController"
   $scope.contribution = {}
   $scope.comments = []
@@ -660,6 +660,12 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
   $scope.imageHeight = $scope.imageWidth
 
   scrollBottom = false
+  contributionMarker = null
+
+  map = new L.Map "contribution-map",
+    center: Util.lastKnownPosition()
+    zoom: 14
+    zoomControl: false
 
   $scope.loadContribution = (id) ->
     $scope.contribution.id = id
@@ -669,6 +675,11 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
     ContributionRestangular.all("contribution").getList(id: id).then (data) ->
       $scope.contribution = data[0]
       $scope.imageSrc = "#{Config.API_ENDPOINT}/download/?photo_id=#{$scope.contribution.photos[0]}&convert=square_640" if $scope.contribution.photos[0]
+      latlng = Util.pointToLatLng $scope.contribution.point
+      map.setView latlng
+      map.removeLayer contributionMarker if contributionMarker
+      contributionMarker = Util.createContributionMarker latlng, $scope.contribution.type
+      contributionMarker.addTo map
     .finally ->
       $ionicLoading.hide()
 
@@ -785,6 +796,8 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
 
   # Init
   # UI.listen $scope
+  Util.createTileLayer().addTo map
+  Util.disableMapInteraction map
   $scope.loadContribution $stateParams.id
 
 #-------------------------------------------------------------------------------
