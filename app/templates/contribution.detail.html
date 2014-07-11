@@ -1,7 +1,4 @@
 <ion-view title="{{ contribution.title }}">
-  <ion-nav-buttons side="left">
-    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
-  </ion-nav-buttons>
   <ion-content>
     <img ng-if="imageSrc" ng-src="{{ imageSrc }}" alt="{{ contribution.title }}" width="{{ imageWidth }}" height="{{ imageHeight }}" class="full-image" img-loading-spinner />
     <div class="card list">

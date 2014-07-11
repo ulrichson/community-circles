@@ -1,0 +1,44 @@
+<ion-view title="{{ 'Contributions' | translate }}">
+
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+
+  <ion-header-bar class="bar-subheader">
+    <div class="button-bar">
+      <a class="button button-positive button-outline button-small" ng-class="{ active: filter == 'nearby' }" ng-click="filter = 'nearby'; order = 'point'; reverse = 'true'; loadContributions()" translate>Nearby</a>
+      <a class="button button-positive button-outline button-small" ng-class="{ active: filter == 'latest' }" ng-click="filter = 'latest'; order = 'created'; reverse = 'true'; loadContributions()" translate>Latest</a>
+      <a class="button button-positive button-outline button-small" ng-class="{ active: filter == 'mine' }" ng-click="filter = 'mine'; order = 'created'; reverse = 'true'; loadContributions()" translate>Mine</a>
+    </div>
+  </ion-header-bar>
+
+  <ion-content>
+    <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="loadContributions()"></ion-refresher> 
+    <div class="range range-positive padding" ng-hide="filter == 'mine'">
+      {{ minDistance }}m
+      <input type="range" name="distance" ng-model="data.distance" value="{{ initDistance }}" min="{{ minDistance }}" max="{{ maxDistance }}" ng-change="distanceChanged()">
+      {{ maxDistance }}m
+    </div>
+    <div class="list" ng-show="contributions.length > 0">
+      <div class="item item-divider" ng-show="filter == 'mine'">
+        <span translate translate-n="contributions.length" translate-plural="{{ contributions.length }} contributions">{{ contributions.length }} contribution</span>
+      </div>
+      <div class="item item-divider" ng-show="filter != 'mine'">
+        <span translate translate-n="contributions.length" translate-plural="{{ contributions.length }} contributions">{{ contributions.length }} contribution</span> <span translate>within {{ data.distance }}m</span>
+      </div>
+      <div class="item item-thumbnail-left" ng-repeat="contribution in contributions | orderBy : pointDistance : reverse" ng-click="openContribution(contribution.id)">
+        <img ng-if="contribution.photos[0]" ng-src="{{ baseUrl }}/download/?photo_id={{ contribution.photos[0] }}&convert=square_200" alt="{{ contribution.title }}">
+        <h2>{{ contribution.title }}</h2>
+        <p>
+          <span translate>by</span> <strong>{{ contribution.user.username }}</strong> <span am-time-ago="contribution.created"></span><br>
+          <i class="icon ion-ios7-chatbubble"></i> {{ contribution.comments_count }} <i class="icon ion-ios7-heart"></i> {{ contribution.votes_count }}
+        </p>
+        <span class="badge badge-positive">{{ contribution.point | distanceToMe | distance }}</span>
+      </div>
+    </div>
+    <div class="list" ng-show="contributions.length == 0">
+      <div class="item item-divider" translate>No contributions found</div>
+    </div>
+  </ion-content>
+
+</ion-view>

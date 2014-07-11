@@ -16,12 +16,34 @@ angular.module("ng").filter "cut", ->
     value + (tail or "…")
 
 #-------------------------------------------------------------------------------
+# Filter
+#-------------------------------------------------------------------------------
+common.filter "distanceToMe", ->
+    return (input) ->
+      try
+        matches = input.match /\d+\.?\d*|\.\d+/g
+        latLngFrom = L.latLng parseFloat(localStorage.getItem "position.coords.latitude"), parseFloat(window.localStorage.getItem "position.coords.longitude")
+        latLngTo = L.latLng parseFloat(matches[1]), parseFloat(matches[0])
+        return latLngFrom.distanceTo latLngTo
+      catch e
+        console.log e
+        return "NaN"
+
+common.filter "distance", ->
+  return (input) ->
+    if input >= 1000
+      return (input/1000).toFixed(2) + "km"
+    else
+      return input.toFixed(0) + "m"
+
+#-------------------------------------------------------------------------------
 # Constants
 #------------------------------------------------------------------------------- 
 common.constant "Config",
   SUPPORT_EMAIL: @config.SUPPORT_EMAIL
   API_ENDPOINT: @config.API_ENDPOINT
   REGEX_USERNAME: /^[a-zA-Z0-9\-\_\.]+$/
+  REGEX_POINT: /\d+\.?\d*|\.\d+/g 
   VERSION: "v1.6.2"
 
 common.constant "Key",
@@ -29,56 +51,6 @@ common.constant "Key",
   FOURSQAURE_CLIENT_SECTRET: @key.FOURSQAURE_CLIENT_SECTRET
   NOKIA_APP_ID: @key.NOKIA_APP_ID
   NOKIA_APP_CODE: @key.NOKIA_APP_CODE
-
-common.value "moods", [
-    "code": "happy"
-    "name": "happy"
-  ,
-    "code": "unhappy"
-    "name": "unhappy"
-  ,
-    "code": "crying"
-    "name": "sad"
-  ,
-    "code": "angry"
-    "name": "angry"
-  ,
-    "code": "overhappy"
-    "name": "overhappy"
-  ,
-    "code": "shocked"
-    "name": "shocked"
-  ,
-    "code": "confused"
-    "name": "confused"
-  ,
-    "code": "inlove"
-    "name": "in love"
-  ,
-    "code": "intelligent"
-    "name": "smart"
-  ,
-    "code": "blinking"
-    "name": "ironic"
-  ,
-    "code": "silent"
-    "name": "silent"
-  ,
-    "code": "king"
-    "name": "royal"
-  ,
-    "code": "thief"
-    "name": "sneaky"
-  ,
-    "code": "toothy"
-    "name": "childish"
-  ,
-    "code": "sleepy"
-    "name": "tired"
-  ,
-    "code": "sealed"
-    "name": "sealed"
-  ]
 
 common.constant "Color", 
   ccLighter: "#3fd1d1"
@@ -90,7 +62,7 @@ common.constant "Color",
 #-------------------------------------------------------------------------------
 # Run
 #-------------------------------------------------------------------------------
-common.run ($rootScope, Log, Color) ->
+common.run ($rootScope, gettextCatalog, gettext, Log, Color) ->
   # Check for config files
   if !@config? or !@key?
     alert "app/community-circles/private.coffee is missing or malformed!"
@@ -152,8 +124,16 @@ common.directive "imgLoadingSpinner", (Log) ->
       spinner.style.display = "block"
 
     scope.$on "$destroy", ->
-      Log.d "remove"
+      # Log.d "remove"
       angular.element(wrapper).remove()
+
+# http://stackoverflow.com/questions/15207788/calling-a-function-when-ng-repeat-has-finished
+common.directive "onFinishRender", ($timeout) ->
+  restrict: "A"
+  link: (scope, element, attr) ->
+    if scope.$last is true
+      $timeout ->
+        scope.$emit "ngRepeatFinished"
 
 #-------------------------------------------------------------------------------
 # Translate

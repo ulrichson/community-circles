@@ -8,12 +8,12 @@
   color: $positive;
 }
 
-.mood .mood-icon {
-  display: inline-block;
-  font-size: 90px;
-}
-
-.mood .mood-label {
-  position: relative;
-  top: -15px;
+.mood {
+  .mood-icon {
+    font-size: 6em;
+  }
+  .mood-label {
+    position: relative;
+    top: -15px;
+  }
 }

@@ -4,7 +4,7 @@
     <ion-nav-bar class="bar-royal nav-title-slide-ios7">
       <ion-nav-back-button class="button-clear"><i class="icon ion-ios7-arrow-back"></i> <span translate>Back</span></ion-nav-back-button>
     </ion-nav-bar>
-    <ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
+    <ion-nav-view name="mainContent" animation="slide-left-right"></ion-nav-view>
   </ion-pane>
   
   <ion-side-menu side="left">
@@ -13,15 +13,15 @@
     </header>
     <ion-content class="has-header">
       <ion-list>
-        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.map">
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.map" ui-sref-active="active">
           <i class="icon ion-map"></i>
           <span translate>Map</span>
         </ion-item>
-        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.contribution-list">
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.contribution-list" ui-sref-active="active">
           <i class="icon ion-search"></i>
           <span translate>Browse Contributions</span>
         </ion-item>
-        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.notifications">
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.notifications" ui-sref-active="active">
           <i class="icon ion-archive"></i>
           <span translate>Notifications</span>
           <span class="badge badge-assertive">0</span>

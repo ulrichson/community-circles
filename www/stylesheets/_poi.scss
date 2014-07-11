@@ -1,6 +1,14 @@
 $mapHeight: 150px;
 $anchorOffset: 30px;
 
+.poi .bar-subheader{
+  height: $mapHeight !important;
+}
+
+.poi .has-subheader{
+  top: $mapHeight + $bar-height !important;
+}
+
 #poi-map {
   height: $mapHeight;
   box-shadow: 0 0 $dropshadowWidth $dropshadowColor;
@@ -27,7 +35,7 @@ $anchorOffset: 30px;
 }
 
 .poi-marker {
-  background-image: url(/icons/marker-icon-poi.svg);
+  background-image: url(/icons/marker-icon-poi@2x.png);
   background-size: 100%;
   margin: 0;
   padding: 0;
@@ -40,9 +48,9 @@ $anchorOffset: 30px;
 }
 
 .poi-marker.active {
-  background-image: url(/icons/marker-icon-poi_active.svg);
+  background-image: url(/icons/marker-icon-poi_active@2x.png);
 }
 
 .poi-marker.disabled {
-  background-image: url(/icons/marker-icon-poi_disabled.svg);
+  background-image: url(/icons/marker-icon-poi_disabled@2x.png);
 }

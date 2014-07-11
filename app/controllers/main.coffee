@@ -22,51 +22,91 @@ mainApp.config ($stateProvider, $urlRouterProvider) ->
   .state "app",
     url: "/app"
     abstract: true
-    templateUrl: "navigation-menu.html"
+    templateUrl: "navigation.html"
   .state "app.map",
     url: "/map"
     views:
-      menuContent:
+      mainContent:
         templateUrl: "map.html"
         controller: "MapCtrl"
   .state "app.contribution-new",
     url: "/contribution-new"
     views:
-      menuContent:
+      mainContent:
         templateUrl: "contribution.new.html"
         controller: "ContributionNewCtrl"
   .state "app.contribution-detail",
     url: "/contribution-detail/:id"
     views:
-      menuContent:
+      mainContent:
         templateUrl: "contribution.detail.html"
         controller: "ContributionDetailCtrl"
+  .state "app.contribution-list",
+    url: "/contribution-list"
+    views:
+      mainContent:
+        templateUrl: "contribution.list.html"
+        controller: "ContributionListCtrl"
   .state "app.notifications",
     url: "/notifications"
     views:
-      menuContent:
+      mainContent:
         templateUrl: "notifications.html"
         controller: "NotificationCtrl"
   $stateProvider.state "app.mood",
     url: "/mood"
     views:
-      menuContent:
+      mainContent:
         templateUrl: "mood.html"
         controller: "MoodCtrl"
   $stateProvider.state "app.poi",
     url: "/poi"
     views:
-      menuContent:
+      mainContent:
         templateUrl: "poi.html"
         controller: "PoiCtrl"
 
   $urlRouterProvider.otherwise "/app/map"
 
 #-------------------------------------------------------------------------------
+# Factory (shared models)
+#-------------------------------------------------------------------------------
+mainApp.factory "contributionModel", ->
+  _object =
+    title: null
+    type: null
+    description: null
+    mood: null
+    author: null
+    user:
+      id: null
+      username: null
+    accuracy: null
+    point: null
+    poi: null
+    poll_options: []
+
+  reset: ->
+    _object =
+      title: null
+      type: null
+      description: null
+      mood: null
+      author: null
+      user:
+        id: null
+        username: null
+      accuracy: null
+      point: null
+      poi: null
+      poll_options: []
+
+  return _object
+#-------------------------------------------------------------------------------
 # Init
 #-------------------------------------------------------------------------------
-mainApp.run ($rootScope, $templateCache, $ionicPlatform, Log, amMoment, gettextCatalog) ->
-  Log.i "Running mainApp"
+mainApp.run ($rootScope, $templateCache, $ionicPlatform, T, gettext, Log, amMoment, gettextCatalog) ->
+  Log.i "Running mainApp..."
   $ionicPlatform.ready ->
     # Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     # for form inputs)
@@ -78,12 +118,72 @@ mainApp.run ($rootScope, $templateCache, $ionicPlatform, Log, amMoment, gettextC
       StatusBar.styleDefault()
 
   # Set language
+
+  # $rootScope.checkLanguage = -> 
+  #   navigator.globalization.getPreferredLanguage (language) ->  
+  #     console.log language.value
+  #   ,
+  #   ->
+  #     console.log "no languate"
+  # $rootScope.checkLanguage()
+
   $rootScope.language = "de"
 
   if $rootScope.language isnt "en"
     gettextCatalog.currentLanguage = $rootScope.language
     gettextCatalog.debug = true
     amMoment.changeLanguage $rootScope.language
+
+  # Moods
+  $rootScope.moods = [
+    "code": "happy"
+    "name": T._ gettext "happy"
+  ,
+    "code": "unhappy"
+    "name": T._ gettext "unhappy"
+  ,
+    "code": "crying"
+    "name": T._ gettext "sad"
+  ,
+    "code": "angry"
+    "name": T._ gettext "angry"
+  ,
+    "code": "overhappy"
+    "name": T._ gettext "overhappy"
+  ,
+    "code": "shocked"
+    "name": T._ gettext "shocked"
+  ,
+    "code": "confused"
+    "name": T._ gettext "confused"
+  ,
+    "code": "inlove"
+    "name": T._ gettext "in love"
+  ,
+    "code": "intelligent"
+    "name": T._ gettext "smart"
+  ,
+    "code": "blinking"
+    "name": T._ gettext "ironic"
+  ,
+    "code": "silent"
+    "name": T._ gettext "silent"
+  ,
+    "code": "king"
+    "name": T._ gettext "royal"
+  ,
+    "code": "thief"
+    "name": T._ gettext "sneaky"
+  ,
+    "code": "toothy"
+    "name": T._ gettext "childish"
+  ,
+    "code": "sleepy"
+    "name": T._ gettext "tired"
+  ,
+    "code": "sealed"
+    "name": T._ gettext "sealed"
+  ]
 
   # Save last visited view
   $rootScope.$on "$stateChangeSuccess", (event, toState, toParams, fromState, fromParams) ->
@@ -682,7 +782,7 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $lo
         template: T._ gettext "...and removing votes isn't implemented yet ;)"
 
   $scope.hasVotedForPollOption = (poll_option) ->
-    return _.contains poll_option.votes, Util.userName()
+    return _.contains poll_option.votes, Session.userName()
 
   # Init
   # UI.listen $scope
@@ -691,8 +791,9 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $lo
 #-------------------------------------------------------------------------------
 # ContributionNewCtrl
 #-------------------------------------------------------------------------------
-mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, $ionicLoading, $ionicPopup, $ionicNavBarDelegate, Util, Log, Config, ContributionRestangular) ->
-  $scope.message_id = "contributionNewCtrl"
+mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, contributionModel, $ionicLoading, $ionicPopup, $ionicNavBarDelegate, Util, Log, Config, ContributionRestangular) ->
+  console.log contributionModel
+  # $scope.message_id = "contributionNewCtrl"
 
   $scope.bgImageStyle = {}
   $scope.hasError = false
@@ -700,11 +801,11 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, $i
   #-----------------------------------------------------------------------------
   # CONTRIBUTION PROPERTIES
   #-----------------------------------------------------------------------------
-  $scope.contribution = {}
-  $scope.contribution.poi = null
-  $scope.contribution.type = null
-  $scope.contribution.mood = null
-  $scope.contribution.poll_options = []
+  $scope.contribution = contributionModel
+  # $scope.contribution.poi = null
+  # $scope.contribution.type = null
+  # $scope.contribution.mood = null
+  # $scope.contribution.poll_options = []
 
   #-----------------------------------------------------------------------------
   # CAMERA HANDLNG
@@ -975,17 +1076,19 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, $i
 #-------------------------------------------------------------------------------
 # MoodCtrl
 #------------------------------------------------------------------------------- 
-mainApp.controller "MoodCtrl", ($scope, $location, $anchorScroll, UI, moods) ->
+mainApp.controller "MoodCtrl", ($scope, $location, $anchorScroll, contributionModel) ->
   
-  $scope.message_id = "moodIndexCtrl"
-  $scope.moods = moods
+  # $scope.message_id = "moodIndexCtrl"
+  # $scope.moods = moods
 
   selectMood = (mood) ->
-    UI.send "contributionNewCtrl", "setMood", mood
+    # UI.send "contributionNewCtrl", "setMood", mood
+    contributionModel.mood = mood
     $scope.selectedMood = mood.code
 
   unselectMood = ->
-    UI.send "contributionNewCtrl", "resetMood"
+    # UI.send "contributionNewCtrl", "resetMood"
+    contributionModel.mood = null
     $scope.selectedMood = null
 
   $scope.choose = (mood) ->
@@ -1000,17 +1103,20 @@ mainApp.controller "MoodCtrl", ($scope, $location, $anchorScroll, UI, moods) ->
 
   $scope.unselect = ->
     unselectMood()
+  
+  try
+    $scope.selectedMood = contributionModel.mood.code
 
-  # Scroll to selected element
-  $location.hash $scope.selectedMood
-  $anchorScroll()
-
-  UI.listen $scope
+    # Scroll to selected element
+    $location.hash $scope.selectedMood
+    $anchorScroll()
+  catch e
+    $scope.selectedMood = null
 
 #-------------------------------------------------------------------------------
 # PoiCtrl
 #------------------------------------------------------------------------------- 
-mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, T, gettext, Util, Game, Log, UI, PoiRestangular) ->
+mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, $ionicScrollDelegate, contributionModel, T, gettext, Util, Game, Log, UI, PoiRestangular) ->
 
   $scope.message_id = "poiIndexCtrl"
 
@@ -1020,7 +1126,7 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
   paddingTopLeft = [iconSize[0] / 2 + 10, iconSize[1] + 10]
   paddingBottomRight = [iconSize[0] / 2 + 10, 10]
 
-  latLngOnLocate = null
+  # latLngOnLocate = null
   currentPositionMarker = null
 
   selectedMarker = null
@@ -1032,24 +1138,32 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
   venuesLayer = null
 
   map = new L.Map "poi-map",
+    center: Util.lastKnownPosition()
     zoom: 10
     zoomControl: false
 
   oms = new OverlappingMarkerSpiderfier map,
     nearbyDistance: iconLongerSide
 
-  visibilityChanged = ->
-    # POIs are prefetched, however, reload if you moved too far
-    # if document.visibilityState is "visible" and latLngOnLocate isnt null and Util.lastKnownPosition().distanceTo(latLngOnLocate) > Game.initialRadius / 4
-    # Log.d "Distance since last visit: #{Util.lastKnownPosition().distanceTo(latLngOnLocate)}m"
-    if not document.hidden
-      $scope.reset true
+  # visibilityChanged = ->
+  #   # POIs are prefetched, however, reload if you moved too far
+  #   # if document.visibilityState is "visible" and latLngOnLocate isnt null and Util.lastKnownPosition().distanceTo(latLngOnLocate) > Game.initialRadius / 4
+  #   # Log.d "Distance since last visit: #{Util.lastKnownPosition().distanceTo(latLngOnLocate)}m"
+  #   if not document.hidden
+  #     $scope.reset true
+
+  updateCurrentPositionMarker = (latlng) ->
+    if not currentPositionMarker?
+      currentPositionMarker = Util.createPositionMarker latlng
+      currentPositionMarker.addTo map
+    currentPositionMarker.setLatLng latlng
 
   unselectPois = ->
     selectedMarker._icon.style.zIndex = selectedMarkerZIndex unless selectedMarker is null
     _.each venuesLayer.getLayers(), (marker) -> marker._icon.className = marker._icon.className.replace " active", ""
 
-    UI.send "contributionNewCtrl", "setPoi", null
+    # UI.send "contributionNewCtrl", "setPoi", null
+    contributionModel.poi = null
 
     $scope.selectedPoi = null
     selectedMarker = null
@@ -1085,7 +1199,8 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
     map.setView latlng, map.getMaxZoom()
     # map.panTo latlng
 
-    UI.send "contributionNewCtrl", "setPoi", poi.name
+    # UI.send "contributionNewCtrl", "setPoi", poi.name
+    contributionModel.poi = poi.name
 
   locate = ->
     map.locate setView: false
@@ -1107,10 +1222,9 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
   $scope.unselect = ->
     unselectPois()
 
-  map.on "locationfound", (e) ->
-    latLngOnLocate = e.latlng
+  $scope.loadPois = (latlng) ->
     $ionicLoading.show template: T._ gettext "Fetching venues..."
-    PoiRestangular.all("venues/search").getList(ll: "#{e.latlng.lat},#{e.latlng.lng}", radius: Game.initialRadius, intent: "browse", limit: 10).then (result) ->
+    PoiRestangular.all("venues/search").getList(ll: "#{latlng.lat},#{latlng.lng}", radius: Game.initialRadius, intent: "browse", limit: 10).then (result) ->
       $scope.pois = result.response.venues
       map.removeLayer venuesLayer unless venuesLayer is null
       venuesLayer = new L.FeatureGroup
@@ -1143,26 +1257,26 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
       map.fitBounds venuesLayer.getBounds(), paddingTopLeft: paddingTopLeft, paddingBottomRight: paddingBottomRight
 
       # Add current position marker
-      map.removeLayer currentPositionMarker unless currentPositionMarker is null
-      currentPositionMarker = Util.createPositionMarker e.latlng
-      map.addLayer currentPositionMarker, true
+      updateCurrentPositionMarker latlng
 
       # Select previously selected POI again
       selectedMarker = null
       selectedMarkerZIndex = 0
       maxZIndex = 0
       selectPoi $scope.selectedPoi if $scope.selectedPoi?
-
     , (error) ->
       Log.e "Failed API call: #{error}"
     .finally ->
       $ionicLoading.hide()
       $scope.$broadcast "scroll.refreshComplete"
+      $ionicScrollDelegate.resize()
+
+  map.on "locationfound", (e) ->
+    $scope.loadPois e.latlng
 
   map.on "locationerror", (e) ->
-    Log.e "Failed to get current position: #{e.message}"
-    $ionicLoading.hide()
-    $scope.$broadcast "scroll.refreshComplete"
+    Log.w "Failed to get current position: #{e.message}. Fetching venues from last know position."
+    $scope.loadPois Util.lastKnownPosition()
 
   map.on "zoomend", (e) ->
     selectPoi $scope.selectedPoi if $scope.selectedPoi?
@@ -1186,11 +1300,66 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
     spiderfiedMarkers = null
 
   # Init
-
   Util.disableMapInteraction map
   Util.createTileLayer().addTo map
-  UI.listen $scope
+
+  updateCurrentPositionMarker Util.lastKnownPosition()
+  $scope.selectedPoi = contributionModel.poi
   
   locate()
 
-  # document.addEventListener "visibilitychange", visibilityChanged, false
+#-------------------------------------------------------------------------------
+# ContributionListCtrl
+#-------------------------------------------------------------------------------
+mainApp.controller "ContributionListCtrl", ($scope, $state, $timeout, $ionicLoading, $ionicScrollDelegate, T, gettext, Session, Util, Log, Config, ContributionRestangular) ->
+  changeTimeoutInMs = 300
+
+  $scope.minDistance = 100
+  $scope.maxDistance = 3000
+  $scope.initDistance = $scope.minDistance # $scope.maxDistance * 0.75
+  $scope.filter = "nearby"
+
+  $scope.data = {}
+  $scope.data.distance = $scope.initDistance
+
+  $scope.contributions = []
+  $scope.baseUrl = Config.API_ENDPOINT 
+
+  $scope.loadContributions = ->
+    $ionicLoading.show template: T._ gettext "Loading contributions..."
+    latlng = Util.lastKnownPosition()
+
+    if $scope.filter is "nearby"
+      parameter =
+        distance: $scope.data.distance
+        long: latlng.lng
+        lat: latlng.lat
+    else
+      parameter = 
+        author_id = Session.userId()
+
+    ContributionRestangular.all("contribution").getList(parameter).then (data) ->
+      $scope.contributions = data
+    .finally ->
+      $ionicLoading.hide()
+      $scope.$broadcast "scroll.refreshComplete"
+
+  $scope.openContribution = (contribution) ->
+    $state.go "app.contribution-detail", id: contribution.id
+
+  $scope.distanceChanged = ->
+    # Wait if distance hasn't changed recently to avoid too many requests
+    $scope.lastChangeInMs = Date.now()
+    $timeout ->
+      if Date.now() > ($scope.lastChangeInMs + changeTimeoutInMs)
+        $scope.loadContributions()
+    , changeTimeoutInMs
+
+  $scope.pointDistance = (item) ->
+    # console.log item
+    matches = item.point.match /\d+\.?\d*|\.\d+/g
+    latlng = L.latLng parseFloat(matches[1]), parseFloat(matches[0])
+    return Util.lastKnownPosition().distanceTo latlng
+
+  # Run
+  $scope.loadContributions()

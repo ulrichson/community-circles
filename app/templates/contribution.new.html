@@ -70,15 +70,16 @@
       </div>
       <div class="item item-icon-left item-icon-right" ng-click="choosePoi()">
         <i class="icon ion-location"></i>
-        <span ng-if="!contribution.poi"><span translate>I'm at</span> …</span>
-        <span ng-if="contribution.poi"><span translate>I'm at</span> <strong>{{ contribution.poi }}</strong></span>
-        <i class="icon ion-arrow-right-c"></i>
+        <span ng-if="!contribution.poi"><em translate>I'm at</em><em> …</em></span>
+        <span ng-if="contribution.poi">{{ contribution.poi }}</span>
+        <i class="icon ion-ios7-arrow-right"></i>
       </div>
       <div class="item item-icon-left item-icon-right" ng-click="chooseMood()">
-        <i class="icon ion-chatbubble-working"></i>
-        <span ng-if="!contribution.mood"><span translate>I'm feeling</span> …</span>
-        <span ng-if="contribution.mood"><span translate>I'm feeling</span> <strong>{{ contribution.mood.name }}&nbsp;</span></strong>&nbsp;<span ng-if="contribution.mood" class="mood-icon icomatic">{{ contribution.mood.code }}filled</span>
-        <i class="icon ion-arrow-right-c"></i>
+        <i ng-if="!contribution.mood" class="icon ion-chatbubble-working"></i>
+        <i ng-if="contribution.mood" class="icon icomatic {{ contribution.mood.code }}filled"></i>
+        <span ng-if="!contribution.mood"><em translate>I'm feeling</em><em> …</em></span>
+        <span ng-if="contribution.mood">{{ contribution.mood.name }}</span>
+        <i class="icon ion-ios7-arrow-right"></i>
       </div>
     </div>
 
