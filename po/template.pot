@@ -73,11 +73,8 @@ msgid "Cannot upload photo"
 msgstr ""
 
 #: app/templates/contribution.detail.html
-msgid "Comment"
-msgstr ""
-
 #: dist/controllers/main.js
-msgid "Comments"
+msgid "Comment"
 msgstr ""
 
 #: app/templates/contribution.list.html
@@ -258,6 +255,7 @@ msgstr ""
 msgid "Poll option"
 msgstr ""
 
+#: app/templates/contribution.detail.html
 #: app/templates/contribution.list.html
 #: app/templates/notifications.html
 #: app/templates/poi.html
@@ -370,6 +368,7 @@ msgstr ""
 msgid "angry"
 msgstr ""
 
+#: app/templates/contribution.detail.html
 #: app/templates/contribution.list.html
 #: app/templates/map.html
 msgid "by"
@@ -381,10 +380,6 @@ msgstr ""
 
 #: dist/controllers/main.js
 msgid "confused"
-msgstr ""
-
-#: app/templates/contribution.detail.html
-msgid "feeling"
 msgstr ""
 
 #: dist/controllers/main.js
@@ -458,6 +453,12 @@ msgstr ""
 #: dist/controllers/main.js
 msgid "your mood"
 msgstr ""
+
+#: app/templates/contribution.detail.html
+msgid "{{ comments.length }} comment"
+msgid_plural "{{ comments.length }} comments"
+msgstr[0] ""
+msgstr[1] ""
 
 #: app/templates/contribution.list.html
 msgid "{{ contributions.length }} contribution"

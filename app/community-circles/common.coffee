@@ -26,7 +26,6 @@ common.filter "distanceToMe", ->
         latLngTo = L.latLng parseFloat(matches[1]), parseFloat(matches[0])
         return latLngFrom.distanceTo latLngTo
       catch e
-        console.log e
         return "NaN"
 
 common.filter "distance", ->
@@ -35,6 +34,13 @@ common.filter "distance", ->
       return (input/1000).toFixed(2) + "km"
     else
       return input.toFixed(0) + "m"
+
+common.filter "mood", ->
+    return (input, moods) ->
+      try
+        return (_.find moods, (item) -> item.code is input).name
+      catch e
+        return input
 
 #-------------------------------------------------------------------------------
 # Constants

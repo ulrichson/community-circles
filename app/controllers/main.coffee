@@ -309,7 +309,7 @@ mainApp.controller "LoginCtrl", ($scope, $http, $state, gettext, T, $ionicLoadin
 #-------------------------------------------------------------------------------
 # Map
 #------------------------------------------------------------------------------- 
-mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, Util, UI, ContributionRestangular, PhotoRestangular) ->
+mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, Util, UI, Session, ContributionRestangular, PhotoRestangular) ->
 
   $scope.message_id = "mapIndexCtrl"
 
@@ -606,7 +606,7 @@ mainApp.controller "ContributionListCtrl", ($scope) ->
 #-------------------------------------------------------------------------------
 # NotificationCtrl
 #-------------------------------------------------------------------------------
-mainApp.controller "NotificationCtrl", ($scope, gettext, T, $ionicLoading, $ionicListDelegate, Session, Log, NotificationRestangular) ->
+mainApp.controller "NotificationCtrl", ($scope, gettext, $state, T, $ionicLoading, $ionicListDelegate, Session, Log, NotificationRestangular) ->
   $scope.notifications = []
 
   $scope.loadNotifications = ->
@@ -641,8 +641,9 @@ mainApp.controller "NotificationCtrl", ($scope, gettext, T, $ionicLoading, $ioni
     .finally ->
       $ionicListDelegate.closeOptionButtons()
 
-  $scope.openContribution = (contribution) ->
-    return
+  $scope.openContribution = (notification) ->
+    $scope.read notification
+    $state.go "app.contribution-detail", id: notification.ref_contribution
 
   # Init
   $scope.loadNotifications()
@@ -650,12 +651,12 @@ mainApp.controller "NotificationCtrl", ($scope, gettext, T, $ionicLoading, $ioni
 #-------------------------------------------------------------------------------
 # ContributionDetailCtrl
 #------------------------------------------------------------------------------- 
-mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $location, $anchorScroll, gettext, T, $ionicLoading, $ionicPopup, Config, Log, UI, ContributionRestangular) ->
-  $scope.message_id = "showContributionController"
+mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $ionicScrollDelegate, gettext, T, $ionicLoading, $ionicPopup, Config, Log, UI, Session, ContributionRestangular) ->
+  # $scope.message_id = "showContributionController"
   $scope.contribution = {}
   $scope.comments = []
   $scope.baseUrl = Config.API_ENDPOINT
-  $scope.imageWidth = screen.width
+  $scope.imageWidth = window.innerWidth
   $scope.imageHeight = $scope.imageWidth
 
   scrollBottom = false
@@ -677,24 +678,23 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $lo
     $ionicLoading.show template: T._ gettext "Loading comments..."
     ContributionRestangular.all("comment").getList(contribution: id).then (data) ->
       $scope.comments = data
-      # $scope.$apply()
 
       if scrollBottom
         scrollBottom = false
-        $location.hash "bottom"
-        $anchorScroll()
-        # $scope.$apply()
+        $ionicScrollDelegate.scrollBottom true
     , (response) ->
       Log.e "Couldn't load comments (#{response.data.detail})"
       $scope.$apply()
     .finally ->
       $ionicLoading.hide()
+      $scope.$broadcast "scroll.refreshComplete"
 
   $scope.addComment = ->
-    lblComments = T._ gettext "Comments"
+    $scope.data = {}
+    lblComment = T._ gettext "Comment"
 
     prompt = $ionicPopup.show
-      template: "<textarea placeholder=\"#{lblComments}\" ng-model=\"comment\"></textarea>"
+      template: "<textarea placeholder=\"#{lblComment}\" ng-model=\"data.comment\" rows=\"5\"></textarea>"
       title: T._ gettext "Please enter a comment"
       scope: $scope
       buttons: [
@@ -703,24 +703,23 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $lo
         text: T._ gettext "Send"
         type: "button-positive"
         onTap: (e) ->
-          if not $scope.comment
+          if not $scope.data.comment
             # Don't allow the user to close unless comment is entered
             e.preventDefault()
           else
-            return $scope.comment
+            return $scope.data.comment
       ]
 
     prompt.then (res) ->
-      $scope.sendComment()
+      $scope.sendComment res if res
 
-  $scope.sendComment = ->
+  $scope.sendComment = (comment) ->
     $ionicLoading.show template: T._ "Sending comment..."
     ContributionRestangular.all("comment").post
-      author: Util.userId()
-      content: $scope.comment
+      author: Session.userId()
+      content: comment
       contribution: $scope.contribution.id
     .then (response) ->
-      $scope.comment = null
       scrollBottom = true
       $scope.loadContribution $scope.contribution.id
     , (response) ->
@@ -792,7 +791,7 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $lo
 # ContributionNewCtrl
 #-------------------------------------------------------------------------------
 mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, contributionModel, $ionicLoading, $ionicPopup, $ionicNavBarDelegate, Util, Log, Config, ContributionRestangular) ->
-  console.log contributionModel
+  # console.log contributionModel
   # $scope.message_id = "contributionNewCtrl"
 
   $scope.bgImageStyle = {}
@@ -1200,7 +1199,7 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
     # map.panTo latlng
 
     # UI.send "contributionNewCtrl", "setPoi", poi.name
-    contributionModel.poi = poi.name
+    contributionModel.poi = poi
 
   locate = ->
     map.locate setView: false
@@ -1217,7 +1216,8 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
     if not keepSelected
       unselectPois()
       window.scrollTo 0, 0
-    locate()
+    # locate()
+    $scope.loadPois Util.lastKnownPosition()
 
   $scope.unselect = ->
     unselectPois()
@@ -1305,8 +1305,9 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
 
   updateCurrentPositionMarker Util.lastKnownPosition()
   $scope.selectedPoi = contributionModel.poi
-  
-  locate()
+  $scope.reset true
+
+  console.log $scope.selectedPoi
 
 #-------------------------------------------------------------------------------
 # ContributionListCtrl

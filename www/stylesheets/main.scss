@@ -55,6 +55,16 @@ em {
   padding: 0 !important;
 }
 
+.no-margin {
+  margin: 0 !important;
+}
+
+.no-truncate {
+  overflow: inherit !important;
+  text-overflow: inherit !important;
+  white-space: normal !important;
+}
+
 .shadow {
   @include box-shadow(0 0 $dropshadowWidth $dropshadowColor);
 }
