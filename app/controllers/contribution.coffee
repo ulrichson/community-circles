@@ -238,7 +238,7 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
     fileMoved = (file) ->
       # localhost serves files from both steroids.app.userFilesPath and steroids.app.path
       # Log.d "File located at #{JSON.stringify file}"
-      $scope.imageFullPath = file.fullPath
+      $scope.imageFullPath = file.toURL()
       $scope.imageSrc = "/" + file.name
       $scope.bgImageStyle = {
         "background-image": "url(#{$scope.imageSrc})"
@@ -355,7 +355,18 @@ contributionApp.controller "NewCtrl", ($scope, $http, Util, Log, Config, Contrib
           , "Successfully uploaded"
 
         uploadError = (response) ->
-          navigator.notification.alert  "Your contribution was uploaded without your photo.\nYou can add it later. #{JSON.stringify response}"
+          if response.code is FileTransferError.FILE_NOT_FOUND_ERR
+            msg = "file not found"
+          else if response.code is FileTransferError.INVALID_URL_ERR
+            msg = "invalid URL"
+          else if response.code is FileTransferError.CONNECTION_ERR
+            msg = "connection error"
+          else if response.code is FileTransferError.ABORT_ERR
+            msg = "aborted"
+          else
+            msg = "unknown"
+
+          navigator.notification.alert  "Your contribution was uploaded without your photo.\nYou can add it later. (#{msg})"
           , ->
             $scope.loading = false
             $scope.reset()
