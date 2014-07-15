@@ -15,11 +15,11 @@ mainApp = angular.module "mainApp", [
 # Routes
 #------------------------------------------------------------------------------- 
 mainApp.config ($stateProvider, $urlRouterProvider) ->
-  $stateProvider.state "login",
-    url: "/login"
-    templateUrl: "login.html"
-    controller: "LoginCtrl"
-  .state "app",
+  # $stateProvider.state "login",
+  #   url: "/login"
+  #   templateUrl: "login.html"
+  #   controller: "LoginCtrl"
+  $stateProvider.state "app",
     url: "/app"
     abstract: true
     templateUrl: "navigation.html"
@@ -72,40 +72,37 @@ mainApp.config ($stateProvider, $urlRouterProvider) ->
 # Factory (shared models)
 #-------------------------------------------------------------------------------
 mainApp.factory "contributionModel", ->
-  _object =
-    title: null
-    type: null
-    description: null
-    mood: null
-    author: null
-    user:
-      id: null
-      username: null
-    accuracy: null
-    point: null
-    poi: null
-    poll_options: []
+  title: null
+  type: null
+  description: null
+  mood: null
+  author: null
+  user:
+    id: null
+    username: null
+  accuracy: null
+  point: null
+  poi: null
+  poll_options: []
 
   reset: ->
-    _object =
-      title: null
-      type: null
-      description: null
-      mood: null
-      author: null
-      user:
-        id: null
-        username: null
-      accuracy: null
-      point: null
-      poi: null
-      poll_options: []
+    @title = null
+    @type = null
+    @description = null
+    @mood = null
+    @author = null
+    @user =
+      id: null
+      username: null
+    @accuracy = null
+    @point = null
+    @poi = null
+    @poll_options = []
 
-  return _object
 #-------------------------------------------------------------------------------
 # Init
 #-------------------------------------------------------------------------------
-mainApp.run ($rootScope, $templateCache, $ionicPlatform, T, gettext, Log, amMoment, gettextCatalog) ->
+mainApp.run ($rootScope, $templateCache, $ionicPlatform, T, gettext, Log, Config, amMoment, gettextCatalog) ->
   Log.i "Running mainApp..."
   $ionicPlatform.ready ->
     # Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -192,18 +189,10 @@ mainApp.run ($rootScope, $templateCache, $ionicPlatform, T, gettext, Log, amMome
 #-------------------------------------------------------------------------------
 # MainCtrl
 #-------------------------------------------------------------------------------
-mainApp.controller "MainCtrl", ($scope, $state, $ionicSideMenuDelegate, Session) ->
-  # $scope.toggleLeft = ->
-  #   $ionicSideMenuDelegate.toggleLeft()
+mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionicPopup, $ionicModal, $ionicSideMenuDelegate, Session, Config, AccountRestangular) ->
+  $scope.username = Session.userName()
+  $scope.version = Config.VERSION
 
-  $scope.logout = ->
-    Session.logout()
-    $state.go "login"
-
-#-------------------------------------------------------------------------------
-# LoginCtrl
-#------------------------------------------------------------------------------- 
-mainApp.controller "LoginCtrl", ($scope, $http, $state, gettext, T, $ionicLoading, $ionicPopup, Session, Config, AccountRestangular) ->
   $scope.loginVisible = true
   $scope.login = {}
   $scope.register = {}
@@ -228,9 +217,10 @@ mainApp.controller "LoginCtrl", ($scope, $http, $state, gettext, T, $ionicLoadin
         "Authorization": "Basic #{credentials}"
     .success (data) ->
       Session.login data.results[0].username, data.results[0].id
-      $scope.reset()
+      
       $ionicLoading.hide()
-      $state.go "app.notifications"
+      $scope.reset()
+      $scope.modal.hide()
     .error (data) ->
       $ionicPopup.alert
         title: T._ gettext "An error occured"
@@ -262,9 +252,10 @@ mainApp.controller "LoginCtrl", ($scope, $http, $state, gettext, T, $ionicLoadin
       password: $scope.register.password
     .then (response) ->
       Session.login response.username, response.id
-      $scope.reset()
+      
       $ionicLoading.hide()
-      $state.go $state.go localStorage.getItem("last_visited") or "app.map"
+      $scope.reset()
+      $scope.modal.hide()
     , (response) ->
       $scope.requesting = false
       $ionicLoading.hide()
@@ -303,8 +294,19 @@ mainApp.controller "LoginCtrl", ($scope, $http, $state, gettext, T, $ionicLoadin
     $scope.register.password = null
     $scope.requesting = false
 
-  if Session.loggedIn()
-    $state.go localStorage.getItem("last_visited") or "app.map"
+  $scope.logout = ->
+    Session.logout() if Session.loggedIn()
+    $ionicModal.fromTemplateUrl "login.html",
+      scope: $scope,
+      animation: "slide-in-up"
+      backdropClickToClose: false
+      hardwareBackButtonClose: false
+    .then (modal) ->
+      $scope.modal = modal
+      $scope.modal.show()
+      $ionicSideMenuDelegate.toggleLeft() if $ionicSideMenuDelegate.isOpenLeft()
+
+  $scope.logout() if not Session.loggedIn()
 
 #-------------------------------------------------------------------------------
 # Map
@@ -598,16 +600,11 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
   locate()
 
 #-------------------------------------------------------------------------------
-# ContributionListCtrl
-#------------------------------------------------------------------------------- 
-mainApp.controller "ContributionListCtrl", ($scope) ->
-  return
-
-#-------------------------------------------------------------------------------
 # NotificationCtrl
 #-------------------------------------------------------------------------------
 mainApp.controller "NotificationCtrl", ($scope, gettext, $state, T, $ionicLoading, $ionicListDelegate, Session, Log, NotificationRestangular) ->
   $scope.notifications = []
+  $scope.userId = Session.userId()
 
   $scope.loadNotifications = ->
     $ionicLoading.show
@@ -803,7 +800,7 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
 #-------------------------------------------------------------------------------
 # ContributionNewCtrl
 #-------------------------------------------------------------------------------
-mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, contributionModel, $ionicLoading, $ionicPopup, $ionicNavBarDelegate, Util, Log, Config, ContributionRestangular) ->
+mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, contributionModel, $ionicLoading, $ionicPopup, $ionicNavBarDelegate, $ionicActionSheet, Util, Log, Config, Session, ContributionRestangular) ->
   # console.log contributionModel
   # $scope.message_id = "contributionNewCtrl"
 
@@ -828,12 +825,10 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, co
   # Camera failure callback
   cameraError = (message) ->
     Log.w "Capturing the photo failed: #{message}"
-    $scope.$apply -> $scope.loading = false
 
   # File system failure callback
   fileError = (error) ->
     Log.w "File system error: #{error}"
-    $scope.$apply -> $scope.loading = false
 
   # Move the selected photo from Cordova's default tmp folder to Steroids's user files folder
   imageUriReceived = (imageURI) ->
@@ -897,11 +892,22 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, co
     $scope.contribution.poll_options = _.without $scope.contribution.poll_options, pollOption
 
   $scope.choosePhoto = (msg) ->
-    navigator.notification.confirm T._ gettext "Select source below",
-      (buttonIndex) ->
-        return if buttonIndex is 3
+    lblTitle = if $scope.imgSrc then T._ gettext "Replace photo" else T._ gettext "Add a photo"
+    actionSheet = $ionicActionSheet.show
+      buttons: [
+        text: T._ gettext "From library"
+      ,
+        text: T._ gettext "Capture photo"
+      ]
+      # destructiveText: T._ gettext "Delete"
+      titleText: lblTitle
+      cancelText: T._ gettext "Cancel"
+      buttonClicked: (index) ->
+        if not navigator.camera?
+          Log.w "Camera API is not available"
+          return true
         options = {}
-        if buttonIndex is 1
+        if index is 0
           options =
             quality: 70
             destinationType: navigator.camera.DestinationType.IMAGE_URI
@@ -912,16 +918,15 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, co
               width: 768
               height: 190
               arrowDir: Camera.PopoverArrowDirection.ARROW_UP
-        else if buttonIndex is 2
+        else
           options =
             quality: 70
             destinationType: navigator.camera.DestinationType.IMAGE_URI
             correctOrientation: true
             targetWidth: 640
+
         navigator.camera.getPicture imageUriReceived, cameraError, options
-        $scope.$apply -> $scope.loading = true
-      msg,
-      ["From library", "Capture photo", "Cancel"]
+        return true
 
   $scope.removePhoto = ->
     $scope.imageSrc = null
@@ -945,7 +950,7 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, co
     if error
       alert = $ionicPopup.alert
         title: T._ gettext "Something is missing"
-        template: T._gettext "There's something missing, please check the comments below."
+        template: T._ gettext "There's something missing, please check the comments in the form"
       alert.then (res) ->
         $scope.hasError = true
     else
@@ -959,43 +964,49 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, co
       else if !$scope.contribution.poi? or !$scope.contribution.mood?
         error = true
         title = T._ gettext "Do you want to provide additional information?"
-        missing = T._ gettext "your location and mood"
+        msg = T._ gettext "Adding your location and mood gives your contribution more meaning!"
         if $scope.contribution.mood?
-          missing = T._ gettext "your location"
+          msg = T._ gettext "Adding your location gives your contribution more meaning!"
         else if $scope.contribution.poi?
-          missing = T._ gettext "your mood"
-
-        msg = T._ gettext "Adding #{missing} gives your contribution more meaning!"
+          msg = T._ gettext "Adding your mood gives your contribution more meaning!"
 
       if error
         confirm = $ionicPopup.confirm
           title: title
           template: msg
+          cancelText: T._ gettext "I'll edit first"
+          cancelType: "button-positive"
+          okText: T._ gettext "Continue anyway"
+          okType: "button-default"
         confirm.then (res) ->
           if res
-            postContribution()
+            continuePosting()
       else
-        postContribution()
+        continuePosting()
 
-  postContribution = ->      
-    mood = null
+  continuePosting = ->
     try
       mood = $scope.contribution.mood.name
     catch e
       mood = null
+
+    try
+      poi = $scope.contribution.poi.name
+    catch e
+      poi = null
     
     ContributionRestangular.all("contribution").post
       title: $scope.contribution.title
       type: $scope.contribution.type
       description: $scope.contribution.description
       mood: mood
-      author: Util.userId()
+      author: Session.userId()
       user:
-        id: Util.userId()
-        username: Util.userName()
+        id: Session.userId()
+        username: Session.userName()
       accuracy: window.localStorage.getItem "position.coords.accuracy"
       point: "POINT (#{Util.lastKnownPosition().lng} #{Util.lastKnownPosition().lat})"
-      poi: $scope.contribution.poi
+      poi: poi
       poll_options: $scope.contribution.poll_options
     .then (response) ->
 
@@ -1011,7 +1022,7 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, co
         options.mimeType = "image/jpeg"
 
         params =
-          creator: Util.userId()
+          creator: Session.userId()
           contribution: response.id
 
         options.params = params
@@ -1022,7 +1033,6 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, co
             template: T._ gettext "Thanks, your contribution was uploaded."
           alert.then (res) ->
             $scope.reset()
-            UI.send "mapIndexCtrl", "locate"
             $ionicNavBarDelegate.back()
 
         uploadError = (response) ->
@@ -1031,7 +1041,6 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, co
             template: T._ gettext "Your contribution was uploaded without your photo."
           alert.then (res) ->
             $scope.reset()
-            UI.send "mapIndexCtrl", "locate"
             $ionicNavBarDelegate.back()
 
         ft = new FileTransfer()
@@ -1043,7 +1052,6 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, co
 
         alert.then (res) ->
           $scope.reset()
-          UI.send "mapIndexCtrl", "locate"
           $ionicNavBarDelegate.back()
         , 
     , (response) ->
@@ -1051,9 +1059,8 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, co
       alert = $ionicPopup.alert
         title: T._ gettext "Failed to upload"
         template: T._ gettext "Sorry, couldn't upload your contribution. Please try again later."
-      alert.then (res) ->
-        $scope.reset()
-        UI.send "mapIndexCtrl", "locate"
+      # alert.then (res) ->
+      #   $scope.reset()
 
   $scope.setPoi = (poi) ->
     $scope.contribution.poi = poi
@@ -1070,8 +1077,7 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, co
     $scope.contribution.poll_options = []
     $scope.removePhoto()
 
-    UI.send "moodIndexCtrl", "reset"
-    UI.send "poiIndexCtrl", "reset"
+    contributionModel.reset()
 
     $scope.hasError = false
     window.scrollTo 0, 0
@@ -1320,17 +1326,15 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
   $scope.selectedPoi = contributionModel.poi
   $scope.reset true
 
-  console.log $scope.selectedPoi
-
 #-------------------------------------------------------------------------------
 # ContributionListCtrl
 #-------------------------------------------------------------------------------
-mainApp.controller "ContributionListCtrl", ($scope, $state, $timeout, $ionicLoading, $ionicScrollDelegate, T, gettext, Session, Util, Log, Config, ContributionRestangular) ->
+mainApp.controller "ContributionListCtrl", ($scope, $rootScope, $state, $timeout, $ionicLoading, $ionicScrollDelegate, T, gettext, Session, Util, Log, Config, ContributionRestangular) ->
   changeTimeoutInMs = 300
 
   $scope.minDistance = 100
-  $scope.maxDistance = 3000
-  $scope.initDistance = $scope.minDistance # $scope.maxDistance * 0.75
+  $scope.maxDistance = 5000
+  $scope.initDistance = $scope.maxDistance # $scope.maxDistance * 0.75
   $scope.filter = "nearby"
 
   $scope.data = {}
@@ -1348,12 +1352,18 @@ mainApp.controller "ContributionListCtrl", ($scope, $state, $timeout, $ionicLoad
         distance: $scope.data.distance
         long: latlng.lng
         lat: latlng.lat
-    else
+    else if $scope.filter is "latest"
       parameter = 
-        author_id = Session.userId()
+        filter: "latest"
+    else
+      parameter =
+        author: Session.userId()
 
     ContributionRestangular.all("contribution").getList(parameter).then (data) ->
       $scope.contributions = data
+
+      # $rootScope.notifications_unread_count = (_.where data, { is_read: false }).length
+      # console.log "hey" + (_.where data, { is_read: false }).length
     .finally ->
       $ionicLoading.hide()
       $scope.$broadcast "scroll.refreshComplete"

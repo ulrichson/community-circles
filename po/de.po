@@ -32,16 +32,30 @@ msgstr "Der Titel ist erforderlich"
 msgid "Add"
 msgstr "Hinzufügen"
 
+#: dist/controllers/main.js
+msgid "Add a photo"
+msgstr "Foto hinzufügen"
+
 #: app/templates/contribution.new.html dist/controllers/main.js
 msgid "Add poll option"
 msgstr "Antwortmöglichkeit hinzufügen"
 
 #: dist/controllers/main.js
-msgid "Adding  gives your contribution more meaning!"
+msgid "Adding a photo gives your contribution more meaning!"
+msgstr "Ein Foto gibt dem Beitrag mehr Aussagekraft!"
+
+#: dist/controllers/main.js
+msgid "Adding your location and mood gives your contribution more meaning!"
 msgstr ""
 
 #: dist/controllers/main.js
-msgid "Adding a photo gives your contribution more meaning!"
+#, fuzzy
+msgid "Adding your location gives your contribution more meaning!"
+msgstr "Ein Foto gibt dem Beitrag mehr Aussagekraft!"
+
+#: dist/controllers/main.js
+#, fuzzy
+msgid "Adding your mood gives your contribution more meaning!"
 msgstr "Ein Foto gibt dem Beitrag mehr Aussagekraft!"
 
 #: app/templates/contribution.new.html
@@ -64,6 +78,10 @@ msgstr "Zurück"
 msgid "Back to login"
 msgstr "Zurück zur Anmeldung"
 
+#: app/templates/contribution.detail.html
+msgid "Be the first who comments!"
+msgstr "Kommentiere als ersteR"
+
 #: app/templates/navigation.html
 msgid "Browse Contributions"
 msgstr "Beiträge durchsuchen"
@@ -80,13 +98,29 @@ msgstr "Anmeldung nicht möglich"
 msgid "Cannot upload photo"
 msgstr "Foto kann nicht hochgeladen werden"
 
-#: app/templates/contribution.detail.html
+#: dist/controllers/main.js
+msgid "Capture photo"
+msgstr "Foto aufnehmen"
+
+#: app/templates/contribution.detail.html dist/controllers/main.js
 msgid "Comment"
 msgstr "Kommentieren"
 
+#: app/templates/notifications.html
+msgid "Comment was voted"
+msgstr "Kommentar wurde abgestimmt"
+
 #: dist/controllers/main.js
-msgid "Comments"
-msgstr "Kommentare"
+msgid "Continue anyway"
+msgstr "Trotzdem fortfahren"
+
+#: app/templates/notifications.html
+msgid "Contribution was commented"
+msgstr "Beitrag wurde kommentiert"
+
+#: app/templates/notifications.html
+msgid "Contribution was voted"
+msgstr "Beitrag wurde abgestimmt"
 
 #: app/templates/contribution.list.html
 msgid "Contributions"
@@ -132,9 +166,21 @@ msgstr "Hochladen fehlgeschlagen"
 msgid "Fetching venues..."
 msgstr "Orte werden geladen..."
 
+#: dist/controllers/main.js
+msgid "From library"
+msgstr ""
+
+#: app/templates/navigation.html
+msgid "Hello"
+msgstr "Hallo"
+
 #: app/templates/mood.html
 msgid "How do you feel?"
 msgstr "Wie fühlst du dich?"
+
+#: dist/controllers/main.js
+msgid "I'll edit first"
+msgstr ""
 
 #: app/templates/contribution.new.html
 msgid "I'm at"
@@ -200,10 +246,6 @@ msgstr "Abmelden"
 msgid "Map"
 msgstr "Karte"
 
-#: app/templates/navigation.html
-msgid "Menu"
-msgstr "Menü"
-
 #: app/templates/contribution.list.html
 msgid "Mine"
 msgstr "Meine"
@@ -219,6 +261,10 @@ msgstr "Neuer Beitrag"
 #: app/templates/contribution.list.html
 msgid "No contributions found"
 msgstr "Keine Beiträge gefunden"
+
+#: app/templates/contribution.detail.html
+msgid "Nobody replied so far."
+msgstr "Niemand hat bisher geantwortet."
 
 #: app/templates/navigation.html app/templates/notifications.html
 msgid "Notifications"
@@ -268,8 +314,12 @@ msgstr "Frage"
 msgid "Poll option"
 msgstr "Antwortmöglichkeit"
 
-#: app/templates/contribution.list.html app/templates/notifications.html
-#: app/templates/poi.html
+#: app/templates/notifications.html
+msgid "Poll was voted"
+msgstr "Umfrage wurde abgestimmt"
+
+#: app/templates/contribution.detail.html app/templates/contribution.list.html
+#: app/templates/notifications.html app/templates/poi.html
 msgid "Pull to refresh..."
 msgstr "Zum Aktualisieren ziehen..."
 
@@ -290,8 +340,8 @@ msgid "Registering account..."
 msgstr "Zugang wird registriert..."
 
 #: dist/controllers/main.js
-msgid "Select source below"
-msgstr "Bitte unten auswählen"
+msgid "Replace photo"
+msgstr "Foto ändern"
 
 #: dist/controllers/main.js
 msgid "Send"
@@ -314,6 +364,10 @@ msgid "Sorry, couldn't upload your contribution. Please try again later."
 msgstr ""
 "Der Beitrag konnte leider nicht hochgeladen werden. Bitte versuche es später."
 
+#: app/templates/contribution.new.html
+msgid "Submit"
+msgstr "Absenden"
+
 #: dist/controllers/main.js
 msgid "Successfully uploaded"
 msgstr "Erfolgreich hochgeladen"
@@ -335,8 +389,38 @@ msgid "Thanks, your contribution was uploaded."
 msgstr "Danke, dein Beitrag wurde hochgeladen."
 
 #: app/templates/notifications.html
+msgid ""
+"The comment <em>{{ notification.ref_comment_display }}</em> for the "
+"contribution <strong>{{ notification.ref_contribution_display }}</strong> "
+"was voted"
+msgstr ""
+
+#: app/templates/notifications.html
+msgid ""
+"The contribution <strong>{{ notification.ref_contribution_display }}</"
+"strong> was commented by <strong>{{ notification.ref_user_display }}</"
+"strong>: <em>{{ notification.ref_comment_display }}</em>"
+msgstr ""
+
+#: app/templates/notifications.html
+msgid ""
+"The contribution <strong>{{ notification.ref_contribution_display }}</"
+"strong> was voted"
+msgstr ""
+
+#: app/templates/notifications.html
+msgid ""
+"The poll for <strong>{{ notification.ref_contribution_display }}</strong> "
+"was voted"
+msgstr ""
+
+#: app/templates/notifications.html
 msgid "There are no notifications for you"
 msgstr "Es sind keine Benachrichtigungen vorhanden"
+
+#: dist/controllers/main.js
+msgid "There's something missing, please check the comments in the form"
+msgstr ""
 
 #: app/templates/login.html
 msgid "Username"
@@ -380,7 +464,8 @@ msgstr "Dein Benutzername ist ungültig"
 msgid "angry"
 msgstr "traurig"
 
-#: app/templates/contribution.list.html app/templates/map.html
+#: app/templates/contribution.detail.html app/templates/contribution.list.html
+#: app/templates/map.html
 msgid "by"
 msgstr "von"
 
@@ -391,10 +476,6 @@ msgstr "kindisch"
 #: dist/controllers/main.js
 msgid "confused"
 msgstr "verwirrt"
-
-#: app/templates/contribution.detail.html
-msgid "feeling"
-msgstr "fühlt sich"
 
 #: dist/controllers/main.js
 msgid "happy"
@@ -456,20 +537,32 @@ msgstr "unglücklich"
 msgid "within {{ data.distance }}m"
 msgstr "innerhalb {{ data.distance }}m"
 
-#: dist/controllers/main.js
-msgid "your location"
-msgstr "dein Ort"
-
-#: dist/controllers/main.js
-msgid "your location and mood"
-msgstr "dein Ort und deine Stimmung"
-
-#: dist/controllers/main.js
-msgid "your mood"
-msgstr "deine Stimmung"
+#: app/templates/contribution.detail.html
+msgid "{{ comments.length }} comment"
+msgid_plural "{{ comments.length }} comments"
+msgstr[0] "{{ contributions.length }} Kommentar"
+msgstr[1] "{{ contributions.length }} Kommentare"
 
 #: app/templates/contribution.list.html
 msgid "{{ contributions.length }} contribution"
 msgid_plural "{{ contributions.length }} contributions"
 msgstr[0] "{{ contributions.length }} Beitrag"
 msgstr[1] "{{ contributions.length }} Beiträge"
+
+#~ msgid "Menu"
+#~ msgstr "Menü"
+
+#~ msgid "Select source below"
+#~ msgstr "Bitte unten auswählen"
+
+#~ msgid "feeling"
+#~ msgstr "fühlt sich"
+
+#~ msgid "your location"
+#~ msgstr "dein Ort"
+
+#~ msgid "your location and mood"
+#~ msgstr "dein Ort und deine Stimmung"
+
+#~ msgid "your mood"
+#~ msgstr "deine Stimmung"

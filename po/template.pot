@@ -23,17 +23,29 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
+#: dist/controllers/main.js
+msgid "Add a photo"
+msgstr ""
+
 #: app/templates/contribution.new.html
 #: dist/controllers/main.js
 msgid "Add poll option"
 msgstr ""
 
 #: dist/controllers/main.js
-msgid "Adding  gives your contribution more meaning!"
+msgid "Adding a photo gives your contribution more meaning!"
 msgstr ""
 
 #: dist/controllers/main.js
-msgid "Adding a photo gives your contribution more meaning!"
+msgid "Adding your location and mood gives your contribution more meaning!"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Adding your location gives your contribution more meaning!"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Adding your mood gives your contribution more meaning!"
 msgstr ""
 
 #: app/templates/contribution.new.html
@@ -56,6 +68,10 @@ msgstr ""
 msgid "Back to login"
 msgstr ""
 
+#: app/templates/contribution.detail.html
+msgid "Be the first who comments!"
+msgstr ""
+
 #: app/templates/navigation.html
 msgid "Browse Contributions"
 msgstr ""
@@ -72,9 +88,29 @@ msgstr ""
 msgid "Cannot upload photo"
 msgstr ""
 
+#: dist/controllers/main.js
+msgid "Capture photo"
+msgstr ""
+
 #: app/templates/contribution.detail.html
 #: dist/controllers/main.js
 msgid "Comment"
+msgstr ""
+
+#: app/templates/notifications.html
+msgid "Comment was voted"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Continue anyway"
+msgstr ""
+
+#: app/templates/notifications.html
+msgid "Contribution was commented"
+msgstr ""
+
+#: app/templates/notifications.html
+msgid "Contribution was voted"
 msgstr ""
 
 #: app/templates/contribution.list.html
@@ -121,8 +157,20 @@ msgstr ""
 msgid "Fetching venues..."
 msgstr ""
 
+#: dist/controllers/main.js
+msgid "From library"
+msgstr ""
+
+#: app/templates/navigation.html
+msgid "Hello"
+msgstr ""
+
 #: app/templates/mood.html
 msgid "How do you feel?"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "I'll edit first"
 msgstr ""
 
 #: app/templates/contribution.new.html
@@ -186,10 +234,6 @@ msgstr ""
 msgid "Map"
 msgstr ""
 
-#: app/templates/navigation.html
-msgid "Menu"
-msgstr ""
-
 #: app/templates/contribution.list.html
 msgid "Mine"
 msgstr ""
@@ -204,6 +248,10 @@ msgstr ""
 
 #: app/templates/contribution.list.html
 msgid "No contributions found"
+msgstr ""
+
+#: app/templates/contribution.detail.html
+msgid "Nobody replied so far."
 msgstr ""
 
 #: app/templates/navigation.html
@@ -255,6 +303,10 @@ msgstr ""
 msgid "Poll option"
 msgstr ""
 
+#: app/templates/notifications.html
+msgid "Poll was voted"
+msgstr ""
+
 #: app/templates/contribution.detail.html
 #: app/templates/contribution.list.html
 #: app/templates/notifications.html
@@ -279,7 +331,7 @@ msgid "Registering account..."
 msgstr ""
 
 #: dist/controllers/main.js
-msgid "Select source below"
+msgid "Replace photo"
 msgstr ""
 
 #: dist/controllers/main.js
@@ -300,6 +352,10 @@ msgstr ""
 
 #: dist/controllers/main.js
 msgid "Sorry, couldn't upload your contribution. Please try again later."
+msgstr ""
+
+#: app/templates/contribution.new.html
+msgid "Submit"
 msgstr ""
 
 #: dist/controllers/main.js
@@ -323,7 +379,27 @@ msgid "Thanks, your contribution was uploaded."
 msgstr ""
 
 #: app/templates/notifications.html
+msgid "The comment <em>{{ notification.ref_comment_display }}</em> for the contribution <strong>{{ notification.ref_contribution_display }}</strong> was voted"
+msgstr ""
+
+#: app/templates/notifications.html
+msgid "The contribution <strong>{{ notification.ref_contribution_display }}</strong> was commented by <strong>{{ notification.ref_user_display }}</strong>: <em>{{ notification.ref_comment_display }}</em>"
+msgstr ""
+
+#: app/templates/notifications.html
+msgid "The contribution <strong>{{ notification.ref_contribution_display }}</strong> was voted"
+msgstr ""
+
+#: app/templates/notifications.html
+msgid "The poll for <strong>{{ notification.ref_contribution_display }}</strong> was voted"
+msgstr ""
+
+#: app/templates/notifications.html
 msgid "There are no notifications for you"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "There's something missing, please check the comments in the form"
 msgstr ""
 
 #: app/templates/login.html
@@ -440,18 +516,6 @@ msgstr ""
 
 #: app/templates/contribution.list.html
 msgid "within {{ data.distance }}m"
-msgstr ""
-
-#: dist/controllers/main.js
-msgid "your location"
-msgstr ""
-
-#: dist/controllers/main.js
-msgid "your location and mood"
-msgstr ""
-
-#: dist/controllers/main.js
-msgid "your mood"
 msgstr ""
 
 #: app/templates/contribution.detail.html

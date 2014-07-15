@@ -9,7 +9,7 @@
   
   <ion-side-menu side="left">
     <header class="bar bar-header bar-calm">
-      <h1 class="title" translate>Menu</h1>
+      <h1 class="title"><span translate>Hello</span> {{ username }}</h1>
     </header>
     <ion-content class="has-header">
       <ion-list>
@@ -24,12 +24,13 @@
         <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.notifications" ui-sref-active="active">
           <i class="icon ion-archive"></i>
           <span translate>Notifications</span>
-          <span class="badge badge-assertive">0</span>
+          <span ng-show="notifications_unread_count > 0" class="badge badge-assertive">{{ notifications_unread_count }}</span>
         </ion-item>
       </ion-list>
       <button class="button button-full button-light" ng-click="logout()">
         <i class="icon ion-log-out"></i> <span translate>Logout</span>
       </button>
+      <p class="text-center text-muted"><small>{{ version }}</small></p>
     </ion-content>
   </ion-side-menu>
 

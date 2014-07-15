@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.2.20-build.296+sha.75099e6
+ * @license AngularJS v1.2.21-build.298+sha.58e94dc
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -68,7 +68,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.20-build.296+sha.75099e6/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.21-build.298+sha.58e94dc/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -1959,10 +1959,10 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.20-build.296+sha.75099e6',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.21-build.298+sha.58e94dc',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
-  dot: 20,
+  dot: 21,
   codeName: 'snapshot'
 };
 

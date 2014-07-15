@@ -6,9 +6,7 @@
     <button class="button button-icon button-clear ion-plus-circled" ng-click="newContribution()"></button>
   </ion-nav-buttons>
   <ion-content>
-    <div class="map-wrapper" data-tap-disabled="true">
-      <div id="map"></div>
-    </div>
+    <div id="map"></div>
     <div class="contribution-detail" ng-show="contributionSelected" ng-swipe-down="hideContributionDetail()">
       <div class="contribution-detail-inner">
         <button class="button button-clear button-dark contribution-close" ng-click="hideContributionDetail()">

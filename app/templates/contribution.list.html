@@ -6,27 +6,27 @@
 
   <ion-header-bar class="bar-subheader">
     <div class="button-bar">
-      <a class="button button-positive button-outline button-small" ng-class="{ active: filter == 'nearby' }" ng-click="filter = 'nearby'; order = 'point'; reverse = 'true'; loadContributions()" translate>Nearby</a>
-      <a class="button button-positive button-outline button-small" ng-class="{ active: filter == 'latest' }" ng-click="filter = 'latest'; order = 'created'; reverse = 'true'; loadContributions()" translate>Latest</a>
-      <a class="button button-positive button-outline button-small" ng-class="{ active: filter == 'mine' }" ng-click="filter = 'mine'; order = 'created'; reverse = 'true'; loadContributions()" translate>Mine</a>
+      <a class="button button-positive button-outline button-small" ng-class="{ active: filter == 'nearby' }" ng-click="filter = 'nearby'; loadContributions()" translate>Nearby</a>
+      <a class="button button-positive button-outline button-small" ng-class="{ active: filter == 'latest' }" ng-click="filter = 'latest'; loadContributions()" translate>Latest</a>
+      <a class="button button-positive button-outline button-small" ng-class="{ active: filter == 'mine' }" ng-click="filter = 'mine'; loadContributions()" translate>Mine</a>
     </div>
   </ion-header-bar>
 
   <ion-content>
     <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="loadContributions()"></ion-refresher> 
-    <div class="range range-positive padding" ng-hide="filter == 'mine'">
+    <div class="range range-positive padding" ng-show="filter == 'nearby'">
       {{ minDistance }}m
       <input type="range" name="distance" ng-model="data.distance" value="{{ initDistance }}" min="{{ minDistance }}" max="{{ maxDistance }}" ng-change="distanceChanged()">
       {{ maxDistance }}m
     </div>
     <div class="list" ng-show="contributions.length > 0">
-      <div class="item item-divider" ng-show="filter == 'mine'">
+      <div class="item item-divider" ng-show="filter != 'nearby'">
         <span translate translate-n="contributions.length" translate-plural="{{ contributions.length }} contributions">{{ contributions.length }} contribution</span>
       </div>
-      <div class="item item-divider" ng-show="filter != 'mine'">
+      <div class="item item-divider" ng-show="filter == 'nearby'">
         <span translate translate-n="contributions.length" translate-plural="{{ contributions.length }} contributions">{{ contributions.length }} contribution</span> <span translate>within {{ data.distance }}m</span>
       </div>
-      <div class="item item-thumbnail-left" ng-repeat="contribution in contributions | orderBy : pointDistance : reverse" ng-click="openContribution(contribution)">
+      <div class="item" ng-class="{ 'item-thumbnail-left': contribution.photos[0] }" ng-repeat="contribution in contributions" ng-click="openContribution(contribution)">
         <img ng-if="contribution.photos[0]" ng-src="{{ baseUrl }}/download/?photo_id={{ contribution.photos[0] }}&convert=square_200" alt="{{ contribution.title }}">
         <h2>{{ contribution.title }}</h2>
         <p>

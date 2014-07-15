@@ -1,11 +1,11 @@
 <ion-view title="{{ 'New contribution' | translate }}">
 
   <ion-nav-buttons side="right">
-    <button class="button button-icon button-clear ion-paper-airplane" ng-click="createContribution()"></button>
+    <button class="button button-icon button-clear" ng-click="createContribution()" translate>Submit</button>
   </ion-nav-buttons>
 
   <ion-content> 
-    <p class="text-center text-danger center-block" ng-show="hasError && !contribution.type" translate>A contribution type is requred</p>
+    <div class="item item-divider assertive" ng-show="hasError && !contribution.type" translate>A contribution type is requred</div>
     <ul class="contribution-type">
       <li class="center-block" ng-class="{active: contribution.type == 'OP'}" ng-click="contribution.type = 'OP'">
         <a class="text-center">
@@ -35,25 +35,25 @@
     <div class="contribution-photo text-center">
       <div ng-class="{background: imageSrc}" ng-style="bgImageStyle"></div>
       <div class="content">
-        <button ng-if="!imageSrc" class="button button-positive button-circle" ng-click="choosePhoto('Which photo should be added?')"><i class="fa fa-3x fa-camera"></i></button>
-        <div ng-if="imageSrc" ng-click="choosePhoto('Do you want to replace your photo?')" ng-style="bgImageStyle" class="contribution-photo-preview center-block"></div>
+        <button ng-if="!imageSrc" class="button button-positive button-circle" ng-click="choosePhoto()"><i class="fa fa-3x fa-camera"></i></button>
+        <div ng-if="imageSrc" ng-click="choosePhoto()" ng-style="bgImageStyle" class="contribution-photo-preview center-block"></div>
       </div>
       <button ng-if="imageSrc" ng-click="removePhoto()" class="close btn-remove-photo" aria-hidden="true">&times;</button>
     </div>
 
     <div class="list">
+      <div class="item item-divider assertive" ng-show="hasError && !contribution.title" translate>A title is required</div>
       <label class="item item-input" ng-class="{'has-error': hasError && !contribution.title}">
-        <span class="text-center help-block has-error" ng-show="hasError && !contribution.title" translate>A title is required</span>
         <input type="text" name ="title" ng-model="contribution.title" placeholder="{{ 'Tap to enter a title' | translate }}">
       </label>
-      <label class="item item-input" ng-if="contribution.type != 'PL'" ng-class="{'has-error': hasError && !contribution.description}">
-        <span class="text-center help-block has-error" ng-show="hasError && !contribution.description" translate>A descrption is required</span>
+      <div class="item item-divider assertive" ng-show="contribution.type != 'PL' && hasError && !contribution.description" translate>A descrption is required</div>
+      <label class="item item-input" ng-show="contribution.type != 'PL'" ng-class="{'has-error': hasError && !contribution.description}">
         <textarea name="description" ng-model="contribution.description" rows="3" placeholder="{{ 'Tap to enter a description' | translate }}"></textarea>
       </label>
     </div>
 
-    <div ng-if="contribution.type == 'PL'">
-      <p class="text-center text-danger center-block" ng-show="hasError && contribution.poll_options.length < 2" translate>At least two poll options are required</p>
+    <div ng-show="contribution.type == 'PL'">
+      <div class="item item-divider assertive" ng-show="hasError && contribution.poll_options.length < 2" translate>At least two poll options are required</div>
       <button class="button button-full icon-right ion-plus-circled button-positive" ng-click="addPollOption()" translate>Add poll option</button>
       <div class="list list-poll-options" ng-show="contribution.poll_options.length > 0">
         <div class="item item-button-right" ng-repeat="poll_option in contribution.poll_options">
@@ -71,15 +71,15 @@
       </div>
       <div class="item item-icon-left item-icon-right" ng-click="choosePoi()">
         <i class="icon ion-location"></i>
-        <span ng-if="!contribution.poi"><em translate>I'm at</em><em> …</em></span>
-        <span ng-if="contribution.poi">{{ contribution.poi.name }}</span>
+        <span ng-show="!contribution.poi"><em translate>I'm at</em><em> …</em></span>
+        <span ng-show="contribution.poi">{{ contribution.poi.name }}</span>
         <i class="icon ion-ios7-arrow-right"></i>
       </div>
       <div class="item item-icon-left item-icon-right" ng-click="chooseMood()">
-        <i ng-if="!contribution.mood" class="icon ion-chatbubble-working"></i>
-        <i ng-if="contribution.mood" class="icon icomatic {{ contribution.mood.code }}filled"></i>
-        <span ng-if="!contribution.mood"><em translate>I'm feeling</em><em> …</em></span>
-        <span ng-if="contribution.mood">{{ contribution.mood.name }}</span>
+        <i ng-show="!contribution.mood" class="icon ion-chatbubble-working"></i>
+        <i ng-show="contribution.mood" class="icon icomatic {{ contribution.mood.code }}filled"></i>
+        <span ng-show="!contribution.mood"><em translate>I'm feeling</em><em> …</em></span>
+        <span ng-show="contribution.mood">{{ contribution.mood.name }}</span>
         <i class="icon ion-ios7-arrow-right"></i>
       </div>
     </div>
