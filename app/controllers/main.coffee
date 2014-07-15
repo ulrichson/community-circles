@@ -852,7 +852,7 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, co
     fileMoved = (file) ->
       # localhost serves files from both steroids.app.userFilesPath and steroids.app.path
       # Log.d "File located at #{JSON.stringify file}"
-      $scope.imageFullPath = file.fullPath
+      $scope.imageFullPath = file.toURL()
       $scope.imageSrc = "/" + file.name
       $scope.bgImageStyle = {
         "background-image": "url(#{$scope.imageSrc})"
@@ -1036,6 +1036,19 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, co
             $ionicNavBarDelegate.back()
 
         uploadError = (response) ->
+          if response.code is FileTransferError.FILE_NOT_FOUND_ERR
+            msg = "file not found"
+          else if response.code is FileTransferError.INVALID_URL_ERR
+            msg = "invalid URL"
+          else if response.code is FileTransferError.CONNECTION_ERR
+            msg = "connection error"
+          else if response.code is FileTransferError.ABORT_ERR
+            msg = "upload aborted"
+          else
+            msg = "unknown error"
+
+          Log.e "Could not upload photo: #{msg}"
+
           alert = $ionicPopup.alert
             title: T._ gettext "Cannot upload photo"
             template: T._ gettext "Your contribution was uploaded without your photo."
