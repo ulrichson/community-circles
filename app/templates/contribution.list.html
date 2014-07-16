@@ -19,7 +19,7 @@
       <input type="range" name="distance" ng-model="data.distance" value="{{ initDistance }}" min="{{ minDistance }}" max="{{ maxDistance }}" ng-change="distanceChanged()">
       {{ maxDistance }}m
     </div>
-    <div class="list" ng-show="contributions.length > 0">
+    <div class="list" ng-if="contributions.length > 0">
       <div class="item item-divider" ng-show="filter != 'nearby'">
         <span translate translate-n="contributions.length" translate-plural="{{ contributions.length }} contributions">{{ contributions.length }} contribution</span>
       </div>
@@ -36,7 +36,7 @@
         <span class="badge badge-positive">{{ contribution.point | distanceToMe | distance }}</span>
       </div>
     </div>
-    <div class="list" ng-show="contributions.length == 0">
+    <div class="list" ng-if="contributions.length == 0">
       <div class="item item-divider" translate>No contributions found</div>
     </div>
   </ion-content>

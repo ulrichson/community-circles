@@ -159,12 +159,12 @@ common.factory "Game", ->
 # Session
 #-------------------------------------------------------------------------------
 common.factory "Session", (Log) ->
-  login: (username, userId) ->
+  login: (username, token) ->
     window.localStorage.setItem "loggedIn", "true"
     window.localStorage.setItem "login.username", username
-    window.localStorage.setItem "login.user_id", userId
+    window.localStorage.setItem "login.token", token
 
-    Log.i "User #{username} with id=#{userId} logged in (localStorage: login.user_id=#{window.localStorage.getItem "login.user_id"}, login.username=#{window.localStorage.getItem "login.username"})"
+    Log.i "User #{username} logged in"
 
   logout: ->
     userId = window.localStorage.getItem "login.user_id"
@@ -172,15 +172,15 @@ common.factory "Session", (Log) ->
 
     window.localStorage.setItem "loggedIn", "false"
     window.localStorage.removeItem "login.username"
-    window.localStorage.removeItem "login.user_id"
+    window.localStorage.removeItem "login.token"
 
-    Log.i "User #{username} with id=#{userId} logged out (localStorage: login.user_id=#{window.localStorage.getItem "login.user_id"}, login.username=#{window.localStorage.getItem "login.username"})"
-
-  userId: ->
-    return window.localStorage.getItem "login.user_id"
+    Log.i "User #{username} logged out"
 
   userName: ->
     return window.localStorage.getItem "login.username"
+
+  token: ->
+    return window.localStorage.getItem "login.token"
 
   loggedIn: ->
     return window.localStorage.getItem("loggedIn") is "true"

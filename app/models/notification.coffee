@@ -4,10 +4,9 @@ if !angular?
 
 module = angular.module "NotificationModel", ["common", "restangular"]
 
-module.factory "NotificationRestangular", (Config, Restangular) ->
+module.factory "NotificationRestangular", (Config, Session, Restangular) ->
 
   return Restangular.withConfig (RestangularConfigurer) ->
     RestangularConfigurer.setBaseUrl "#{Config.API_ENDPOINT}"
     RestangularConfigurer.setRequestSuffix "/"
-    # RestangularConfigurer.setRestangularFields
-    #  id: "id"
+    RestangularConfigurer.setDefaultHeaders "Authorization": "Token #{Session.token()}"

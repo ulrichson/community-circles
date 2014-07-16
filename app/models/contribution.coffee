@@ -4,10 +4,9 @@ if !angular?
 
 module = angular.module "ContributionModel", ["common", "restangular"]
 
-module.factory "ContributionRestangular", (Config, Restangular) ->
+module.factory "ContributionRestangular", (Config, Session, Restangular) ->
 
   return Restangular.withConfig (RestangularConfigurer) ->
     RestangularConfigurer.setBaseUrl "#{Config.API_ENDPOINT}/contrib"
     RestangularConfigurer.setRequestSuffix "/"
-    # RestangularConfigurer.setRestangularFields
-    #  id: "id"
+    RestangularConfigurer.setDefaultHeaders "Authorization": "Token #{Session.token()}"

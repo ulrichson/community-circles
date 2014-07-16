@@ -4,10 +4,9 @@ if !angular?
 
 module = angular.module "PhotoModel", ["common", "restangular"]
 
-module.factory "PhotoRestangular", (Config, Restangular) ->
+module.factory "PhotoRestangular", (Config, Session, Restangular) ->
 
   return Restangular.withConfig (RestangularConfigurer) ->
     RestangularConfigurer.setBaseUrl "#{Config.API_ENDPOINT}"
     RestangularConfigurer.setRequestSuffix "/"
-    # RestangularConfigurer.setRestangularFields
-    #  id: "id"
+    RestangularConfigurer.setDefaultHeaders "Authorization": "Token #{Session.token()}"

@@ -15,10 +15,6 @@ mainApp = angular.module "mainApp", [
 # Routes
 #------------------------------------------------------------------------------- 
 mainApp.config ($stateProvider, $urlRouterProvider) ->
-  # $stateProvider.state "login",
-  #   url: "/login"
-  #   templateUrl: "login.html"
-  #   controller: "LoginCtrl"
   $stateProvider.state "app",
     url: "/app"
     abstract: true
@@ -184,7 +180,7 @@ mainApp.run ($rootScope, $templateCache, $ionicPlatform, T, gettext, Log, Config
 
   # Save last visited view
   $rootScope.$on "$stateChangeSuccess", (event, toState, toParams, fromState, fromParams) ->
-    localStorage.setItem "last_visited", toState.name if toState.name in ["app.map", "app.notifications"]
+    localStorage.setItem "last_visited", toState.name if toState.name in ["app.map", "app.contribution-list", "app.notifications"]
 
 #-------------------------------------------------------------------------------
 # MainCtrl
@@ -209,24 +205,22 @@ mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionic
 
     $scope.requesting = true
 
-    credentials = btoa "#{$scope.login.username}:#{$scope.login.password}"
-    $http
-      url: "#{Config.API_ENDPOINT}/accounts/users/"
-      method: "GET"
-      headers:
-        "Authorization": "Basic #{credentials}"
-    .success (data) ->
-      Session.login data.results[0].username, data.results[0].id
-      
+    AccountRestangular.all("api-token-auth").post
+      username: $scope.login.username
+      password: $scope.login.password
+    .then (data) ->
+      # console.log data.token
+      Session.login $scope.login.username, data.token
       $ionicLoading.hide()
       $scope.reset()
       $scope.modal.hide()
-    .error (data) ->
+    , (data) ->
+      $ionicLoading.hide()
       $ionicPopup.alert
         title: T._ gettext "An error occured"
-        template: data.detail
+        template: T._ gettext "Please check your credentials"
+    .finally ->
       $scope.requesting = false
-      $ionicLoading.hide()
 
   $scope.register = ->
     if not $scope.register.username or not $scope.register.email or not $scope.register.password
@@ -251,11 +245,29 @@ mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionic
       email: $scope.register.email
       password: $scope.register.password
     .then (response) ->
-      Session.login response.username, response.id
-      
       $ionicLoading.hide()
-      $scope.reset()
-      $scope.modal.hide()
+
+      # Login/obtain token
+      $ionicLoading.show
+        template: T._ gettext "Logging in..."
+
+      $scope.requesting = true
+      AccountRestangular.all("api-token-auth").post
+        username: $scope.register.username
+        password: $scope.register.password
+      .then (data) ->
+        Session.login $scope.register.username, data.token
+        $ionicLoading.hide()
+        $scope.modal.hide()
+      , (data) ->
+        $ionicLoading.hide()
+        $ionicPopup.alert
+          title: T._ gettext "An error occured"
+          template: T._ gettext "Please check your credentials"
+      .finally ->
+        $scope.requesting = false
+        $scope.reset()
+
     , (response) ->
       $scope.requesting = false
       $ionicLoading.hide()
@@ -604,14 +616,11 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
 #-------------------------------------------------------------------------------
 mainApp.controller "NotificationCtrl", ($scope, gettext, $state, T, $ionicLoading, $ionicListDelegate, Session, Log, NotificationRestangular) ->
   $scope.notifications = []
-  $scope.userId = Session.userId()
 
   $scope.loadNotifications = ->
     $ionicLoading.show
       template: T._ gettext "Loading notifications..."
-    NotificationRestangular.all("notifications").getList
-      user: Session.userId()
-    .then (data) ->
+    NotificationRestangular.all("notifications").getList("", null, {"Authorization": "Token #{Session.token()}"}).then (data) ->
       $scope.notifications = data
     , (data) ->
       Log.e data
@@ -621,7 +630,6 @@ mainApp.controller "NotificationCtrl", ($scope, gettext, $state, T, $ionicLoadin
 
   $scope.read = (notification) ->
     req = NotificationRestangular.one "notification", notification.id
-    req.user = Session.userId()
     req.is_read = !notification.is_read
     req.put().then (data) ->
       $scope.loadNotifications()
@@ -724,7 +732,6 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
   $scope.sendComment = (comment) ->
     $ionicLoading.show template: T._ "Sending comment..."
     ContributionRestangular.all("comment").post
-      author: Session.userId()
       content: comment
       contribution: $scope.contribution.id
     .then (response) ->
@@ -742,7 +749,6 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
     if not $scope.hasVotedForContribution()
       ContributionRestangular.all("votecontribution").post
         contribution: $scope.contribution.id
-        creator: Session.userId()
       .then (response) ->
         $scope.loadContribution $scope.contribution.id
         $ionicPopup.alert title: T._ gettext "Thanks for voting"
@@ -758,7 +764,6 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
     if not $scope.hasVotedForComment comment
       ContributionRestangular.all("votecomment").post
         comment: comment.id
-        creator: Session.userId()
       .then (response) ->
         $scope.loadComments $scope.contribution.id
         $ionicPopup.alert title: T._ gettext "Thanks for voting"
@@ -774,7 +779,6 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
     if not $scope.hasVotedForPollOption poll_option
       ContributionRestangular.all("votepolloption").post
         poll_option: poll_option.id
-        creator: Session.userId()
       .then (response) ->
         $scope.loadContribution $scope.contribution.id
         $ionicPopup.alert title: T._ gettext "Thanks for voting"
@@ -1000,10 +1004,6 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, co
       type: $scope.contribution.type
       description: $scope.contribution.description
       mood: mood
-      author: Session.userId()
-      user:
-        id: Session.userId()
-        username: Session.userName()
       accuracy: window.localStorage.getItem "position.coords.accuracy"
       point: "POINT (#{Util.lastKnownPosition().lng} #{Util.lastKnownPosition().lat})"
       poi: poi
@@ -1021,9 +1021,7 @@ mainApp.controller "ContributionNewCtrl", ($scope, $http, $state, gettext, T, co
         options.fileName = imageURI.substr imageURI.lastIndexOf("/") + 1
         options.mimeType = "image/jpeg"
 
-        params =
-          creator: Session.userId()
-          contribution: response.id
+        params = contribution: response.id
 
         options.params = params
 
@@ -1360,6 +1358,7 @@ mainApp.controller "ContributionListCtrl", ($scope, $rootScope, $state, $timeout
     $ionicLoading.show template: T._ gettext "Loading contributions..."
     latlng = Util.lastKnownPosition()
 
+    parameter = {}
     if $scope.filter is "nearby"
       parameter =
         distance: $scope.data.distance
@@ -1368,9 +1367,6 @@ mainApp.controller "ContributionListCtrl", ($scope, $rootScope, $state, $timeout
     else if $scope.filter is "latest"
       parameter = 
         filter: "latest"
-    else
-      parameter =
-        author: Session.userId()
 
     ContributionRestangular.all("contribution").getList(parameter).then (data) ->
       $scope.contributions = data
