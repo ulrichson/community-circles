@@ -992,7 +992,7 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, ge
 
   continuePosting = ->
     try
-      mood = $scope.contribution.mood.name
+      mood = $scope.contribution.mood.code
     catch e
       mood = null
 
