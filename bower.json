@@ -19,7 +19,6 @@
     "leaflet-dist": "0.7.x",
     "leaflet-providers": "x",
     "ionic": "#master",
-    "angular-gettext": "0.4.x",
-    "angular-leaflet-directive": "0.7.x"
+    "angular-gettext": "0.4.x"
   }
 }

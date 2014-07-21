@@ -12,10 +12,6 @@ msgstr ""
 "X-Generator: Poedit 1.6.6\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: dist/controllers/main.js
-msgid "...and removing votes isn't implemented yet ;)"
-msgstr "...und das Löschen von Stimmen ist noch nicht implementiert ;)"
-
 #: app/templates/contribution.new.html
 msgid "A contribution type is requred"
 msgstr "Ein Beitragstyp ist erforderlich"
@@ -46,17 +42,15 @@ msgstr "Ein Foto gibt dem Beitrag mehr Aussagekraft!"
 
 #: dist/controllers/main.js
 msgid "Adding your location and mood gives your contribution more meaning!"
-msgstr ""
+msgstr "Ein Ort gibt dem Beitrag mehr Aussagekraft!"
 
 #: dist/controllers/main.js
-#, fuzzy
 msgid "Adding your location gives your contribution more meaning!"
-msgstr "Ein Foto gibt dem Beitrag mehr Aussagekraft!"
+msgstr "Ein Ort gibt dem Beitrag mehr Aussagekraft!"
 
 #: dist/controllers/main.js
-#, fuzzy
 msgid "Adding your mood gives your contribution more meaning!"
-msgstr "Ein Foto gibt dem Beitrag mehr Aussagekraft!"
+msgstr "Ein Stimmung gibt dem Beitrag mehr Aussagekraft!"
 
 #: app/templates/contribution.new.html
 msgid "Additional information"
@@ -80,7 +74,7 @@ msgstr "Zurück zur Anmeldung"
 
 #: app/templates/contribution.detail.html
 msgid "Be the first who comments!"
-msgstr "Kommentiere als ersteR"
+msgstr "Kommentiere als ersteR!"
 
 #: app/templates/navigation.html
 msgid "Browse Contributions"
@@ -146,6 +140,10 @@ msgstr "Möchtest du weitere Informationen angeben?"
 msgid "Email"
 msgstr "E-Mail"
 
+#: app/templates/settings.html
+msgid "English"
+msgstr "Englisch"
+
 #: dist/controllers/main.js
 msgid "Error with email"
 msgstr "Fehler bei der E-Mail"
@@ -168,7 +166,11 @@ msgstr "Orte werden geladen..."
 
 #: dist/controllers/main.js
 msgid "From library"
-msgstr ""
+msgstr "Von Bibliothek"
+
+#: app/templates/settings.html
+msgid "German"
+msgstr "Deutsch"
 
 #: app/templates/navigation.html
 msgid "Hello"
@@ -180,7 +182,7 @@ msgstr "Wie fühlst du dich?"
 
 #: dist/controllers/main.js
 msgid "I'll edit first"
-msgstr ""
+msgstr "Vorher bearbeiten"
 
 #: app/templates/contribution.new.html
 msgid "I'm at"
@@ -194,6 +196,10 @@ msgstr "Ich fühle mich"
 msgid "Idea"
 msgstr "Idee"
 
+#: app/templates/imprint.html app/templates/navigation.html
+msgid "Imprint"
+msgstr "Impressum"
+
 #: app/templates/contribution.new.html
 msgid "Issue"
 msgstr "Problem"
@@ -205,6 +211,10 @@ msgid ""
 msgstr ""
 "Es darf Buchstaben, Nummern, die Zeichen '-', '_' und '.' enthalten, aber "
 "keine Sonderzeichen."
+
+#: app/templates/settings.html
+msgid "Language"
+msgstr "Sprache"
 
 #: app/templates/contribution.list.html
 msgid "Latest"
@@ -344,12 +354,24 @@ msgid "Replace photo"
 msgstr "Foto ändern"
 
 #: dist/controllers/main.js
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: app/templates/contribution.new.html
+msgid "Reset contribution"
+msgstr "Beitrag zurücksetzen"
+
+#: dist/controllers/main.js
 msgid "Send"
 msgstr "Senden"
 
 #: app/templates/notifications.html
 msgid "Set Unread"
 msgstr "Ungelesen"
+
+#: app/templates/navigation.html app/templates/settings.html
+msgid "Settings"
+msgstr "Einstellungen"
 
 #: dist/controllers/main.js
 msgid "Something is missing"
@@ -369,8 +391,16 @@ msgid "Submit"
 msgstr "Absenden"
 
 #: dist/controllers/main.js
+msgid "Submitting contribution..."
+msgstr "Beitrag wird hochgeladen..."
+
+#: dist/controllers/main.js
 msgid "Successfully uploaded"
 msgstr "Erfolgreich hochgeladen"
+
+#: app/templates/navigation.html
+msgid "Support"
+msgstr "Support"
 
 #: app/templates/contribution.new.html
 msgid "Tap to enter a description"
@@ -394,6 +424,9 @@ msgid ""
 "contribution <strong>{{ notification.ref_contribution_display }}</strong> "
 "was voted"
 msgstr ""
+"Der Kommentar <em>{{ notification.ref_comment_display }}</em> für den "
+"Beitrag <strong>{{ notification.ref_contribution_display }}</strong> wurde "
+"abgestimmt"
 
 #: app/templates/notifications.html
 msgid ""
@@ -401,18 +434,25 @@ msgid ""
 "strong> was commented by <strong>{{ notification.ref_user_display }}</"
 "strong>: <em>{{ notification.ref_comment_display }}</em>"
 msgstr ""
+"Der Beitrag <strong>{{ notification.ref_contribution_display }}</strong> "
+"wurde von <strong>{{ notification.ref_user_display }}</strong> kommentiert: "
+"<em>{{ notification.ref_comment_display }}</em>"
 
 #: app/templates/notifications.html
 msgid ""
 "The contribution <strong>{{ notification.ref_contribution_display }}</"
 "strong> was voted"
 msgstr ""
+"Der Beitrag <strong>{{ notification.ref_contribution_display }}</strong> "
+"wurde abgestimmt"
 
 #: app/templates/notifications.html
 msgid ""
 "The poll for <strong>{{ notification.ref_contribution_display }}</strong> "
 "was voted"
 msgstr ""
+"Die Umfrage für <strong>{{ notification.ref_contribution_display }}</strong> "
+"wurde abgestimmt"
 
 #: app/templates/notifications.html
 msgid "There are no notifications for you"
@@ -420,7 +460,7 @@ msgstr "Es sind keine Benachrichtigungen vorhanden"
 
 #: dist/controllers/main.js
 msgid "There's something missing, please check the comments in the form"
-msgstr ""
+msgstr "Etwas fehlt, bitte überprüfe die Hinweise im Formular"
 
 #: app/templates/login.html
 msgid "Username"
@@ -439,10 +479,6 @@ msgid "You are not done yet"
 msgstr "Du bist noch nicht fertig."
 
 #: dist/controllers/main.js
-msgid "You have already voted"
-msgstr "Du hast bereits abgestimmt"
-
-#: dist/controllers/main.js
 msgid "You have already voted for this poll!"
 msgstr "Du bereits für diese Umfrage abgestimmt!"
 
@@ -454,7 +490,7 @@ msgstr[1] "Du hast {{ notifications.length }} Benachrichtungen"
 
 #: dist/controllers/main.js
 msgid "Your contribution was uploaded without your photo."
-msgstr "Dein Beitrag wurde ohne Fotor hochgeladen."
+msgstr "Dein Beitrag wurde ohne Foto hochgeladen."
 
 #: dist/controllers/main.js
 msgid "Your username is invalid"
@@ -548,6 +584,12 @@ msgid "{{ contributions.length }} contribution"
 msgid_plural "{{ contributions.length }} contributions"
 msgstr[0] "{{ contributions.length }} Beitrag"
 msgstr[1] "{{ contributions.length }} Beiträge"
+
+#~ msgid "...and removing votes isn't implemented yet ;)"
+#~ msgstr "...und das Löschen von Stimmen ist noch nicht implementiert ;)"
+
+#~ msgid "You have already voted"
+#~ msgstr "Du hast bereits abgestimmt"
 
 #~ msgid "Menu"
 #~ msgstr "Menü"

@@ -13,6 +13,12 @@
     </header>
     <ion-content class="has-header">
       <ion-list>
+        <!--
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.contribution-new" ui-sref-active="active">
+          <i class="icon ion-plus-circled"></i>
+          <span translate>Create contribution</span>
+        </ion-item>
+        -->
         <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.map" ui-sref-active="active">
           <i class="icon ion-map"></i>
           <span translate>Map</span>
@@ -26,10 +32,19 @@
           <span translate>Notifications</span>
           <span ng-show="notifications_unread_count > 0" class="badge badge-assertive">{{ notifications_unread_count }}</span>
         </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.settings" ui-sref-active="active">
+          <i class="icon ion-gear-a"></i>
+          <span translate>Settings</span>
+        </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.imprint" ui-sref-active="active">
+          <i class="icon ion-information-circled"></i>
+          <span translate>Imprint</span>
+        </ion-item>
       </ion-list>
       <button class="button button-full button-light" ng-click="logout()">
         <i class="icon ion-log-out"></i> <span translate>Logout</span>
       </button>
+      <a class="button button-full button-light" href="mailto:{{ supportEmail }}?subject=%5Bb-Part {{ version }}%5D%20Support%20request"><i class="icon ion-help-buoy"> <span translate>Support</span></i></a>
       <p class="text-center text-muted"><small>{{ version }}</small></p>
     </ion-content>
   </ion-side-menu>

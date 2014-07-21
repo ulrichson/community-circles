@@ -3,10 +3,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: dist/controllers/main.js
-msgid "...and removing votes isn't implemented yet ;)"
-msgstr ""
-
 #: app/templates/contribution.new.html
 msgid "A contribution type is requred"
 msgstr ""
@@ -137,6 +133,10 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
+#: app/templates/settings.html
+msgid "English"
+msgstr ""
+
 #: dist/controllers/main.js
 msgid "Error with email"
 msgstr ""
@@ -159,6 +159,10 @@ msgstr ""
 
 #: dist/controllers/main.js
 msgid "From library"
+msgstr ""
+
+#: app/templates/settings.html
+msgid "German"
 msgstr ""
 
 #: app/templates/navigation.html
@@ -185,12 +189,21 @@ msgstr ""
 msgid "Idea"
 msgstr ""
 
+#: app/templates/imprint.html
+#: app/templates/navigation.html
+msgid "Imprint"
+msgstr ""
+
 #: app/templates/contribution.new.html
 msgid "Issue"
 msgstr ""
 
 #: dist/controllers/main.js
 msgid "It may contain letters, numbers, the characters '-', '_' and '.' but no special characters."
+msgstr ""
+
+#: app/templates/settings.html
+msgid "Language"
 msgstr ""
 
 #: app/templates/contribution.list.html
@@ -268,10 +281,6 @@ msgid "Password"
 msgstr ""
 
 #: dist/controllers/main.js
-msgid "Please check your credentials"
-msgstr ""
-
-#: dist/controllers/main.js
 msgid "Please enter a comment"
 msgstr ""
 
@@ -339,11 +348,24 @@ msgid "Replace photo"
 msgstr ""
 
 #: dist/controllers/main.js
+msgid "Reset"
+msgstr ""
+
+#: app/templates/contribution.new.html
+msgid "Reset contribution"
+msgstr ""
+
+#: dist/controllers/main.js
 msgid "Send"
 msgstr ""
 
 #: app/templates/notifications.html
 msgid "Set Unread"
+msgstr ""
+
+#: app/templates/navigation.html
+#: app/templates/settings.html
+msgid "Settings"
 msgstr ""
 
 #: dist/controllers/main.js
@@ -363,7 +385,15 @@ msgid "Submit"
 msgstr ""
 
 #: dist/controllers/main.js
+msgid "Submitting contribution..."
+msgstr ""
+
+#: dist/controllers/main.js
 msgid "Successfully uploaded"
+msgstr ""
+
+#: app/templates/navigation.html
+msgid "Support"
 msgstr ""
 
 #: app/templates/contribution.new.html
@@ -420,10 +450,6 @@ msgstr ""
 
 #: dist/controllers/main.js
 msgid "You are not done yet"
-msgstr ""
-
-#: dist/controllers/main.js
-msgid "You have already voted"
 msgstr ""
 
 #: dist/controllers/main.js

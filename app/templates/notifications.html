@@ -10,7 +10,7 @@
       </div>
       <ion-item ng-repeat="notification in notifications | orderBy: 'created': true" ng-click="openContribution(notification)">
         <h2 ng-class="{ 'text-muted': notification.is_read }">
-          <i class="icon ion-start" ng-show="notification.is_owner"></i>
+          <i class="icon ion-star" ng-show="notification.is_owner"></i>
           <span ng-show="notification.type == 'CONTRIBUTION_COMMENT'" translate>Contribution was commented</span>
           <span ng-show="notification.type == 'CONTRIBUTION_VOTE'" translate>Contribution was voted</span>
           <span ng-show="notification.type == 'COMMENT_VOTE'" translate>Comment was voted</span>
@@ -26,7 +26,7 @@
           <br>
           <small><i class="icon ion-ios7-clock-outline"></i>&nbsp;<span am-time-ago="notification.created"></span></small>
         </p>
-        <ion-option-button class="button-positive" ng-click="read(notification)">
+        <ion-option-button class="button-positive" ng-click="read(notification, !notification.is_read)">
           <span ng-show="!notification.is_read" translate>Read</span>
           <span ng-show="notification.is_read" translate>Set Unread</span>
         </ion-option-button>

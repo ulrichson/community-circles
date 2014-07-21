@@ -10,8 +10,8 @@
 
   <ion-content>
     <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="reset(true)"></ion-refresher>
-    <div class="list poi-list">
-      <div class="item" ng-class="{ 'active': selectedPoi.id == poi.id }" ng-click="choose(poi)" ng-repeat="poi in pois | orderBy:'location.distance'">
+    <div class="list">
+      <div class="item" ng-class="{ 'active-positive': selectedPoi.id == poi.id }" ng-click="choose(poi)" ng-repeat="poi in pois | orderBy:'location.distance'">
         <span class="anchor" id="{{ poi.id }}"></span>
         <img ng-if="poi.categories[0].icon && selectedPoi.id != poi.id" class="pull-left" ng-src="{{ poi.categories[0].icon.prefix + 'bg_44' + poi.categories[0].icon.suffix }}" alt="{{ poi.categories[0].name }}" width="22">
         <img ng-if="poi.categories[0].icon && selectedPoi.id == poi.id" class="pull-left" ng-src="{{ poi.categories[0].icon.prefix + '44' + poi.categories[0].icon.suffix }}" alt="{{ poi.categories[0].name }}" width="22">

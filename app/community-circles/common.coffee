@@ -158,13 +158,50 @@ common.factory "Game", ->
 #-------------------------------------------------------------------------------
 # Session
 #-------------------------------------------------------------------------------
-common.factory "Session", (Log) ->
-  login: (username, token) ->
-    window.localStorage.setItem "loggedIn", "true"
-    window.localStorage.setItem "login.username", username
-    window.localStorage.setItem "login.token", token
+common.factory "Account", ($q, Log, T, gettext, AccountRestangular, ContributionRestangular, NotificationRestangular, PhotoRestangular) ->
+  login: (username, password) ->
 
-    Log.i "User #{username} logged in"
+    deferred = $q.defer()
+
+    AccountRestangular.all("api-token-auth").post
+      username: username
+      password: password
+    .then (data) ->
+      # Save session
+      localStorage.setItem "loggedIn", "true"
+      localStorage.setItem "login.username", username
+      localStorage.setItem "login.token", data.token
+
+      # Set authorization token
+      ContributionRestangular.setDefaultHeaders "Authorization": "Token #{data.token}"
+      NotificationRestangular.setDefaultHeaders "Authorization": "Token #{data.token}"
+      PhotoRestangular.setDefaultHeaders "Authorization": "Token #{data.token}"
+
+      Log.i "User #{username} logged in"
+
+      deferred.resolve()
+    , (data) ->
+      Log.e JSON.stringify data
+      deferred.reject T._ gettext "Please check your credentials"
+
+    return deferred.promise
+
+  register: ({username, password, email}) ->
+    deferred = $q.defer()
+
+    if not username? or not password? or not email?
+      deferred.reject T._ gettext "Registration not sufficient"
+    else
+      AccountRestangular.all("register").post
+        username: username
+        email: email
+        password: password
+      .then (data) ->      
+        deferred.resolve data
+      , (data) ->
+        deferred.reject data
+
+    return deferred.promise
 
   logout: ->
     userId = window.localStorage.getItem "login.user_id"
@@ -175,6 +212,24 @@ common.factory "Session", (Log) ->
     window.localStorage.removeItem "login.token"
 
     Log.i "User #{username} logged out"
+
+common.factory "Session", (Log) ->
+  # login: (username, token) ->
+  #   window.localStorage.setItem "loggedIn", "true"
+  #   window.localStorage.setItem "login.username", username
+  #   window.localStorage.setItem "login.token", token
+
+  #   Log.i "User #{username} logged in"
+
+  # logout: ->
+  #   userId = window.localStorage.getItem "login.user_id"
+  #   username = window.localStorage.getItem "login.username"
+
+  #   window.localStorage.setItem "loggedIn", "false"
+  #   window.localStorage.removeItem "login.username"
+  #   window.localStorage.removeItem "login.token"
+
+  #   Log.i "User #{username} logged out"
 
   userName: ->
     return window.localStorage.getItem "login.username"

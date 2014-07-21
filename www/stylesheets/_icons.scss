@@ -1,4 +1,30 @@
+// Contribution icons
+@font-face {
+font-family: 'Contribution';
+src: url('/fonts/contribution.eot');
+src: url('/fonts/contribution.eot?#iefix') format("embedded-opentype"),
+     url('/fonts/contribution.woff') format("woff"),
+     url('/fonts/contribution.ttf') format("truetype"),
+     url('/fonts/contribution.svg#contribution') format('svg');
+}
+.cc-icon {
+    font-family: 'Contribution','sans-serif';
+    line-height: 1;
+    text-rendering: auto;
+    -webkit-font-feature-settings: "liga", "dlig";
+    -ms-font-feature-settings: "liga", "dlig";
+    -moz-font-feature-settings: "liga", "dlig";
+    -o-font-feature-settings: "liga", "dlig";
+    font-feature-settings: "liga", "dlig";
+    -webkit-font-smoothing: antialiased;
+}
 
+.opinion:before { content: "\e002" }
+.issue:before { content: "\e001" }
+.idea:before { content: "\e000" }
+.poll:before { content: "\e003" }
+
+// Mood icons
 .intelligentfilled:before {
   content: "\e00c";
 }

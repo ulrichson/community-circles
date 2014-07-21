@@ -4,6 +4,10 @@
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
 
+  <ion-nav-buttons side="right">
+    <button class="button button-icon button-clear ion-plus-circled" ng-click="newContribution()"></button>
+  </ion-nav-buttons>
+
   <ion-header-bar class="bar-subheader">
     <div class="button-bar">
       <a class="button button-positive button-outline button-small" ng-class="{ active: filter == 'nearby' }" ng-click="filter = 'nearby'; loadContributions()" translate>Nearby</a>
@@ -15,9 +19,9 @@
   <ion-content>
     <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="loadContributions()"></ion-refresher> 
     <div class="range range-positive padding" ng-show="filter == 'nearby'">
-      {{ minDistance }}m
-      <input type="range" name="distance" ng-model="data.distance" value="{{ initDistance }}" min="{{ minDistance }}" max="{{ maxDistance }}" ng-change="distanceChanged()">
-      {{ maxDistance }}m
+      100m
+      <input type="range" name="distance" ng-model="data.distance" min="100" max="5000" ng-change="distanceChanged()">
+      5000m
     </div>
     <div class="list" ng-if="contributions.length > 0">
       <div class="item item-divider" ng-show="filter != 'nearby'">

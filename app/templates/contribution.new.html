@@ -1,10 +1,15 @@
-<ion-view title="{{ 'New contribution' | translate }}">
-
+<ion-view title="{{ 'New contribution' | translate }}" class="contribution-new">
+  <!--
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon" ng-hide="backButtonVisible"></button>
+  </ion-nav-buttons>
+  -->
   <ion-nav-buttons side="right">
     <button class="button button-icon button-clear" ng-click="createContribution()" translate>Submit</button>
   </ion-nav-buttons>
 
-  <ion-content> 
+  <ion-content>
+    <div id="contribution-map"></div>
     <div class="item item-divider assertive" ng-show="hasError && !contribution.type" translate>A contribution type is requred</div>
     <ul class="contribution-type">
       <li class="center-block" ng-class="{active: contribution.type == 'OP'}" ng-click="contribution.type = 'OP'">
@@ -15,30 +20,30 @@
       </li>
       <li class="center-block" ng-class="{active: contribution.type == 'PL'}" ng-click="contribution.type = 'PL'">
         <a class="text-center">
-          <span class="li_bubble"></span><br>
+          <span class="cc-icon poll"></span><br>
           <small translate>Poll</small>
         </a>
       </li>
       <li class="center-block" ng-class="{active: contribution.type == 'IS'}" ng-click="contribution.type = 'IS'">
         <a class="text-center">
-          <span class="li_fire"></span><br>
+          <span class="cc-icon issue"></span><br>
           <small translate>Issue</small>
         </a>
       </li>
       <li class="center-block" ng-class="{active: contribution.type == 'ID'}" ng-click="contribution.type = 'ID'">
         <a class="text-center">
-          <span class="li_bulb"></span><br>
+          <span class="cc-icon idea"></span><br>
           <small translate>Idea</small>
         </a>
       </li>
     </ul>
     <div class="contribution-photo text-center">
-      <div ng-class="{background: imageSrc}" ng-style="bgImageStyle"></div>
+      <div ng-class="{background: contribution.photo_src}" ng-style="bgImageStyle"></div>
       <div class="content">
-        <button ng-if="!imageSrc" class="button button-positive button-circle" ng-click="choosePhoto()"><i class="fa fa-3x fa-camera"></i></button>
-        <div ng-if="imageSrc" ng-click="choosePhoto()" ng-style="bgImageStyle" class="contribution-photo-preview center-block"></div>
+        <button ng-if="!contribution.photo_src" class="button button-positive button-circle" ng-click="choosePhoto()"><i class="icon ion-ios7-camera-outline"></i></button>
+        <div ng-if="contribution.photo_src" ng-click="choosePhoto()" ng-style="bgImageStyle" class="contribution-photo-preview center-block"></div>
       </div>
-      <button ng-if="imageSrc" ng-click="removePhoto()" class="close btn-remove-photo" aria-hidden="true">&times;</button>
+      <button ng-if="contribution.photo_src" ng-click="removePhoto()" class="close btn-remove-photo" aria-hidden="true">&times;</button>
     </div>
 
     <div class="list">
@@ -83,7 +88,8 @@
         <i class="icon ion-ios7-arrow-right"></i>
       </div>
     </div>
-
+    
+    <button class="button button-full button-light" ng-click="resetConfirm()"><i class="icon ion-ios7-undo-outline"></i> <span translate>Reset contribution</span></button>
 
   </ion-content>
 </ion-view>
