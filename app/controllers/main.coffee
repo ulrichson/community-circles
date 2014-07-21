@@ -202,7 +202,7 @@ mainApp.run ($rootScope, $templateCache, $ionicPlatform, T, gettext, Log, Config
 #-------------------------------------------------------------------------------
 # MainCtrl
 #-------------------------------------------------------------------------------
-mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionicPopup, $ionicModal, $ionicSideMenuDelegate, Account, Session, Config) ->
+mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionicPopup, $ionicModal, $ionicSideMenuDelegate, Account, Session, Config, Color) ->
   $scope.username = Session.userName()
   $scope.version = Config.VERSION
 
@@ -324,10 +324,10 @@ mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionic
       $scope.modal = modal
       $scope.modal.show()
       $ionicSideMenuDelegate.toggleLeft() if $ionicSideMenuDelegate.isOpenLeft()
-      # steroids.view.setBackgroundColor Config.ccMain
+      steroids.view.setBackgroundColor Color.ccMain
 
-  # $scope.$on "modal.hidden", ->
-  #   steroids.view.setBackgroundColor "#ffffff"
+  $scope.$on "modal.hidden", ->
+    steroids.view.setBackgroundColor "#ffffff"
 
   $scope.logout() if not Session.loggedIn()
 
@@ -338,8 +338,8 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
 
   $scope.message_id = "mapIndexCtrl"
 
-  markerDiameter = 30
-  mapPreviewHeight = 60
+  markerDiameter = 40
+  mapPreviewHeight = 80
   communityOpacity = 0.4
   communityColor = Color.ccLight
   contributionColor = Color.ccMain
@@ -431,7 +431,7 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
       # targetBoundingBox.top < e.originalEvent.clientY < targetBoundingBox.bottom
         if not selectedContributionMarker
           # Hide everything, except selected contribution
-          # map.removeControl locateControl
+          map.removeControl locateControl
           map.removeLayer communitiesLayer
           _.each contributionMarkers, (marker) ->
             if marker is e.target
@@ -597,7 +597,7 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
     _.each contributionMarkers, (marker) ->
       contributionsLayer.addLayer marker
 
-    # map.addControl locateControl
+    map.addControl locateControl
     
     selectedContributionMarker = null
 
@@ -618,7 +618,7 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
   # document.addEventListener "visibilitychange", onVisibilityChange, false
 
   # Prevent that map doesn't receive click events from contribution overlay
-  L.DomEvent.disableClickPropagation document.getElementsByClassName("contribution-detail")[0]
+  # L.DomEvent.disableClickPropagation document.getElementsByClassName("contribution-detail")[0]
 
   locate()
 
@@ -1199,7 +1199,7 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
     if not currentPositionMarker?
       currentPositionMarker = Util.createPositionMarker latlng
       currentPositionMarker.addTo map
-    currentPositionMarker.setLatLng latlng
+    currentPositionMarker.setLatLng latlng 
 
   unselectPois = ->
     selectedMarker._icon.style.zIndex = selectedMarkerZIndex unless selectedMarker is null
