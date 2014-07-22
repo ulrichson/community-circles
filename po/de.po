@@ -85,6 +85,10 @@ msgid "Cancel"
 msgstr "Abbrechen"
 
 #: dist/controllers/main.js
+msgid "Cannot determine location"
+msgstr "Position kann nicht bestimmt werden"
+
+#: dist/controllers/main.js
 msgid "Cannot login"
 msgstr "Anmeldung nicht möglich"
 
@@ -219,6 +223,10 @@ msgstr "Sprache"
 #: app/templates/contribution.list.html
 msgid "Latest"
 msgstr "Neueste"
+
+#: app/templates/contribution.detail.html
+msgid "Like"
+msgstr "Gefällt mir"
 
 #: dist/controllers/main.js
 msgid "Loading comments..."
@@ -466,10 +474,6 @@ msgstr "Etwas fehlt, bitte überprüfe die Hinweise im Formular"
 msgid "Username"
 msgstr "Benutzername"
 
-#: app/templates/contribution.detail.html
-msgid "Vote"
-msgstr "Abstimmen"
-
 #: app/templates/poi.html
 msgid "Where are you?"
 msgstr "Wo bist du?"
@@ -477,6 +481,10 @@ msgstr "Wo bist du?"
 #: dist/controllers/main.js
 msgid "You are not done yet"
 msgstr "Du bist noch nicht fertig."
+
+#: app/templates/contribution.detail.html
+msgid "You can agree for one of these options:"
+msgstr "Eine dieser Möglichkeiten zustimmen:"
 
 #: dist/controllers/main.js
 msgid "You have already voted for this poll!"
@@ -571,19 +579,22 @@ msgstr "unglücklich"
 
 #: app/templates/contribution.list.html
 msgid "within {{ data.distance }}m"
-msgstr "innerhalb {{ data.distance }}m"
+msgstr "innerhalb von {{ data.distance }}m"
 
 #: app/templates/contribution.detail.html
 msgid "{{ comments.length }} comment"
 msgid_plural "{{ comments.length }} comments"
-msgstr[0] "{{ contributions.length }} Kommentar"
-msgstr[1] "{{ contributions.length }} Kommentare"
+msgstr[0] "{{ comments.length }} Kommentar"
+msgstr[1] "{{ comments.length }} Kommentare"
 
 #: app/templates/contribution.list.html
 msgid "{{ contributions.length }} contribution"
 msgid_plural "{{ contributions.length }} contributions"
 msgstr[0] "{{ contributions.length }} Beitrag"
 msgstr[1] "{{ contributions.length }} Beiträge"
+
+#~ msgid "Vote"
+#~ msgstr "Abstimmen"
 
 #~ msgid "...and removing votes isn't implemented yet ;)"
 #~ msgstr "...und das Löschen von Stimmen ist noch nicht implementiert ;)"
