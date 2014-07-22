@@ -8,7 +8,8 @@ mainApp = angular.module "mainApp", [
   "PhotoModel",
   "PoiModel",
   "angularMoment",
-  "gettext"
+  "gettext",
+  "ngCordova"
 ]
 
 #-------------------------------------------------------------------------------
@@ -143,56 +144,59 @@ mainApp.run ($rootScope, $templateCache, $ionicPlatform, T, gettext, Log, Config
     gettextCatalog.currentLanguage = $rootScope.language
     amMoment.changeLanguage $rootScope.language
 
+  $rootScope.getMoods = ->
+    return [
+      "code": "happy"
+      "name": T._ gettext "happy"
+    ,
+      "code": "unhappy"
+      "name": T._ gettext "unhappy"
+    ,
+      "code": "crying"
+      "name": T._ gettext "sad"
+    ,
+      "code": "angry"
+      "name": T._ gettext "angry"
+    ,
+      "code": "overhappy"
+      "name": T._ gettext "overhappy"
+    ,
+      "code": "shocked"
+      "name": T._ gettext "shocked"
+    ,
+      "code": "confused"
+      "name": T._ gettext "confused"
+    ,
+      "code": "inlove"
+      "name": T._ gettext "in love"
+    ,
+      "code": "intelligent"
+      "name": T._ gettext "smart"
+    ,
+      "code": "blinking"
+      "name": T._ gettext "ironic"
+    ,
+      "code": "silent"
+      "name": T._ gettext "silent"
+    ,
+      "code": "king"
+      "name": T._ gettext "royal"
+    ,
+      "code": "thief"
+      "name": T._ gettext "sneaky"
+    ,
+      "code": "toothy"
+      "name": T._ gettext "childish"
+    ,
+      "code": "sleepy"
+      "name": T._ gettext "tired"
+    ,
+      "code": "sealed"
+      "name": T._ gettext "sealed"
+    ]
+
   # Moods
-  $rootScope.moods = [
-    "code": "happy"
-    "name": T._ gettext "happy"
-  ,
-    "code": "unhappy"
-    "name": T._ gettext "unhappy"
-  ,
-    "code": "crying"
-    "name": T._ gettext "sad"
-  ,
-    "code": "angry"
-    "name": T._ gettext "angry"
-  ,
-    "code": "overhappy"
-    "name": T._ gettext "overhappy"
-  ,
-    "code": "shocked"
-    "name": T._ gettext "shocked"
-  ,
-    "code": "confused"
-    "name": T._ gettext "confused"
-  ,
-    "code": "inlove"
-    "name": T._ gettext "in love"
-  ,
-    "code": "intelligent"
-    "name": T._ gettext "smart"
-  ,
-    "code": "blinking"
-    "name": T._ gettext "ironic"
-  ,
-    "code": "silent"
-    "name": T._ gettext "silent"
-  ,
-    "code": "king"
-    "name": T._ gettext "royal"
-  ,
-    "code": "thief"
-    "name": T._ gettext "sneaky"
-  ,
-    "code": "toothy"
-    "name": T._ gettext "childish"
-  ,
-    "code": "sleepy"
-    "name": T._ gettext "tired"
-  ,
-    "code": "sealed"
-    "name": T._ gettext "sealed"
-  ]
+  $rootScope.moods = $rootScope.getMoods()
 
   # Save last visited view
   $rootScope.$on "$stateChangeSuccess", (event, toState, toParams, fromState, fromParams) ->
@@ -205,6 +209,7 @@ mainApp.run ($rootScope, $templateCache, $ionicPlatform, T, gettext, Log, Config
 mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionicPopup, $ionicModal, $ionicSideMenuDelegate, Account, Session, Config, Color) ->
   $scope.username = Session.userName()
   $scope.version = Config.VERSION
+  $scope.supportEmail = Config.SUPPORT_EMAIL
 
   $scope.loginVisible = true
   $scope.login = {}
@@ -812,8 +817,9 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
 #-------------------------------------------------------------------------------
 # ContributionNewCtrl
 #-------------------------------------------------------------------------------
-mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, gettext, T, contributionModel, $ionicLoading, $ionicPopup, $ionicActionSheet, $ionicNavBarDelegate, Util, Log, Config, Session, ContributionRestangular) ->
+mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $cordovaGeolocation, gettext, T, contributionModel, $ionicLoading, $ionicPopup, $ionicActionSheet, $ionicNavBarDelegate, Util, Log, Config, Session, ContributionRestangular) ->
 
+  currentPositionMarker = null
   $scope.hasError = false
 
   #-----------------------------------------------------------------------------
@@ -1091,10 +1097,23 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, ge
   $scope.reset = ->
     $scope.removePhoto()
 
+    previousLatLng = L.latLng contributionModel.latlng
     contributionModel.reset()
-    contributionModel.latlng = Util.lastKnownPosition()
+    # contributionModel.latlng = Util.lastKnownPosition()
 
-    $scope.contribution = contributionModel
+    $ionicLoading.show template: T._ gettext "Locating..."
+    $cordovaGeolocation.getCurrentPosition
+      enableHighAccuracy: true
+      timeout: 5000
+    .then (position) ->
+      contributionModel.latlng = L.latLng position.coords.latitude, position.coords.longitude
+      $scope.contribution = contributionModel
+      currentPositionMarker.setLatLng $scope.contribution.latlng if currentPositionMarker?
+      $ionicLoading.hide()
+    , (error) ->
+      contributionModel.latlng = previousLatLng
+      $scope.contribution = contributionModel
+      $ionicLoading.hide()
 
     $scope.hasError = false
     window.scrollTo 0, 0
@@ -1119,17 +1138,39 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, ge
   #-----------------------------------------------------------------------------
   # INIT
   #-----------------------------------------------------------------------------
-  contributionModel.latlng = Util.lastKnownPosition() if not contributionModel.latlng?
-  map = new L.Map "contribution-map",
-    attributionControl: false
-    center: contributionModel.latlng
-    zoom: 16
-    zoomControl: false
-  Util.disableMapInteraction map
-  Util.createTileLayer().addTo map
-  Util.createPositionMarker contributionModel.latlng,
-    size: 40
-  .addTo map
+  # contributionModel.latlng = Util.lastKnownPosition() if not contributionModel.latlng?
+
+  initMap = ->
+    currentPositionMarker = Util.createPositionMarker contributionModel.latlng,
+        size: 40
+    map = new L.Map "contribution-map",
+      attributionControl: false
+      center: contributionModel.latlng
+      zoom: 16
+      zoomControl: false
+    Util.disableMapInteraction map
+    Util.createTileLayer().addTo map
+    
+    currentPositionMarker.addTo map
+
+  if not contributionModel.isDirty()
+    $ionicLoading.show template: T._ gettext "Locating..."
+    $cordovaGeolocation.getCurrentPosition
+      enableHighAccuracy: true
+      timeout: 5000
+    .then (position) ->
+      contributionModel.latlng = L.latLng position.coords.latitude, position.coords.longitude
+      initMap()
+      $ionicLoading.hide()
+    , (error) ->
+      $ionicPopup.alert
+        title: T._ gettext "Cannot determine location"
+        template: "Please try again later"
+      .then ->
+        $ionicLoading.hide()
+        $ionicNavBarDelegate.back()
+  else
+    initMap()
 
 #-------------------------------------------------------------------------------
 # MoodCtrl
@@ -1429,3 +1470,4 @@ mainApp.controller "SettingsCtrl", ($scope, $rootScope, amMoment, gettextCatalog
 
     gettextCatalog.currentLanguage = language
     amMoment.changeLanguage language
+    $rootScope.moods = $rootScope.getMoods()

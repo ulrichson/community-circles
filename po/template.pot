@@ -77,6 +77,10 @@ msgid "Cancel"
 msgstr ""
 
 #: dist/controllers/main.js
+msgid "Cannot determine location"
+msgstr ""
+
+#: dist/controllers/main.js
 msgid "Cannot login"
 msgstr ""
 

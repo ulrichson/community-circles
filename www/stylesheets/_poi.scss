@@ -1,5 +1,4 @@
 $mapHeight: 150px;
-$anchorOffset: 30px;
 
 .poi .bar-subheader{
   height: $mapHeight !important;
@@ -9,22 +8,20 @@ $anchorOffset: 30px;
   top: $mapHeight + $bar-height !important;
 }
 
+.platform-ios.platform-cordova .poi {
+  .has-subheader{
+    top: $bar-height + $ios-statusbar-height + $mapHeight !important;
+  }
+}
+
 #poi-map {
   height: $mapHeight;
   box-shadow: 0 0 $dropshadowWidth $dropshadowColor;
   width: 100%;
 }
 
-.anchor {
-  display: block;
-  position: relative;
-  top: -$mapHeight - $anchorOffset;
-  visibility: hidden;
-}
-
-.poi-name {
-  display: block;
-  margin-left: 30px;
+.poi-type-icon {
+  margin-right: 5px;
 }
 
 .poi-marker {
