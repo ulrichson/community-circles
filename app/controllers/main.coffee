@@ -1163,12 +1163,17 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
       initMap()
       $ionicLoading.hide()
     , (error) ->
-      $ionicPopup.alert
-        title: T._ gettext "Cannot determine location"
-        template: "Please try again later"
-      .then ->
+      if Util.lastKnownPosition()
+        contributionModel.latlng = Util.lastKnownPosition()
+        initMap()
         $ionicLoading.hide()
-        $ionicNavBarDelegate.back()
+      else
+        $ionicPopup.alert
+          title: T._ gettext "Cannot determine location"
+          template: "Please try again later"
+        .then ->
+          $ionicLoading.hide()
+          $ionicNavBarDelegate.back()
   else
     initMap()
 
@@ -1211,8 +1216,6 @@ mainApp.controller "MoodCtrl", ($scope, $location, $anchorScroll, contributionMo
 # PoiCtrl
 #------------------------------------------------------------------------------- 
 mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, $ionicScrollDelegate, contributionModel, T, gettext, Util, Game, Log, UI, PoiRestangular) ->
-
-  $scope.message_id = "poiIndexCtrl"
 
   iconSize = [28, 42]
   iconAnchor = [14, 42]
@@ -1303,7 +1306,7 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
     if not keepSelected
       unselectPois()
       window.scrollTo 0, 0
-    $scope.loadPois Util.lastKnownPosition()
+    $scope.loadPois contributionModel.latlng
 
   $scope.unselect = ->
     unselectPois()

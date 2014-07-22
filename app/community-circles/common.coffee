@@ -76,14 +76,19 @@ common.run ($rootScope, gettextCatalog, gettext, Log, Color) ->
   # Fetch location in background
   if not $rootScope.positionWatcherId?
     $rootScope.positionWatcherId = navigator.geolocation.watchPosition (position) ->
-      window.localStorage.setItem "position.coords.latitude", position.coords.latitude
-      window.localStorage.setItem "position.coords.longitude", position.coords.longitude
-      window.localStorage.setItem "position.coords.altitude", position.coords.altitude
-      window.localStorage.setItem "position.coords.accuracy", position.coords.accuracy
-      window.localStorage.setItem "position.coords.altitudeAccuracy", position.coords.altitudeAccuracy
-      window.localStorage.setItem "position.coords.heading", position.coords.heading
-      window.localStorage.setItem "position.coords.speed", position.coords.speed
-      window.localStorage.setItem "position.timestamp", position.timestamp
+      localStorage.setItem "position.coords.latitude", position.coords.latitude
+      localStorage.setItem "position.coords.longitude", position.coords.longitude
+      # localStorage.setItem "position.coords.altitude", position.coords.altitude
+      localStorage.setItem "position.coords.accuracy", position.coords.accuracy
+      # localStorage.setItem "position.coords.altitudeAccuracy", position.coords.altitudeAccuracy
+      # localStorage.setItem "position.coords.heading", position.coords.heading
+      # localStorage.setItem "position.coords.speed", position.coords.speed
+      localStorage.setItem "position.timestamp", position.timestamp
+    , (error) ->
+      Log.w "Couldn't fetch position: #{error.message}"
+    ,
+      enableHighAccuracy: false
+      timeout: 5000
 
   # Only allow portrait mode
   steroids.view.setAllowedRotations [0, 180]
@@ -304,7 +309,8 @@ common.factory "Util", ->
       lng = window.localStorage.getItem "position.coords.longitude"
       return new L.LatLng lat, lng
     catch e
-      return new L.LatLng 48.1217811, 16.5633169 # Vienna calling!
+      # return new L.LatLng 48.1217811, 16.5633169 # Vienna calling!
+      return false
 
   randomFromTo: (from, to, float = false) ->
     rand = Math.random() * (to - from + 1) + from
