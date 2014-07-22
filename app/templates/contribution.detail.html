@@ -23,7 +23,7 @@
         <div class="item item-text-wrap" ng-show="contribution.type != 'PL'">
           {{ contribution.description }}
         </div>
-        <div class="item item-divider" ng-show="contribution.type == 'PL'" translate>You can agree for one of these options:</div>
+        <div class="item item-divider" ng-show="contribution.type == 'PL'" translate>Agree for an option:</div>
         <div class="item item-button-right" ng-show="contribution.type == 'PL'" ng-repeat="poll_option in contribution.poll_options | orderBy : 'votes_count' : true " ng-class="{ 'active-positive' : hasVotedForPollOption(poll_option) }">
           <button class="button button-positive button-clear" ng-click="votePollOption(poll_option)">
             <i class="icon ion-ios7-checkmark" ng-show="hasVotedForPollOption(poll_option)"></i>
@@ -38,12 +38,12 @@
             <i class="icon ion-ios7-chatbubble-outline"></i> <span translate>Comment</span>
           </a>
           <a class="tab-item positive" ng-click="voteContribution()">
-            <i class="icon" ng-class="hasVotedForContribution() ? 'ion-ios7-heart' : 'ion-ios7-heart-outline'"></i> <span translate>Like</span>
+            <i class="icon" ng-class="hasVotedForContribution() ? 'ion-ios7-heart' : 'ion-ios7-heart-outline'"></i>&nbsp;<span translate ng-class="{ 'bold': hasVotedForContribution(comment) }">Like</span>
           </a>
         </div>
       </div>
       <div class="item item-divider" ng-show="comments.length > 0">
-        <span translate translate-n="comments.length" translate-plural="{{ comments.length }} comments">{{ comments.length }} comment</span>
+        <span translate translate-n="comments.length" translate-plural="{{ comments.length }} comments">{{ comments.length }} comment</span>
       </div>
       <div class="item" ng-show="comments.length > 0" ng-repeat="comment in comments | orderBy: 'created'">
         <span class="item-note">
@@ -52,7 +52,7 @@
         <h2>{{ comment.user.username }}</h2>
         <p class="no-truncate no-margin">{{ comment.content }}</p>
         <button class="button button-small button-clear button-positive" ng-click="voteComment(comment)">
-          <i class="icon" ng-class="hasVotedForComment(comment) ? 'ion-ios7-heart' : 'ion-ios7-heart-outline'"></i> <span translate>Like</span>
+          <i class="icon" ng-class="hasVotedForComment(comment) ? 'ion-ios7-heart' : 'ion-ios7-heart-outline'"></i>&nbsp;<span translate ng-class="{ 'bold': hasVotedForComment(comment) }">Like</span>
         </button>
       </div>
       <div class="item item-divider royal" ng-show="comments.length == 0">

@@ -48,6 +48,10 @@ msgstr ""
 msgid "Additional information"
 msgstr ""
 
+#: app/templates/contribution.detail.html
+msgid "Agree for an option:"
+msgstr ""
+
 #: dist/controllers/main.js
 msgid "An error occured"
 msgstr ""
@@ -456,10 +460,6 @@ msgstr ""
 msgid "You are not done yet"
 msgstr ""
 
-#: app/templates/contribution.detail.html
-msgid "You can agree for one of these options:"
-msgstr ""
-
 #: dist/controllers/main.js
 msgid "You have already voted for this poll!"
 msgstr ""
@@ -557,8 +557,8 @@ msgid "within {{ data.distance }}m"
 msgstr ""
 
 #: app/templates/contribution.detail.html
-msgid "{{ comments.length }} comment"
-msgid_plural "{{ comments.length }} comments"
+msgid "{{ comments.length }} comment"
+msgid_plural "{{ comments.length }} comments"
 msgstr[0] ""
 msgstr[1] ""
 

@@ -56,6 +56,10 @@ msgstr "Ein Stimmung gibt dem Beitrag mehr Aussagekraft!"
 msgid "Additional information"
 msgstr "Weitere Informationen"
 
+#: app/templates/contribution.detail.html
+msgid "Agree for an option:"
+msgstr "Antwortoption zustimmen:"
+
 #: dist/controllers/main.js
 msgid "An error occured"
 msgstr "Ein Fehler ist aufgetreten"
@@ -466,6 +470,12 @@ msgstr ""
 msgid "There are no notifications for you"
 msgstr "Es sind keine Benachrichtigungen vorhanden"
 
+#: app/templates/contribution.detail.html
+msgid "There is {{ comments.length }} comment"
+msgid_plural "There are {{ comments.length }} comments"
+msgstr[0] "Es gibt {{ comments.length }} Kommentar"
+msgstr[1] "Es gibt {{ comments.length }} Kommentare"
+
 #: dist/controllers/main.js
 msgid "There's something missing, please check the comments in the form"
 msgstr "Etwas fehlt, bitte überprüfe die Hinweise im Formular"
@@ -481,10 +491,6 @@ msgstr "Wo bist du?"
 #: dist/controllers/main.js
 msgid "You are not done yet"
 msgstr "Du bist noch nicht fertig."
-
-#: app/templates/contribution.detail.html
-msgid "You can agree for one of these options:"
-msgstr "Eine dieser Möglichkeiten zustimmen:"
 
 #: dist/controllers/main.js
 msgid "You have already voted for this poll!"
@@ -580,12 +586,6 @@ msgstr "unglücklich"
 #: app/templates/contribution.list.html
 msgid "within {{ data.distance }}m"
 msgstr "innerhalb von {{ data.distance }}m"
-
-#: app/templates/contribution.detail.html
-msgid "{{ comments.length }} comment"
-msgid_plural "{{ comments.length }} comments"
-msgstr[0] "{{ comments.length }} Kommentar"
-msgstr[1] "{{ comments.length }} Kommentare"
 
 #: app/templates/contribution.list.html
 msgid "{{ contributions.length }} contribution"
