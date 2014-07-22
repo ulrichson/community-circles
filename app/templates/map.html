@@ -8,7 +8,7 @@
   <ion-content>
     <div data-tap-disabled="true">
       <div id="map"></div>
-      <div class="contribution-detail" ng-if="contributionSelected" ng-swipe-down="hideContributionDetail()">
+      <div class="contribution-detail ng-hide" ng-show="contributionSelected" ng-swipe-down="hideContributionDetail()">
         <div class="contribution-detail-inner">
           <button class="button button-clear button-dark contribution-close" ng-click="hideContributionDetail()">
             <i class="icon ion-ios7-arrow-down" style="position: relative; opacity: 1.0; top:  -5px"></i><br>
