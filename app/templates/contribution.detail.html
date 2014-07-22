@@ -4,6 +4,9 @@
     <img ng-if="imageSrc" ng-src="{{ imageSrc }}" alt="{{ contribution.title }}" width="{{ imageWidth }}" height="{{ imageHeight }}" img-loading-spinner />
     <div class="list">
       <div class="card">
+        <div class="item no-padding">
+          <div id="contribution-map"></div>
+        </div>
         <div class="item text-center">
           <h2 class="royal">{{ contribution.title }}</h2>
           <p>
@@ -16,9 +19,6 @@
             </span>
             <i class="icon ion-ios7-chatbubble"></i> {{ contribution.comments_count }} <i class="icon ion-ios7-heart"></i> {{ contribution.votes_count }}
           </p>
-        </div>
-        <div class="item no-padding">
-          <div id="contribution-map"></div>
         </div>
         <div class="item item-text-wrap" ng-show="contribution.type != 'PL'">
           {{ contribution.description }}
