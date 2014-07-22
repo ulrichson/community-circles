@@ -206,7 +206,7 @@ mainApp.run ($rootScope, $templateCache, $ionicPlatform, T, gettext, Log, Config
 #-------------------------------------------------------------------------------
 # MainCtrl
 #-------------------------------------------------------------------------------
-mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionicPopup, $ionicModal, $ionicSideMenuDelegate, Account, Session, Config, Color) ->
+mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionicPopup, $ionicModal, $ionicSideMenuDelegate, Account, Session, Config, Color, NotificationRestangular) ->
   $scope.username = Session.userName()
   $scope.version = Config.VERSION
   $scope.supportEmail = Config.SUPPORT_EMAIL
@@ -214,6 +214,11 @@ mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionic
   $scope.loginVisible = true
   $scope.login = {}
   $scope.register = {}
+
+  $scope.setNotificationUnreadCount = ->
+    NotificationRestangular.all("notifications").getList().then (data) ->
+      unread = _.where data, is_read: false
+      $scope.notifications_unread_count = unread.length
 
   $scope.login = ->
     if not $scope.login.username? or not $scope.login.password?
@@ -331,10 +336,16 @@ mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionic
       $ionicSideMenuDelegate.toggleLeft() if $ionicSideMenuDelegate.isOpenLeft()
       steroids.view.setBackgroundColor Color.ccMain
 
+  $scope.toggleNavigationMenu = ->
+    $ionicSideMenuDelegate.toggleLeft()
+    $scope.setNotificationUnreadCount()
+
   $scope.$on "modal.hidden", ->
     steroids.view.setBackgroundColor "#ffffff"
 
+  # Init
   $scope.logout() if not Session.loggedIn()
+  $scope.setNotificationUnreadCount()
 
 #-------------------------------------------------------------------------------
 # Map

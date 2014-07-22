@@ -1,15 +1,18 @@
 <ion-view title="{{ 'Imprint' | translate }}" class="settings">
 
   <ion-nav-buttons side="left">
-    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+    <button ng-click="toggleNavigationMenu()" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
 
   <ion-content padding="true">
-    <p>TODO</p>
-    <ul>
-      <li><a href="http://designmodo.com/linecons-free/" target="_blank">Linecons Free</a></li>
-      <li><a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> | © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a></li>
-    </ul>
+    <p>
+      Contribution based on <strong>Linecons Free</strong> (http://designmodo.com/linecons-free/).
+    </p>
+    <p>
+      Map powered by <strong>Leaflet</strong> (http://leafletjs.com).
+    </p>
+      Map tiles and data by <strong>OpenStreetMap</strong> (http://openstreetmap.org), CC-BY-SA (http://creativecommons.org/licenses/by-sa/2.0/).
+    </p>
   </ion-content>
 
 </ion-view>
