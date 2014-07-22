@@ -391,6 +391,7 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
   # MAP
   #-----------------------------------------------------------------------------
   map = new L.Map "map",
+    attributionControl: false
     center: Util.lastKnownPosition()
     zoom: 14
     zoomControl: false
@@ -678,6 +679,7 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
   contributionMarker = null
 
   map = new L.Map "contribution-map",
+    attributionControl: false
     center: Util.lastKnownPosition()
     zoom: 14
     zoomControl: false
@@ -1119,6 +1121,7 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, ge
   #-----------------------------------------------------------------------------
   contributionModel.latlng = Util.lastKnownPosition() if not contributionModel.latlng?
   map = new L.Map "contribution-map",
+    attributionControl: false
     center: contributionModel.latlng
     zoom: 16
     zoomControl: false
@@ -1188,6 +1191,7 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
   venuesLayer = null
 
   map = new L.Map "poi-map",
+    attributionControl: false
     center: Util.lastKnownPosition()
     zoom: 10
     zoomControl: false
