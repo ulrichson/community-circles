@@ -19,6 +19,7 @@
     "leaflet-dist": "0.7.x",
     "leaflet-providers": "x",
     "ionic": "#master",
-    "angular-gettext": "0.4.x"
+    "angular-gettext": "0.4.x",
+    "ngCordova": "0.1.x"
   }
 }
