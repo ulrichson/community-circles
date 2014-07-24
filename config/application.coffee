@@ -1,7 +1,7 @@
 # For an explanation of the steroids.config properties, see the guide at
 # http://guides.appgyver.com/steroids/guides/project_configuration/config-application-coffee/
 
-steroids.config.name = "Community Circles Mobile"
+steroids.config.name = "b-Part"
 
 # -- Initial Location --
 steroids.config.location = "http://localhost/views/main/index.html"
@@ -56,7 +56,7 @@ steroids.config.location = "http://localhost/views/main/index.html"
 steroids.config.loadingScreen.tintColor = "#262626"
 
 # -- iOS Status Bar --
-steroids.config.statusBar.enabled = false
+steroids.config.statusBar.enabled = true
 steroids.config.statusBar.style = "light"
 
 # -- File Watcher --

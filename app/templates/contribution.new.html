@@ -43,7 +43,7 @@
         <button ng-if="!contribution.photo_src" class="button button-positive button-circle" ng-click="choosePhoto()"><i class="icon ion-ios7-camera-outline"></i></button>
         <div ng-if="contribution.photo_src" ng-click="choosePhoto()" ng-style="bgImageStyle" class="contribution-photo-preview center-block"></div>
       </div>
-      <button ng-if="contribution.photo_src" ng-click="removePhoto()" class="close btn-remove-photo" aria-hidden="true">&times;</button>
+      <button ng-show="contribution.photo_src" ng-click="removePhoto()" class="close btn-remove-photo" aria-hidden="true">&times;</button>
     </div>
 
     <div class="list">

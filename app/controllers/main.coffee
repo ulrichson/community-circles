@@ -118,15 +118,18 @@ mainApp.factory "contributionModel", ->
 #-------------------------------------------------------------------------------
 mainApp.run ($rootScope, $templateCache, $ionicPlatform, T, gettext, Log, Config, amMoment, gettextCatalog) ->
   Log.i "Running mainApp..."
-  $ionicPlatform.ready ->
-    # Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    # for form inputs)
-    if window.cordova and window.cordova.plugins.Keyboard 
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar true
 
-    if window.StatusBar
-      # org.apache.cordova.statusbar required
-      StatusBar.styleDefault()
+  $rootScope.mapLocateInterval = null
+
+  # $ionicPlatform.ready ->
+  #   # Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+  #   # for form inputs)
+  #   if window.cordova and window.cordova.plugins.Keyboard 
+  #     cordova.plugins.Keyboard.hideKeyboardAccessoryBar true
+
+  #   if window.StatusBar
+  #     StatusBar.overlaysWebView true
+  #     StatusBar.styleLightContent()
 
   # Set language
   $rootScope.language = localStorage.getItem("language") or "de"
@@ -203,13 +206,17 @@ mainApp.run ($rootScope, $templateCache, $ionicPlatform, T, gettext, Log, Config
     localStorage.setItem "last_visited", toState.name if toState.name in ["app.map", "app.contribution-list", "app.notifications"]
     $rootScope.previousState = fromState
 
+    if fromState.name == "app.map" and $rootScope.mapLocateInterval?
+      clearInterval $rootScope.mapLocateInterval
+      $rootScope.mapLocateInterval = null
+
 #-------------------------------------------------------------------------------
 # MainCtrl
 #-------------------------------------------------------------------------------
 mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionicPopup, $ionicModal, $ionicSideMenuDelegate, Account, Session, Config, Color, NotificationRestangular) ->
-  $scope.username = Session.userName()
   $scope.version = Config.VERSION
   $scope.supportEmail = Config.SUPPORT_EMAIL
+  $scope.username = Session.userName()
 
   $scope.loginVisible = true
   $scope.login = {}
@@ -224,7 +231,7 @@ mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionic
     if not $scope.login.username? or not $scope.login.password?
       $ionicPopup.alert
         title: T._ gettext "Cannot login"
-        template: T._ gettext "Please enter your crededentials!"
+        template: T._ gettext "Please enter your credentials"
       return
 
     $ionicLoading.show
@@ -232,6 +239,7 @@ mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionic
 
     $scope.requesting = true
     Account.login($scope.login.username, $scope.login.password).then (data) ->
+      $scope.username = Session.userName()
       $ionicLoading.hide()
       $scope.reset()
       $scope.modal.hide()
@@ -239,7 +247,7 @@ mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionic
       $ionicLoading.hide()
       $ionicPopup.alert
         title: T._ gettext "An error occured"
-        template: data
+        template: T._ gettext "Invalid password or username"
     .finally ->
       $scope.requesting = false
 
@@ -274,6 +282,7 @@ mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionic
 
       $scope.requesting = true
       Account.login($scope.register.username, $scope.register.password).then (data) ->
+        $scope.username = Session.userName()
         $ionicLoading.hide()
         $scope.modal.hide()
       , (data) ->
@@ -350,9 +359,7 @@ mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionic
 #-------------------------------------------------------------------------------
 # Map
 #------------------------------------------------------------------------------- 
-mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, Util, UI, Session, ContributionRestangular, PhotoRestangular) ->
-
-  $scope.message_id = "mapIndexCtrl"
+mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform, Game, Log, Config, Color, Util, UI, Session, ContributionRestangular, PhotoRestangular) ->
 
   markerDiameter = 40
   mapPreviewHeight = 80
@@ -393,13 +400,13 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
   #-----------------------------------------------------------------------------
   LocateControl = L.Control.extend
     options:
-      position: "bottomright"
+      position: "topleft"
 
     onAdd: (map) ->
       this._container = L.DomUtil.create "button", "button button-positive icon ion-pinpoint"
       L.DomEvent.addListener this._container, "click", (e) ->
         L.DomEvent.stopPropagation e
-        locate()
+        locate true
 
       return this._container
       
@@ -418,17 +425,22 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
       $scope.$apply()
 
   map.on "locationfound", (e) ->
-    # Log.i "Location found: #{e.latlng.lat}, #{e.latlng.lng}"
-    loadContributions()
+    localStorage.setItem "position.coords.latitude", e.latitude
+    localStorage.setItem "position.coords.longitude", e.longitude
+    localStorage.setItem "position.coords.accuracy", e.accuracy
+    localStorage.setItem "position.timestamp", e.timestamp
+    # loadContributions()
     updateCurrentPositionMarker e.latlng
 
   map.on "locationerror", (e) ->
     Log.w "Could not determine position (code=#{e.code}). #{e.message}"
 
   map.on "viewreset", (e) ->
+    # Log.d "viewreset"
     loadContributions()
 
   map.on "moveend", (e) ->
+    # Log.d "moveend"
     loadContributions()
 
   map.on "error", (e) ->
@@ -464,15 +476,13 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
       contributionClickCount = 0
     , 200
 
-  onVisibilityChange = ->
-    loadContributions() if not document.hidden
-
   #-----------------------------------------------------------------------------
   # INTERNAL FUNCTIONS
   #-----------------------------------------------------------------------------
-  locate = ->
+  locate =  (setView) ->
+    # Log.d "Fetching location..."
     map.locate
-      setView: true
+      setView: setView
       enableHighAccuracy: true
 
   createContributionMarker = (feature, latlng) ->
@@ -561,7 +571,7 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
     if not currentPositionMarker?
       currentPositionMarker = Util.createPositionMarker latlng
       currentPositionMarker.addTo map
-    currentPositionMarker.setLatLng latlng 
+    currentPositionMarker.setLatLng latlng
 
   #-----------------------------------------------------------------------------
   # UI EVENTS
@@ -569,8 +579,8 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
   $scope.newContribution = ->
     $state.go "app.contribution-new"
 
-  $scope.locate = ->
-    locate()
+  # $scope.locate = ->
+  #   locate()
 
   $scope.openContribution = ->
     $state.go "app.contribution-detail", id: $scope.contribution.id
@@ -621,14 +631,13 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
   #-----------------------------------------------------------------------------
   # INITIALIZE
   #-----------------------------------------------------------------------------
-
   Util.createTileLayer().addTo map
   locateControl = new LocateControl()
   map.addControl locateControl
 
-  currentPositionInterval = setInterval ->
-    updateCurrentPositionMarker Util.lastKnownPosition()
-  , currentPositionIntervalTime   
+  # currentPositionInterval = setInterval ->
+  #   updateCurrentPositionMarker Util.lastKnownPosition()
+  # , currentPositionIntervalTime   
   
   # Prevents that WebView is dragged
   # document.ontouchmove = (e) -> e.preventDefault()
@@ -637,7 +646,16 @@ mainApp.controller "MapCtrl", ($scope, $http, $state, Game, Log, Config, Color, 
   # Prevent that map doesn't receive click events from contribution overlay
   # L.DomEvent.disableClickPropagation document.getElementsByClassName("contribution-detail")[0]
 
-  locate()
+  # Fetch location in background
+  locate true
+  if not $rootScope.mapLocateInterval?
+    $rootScope.mapLocateInterval = setInterval ->
+      locate false
+    , 5000
+
+  # Set height of map (for some reason the height of 100% doesn't work)
+  # $ionicPlatform.ready ->
+  #   document.getElementById("map").style.height = document.getElementsByClassName("scroll-content")[0].offsetHeight
 
 #-------------------------------------------------------------------------------
 # NotificationCtrl
@@ -1038,7 +1056,7 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
         title: T._ gettext "Successfully uploaded"
         templete: T._ gettext "Thanks, your contribution was uploaded."
       alert.then ->
-        $scope.reset()
+        $scope.reset false
         $ionicNavBarDelegate.back()
 
       if imageSrc
@@ -1103,28 +1121,31 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
       okText: T._ gettext "Reset"
     confirm.then (res) ->
       if res
-        $scope.reset()
+        $scope.reset true
 
-  $scope.reset = ->
+  $scope.reset = (locate) ->
     $scope.removePhoto()
 
     previousLatLng = L.latLng contributionModel.latlng
     contributionModel.reset()
     # contributionModel.latlng = Util.lastKnownPosition()
 
-    $ionicLoading.show template: T._ gettext "Locating..."
-    $cordovaGeolocation.getCurrentPosition
-      enableHighAccuracy: true
-      timeout: 5000
-    .then (position) ->
-      contributionModel.latlng = L.latLng position.coords.latitude, position.coords.longitude
-      $scope.contribution = contributionModel
-      currentPositionMarker.setLatLng $scope.contribution.latlng if currentPositionMarker?
-      $ionicLoading.hide()
-    , (error) ->
-      contributionModel.latlng = previousLatLng
-      $scope.contribution = contributionModel
-      $ionicLoading.hide()
+    if locate
+      $ionicLoading.show template: T._ gettext "Locating..."
+      $cordovaGeolocation.getCurrentPosition
+        enableHighAccuracy: true
+        timeout: 5000
+      .then (position) ->
+        contributionModel.latlng = L.latLng position.coords.latitude, position.coords.longitude
+        $scope.contribution = contributionModel
+        currentPositionMarker.setLatLng $scope.contribution.latlng if currentPositionMarker?
+        # $ionicLoading.hide()
+      , (error) ->
+        contributionModel.latlng = previousLatLng
+        $scope.contribution = contributionModel
+        # $ionicLoading.hide()
+      .finally ->
+        $ionicLoading.hide()
 
     $scope.hasError = false
     window.scrollTo 0, 0
@@ -1172,19 +1193,22 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
     .then (position) ->
       contributionModel.latlng = L.latLng position.coords.latitude, position.coords.longitude
       initMap()
-      $ionicLoading.hide()
+      # $ionicLoading.hide()
     , (error) ->
+      Log.w "Cannot fetch position, assuming last known position"
       if Util.lastKnownPosition()
         contributionModel.latlng = Util.lastKnownPosition()
         initMap()
-        $ionicLoading.hide()
+        # $ionicLoading.hide()
       else
         $ionicPopup.alert
           title: T._ gettext "Cannot determine location"
           template: "Please try again later"
         .then ->
-          $ionicLoading.hide()
+          # $ionicLoading.hide()
           $ionicNavBarDelegate.back()
+    .finally ->
+      $ionicLoading.hide()
   else
     initMap()
 
@@ -1302,9 +1326,9 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
 
     contributionModel.poi = poi
 
-  locate = ->
-    map.locate setView: false
-    $ionicLoading.show template: T._ gettext "Locating..."
+  # locate = ->
+  #   map.locate setView: false
+  #   $ionicLoading.show template: T._ gettext "Locating..."
    
   $scope.choose = (poi) ->
     if $scope.selectedPoi? and $scope.selectedPoi.id is poi.id
@@ -1371,12 +1395,12 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
       $scope.$broadcast "scroll.refreshComplete"
       $ionicScrollDelegate.resize()
 
-  map.on "locationfound", (e) ->
-    $scope.loadPois e.latlng
+  # map.on "locationfound", (e) ->
+  #   $scope.loadPois e.latlng
 
-  map.on "locationerror", (e) ->
-    Log.w "Failed to get current position: #{e.message}. Fetching venues from last know position."
-    $scope.loadPois Util.lastKnownPosition()
+  # map.on "locationerror", (e) ->
+  #   Log.w "Failed to get current position: #{e.message}. Fetching venues from last know position."
+  #   $scope.loadPois Util.lastKnownPosition()
 
   map.on "zoomend", (e) ->
     selectPoi $scope.selectedPoi if $scope.selectedPoi?
@@ -1410,7 +1434,7 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
 #-------------------------------------------------------------------------------
 # ContributionListCtrl
 #-------------------------------------------------------------------------------
-mainApp.controller "ContributionListCtrl", ($scope, $rootScope, $state, $timeout, $ionicLoading, $ionicScrollDelegate, T, gettext, Session, Util, Log, Config, ContributionRestangular) ->
+mainApp.controller "ContributionListCtrl", ($scope, $rootScope, $state, $timeout, $ionicLoading, $ionicScrollDelegate, $cordovaGeolocation, T, gettext, Session, Util, Log, Config, ContributionRestangular) ->
   changeTimeoutInMs = 300
 
   $scope.data = {}
@@ -1469,7 +1493,22 @@ mainApp.controller "ContributionListCtrl", ($scope, $rootScope, $state, $timeout
     $state.go "app.contribution-new"
 
   # Run
-  $scope.loadContributions()
+
+  $ionicLoading.show template: T._ gettext "Locating..."
+  $cordovaGeolocation.getCurrentPosition
+    enableHighAccuracy: false
+    timeout: 2000
+  .then (position) ->
+    localStorage.setItem "position.coords.latitude", position.coords.latitude
+    localStorage.setItem "position.coords.longitude", position.coords.longitude
+    localStorage.setItem "position.coords.accuracy", position.coords.accuracy
+    localStorage.setItem "position.timestamp", position.timestamp
+    $ionicLoading.hide()
+  , (error) ->
+    Log.w "Couldn't fetch position, assuming last known position."    
+  .finally ->
+    $ionicLoading.hide()
+    $scope.loadContributions()
 
 #-------------------------------------------------------------------------------
 # SettingsCtrl

@@ -50,7 +50,7 @@ common.constant "Config",
   API_ENDPOINT: @config.API_ENDPOINT
   REGEX_USERNAME: /^[a-zA-Z0-9\-\_\.]+$/
   REGEX_POINT: /\d+\.?\d*|\.\d+/g 
-  VERSION: "v2.0.0"
+  VERSION: "v1.0.0"
 
 common.constant "Key",
   FOURSQUARE_CLIENT_ID: @key.FOURSQUARE_CLIENT_ID
@@ -74,21 +74,25 @@ common.run ($rootScope, gettextCatalog, gettext, Log, Color) ->
     alert "app/community-circles/private.coffee is missing or malformed!"
 
   # Fetch location in background
-  if not $rootScope.positionWatcherId?
-    $rootScope.positionWatcherId = navigator.geolocation.watchPosition (position) ->
-      localStorage.setItem "position.coords.latitude", position.coords.latitude
-      localStorage.setItem "position.coords.longitude", position.coords.longitude
-      # localStorage.setItem "position.coords.altitude", position.coords.altitude
-      localStorage.setItem "position.coords.accuracy", position.coords.accuracy
-      # localStorage.setItem "position.coords.altitudeAccuracy", position.coords.altitudeAccuracy
-      # localStorage.setItem "position.coords.heading", position.coords.heading
-      # localStorage.setItem "position.coords.speed", position.coords.speed
-      localStorage.setItem "position.timestamp", position.timestamp
-    , (error) ->
-      Log.w "Couldn't fetch position: #{error.message}"
-    ,
-      enableHighAccuracy: false
-      timeout: 5000
+  # if not $rootScope.positionWatcherId?
+  #   $rootScope.positionWatcherId = navigator.geolocation.watchPosition (position) ->
+  #     localStorage.setItem "position.coords.latitude", position.coords.latitude
+  #     localStorage.setItem "position.coords.longitude", position.coords.longitude
+  #     # localStorage.setItem "position.coords.altitude", position.coords.altitude
+  #     localStorage.setItem "position.coords.accuracy", position.coords.accuracy
+  #     # localStorage.setItem "position.coords.altitudeAccuracy", position.coords.altitudeAccuracy
+  #     # localStorage.setItem "position.coords.heading", position.coords.heading
+  #     # localStorage.setItem "position.coords.speed", position.coords.speed
+  #     localStorage.setItem "position.timestamp", position.timestamp
+  #   , (error) ->
+  #     if error.message
+  #       msg = ": #{error.message}"
+  #     else
+  #       msg = ""
+  #     Log.w "Couldn't fetch position#{msg}"
+  #   ,
+  #     enableHighAccuracy: false
+  #     timeout: 5000
 
   # Only allow portrait mode
   steroids.view.setAllowedRotations [0, 180]
@@ -302,6 +306,12 @@ common.factory "Util", ->
 
   formatAreaSqKm: (area) ->
     return "#{(area/1000000).toFixed(2)}"
+
+  # setLastKnowPosition: (position) ->
+  #   localStorage.setItem "position.coords.latitude", position.latitude
+  #   localStorage.setItem "position.coords.longitude", position.longitude
+  #   localStorage.setItem "position.coords.accuracy", position.accuracy
+  #   localStorage.setItem "position.timestamp", position.timestamp
 
   lastKnownPosition: ->
     try
