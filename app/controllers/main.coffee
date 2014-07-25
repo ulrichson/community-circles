@@ -483,7 +483,7 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
     # Log.d "Fetching location..."
     map.locate
       setView: setView
-      enableHighAccuracy: true
+      enableHighAccuracy: ionic.Platform.isIOS()
 
   createContributionMarker = (feature, latlng) ->
     marker = new L.Marker latlng,
@@ -652,6 +652,8 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
     $rootScope.mapLocateInterval = setInterval ->
       locate false
     , 5000
+
+  loadContributions()
 
   # Set height of map (for some reason the height of 100% doesn't work)
   # $ionicPlatform.ready ->
@@ -850,6 +852,7 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
 
   currentPositionMarker = null
   $scope.hasError = false
+  $scope.isAndroid = ionic.Platform.isAndroid()
 
   #-----------------------------------------------------------------------------
   # CONTRIBUTION PROPERTIES
@@ -898,9 +901,7 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
       # Log.d "File located at #{JSON.stringify file}"
       $scope.contribution.photo_file = file.toURL()
       $scope.contribution.photo_src = "/" + file.name
-      $scope.bgImageStyle = {
-        "background-image": "url(#{$scope.contribution.photo_src})"
-      }
+      $scope.bgImageStyle = "background-image": "url(#{$scope.contribution.photo_src})"
       $scope.$apply -> $scope.loading = false
 
   #-----------------------------------------------------------------------------
@@ -936,40 +937,50 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
 
   $scope.choosePhoto = (msg) ->
     lblTitle = if $scope.imgSrc then T._ gettext "Replace photo" else T._ gettext "Add a photo"
-    actionSheet = $ionicActionSheet.show
-      buttons: [
-        text: T._ gettext "From library"
-      ,
-        text: T._ gettext "Capture photo"
-      ]
-      # destructiveText: T._ gettext "Delete"
-      titleText: lblTitle
-      cancelText: T._ gettext "Cancel"
-      buttonClicked: (index) ->
-        if not navigator.camera?
-          Log.w "Camera API is not available"
-          return true
-        options = {}
-        if index is 0
-          options =
-            quality: 70
-            destinationType: navigator.camera.DestinationType.IMAGE_URI
-            sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-            correctOrientation: true # Let Cordova correct the picture orientation (WebViews don't read EXIF data properly)
-            targetWidth: 640
-            popoverOptions: # iPad camera roll popover position
-              width: 768
-              height: 190
-              arrowDir: Camera.PopoverArrowDirection.ARROW_UP
-        else
-          options =
-            quality: 70
-            destinationType: navigator.camera.DestinationType.IMAGE_URI
-            correctOrientation: true
-            targetWidth: 640
 
-        navigator.camera.getPicture imageUriReceived, cameraError, options
-        return true
+    if ionic.Platform.isAndroid()
+      options =
+        quality: 70
+        destinationType: navigator.camera.DestinationType.IMAGE_URI
+        correctOrientation: true
+        targetWidth: 640
+
+      navigator.camera.getPicture imageUriReceived, cameraError, options
+    else
+      actionSheet = $ionicActionSheet.show
+        buttons: [
+          text: T._ gettext "From library"
+        ,
+          text: T._ gettext "Capture photo"
+        ]
+        # destructiveText: T._ gettext "Delete"
+        titleText: lblTitle
+        cancelText: T._ gettext "Cancel"
+        buttonClicked: (index) ->
+          if not navigator.camera?
+            Log.w "Camera API is not available"
+            return true
+          options = {}
+          if index is 0
+            options =
+              quality: 70
+              destinationType: navigator.camera.DestinationType.IMAGE_URI
+              sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+              correctOrientation: true # Let Cordova correct the picture orientation (WebViews don't read EXIF data properly)
+              targetWidth: 640
+              popoverOptions: # iPad camera roll popover position
+                width: 768
+                height: 190
+                arrowDir: Camera.PopoverArrowDirection.ARROW_UP
+          else
+            options =
+              quality: 70
+              destinationType: navigator.camera.DestinationType.IMAGE_URI
+              correctOrientation: true
+              targetWidth: 640
+
+          navigator.camera.getPicture imageUriReceived, cameraError, options
+          return true
 
   $scope.removePhoto = ->
     $scope.contribution.photo_src = null
@@ -1096,7 +1107,7 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
           #   $scope.reset()
 
         ft = new FileTransfer()
-        ft.upload $scope.contribution.photo_file, encodeURI("#{Config.API_ENDPOINT}/photo/"), uploadSuccess, uploadError, options
+        ft.upload $scope.contribution.photo_file, encodeURI("#{Config.API_ENDPOINT}/photo/"), uploadSuccess, uploadError, options, true
     , (response) ->
       Log.e "Contribution upload failed: #{JSON.stringify response.data}"
       alert = $ionicPopup.alert
@@ -1133,7 +1144,7 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
     if locate
       $ionicLoading.show template: T._ gettext "Locating..."
       $cordovaGeolocation.getCurrentPosition
-        enableHighAccuracy: true
+        enableHighAccuracy: ionic.Platform.isIOS()
         timeout: 5000
       .then (position) ->
         contributionModel.latlng = L.latLng position.coords.latitude, position.coords.longitude
@@ -1188,7 +1199,7 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
   if not contributionModel.isDirty()
     $ionicLoading.show template: T._ gettext "Locating..."
     $cordovaGeolocation.getCurrentPosition
-      enableHighAccuracy: true
+      enableHighAccuracy: ionic.Platform.isIOS()
       timeout: 5000
     .then (position) ->
       contributionModel.latlng = L.latLng position.coords.latitude, position.coords.longitude
@@ -1496,7 +1507,7 @@ mainApp.controller "ContributionListCtrl", ($scope, $rootScope, $state, $timeout
 
   $ionicLoading.show template: T._ gettext "Locating..."
   $cordovaGeolocation.getCurrentPosition
-    enableHighAccuracy: false
+    enableHighAccuracy: ionic.Platform.isIOS()
     timeout: 2000
   .then (position) ->
     localStorage.setItem "position.coords.latitude", position.coords.latitude

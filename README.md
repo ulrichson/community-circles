@@ -10,10 +10,10 @@ Setup
 
 **.keystore file**
 
-`keytool -genkey -v -keystore community-circles-mobile.keystore -alias ccm_keystore_alias
+`keytool -genkey -v -keystore b-part.keystore -alias bpart_keystore_alias
 -keyalg RSA -keysize 2048 -validity 10000`
 
-Upload this file, specify a password and use `ccm_keystore_alias` as alias name.
+Upload this file, specify a password and use `bpart_keystore_alias` as alias name.
 
 Afterwards you can press `Build Scanner` and upload to your phone.
 

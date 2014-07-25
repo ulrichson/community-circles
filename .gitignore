@@ -2,7 +2,7 @@
 /dist
 /.sass-cache
 node_modules
-community-circles-mobile.keystore
+*.keystore
 /config/*cloud.json
 private.coffee
 *.log

@@ -38,7 +38,7 @@
       </li>
     </ul>
     <div class="contribution-photo text-center">
-      <div ng-class="{background: contribution.photo_src}" ng-style="bgImageStyle"></div>
+      <div ng-if="!isAndroid" ng-class="{background: contribution.photo_src}" ng-style="bgImageStyle"></div>
       <div class="content">
         <button ng-if="!contribution.photo_src" class="button button-positive button-circle" ng-click="choosePhoto()"><i class="icon ion-ios7-camera-outline"></i></button>
         <div ng-if="contribution.photo_src" ng-click="choosePhoto()" ng-style="bgImageStyle" class="contribution-photo-preview center-block"></div>
