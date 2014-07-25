@@ -9,7 +9,7 @@
     </author>
     <access origin="*" />
     <preference name="AllowInlineMediaPlayback" value="false" />
-    <preference name="DisallowOverscroll" value="false" />
+    <preference name="DisallowOverscroll" value="true" />
     <preference name="EnableViewportScale" value="false" />
     <preference name="HideKeyboardFormAccessoryBar" value="false" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
@@ -24,4 +24,19 @@
     <preference name="EnablePopGestureRecognition" value="true" />
     <preference name="DisableTabBarUnselectedIconTintColor" value="false" />
     <preference name="AutoHideSplashScreen" value="true" />
+
+    <preference name="webviewbounce" value="false" />
+    <preference name="UIWebViewBounce" value="false" />
+
+    <preference name="ViewIgnoresStatusBar" value="true" />
+
+    <!-- Don't store local date in an iCloud backup. Turn this to "cloud" to enable storage 
+         to be sent to iCloud. Note: enabling this could result in Apple rejecting your app.
+    -->
+    <preference name="BackupWebStorage" value="none" />
+    <!-- 
+    <feature name="Keyboard">
+        <param name="ios-package" value="IonicKeyboard" onload="true" />
+    </feature>
+    -->
 </widget>

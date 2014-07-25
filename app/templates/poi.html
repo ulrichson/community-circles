@@ -1,0 +1,24 @@
+<ion-view title="{{ 'Where are you?' | translate }}" class="poi">
+
+  <ion-nav-buttons side="right">
+    <button class="button button-icon button-clear ion-close-circled" ng-show="selectedPoi" ng-click="unselect()"></button>
+  </ion-nav-buttons>
+
+  <ion-header-bar class="bar-subheader no-padding" no-tap-scroll="true">
+    <div id="poi-map"></div>
+  </ion-header-bar>
+
+  <ion-content>
+    <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="reset(true)"></ion-refresher>
+    <div class="list">
+      <div id="{{ poi.id }}" class="item" ng-class="{ 'active-positive': selectedPoi.id == poi.id }" ng-click="choose(poi)" ng-repeat="poi in pois | orderBy:'location.distance'">
+        <img ng-show="poi.categories[0].icon && selectedPoi.id != poi.id" class="pull-left poi-type-icon" ng-src="{{ poi.categories[0].icon.prefix + 'bg_64' + poi.categories[0].icon.suffix }}" alt="{{ poi.categories[0].name }}" width="32">
+        <img ng-show="poi.categories[0].icon && selectedPoi.id == poi.id" class="pull-left poi-type-icon" ng-src="{{ poi.categories[0].icon.prefix + '64' + poi.categories[0].icon.suffix }}" alt="{{ poi.categories[0].name }}" width="32">
+        {{ poi.name }}<br>
+        <span class="extra-small"><i class="icon ion-ios7-navigate"></i> {{ poi.location.distance | distance }}</span>
+      </div>
+      <img class="foursquare-logo" src="/images/poweredByFoursquare_gray.png" alt="Powered by Foursquare" width="100%">
+    </div>
+  </ion-content>
+
+</ion-view>

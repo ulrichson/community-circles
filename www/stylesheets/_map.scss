@@ -1,0 +1,150 @@
+$controlShadow: 0 1px 0px rgba(255, 255, 255, 0.8), 0 2px 0px rgba(0, 0, 0, 0.4);
+$contrubutionMarkerDiameter: 40px;
+$contributionClusterMarkerDiameter: $contrubutionMarkerDiameter * 0.75;
+
+/*******************************************************************************
+* MAP
+*******************************************************************************/
+#map {
+  height: 100%;
+  width: 100%;
+}
+
+.leaflet-control-attribution {
+  width: 100%;
+}
+
+/*******************************************************************************
+* MARKER
+*******************************************************************************/
+.current-position-marker-icon {
+  background-image: url(/icons/marker-icon-current-position@2x.png);
+  background-size: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  @include animation-name(spin);
+  @include animation-duration(5s);
+  @include animation-iteration-count(infinite);
+  @include animation-timing-function(linear);
+}
+
+.contribution-icon {
+  bottom: 0;
+  background-size: 100%;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.contribution-icon-idea {
+  background-image: url(/icons/contribution/idea_filled@2x.png);
+}
+
+.contribution-icon-issue {
+  background-image: url(/icons/contribution/issue_filled@2x.png);
+}
+
+.contribution-icon-opinion {
+  background-image: url(/icons/contribution/opinion_filled@2x.png);
+}
+
+.contribution-icon-poll {
+  background-image: url(/icons/contribution/poll_filled@2x.png);
+}
+
+.contribution-marker-cluster {
+  background-color: $cc-light;
+  border-radius: $contributionClusterMarkerDiameter;
+  color: #ffffff;
+  height: $contributionClusterMarkerDiameter;
+  line-height: $contributionClusterMarkerDiameter;
+  margin-left: -$contributionClusterMarkerDiameter/2;
+  margin-top: -$contributionClusterMarkerDiameter/2;
+  text-align: center;
+  width: $contributionClusterMarkerDiameter;
+}
+
+.contribution-marker-cluster:active {
+  background-color: $cc-dark;
+}
+
+.contribution-marker-cluster span {
+  font-weight: 300;
+  font-size: 1.4em;
+}
+
+.leaflet-div-icon {
+  background-color: transparent;
+  border-style: none;
+}
+
+/*******************************************************************************
+* CONTRIBUTION DETAIL
+*******************************************************************************/
+.contribution-detail {
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: absolute;
+  right: 0;
+  top: 80px - $dropshadowWidth;
+}
+
+.contribution-detail::before {
+  @include box-shadow(0 0 $dropshadowWidth $dropshadowColor);
+  border-top-left-radius: 100px 10px;
+  border-top-right-radius: 100px 10px;
+  border-bottom-right-radius: 100px 10px;
+  border-bottom-left-radius: 100px 10px;
+  bottom: $dropshadowWidth;
+  content: "";
+  left: $dropshadowWidth;
+  right: $dropshadowWidth;
+  position: absolute;
+  top: $dropshadowWidth;
+  z-index: 100;
+}
+
+.contribution-detail-inner {
+  background-color: #ffffff;
+  margin: $dropshadowWidth 0;
+  padding: 10px;
+  position: relative;
+  z-index: 200;
+}
+
+.contribution-detail.ng-hide-add,
+.contribution-detail.ng-hide-remove {
+  -webkit-transition: all ease 0.3s;
+  -moz-transition: all ease 0.3s;
+  -o-transition: all ease 0.3s;
+  transition: all ease 0.3s;
+  display: block !important;
+}
+
+.contribution-detail.ng-hide-add.ng-hide-add-active,
+.contribution-detail.ng-hide-remove {
+  -webkit-transform: translateY(100%);
+  -moz-transform: translateY(100%);
+  -o-transform: translateY(100%);
+  transform: translateY(100%);
+}
+
+.contribution-detail.ng-hide-add,
+.contribution-detail.ng-hide-remove.ng-hide-remove-active {
+  -webkit-transform: translateY(0%);
+  -moz-transform: translateY(0%);
+  -o-transform: translateY(0%);
+  transform: translateY(0%);
+}
+
+.contribution-close {
+  position: absolute;
+  right: 0;
+  top: 5px;
+}

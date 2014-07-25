@@ -1,0 +1,19 @@
+.mood {
+  float: left;
+  text-align: center;
+  width: 33.33333333%;
+}
+
+.mood.active {
+  color: $positive;
+}
+
+.mood {
+  .mood-icon {
+    font-size: 6em;
+  }
+  .mood-label {
+    position: relative;
+    top: -15px;
+  }
+}

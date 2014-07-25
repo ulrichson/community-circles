@@ -1,0 +1,10 @@
+<ion-view title="{{ 'How do you feel?' | translate }}">
+  <ion-nav-buttons side="right">
+    <button class="button button-icon button-clear ion-close-circled" ng-show="selectedMood" ng-click="unselect()"></button>
+  </ion-nav-buttons>
+  <ion-content>
+    <div id="{{ mood.code }}" class="mood" ng-repeat="mood in moods" ng-class="{active: selectedMood == mood.code}" ng-click="choose(mood)">
+      <span class="icomatic mood-icon {{ mood.code }}filled" ng-if="selectedMood == mood.code"></span><span class="icomatic mood-icon {{ mood.code }}" ng-if="selectedMood != mood.code"></span><br><span class="mood-label">{{ mood.name }}</span>
+    </div>
+  </ion-content>
+</ion-view>

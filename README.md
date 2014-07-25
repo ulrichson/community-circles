@@ -10,10 +10,10 @@ Setup
 
 **.keystore file**
 
-`keytool -genkey -v -keystore community-circles-mobile.keystore -alias ccm_keystore_alias
+`keytool -genkey -v -keystore b-part.keystore -alias bpart_keystore_alias
 -keyalg RSA -keysize 2048 -validity 10000`
 
-Upload this file, specify a password and use `ccm_keystore_alias` as alias name.
+Upload this file, specify a password and use `bpart_keystore_alias` as alias name.
 
 Afterwards you can press `Build Scanner` and upload to your phone.
 
@@ -25,8 +25,6 @@ Provide a `private.coffee` file in `app/community-circles/` with following conte
 @key =
   FOURSQUARE_CLIENT_ID: "<client_id>#"
   FOURSQAURE_CLIENT_SECTRET: "<client_secret>"
-  NOKIA_APP_ID: "<app_id>"
-  NOKIA_APP_CODE: "<app_code>"
 
 @config =
   SUPPORT_EMAIL: "<contact_email>"
@@ -56,7 +54,7 @@ grunt.extendConfig
         {
           expand: true
           cwd: 'www/'
-          src: ['**/*.scss', '**/*.sass', '!components/**']
+          src: ['**/*.scss', '**/*.sass', '!components/**', '!**/_*.scss', '!**/_*.sass']
           dest: 'dist/'
           ext: '.css'
         }
@@ -105,6 +103,11 @@ Editor
 ------
 
 Indent using spaces, space width: 2
+
+Localization
+------------
+
+All the translation template is located in `po/template.pot`, which can be modified with e.g. [Poedit](http://poedit.net).
 
 Contributors
 ------------

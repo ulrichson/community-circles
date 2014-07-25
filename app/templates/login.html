@@ -1,0 +1,49 @@
+<div class="modal">
+  <ion-content class="login" has-bouncing="false" scroll="false">
+  <div class="login-logo text-center">
+    <img src="/images/bpart-logo-white.png" alt "Community Circles Logo" width="100">
+  </div>
+
+  <!-- LOGIN STARTS -->
+  <form class="form" role="form" ng-show="loginVisible">
+    <div class="list">
+      <label class="item item-input">
+        <i class="icon ion-person placeholder-icon"></i>
+        <input ng-model="login.username" type="text" placeholder="{{ 'Username' | translate }}" required>
+      </label>
+      <label class="item item-input">
+        <i class="icon ion-locked placeholder-icon"></i>
+        <input ng-model="login.password" type="password" placeholder="{{ 'Password' | translate }}" required>
+      </label>
+    </div>
+    <button class="button button-outline button-full button-light" ng-click="login()" ng-disabled="requesting" translate>Login</button>
+  </form>
+  <!-- LOGIN ENDS -->
+
+  <!-- REGISTER STARTS -->
+  <form class="form" role="form" ng-show="!loginVisible">
+    <div class="list">
+      <label class="item item-input">
+        <i class="icon ion-person placeholder-icon"></i>
+        <input ng-model="register.username" type="text" placeholder="{{ 'Username' | translate }}" required>
+      </label>
+      <label class="item item-input">
+        <i class="icon ion-email placeholder-icon"></i>
+        <input ng-model="register.email" type="text" placeholder="{{ 'Email' | translate }}" required>
+      </label>
+      <label class="item item-input">
+        <i class="icon ion-locked placeholder-icon"></i>
+        <input ng-model="register.password" type="password" placeholder="{{ 'Password' | translate }}" required>
+      </label>
+    </div>
+    <button class="button button-outline button-full button-light" ng-click="register()" ng-disabled="requesting" translate>Register</button>
+  </form>
+  <!-- REGISTER ENDS -->
+
+  <button id="btn-switch-view" class="button button-clear button-block button-light" ng-click="switchView()">
+    <span ng-show="!loginVisible" translate>Back to login</span>
+    <span ng-show="loginVisible" translate>Register account</span>
+  </button>
+
+</ion-content>
+</div>

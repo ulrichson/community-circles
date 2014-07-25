@@ -1,0 +1,95 @@
+<ion-view title="{{ 'New contribution' | translate }}" class="contribution-new">
+  <!--
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon" ng-hide="backButtonVisible"></button>
+  </ion-nav-buttons>
+  -->
+  <ion-nav-buttons side="right">
+    <button class="button button-icon button-clear" ng-click="createContribution()" translate>Submit</button>
+  </ion-nav-buttons>
+
+  <ion-content>
+    <div id="contribution-map"></div>
+    <div class="item item-divider assertive" ng-show="hasError && !contribution.type" translate>A contribution type is requred</div>
+    <ul class="contribution-type">
+      <li class="center-block" ng-class="{active: contribution.type == 'OP'}" ng-click="contribution.type = 'OP'">
+        <a class="text-center">
+          <span class="li_megaphone"></span><br>
+          <small translate>Opinion</small>
+        </a>
+      </li>
+      <li class="center-block" ng-class="{active: contribution.type == 'PL'}" ng-click="contribution.type = 'PL'">
+        <a class="text-center">
+          <span class="cc-icon poll"></span><br>
+          <small translate>Poll</small>
+        </a>
+      </li>
+      <li class="center-block" ng-class="{active: contribution.type == 'IS'}" ng-click="contribution.type = 'IS'">
+        <a class="text-center">
+          <span class="cc-icon issue"></span><br>
+          <small translate>Issue</small>
+        </a>
+      </li>
+      <li class="center-block" ng-class="{active: contribution.type == 'ID'}" ng-click="contribution.type = 'ID'">
+        <a class="text-center">
+          <span class="cc-icon idea"></span><br>
+          <small translate>Idea</small>
+        </a>
+      </li>
+    </ul>
+    <div class="contribution-photo text-center">
+      <div ng-if="!isAndroid" ng-class="{background: contribution.photo_src}" ng-style="bgImageStyle"></div>
+      <div class="content">
+        <button ng-if="!contribution.photo_src" class="button button-positive button-circle" ng-click="choosePhoto()"><i class="icon ion-ios7-camera-outline"></i></button>
+        <div ng-if="contribution.photo_src" ng-click="choosePhoto()" ng-style="bgImageStyle" class="contribution-photo-preview center-block"></div>
+      </div>
+      <button ng-show="contribution.photo_src" ng-click="removePhoto()" class="close btn-remove-photo" aria-hidden="true">&times;</button>
+    </div>
+
+    <div class="list">
+      <div class="item item-divider assertive" ng-show="hasError && !contribution.title" translate>A title is required</div>
+      <label class="item item-input" ng-class="{'has-error': hasError && !contribution.title}">
+        <input type="text" name ="title" ng-model="contribution.title" placeholder="{{ 'Tap to enter a title' | translate }}">
+      </label>
+      <div class="item item-divider assertive" ng-show="contribution.type != 'PL' && hasError && !contribution.description" translate>A descrption is required</div>
+      <label class="item item-input" ng-show="contribution.type != 'PL'" ng-class="{'has-error': hasError && !contribution.description}">
+        <textarea name="description" ng-model="contribution.description" rows="3" placeholder="{{ 'Tap to enter a description' | translate }}"></textarea>
+      </label>
+    </div>
+
+    <div ng-show="contribution.type == 'PL'">
+      <div class="item item-divider assertive" ng-show="hasError && contribution.poll_options.length < 2" translate>At least two poll options are required</div>
+      <button class="button button-full icon-right ion-plus-circled button-positive" ng-click="addPollOption()" translate>Add poll option</button>
+      <div class="list list-poll-options" ng-show="contribution.poll_options.length > 0">
+        <div class="item item-button-right" ng-repeat="poll_option in contribution.poll_options">
+          {{ poll_option }}
+          <button class="button button-assertive button-clear" ng-click="removePollOption(poll_option)">
+            <i class="icon ion-minus-circled"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="list">
+      <div class="item item-divider" translate>
+        Additional information
+      </div>
+      <div class="item item-icon-left item-icon-right" ng-click="choosePoi()">
+        <i class="icon ion-location"></i>
+        <span ng-show="!contribution.poi"><em translate>I'm at</em><em> …</em></span>
+        <span ng-show="contribution.poi">{{ contribution.poi.name }}</span>
+        <i class="icon ion-ios7-arrow-right"></i>
+      </div>
+      <div class="item item-icon-left item-icon-right" ng-click="chooseMood()">
+        <i ng-show="!contribution.mood" class="icon ion-chatbubble-working"></i>
+        <i ng-show="contribution.mood" class="icon icomatic {{ contribution.mood.code }}filled"></i>
+        <span ng-show="!contribution.mood"><em translate>I'm feeling</em><em> …</em></span>
+        <span ng-show="contribution.mood">{{ contribution.mood.name }}</span>
+        <i class="icon ion-ios7-arrow-right"></i>
+      </div>
+    </div>
+    
+    <button class="button button-full button-light" ng-click="resetConfirm()"><i class="icon ion-ios7-undo-outline"></i> <span translate>Reset contribution</span></button>
+
+  </ion-content>
+</ion-view>

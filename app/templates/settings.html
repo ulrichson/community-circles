@@ -1,0 +1,23 @@
+<ion-view title="{{ 'Settings' | translate }}" class="settings">
+
+  <ion-nav-buttons side="left">
+    <button ng-click="toggleNavigationMenu()" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+
+  <ion-content>
+    <div class="list">
+      <div class="item item-divider" translate>Language</div>
+      <label class="item item-radio" ng-click="chooseLanguage('de')">
+        <input type="radio" name="language" ng-checked="language=='de'">
+          <div class="item-content" translate>German</div>
+          <i class="radio-icon ion-checkmark"></i>
+      </label>
+      <label class="item item-radio" ng-click="chooseLanguage('en')">
+        <input type="radio" name="language" ng-checked="language=='en'">
+          <div class="item-content" translate>English</div>
+          <i class="radio-icon ion-checkmark"></i>
+      </label>
+    </div>
+  </ion-content>
+
+</ion-view>

@@ -1,0 +1,625 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.7\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: app/templates/contribution.new.html
+msgid "A contribution type is requred"
+msgstr "Ein Beitragstyp ist erforderlich"
+
+#: app/templates/contribution.new.html
+msgid "A descrption is required"
+msgstr "Die Beschreibung ist erforderlich"
+
+#: app/templates/contribution.new.html
+msgid "A title is required"
+msgstr "Der Titel ist erforderlich"
+
+#: dist/controllers/main.js
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: dist/controllers/main.js
+msgid "Add a photo"
+msgstr "Foto hinzufügen"
+
+#: app/templates/contribution.new.html dist/controllers/main.js
+msgid "Add poll option"
+msgstr "Antwortmöglichkeit hinzufügen"
+
+#: dist/controllers/main.js
+msgid "Adding a photo gives your contribution more meaning!"
+msgstr "Ein Foto gibt dem Beitrag mehr Aussagekraft!"
+
+#: dist/controllers/main.js
+msgid "Adding your location and mood gives your contribution more meaning!"
+msgstr "Ein Ort gibt dem Beitrag mehr Aussagekraft!"
+
+#: dist/controllers/main.js
+msgid "Adding your location gives your contribution more meaning!"
+msgstr "Ein Ort gibt dem Beitrag mehr Aussagekraft!"
+
+#: dist/controllers/main.js
+msgid "Adding your mood gives your contribution more meaning!"
+msgstr "Ein Stimmung gibt dem Beitrag mehr Aussagekraft!"
+
+#: app/templates/contribution.new.html
+msgid "Additional information"
+msgstr "Weitere Informationen"
+
+#: app/templates/contribution.detail.html
+msgid "Agree for an option:"
+msgstr "Antwortoption zustimmen:"
+
+#: dist/controllers/main.js
+msgid "An error occured"
+msgstr "Ein Fehler ist aufgetreten"
+
+#: app/templates/contribution.new.html
+msgid "At least two poll options are required"
+msgstr "Mindestens zwei Antwortmöglichkeiten notwendig"
+
+#: app/templates/navigation.html
+msgid "Back"
+msgstr "Zurück"
+
+#: app/templates/login.html
+msgid "Back to login"
+msgstr "Zurück zur Anmeldung"
+
+#: app/templates/contribution.detail.html
+msgid "Be the first who comments!"
+msgstr "Kommentiere als ersteR!"
+
+#: app/templates/navigation.html
+msgid "Browse Contributions"
+msgstr "Beiträge durchsuchen"
+
+#: dist/controllers/main.js
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: dist/controllers/main.js
+msgid "Cannot determine location"
+msgstr "Position kann nicht bestimmt werden"
+
+#: dist/controllers/main.js
+msgid "Cannot login"
+msgstr "Anmeldung nicht möglich"
+
+#: dist/controllers/main.js
+msgid "Cannot upload photo"
+msgstr "Foto kann nicht hochgeladen werden"
+
+#: dist/controllers/main.js
+msgid "Capture photo"
+msgstr "Foto aufnehmen"
+
+#: app/templates/contribution.detail.html dist/controllers/main.js
+msgid "Comment"
+msgstr "Kommentieren"
+
+#: app/templates/notifications.html
+msgid "Comment was voted"
+msgstr "Kommentar wurde abgestimmt"
+
+#: dist/controllers/main.js
+msgid "Continue anyway"
+msgstr "Trotzdem fortfahren"
+
+#: app/templates/notifications.html
+msgid "Contribution was commented"
+msgstr "Beitrag wurde kommentiert"
+
+#: app/templates/notifications.html
+msgid "Contribution was voted"
+msgstr "Beitrag wurde abgestimmt"
+
+#: app/templates/contribution.list.html
+msgid "Contributions"
+msgstr "Beiträge"
+
+#: dist/controllers/main.js
+msgid "Couldn't upload comment"
+msgstr "Kommentar kann nicht hochgeladen werden"
+
+#: app/templates/notifications.html
+msgid "Dismiss"
+msgstr "Löschen"
+
+#: dist/controllers/main.js
+msgid "Do you want to include a photo?"
+msgstr "Möchtest du ein Foto hinzufügen?"
+
+#: dist/controllers/main.js
+msgid "Do you want to provide additional information?"
+msgstr "Möchtest du weitere Informationen angeben?"
+
+#: app/templates/login.html
+msgid "Email"
+msgstr "E-Mail"
+
+#: app/templates/settings.html
+msgid "English"
+msgstr "Englisch"
+
+#: dist/controllers/main.js
+msgid "Error with email"
+msgstr "Fehler bei der E-Mail"
+
+#: dist/controllers/main.js
+msgid "Error with password"
+msgstr "Fehler beim Passwort"
+
+#: dist/controllers/main.js
+msgid "Error with username"
+msgstr "Fehler beim Benutzername"
+
+#: dist/controllers/main.js
+msgid "Failed to upload"
+msgstr "Hochladen fehlgeschlagen"
+
+#: dist/controllers/main.js
+msgid "Fetching venues..."
+msgstr "Orte werden geladen..."
+
+#: dist/controllers/main.js
+msgid "From library"
+msgstr "Von Bibliothek"
+
+#: app/templates/settings.html
+msgid "German"
+msgstr "Deutsch"
+
+#: app/templates/navigation.html
+msgid "Hello"
+msgstr "Hallo"
+
+#: app/templates/mood.html
+msgid "How do you feel?"
+msgstr "Wie fühlst du dich?"
+
+#: dist/controllers/main.js
+msgid "I'll edit first"
+msgstr "Vorher bearbeiten"
+
+#: app/templates/contribution.new.html
+msgid "I'm at"
+msgstr "Ich bin bei"
+
+#: app/templates/contribution.new.html
+msgid "I'm feeling"
+msgstr "Ich fühle mich"
+
+#: app/templates/contribution.new.html
+msgid "Idea"
+msgstr "Idee"
+
+#: app/templates/imprint.html app/templates/navigation.html
+msgid "Imprint"
+msgstr "Impressum"
+
+#: dist/controllers/main.js
+msgid "Invalid password or username"
+msgstr "Ungültiges Passwort oder Benutzername"
+
+#: app/templates/contribution.new.html
+msgid "Issue"
+msgstr "Problem"
+
+#: dist/controllers/main.js
+msgid ""
+"It may contain letters, numbers, the characters '-', '_' and '.' but no "
+"special characters."
+msgstr ""
+"Es darf Buchstaben, Nummern, die Zeichen '-', '_' und '.' enthalten, aber "
+"keine Sonderzeichen."
+
+#: app/templates/settings.html
+msgid "Language"
+msgstr "Sprache"
+
+#: app/templates/contribution.list.html
+msgid "Latest"
+msgstr "Neueste"
+
+#: app/templates/contribution.detail.html
+msgid "Like"
+msgstr "Gefällt mir"
+
+#: dist/controllers/main.js
+msgid "Loading comments..."
+msgstr "Lade Kommentare..."
+
+#: dist/controllers/main.js
+msgid "Loading contribution..."
+msgstr "Lade Beiträge..."
+
+#: dist/controllers/main.js
+msgid "Loading contributions..."
+msgstr "Lade Beiträge..."
+
+#: dist/controllers/main.js
+msgid "Loading notifications..."
+msgstr "Lade Benachrichtigungen..."
+
+#: dist/controllers/main.js
+msgid "Locating..."
+msgstr "Position wird ermittelt..."
+
+#: dist/controllers/main.js
+msgid "Logging in..."
+msgstr "Anmeldung..."
+
+#: app/templates/login.html
+msgid "Login"
+msgstr "Anmelden"
+
+#: app/templates/navigation.html
+msgid "Logout"
+msgstr "Abmelden"
+
+#: app/templates/map.html app/templates/navigation.html
+msgid "Map"
+msgstr "Karte"
+
+#: app/templates/contribution.list.html
+msgid "Mine"
+msgstr "Meine"
+
+#: app/templates/contribution.list.html
+msgid "Nearby"
+msgstr "In Nähe"
+
+#: app/templates/contribution.new.html
+msgid "New contribution"
+msgstr "Neuer Beitrag"
+
+#: app/templates/contribution.list.html
+msgid "No contributions found"
+msgstr "Keine Beiträge gefunden"
+
+#: app/templates/contribution.detail.html
+msgid "Nobody replied so far."
+msgstr "Niemand hat bisher geantwortet."
+
+#: app/templates/navigation.html app/templates/notifications.html
+msgid "Notifications"
+msgstr "Benachrichtigungen"
+
+#: app/templates/contribution.new.html
+msgid "Opinion"
+msgstr "Meinung"
+
+#: app/templates/login.html
+msgid "Password"
+msgstr "Passwort"
+
+#: dist/controllers/main.js
+msgid "Please enter a comment"
+msgstr "Bitte Kommentar eingeben"
+
+#: dist/controllers/main.js
+msgid "Please enter all details!"
+msgstr "Bitte alle Details angeben!"
+
+#: dist/controllers/main.js
+msgid "Please enter in the field below."
+msgstr "Bitte im Feld unterhalt eintragen."
+
+#: dist/controllers/main.js
+msgid "Please enter your credentials"
+msgstr "Bitte Zugangsdaten eingeben"
+
+#: dist/controllers/main.js
+msgid "Please remove your previous vote first"
+msgstr "Bitte zuerst die vorherige Stimme entfernen"
+
+#: dist/controllers/main.js
+msgid "Please try again later"
+msgstr "Bitte später versuchen"
+
+#: dist/controllers/main.js
+msgid "Please try again later."
+msgstr "Bitte später versuchen."
+
+#: app/templates/contribution.new.html
+msgid "Poll"
+msgstr "Frage"
+
+#: dist/controllers/main.js
+msgid "Poll option"
+msgstr "Antwortmöglichkeit"
+
+#: app/templates/notifications.html
+msgid "Poll was voted"
+msgstr "Umfrage wurde abgestimmt"
+
+#: app/templates/contribution.detail.html app/templates/contribution.list.html
+#: app/templates/notifications.html app/templates/poi.html
+msgid "Pull to refresh..."
+msgstr "Zum Aktualisieren ziehen..."
+
+#: app/templates/notifications.html
+msgid "Read"
+msgstr "Gelesen"
+
+#: app/templates/login.html
+msgid "Register"
+msgstr "Registrieren"
+
+#: app/templates/login.html
+msgid "Register account"
+msgstr "Zugang registrieren"
+
+#: dist/controllers/main.js
+msgid "Registering account..."
+msgstr "Zugang wird registriert..."
+
+#: dist/controllers/main.js
+msgid "Replace photo"
+msgstr "Foto ändern"
+
+#: dist/controllers/main.js
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: app/templates/contribution.new.html
+msgid "Reset contribution"
+msgstr "Beitrag zurücksetzen"
+
+#: dist/controllers/main.js
+msgid "Send"
+msgstr "Senden"
+
+#: app/templates/notifications.html
+msgid "Set Unread"
+msgstr "Ungelesen"
+
+#: app/templates/navigation.html app/templates/settings.html
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: dist/controllers/main.js
+msgid "Something is missing"
+msgstr "Etwas fehlt"
+
+#: dist/controllers/main.js
+msgid "Sorry, an error occured"
+msgstr "Es tut uns Leid, es ist ein Fehler aufgetreten."
+
+#: dist/controllers/main.js
+msgid "Sorry, couldn't upload your contribution. Please try again later."
+msgstr ""
+"Der Beitrag konnte leider nicht hochgeladen werden. Bitte versuche es später."
+
+#: app/templates/contribution.new.html
+msgid "Submit"
+msgstr "Absenden"
+
+#: dist/controllers/main.js
+msgid "Submitting contribution..."
+msgstr "Beitrag wird hochgeladen..."
+
+#: dist/controllers/main.js
+msgid "Successfully uploaded"
+msgstr "Erfolgreich hochgeladen"
+
+#: app/templates/navigation.html
+msgid "Support"
+msgstr "Support"
+
+#: app/templates/contribution.new.html
+msgid "Tap to enter a description"
+msgstr "Gib hier eine Beschreibung ein"
+
+#: app/templates/contribution.new.html
+msgid "Tap to enter a title"
+msgstr "Gib hier einen Titel an"
+
+#: dist/controllers/main.js
+msgid "Thanks for voting"
+msgstr "Danke für die Abstimmung"
+
+#: dist/controllers/main.js
+msgid "Thanks, your contribution was uploaded."
+msgstr "Danke, dein Beitrag wurde hochgeladen."
+
+#: app/templates/notifications.html
+msgid ""
+"The comment <em>{{ notification.ref_comment_display }}</em> for the "
+"contribution <strong>{{ notification.ref_contribution_display }}</strong> "
+"was voted"
+msgstr ""
+"Der Kommentar <em>{{ notification.ref_comment_display }}</em> für den "
+"Beitrag <strong>{{ notification.ref_contribution_display }}</strong> wurde "
+"abgestimmt"
+
+#: app/templates/notifications.html
+msgid ""
+"The contribution <strong>{{ notification.ref_contribution_display }}</"
+"strong> was commented by <strong>{{ notification.ref_user_display }}</"
+"strong>: <em>{{ notification.ref_comment_display }}</em>"
+msgstr ""
+"Der Beitrag <strong>{{ notification.ref_contribution_display }}</strong> "
+"wurde von <strong>{{ notification.ref_user_display }}</strong> kommentiert: "
+"<em>{{ notification.ref_comment_display }}</em>"
+
+#: app/templates/notifications.html
+msgid ""
+"The contribution <strong>{{ notification.ref_contribution_display }}</"
+"strong> was voted"
+msgstr ""
+"Der Beitrag <strong>{{ notification.ref_contribution_display }}</strong> "
+"wurde abgestimmt"
+
+#: app/templates/notifications.html
+msgid ""
+"The poll for <strong>{{ notification.ref_contribution_display }}</strong> "
+"was voted"
+msgstr ""
+"Die Umfrage für <strong>{{ notification.ref_contribution_display }}</strong> "
+"wurde abgestimmt"
+
+#: app/templates/notifications.html
+msgid "There are no notifications for you"
+msgstr "Es sind keine Benachrichtigungen vorhanden"
+
+#: dist/controllers/main.js
+msgid "There's something missing, please check the comments in the form"
+msgstr "Etwas fehlt, bitte überprüfe die Hinweise im Formular"
+
+#: app/templates/login.html
+msgid "Username"
+msgstr "Benutzername"
+
+#: app/templates/poi.html
+msgid "Where are you?"
+msgstr "Wo bist du?"
+
+#: dist/controllers/main.js
+msgid "You are not done yet"
+msgstr "Du bist noch nicht fertig."
+
+#: dist/controllers/main.js
+msgid "You have already voted for this poll!"
+msgstr "Du bereits für diese Umfrage abgestimmt!"
+
+#: app/templates/notifications.html
+msgid "You have {{ notifications.length }} notification"
+msgid_plural "You have {{ notifications.length }} notifications"
+msgstr[0] "Du hast {{ notifications.length }} Benachrichtung"
+msgstr[1] "Du hast {{ notifications.length }} Benachrichtungen"
+
+#: dist/controllers/main.js
+msgid "Your contribution was uploaded without your photo."
+msgstr "Dein Beitrag wurde ohne Foto hochgeladen."
+
+#: dist/controllers/main.js
+msgid "Your username is invalid"
+msgstr "Dein Benutzername ist ungültig"
+
+#: dist/controllers/main.js
+msgid "angry"
+msgstr "traurig"
+
+#: app/templates/contribution.detail.html app/templates/contribution.list.html
+#: app/templates/map.html
+msgid "by"
+msgstr "von"
+
+#: dist/controllers/main.js
+msgid "childish"
+msgstr "kindisch"
+
+#: dist/controllers/main.js
+msgid "confused"
+msgstr "verwirrt"
+
+#: dist/controllers/main.js
+msgid "happy"
+msgstr "glücklich"
+
+#: dist/controllers/main.js
+msgid "in love"
+msgstr "verliebt"
+
+#: dist/controllers/main.js
+msgid "ironic"
+msgstr "ironisch"
+
+#: app/templates/map.html
+msgid "more"
+msgstr "mehr"
+
+#: dist/controllers/main.js
+msgid "overhappy"
+msgstr "überglücklich"
+
+#: dist/controllers/main.js
+msgid "royal"
+msgstr "königlich"
+
+#: dist/controllers/main.js
+msgid "sad"
+msgstr "traurig"
+
+#: dist/controllers/main.js
+msgid "sealed"
+msgstr "verschlossen"
+
+#: dist/controllers/main.js
+msgid "shocked"
+msgstr "schockiert"
+
+#: dist/controllers/main.js
+msgid "silent"
+msgstr "leise"
+
+#: dist/controllers/main.js
+msgid "smart"
+msgstr "klug"
+
+#: dist/controllers/main.js
+msgid "sneaky"
+msgstr "hinterlistig"
+
+#: dist/controllers/main.js
+msgid "tired"
+msgstr "müde"
+
+#: dist/controllers/main.js
+msgid "unhappy"
+msgstr "unglücklich"
+
+#: app/templates/contribution.list.html
+msgid "within {{ data.distance }}m"
+msgstr "innerhalb von {{ data.distance }}m"
+
+#: app/templates/contribution.detail.html
+msgid "{{ comments.length }} comment"
+msgid_plural "{{ comments.length }} comments"
+msgstr[0] "{{ comments.length }} Kommentar"
+msgstr[1] "{{ comments.length }} Kommentare"
+
+#: app/templates/contribution.list.html
+msgid "{{ contributions.length }} contribution"
+msgid_plural "{{ contributions.length }} contributions"
+msgstr[0] "{{ contributions.length }} Beitrag"
+msgstr[1] "{{ contributions.length }} Beiträge"
+
+#~ msgid "Vote"
+#~ msgstr "Abstimmen"
+
+#~ msgid "...and removing votes isn't implemented yet ;)"
+#~ msgstr "...und das Löschen von Stimmen ist noch nicht implementiert ;)"
+
+#~ msgid "You have already voted"
+#~ msgstr "Du hast bereits abgestimmt"
+
+#~ msgid "Menu"
+#~ msgstr "Menü"
+
+#~ msgid "Select source below"
+#~ msgstr "Bitte unten auswählen"
+
+#~ msgid "feeling"
+#~ msgstr "fühlt sich"
+
+#~ msgid "your location"
+#~ msgstr "dein Ort"
+
+#~ msgid "your location and mood"
+#~ msgstr "dein Ort und deine Stimmung"
+
+#~ msgid "your mood"
+#~ msgstr "deine Stimmung"

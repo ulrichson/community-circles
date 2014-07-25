@@ -1,0 +1,63 @@
+<ion-view title="{{ contribution.title }}">
+  <ion-content>
+    <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="loadComments(contribution.id)"></ion-refresher>
+    <img ng-if="imageSrc" ng-src="{{ imageSrc }}" alt="{{ contribution.title }}" width="{{ imageWidth }}" height="{{ imageHeight }}" img-loading-spinner />
+    <div class="list">
+      <div class="card">
+        <div class="item no-padding">
+          <div id="contribution-map"></div>
+        </div>
+        <div class="item text-center">
+          <h2 class="royal no-truncate">{{ contribution.title }}</h2>
+          <p>
+            <span translate>by</span> <strong>{{ contribution.user.username }}</strong> <span am-time-ago="contribution.created"></span>
+          </p>
+          <p class="no-truncate">
+            <span ng-show="contribution.poi || contribution.mood">
+              <span ng-show="contribution.poi"><i class="icon ion-ios7-location"></i> {{ contribution.poi }}</span>
+              <span ng-show="contribution.mood"><i class="icon icomatic {{ contribution.mood }}filled" style="font-size: 1.4em"></i>{{ contribution.mood | mood:moods }}</span>
+            </span>
+            <i class="icon ion-ios7-chatbubble"></i> {{ contribution.comments_count }} <i class="icon ion-ios7-heart"></i> {{ contribution.votes_count }}
+          </p>
+        </div>
+        <div class="item item-text-wrap" ng-show="contribution.type != 'PL'">
+          {{ contribution.description }}
+        </div>
+        <div class="item item-divider" ng-show="contribution.type == 'PL'" translate>Agree for an option:</div>
+        <div class="item item-button-right" ng-show="contribution.type == 'PL'" ng-repeat="poll_option in contribution.poll_options | orderBy : 'votes_count' : true " ng-class="{ 'active-positive' : hasVotedForPollOption(poll_option) }">
+          <button class="button button-positive button-clear" ng-click="votePollOption(poll_option)">
+            <i class="icon ion-ios7-checkmark" ng-show="hasVotedForPollOption(poll_option)"></i>
+            <i class="icon ion-ios7-checkmark-outline" ng-show="!hasVotedForPollOption(poll_option)"></i>
+            &nbsp;{{ poll_option.votes_count }}
+          </button>
+          {{ poll_option.content }}
+        </div>
+  
+        <div class="item tabs tabs-secondary tabs-icon-left">
+          <a class="tab-item positive" ng-click="addComment()">
+            <i class="icon ion-ios7-chatbubble-outline"></i> <span translate>Comment</span>
+          </a>
+          <a class="tab-item positive" ng-click="voteContribution()">
+            <i class="icon" ng-class="hasVotedForContribution() ? 'ion-ios7-heart' : 'ion-ios7-heart-outline'"></i>&nbsp;<span translate ng-class="{ 'bold': hasVotedForContribution(comment) }">Like</span>
+          </a>
+        </div>
+      </div>
+      <div class="item item-divider" ng-show="comments.length > 0">
+        <span translate translate-n="comments.length" translate-plural="{{ comments.length }} comments">{{ comments.length }} comment</span>
+      </div>
+      <div class="item" ng-show="comments.length > 0" ng-repeat="comment in comments | orderBy: 'created'">
+        <span class="item-note">
+          <i class="icon ion-ios7-clock"></i>&nbsp;<span am-time-ago="comment.created"></span> | <i class="icon ion-ios7-heart"></i> {{ comment.votes_count }}
+        </span>
+        <h2>{{ comment.user.username }}</h2>
+        <p class="no-truncate no-margin">{{ comment.content }}</p>
+        <button class="button button-small button-clear button-positive" ng-click="voteComment(comment)">
+          <i class="icon" ng-class="hasVotedForComment(comment) ? 'ion-ios7-heart' : 'ion-ios7-heart-outline'"></i>&nbsp;<span translate ng-class="{ 'bold': hasVotedForComment(comment) }">Like</span>
+        </button>
+      </div>
+      <div class="item item-divider royal" ng-show="comments.length == 0">
+        <span translate>Nobody replied so far.</span><br><span translate>Be the first who comments!</span>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

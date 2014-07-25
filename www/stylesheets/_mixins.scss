@@ -1,0 +1,56 @@
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  -o-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin blur($blur) {
+  -webkit-filter: blur($blur);
+  -moz-filter: blur($blur);
+  -ms-filter: blur($blur);
+  -o-filter: blur($blur);
+  filter: blur($blur);
+}
+
+@mixin brightness($brightness) {
+  -webkit-filter: brightness($brightness);
+  -moz-filter: brightness($brightness);
+  -ms-filter: brightness($brightness);
+  -o-filter: brightness($brightness);
+  filter: brightness($brightness);
+}
+
+@mixin grayscale($grayscale) {
+  -webkit-filter: grayscale($grayscale);
+  -moz-filter: grayscale($grayscale);
+  -ms-filter: grayscale($grayscale);
+  -o-filter: grayscale($grayscale);
+  filter: grayscale($grayscale);
+}
+
+@mixin filter($var) {
+  -webkit-filter: $var;
+  -moz-filter: $var;
+  -ms-filter: $var;
+  -o-filter: $var;
+  filter: $var;
+}
+
+// Opacity
+
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  // IE8 filter
+  $opacity-ie: ($opacity * 100);
+  filter: #{alpha(opacity=$opacity-ie)};
+}
+
+// Center-align a block level element
+
+@mixin center-block() {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

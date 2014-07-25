@@ -1,0 +1,40 @@
+<ion-view title="{{ 'Notifications' | translate }}">
+  <ion-nav-buttons side="left">
+    <button ng-click="toggleNavigationMenu()" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-content>
+    <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="loadNotifications()"></ion-refresher>
+    <ion-list ng-if="notifications.length > 0">
+      <div class="item item-divider">
+        <span translate translate-n="notifications.length" translate-plural="You have {{ notifications.length }} notifications">You have {{ notifications.length }} notification</span>
+      </div>
+      <ion-item ng-repeat="notification in notifications | orderBy: 'created': true" ng-click="openContribution(notification)">
+        <h2 ng-class="{ 'text-muted': notification.is_read }">
+          <i class="icon ion-star" ng-show="notification.is_owner"></i>
+          <span ng-show="notification.type == 'CONTRIBUTION_COMMENT'" translate>Contribution was commented</span>
+          <span ng-show="notification.type == 'CONTRIBUTION_VOTE'" translate>Contribution was voted</span>
+          <span ng-show="notification.type == 'COMMENT_VOTE'" translate>Comment was voted</span>
+          <span ng-show="notification.type == 'POLL_VOTE'" translate>Poll was voted</span>
+          <span ng-show="notification.type == 'DEFAULT'">{{ notification.subject }}</span>
+        </h2>
+        <p class="no-truncate" ng-class="{ 'text-muted': notification.is_read }">
+          <span ng-show="notification.type == 'CONTRIBUTION_COMMENT'" translate>The contribution <strong>{{ notification.ref_contribution_display }}</strong> was commented by <strong>{{ notification.ref_user_display }}</strong>: <em>{{ notification.ref_comment_display }}</em></span>
+          <span ng-show="notification.type == 'CONTRIBUTION_VOTE'" translate>The contribution <strong>{{ notification.ref_contribution_display }}</strong> was voted</span>
+          <span ng-show="notification.type == 'COMMENT_VOTE'" translate>The comment <em>{{ notification.ref_comment_display }}</em> for the contribution <strong>{{ notification.ref_contribution_display }}</strong> was voted</span>
+          <span ng-show="notification.type == 'POLL_VOTE'" translate>The poll for <strong>{{ notification.ref_contribution_display }}</strong> was voted</span>
+          <span ng-show="notification.type == 'DEFAULT'">{{ notification.message }}</span>
+          <br>
+          <small><i class="icon ion-ios7-clock-outline"></i>&nbsp;<span am-time-ago="notification.created"></span></small>
+        </p>
+        <ion-option-button class="button-positive" ng-click="read(notification, !notification.is_read)">
+          <span ng-show="!notification.is_read" translate>Read</span>
+          <span ng-show="notification.is_read" translate>Set Unread</span>
+        </ion-option-button>
+        <ion-option-button class="button-assertive" ng-click="dismiss(notification)"><span translate>Dismiss</span></ion-option-button>
+      </ion-item>
+    </ion-list>
+    <p class="padding" ng-if="notifications.length == 0">
+      <span translate>There are no notifications for you</span>
+    </p>
+  </ion-content>
+</ion-view>

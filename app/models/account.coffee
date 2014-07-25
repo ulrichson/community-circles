@@ -2,7 +2,7 @@
 if !angular?
   return
 
-module = angular.module "AccountModel", ["communityCirclesUtil", "restangular"]
+module = angular.module "AccountModel", ["common", "restangular"]
 
 module.factory "AccountRestangular", (Config, Restangular) ->
 
