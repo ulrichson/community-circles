@@ -32,6 +32,10 @@
           <span translate>Notifications</span>
           <span ng-show="notifications_unread_count > 0" class="badge badge-assertive">{{ notifications_unread_count }}</span>
         </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.profile" ui-sref-active="active">
+          <i class="icon ion-person"></i>
+          <span translate>Profile</span>
+        </ion-item>
         <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.settings" ui-sref-active="active">
           <i class="icon ion-gear-a"></i>
           <span translate>Settings</span>

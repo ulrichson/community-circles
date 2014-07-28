@@ -17,7 +17,8 @@ $muted:     lighten($base-color, 75%);
   "login",
   "map",
   "mood",
-  "poi";
+  "poi",
+  "profile";
 
 em {
   font-style: italic;
@@ -96,10 +97,30 @@ em {
 }
 
 //
+// Table
+// --------------------------------------------------
+.table {
+  width: 100%;
+
+  tr:first-child {
+    border-bottom: 1px solid lighten($base-color, 95%);;
+    border-top: 1px solid lighten($base-color, 95%);;
+    td {
+      padding: 4px 3px 4px 3px;
+    }
+  }
+
+  tr {
+    border-bottom: 1px solid lighten($base-color, 95%);;
+    td {
+      padding: 5px 3px 4px 3px;
+    }
+  }
+}
+
+//
 // Close icons
 // --------------------------------------------------
-
-
 .close {
   float: right;
   font-size: ($font-size-base * 3);

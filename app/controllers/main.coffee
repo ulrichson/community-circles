@@ -1,6 +1,7 @@
 mainApp = angular.module "mainApp", [
   "ionic",
   "common",
+  "bPart",
   "templates",
   "AccountModel",
   "ContributionModel",
@@ -68,6 +69,12 @@ mainApp.config ($stateProvider, $urlRouterProvider) ->
       mainContent:
         templateUrl: "settings.html"
         controller: "SettingsCtrl"
+  $stateProvider.state "app.profile",
+    url: "/profile"
+    views:
+      mainContent:
+        templateUrl: "profile.html"
+        controller: "ProfileCtrl"
   $stateProvider.state "app.imprint",
     url: "/imprint"
     views:
@@ -213,7 +220,7 @@ mainApp.run ($rootScope, $templateCache, $ionicPlatform, T, gettext, Log, Config
 #-------------------------------------------------------------------------------
 # MainCtrl
 #-------------------------------------------------------------------------------
-mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionicPopup, $ionicModal, $ionicSideMenuDelegate, Account, Session, Config, Color, NotificationRestangular) ->
+mainApp.controller "MainCtrl", ($scope, $state, $http, gettext, T, $ionicLoading, $ionicPopup, $ionicModal, $ionicSideMenuDelegate, Account, Session, Config, Color, NotificationRestangular) ->
   $scope.version = Config.VERSION
   $scope.supportEmail = Config.SUPPORT_EMAIL
   $scope.username = Session.userName()
@@ -240,6 +247,7 @@ mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionic
     $scope.requesting = true
     Account.login($scope.login.username, $scope.login.password).then (data) ->
       $scope.username = Session.userName()
+      $state.go $state.current, {}, reload: true
       $ionicLoading.hide()
       $scope.reset()
       $scope.modal.hide()
@@ -283,7 +291,9 @@ mainApp.controller "MainCtrl", ($scope, $http, gettext, T, $ionicLoading, $ionic
       $scope.requesting = true
       Account.login($scope.register.username, $scope.register.password).then (data) ->
         $scope.username = Session.userName()
+        $state.go $state.current, {}, reload: true
         $ionicLoading.hide()
+        $scope.reset()
         $scope.modal.hide()
       , (data) ->
         $ionicLoading.hide()
@@ -1535,3 +1545,23 @@ mainApp.controller "SettingsCtrl", ($scope, $rootScope, amMoment, gettextCatalog
     gettextCatalog.currentLanguage = language
     amMoment.changeLanguage language
     $rootScope.moods = $rootScope.getMoods()
+
+#-------------------------------------------------------------------------------
+# ProfileCtrl
+#-------------------------------------------------------------------------------
+mainApp.controller "ProfileCtrl", ($scope, $ionicLoading, T, gettext, Backend) ->
+  $scope.loadProfile = ->
+    $ionicLoading.show template: T._ "Loading profile..."
+    Backend.all("profile").customGET().then (data) ->
+      console.log data
+      $scope.profile = data
+    .finally ->
+      $ionicLoading.hide()
+      $scope.$broadcast "scroll.refreshComplete"
+
+  $scope.loadProfile()
+
+
+
+
+

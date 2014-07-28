@@ -176,6 +176,12 @@ msgstr "Orte werden geladen..."
 msgid "From library"
 msgstr "Von Bibliothek"
 
+#: app/templates/profile.html
+msgid "Gave {{ profile.given_votes_count }} like"
+msgid_plural "Gave {{ profile.given_votes_count }} likes"
+msgstr[0] "Gab {{ profile.given_votes_count }} Zustimm."
+msgstr[1] "Gab {{ profile.given_votes_count }} Zustimm."
+
 #: app/templates/settings.html
 msgid "German"
 msgstr "Deutsch"
@@ -300,6 +306,10 @@ msgstr "Benachrichtigungen"
 msgid "Opinion"
 msgstr "Meinung"
 
+#: app/templates/profile.html
+msgid "Participated Missions"
+msgstr "Teilgenommene Missionen"
+
 #: app/templates/login.html
 msgid "Password"
 msgstr "Passwort"
@@ -344,10 +354,19 @@ msgstr "Antwortmöglichkeit"
 msgid "Poll was voted"
 msgstr "Umfrage wurde abgestimmt"
 
+#: app/templates/navigation.html
+msgid "Profile"
+msgstr "Profil"
+
 #: app/templates/contribution.detail.html app/templates/contribution.list.html
 #: app/templates/notifications.html app/templates/poi.html
+#: app/templates/profile.html
 msgid "Pull to refresh..."
 msgstr "Zum Aktualisieren ziehen..."
+
+#: app/templates/profile.html
+msgid "Ranking"
+msgstr "Rangliste"
 
 #: app/templates/notifications.html
 msgid "Read"
@@ -478,6 +497,14 @@ msgstr "Es sind keine Benachrichtigungen vorhanden"
 msgid "There's something missing, please check the comments in the form"
 msgstr "Etwas fehlt, bitte überprüfe die Hinweise im Formular"
 
+#: app/templates/profile.html
+msgid "Toplist"
+msgstr "Bestenliste"
+
+#: app/templates/profile.html
+msgid "Toplist not available"
+msgstr "Bestenliste nicht verfügbar"
+
 #: app/templates/login.html
 msgid "Username"
 msgstr "Benutzername"
@@ -499,6 +526,10 @@ msgid "You have {{ notifications.length }} notification"
 msgid_plural "You have {{ notifications.length }} notifications"
 msgstr[0] "Du hast {{ notifications.length }} Benachrichtung"
 msgstr[1] "Du hast {{ notifications.length }} Benachrichtungen"
+
+#: app/templates/profile.html
+msgid "You must create contributions to show up in the ranking!"
+msgstr "Du musst Beiträge erstellen um in der Rangliste aufzuscheinen"
 
 #: dist/controllers/main.js
 msgid "Your contribution was uploaded without your photo."
@@ -565,6 +596,10 @@ msgstr "schockiert"
 msgid "silent"
 msgstr "leise"
 
+#: app/templates/profile.html
+msgid "since"
+msgstr "seit"
+
 #: dist/controllers/main.js
 msgid "smart"
 msgstr "klug"
@@ -596,6 +631,18 @@ msgid "{{ contributions.length }} contribution"
 msgid_plural "{{ contributions.length }} contributions"
 msgstr[0] "{{ contributions.length }} Beitrag"
 msgstr[1] "{{ contributions.length }} Beiträge"
+
+#: app/templates/profile.html
+msgid "{{ profile.comments_count }} comment"
+msgid_plural "{{ profile.comments_count }} comments"
+msgstr[0] "{{ profile.comments.length }} Kommentar"
+msgstr[1] "{{ profile.comments.length }} Kommentare"
+
+#: app/templates/profile.html
+msgid "{{ profile.contributions_count }} contribution"
+msgid_plural "{{ profile.contributions_count }} contributions"
+msgstr[0] "{{ profile.contributions.length }} Beitrag"
+msgstr[1] "{{ profile.contributions.length }} Beiträge"
 
 #~ msgid "Vote"
 #~ msgstr "Abstimmen"

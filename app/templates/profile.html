@@ -1,0 +1,71 @@
+<ion-view title="{{ profile.username }}" class="profile">
+
+  <ion-nav-buttons side="left">
+    <button ng-click="toggleNavigationMenu()" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+
+  <ion-content>
+    <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="loadProfile()"></ion-refresher>
+    <div class="list">
+      <div class="card">
+
+        <div class="item text-center">
+          <h1>{{ profile.username }}</h1>
+          <h2><span class="positive" ng-bind-html="profile.area_total | area"></span> <span translate>since</span> {{ profile.created | amCalendar }}</h2>
+          <div class="row text-center overview positive">
+            <div class="col no-padding" ng-class="{ 'text-muted': profile.contributions_count == 0 }">
+              <i class="icon" ng-class="profile.contributions_count > 0 ? 'ion-ios7-plus' : 'ion-ios7-plus-outline'"></i><br><small translate translate-n="profile.contributions_count" translate-plural="{{ profile.contributions_count }} contributions">{{ profile.contributions_count }} contribution</small>
+            </div>
+            <div class="col no-padding" ng-class="{ 'text-muted': profile.comments_count == 0 }"> 
+              <i class="icon" ng-class="profile.comments_count > 0 ? 'ion-ios7-chatbubble' : 'ion-ios7-chatbubble-outline'"></i><br><small translate translate-n="profile.comments_count" translate-plural="{{ profile.comments_count }} comments">{{ profile.comments_count }} comment</small>
+            </div>
+            <div class="col no-padding" ng-class="{ 'text-muted': profile.given_votes_count == 0 }">
+              <i class="icon" ng-class="profile.given_votes_count > 0 ? 'ion-ios7-heart' : 'ion-ios7-heart-outline'"></i><br><small translate translate-n="profile.given_votes_count" translate-plural="Gave {{ profile.given_votes_count }} likes">Gave {{ profile.given_votes_count }} like</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="item item-divider" translate>
+          Ranking
+        </div>
+        <div class="item">
+          <span class="no-truncate" ng-show="profile.local_highscore.length == 0" translate>You must create contributions to show up in the ranking!</span>
+          <table class="table" ng-show="profile.local_highscore.length > 0">
+            <tbody>
+              <tr ng-repeat="score in profile.local_highscore" ng-class="{ 'active-positive': score.username == profile.username }">
+                <td>{{ score.rank }}</td>
+                <td>{{ score.username }}</td>
+                <td ng-bind-html="score.area_total | area"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="item item-divider" translate>
+          Toplist
+        </div>
+        <div class="item">
+          <span ng-show="profile.global_highscore.length == 0" translate>Toplist not available</span>
+          <table class="table" ng-show="profile.global_highscore.length > 0">
+            <tbody>
+              <tr ng-repeat="score in profile.global_highscore" ng-class="{ 'active-positive': score.username == profile.username }">
+                <td>{{ score.rank }}</td>
+                <td>{{ score.username }}</td>
+                <td ng-bind-html="score.area_total | area"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="item item-divider" ng-show="profile.missions.length > 0" translate>
+          Participated Missions
+        </div>
+
+        <div class="item" ng-repeat="mission in profile.missions" ng-show="profile.missions.length > 0">
+          {{ mission.title }}
+        </div>
+      </div>
+    </div>
+  </ion-content>
+
+</ion-view>

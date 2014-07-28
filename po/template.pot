@@ -169,6 +169,12 @@ msgstr ""
 msgid "From library"
 msgstr ""
 
+#: app/templates/profile.html
+msgid "Gave {{ profile.given_votes_count }} like"
+msgid_plural "Gave {{ profile.given_votes_count }} likes"
+msgstr[0] ""
+msgstr[1] ""
+
 #: app/templates/settings.html
 msgid "German"
 msgstr ""
@@ -292,6 +298,10 @@ msgstr ""
 msgid "Opinion"
 msgstr ""
 
+#: app/templates/profile.html
+msgid "Participated Missions"
+msgstr ""
+
 #: app/templates/login.html
 msgid "Password"
 msgstr ""
@@ -336,11 +346,20 @@ msgstr ""
 msgid "Poll was voted"
 msgstr ""
 
+#: app/templates/navigation.html
+msgid "Profile"
+msgstr ""
+
 #: app/templates/contribution.detail.html
 #: app/templates/contribution.list.html
 #: app/templates/notifications.html
 #: app/templates/poi.html
+#: app/templates/profile.html
 msgid "Pull to refresh..."
+msgstr ""
+
+#: app/templates/profile.html
+msgid "Ranking"
 msgstr ""
 
 #: app/templates/notifications.html
@@ -452,6 +471,14 @@ msgstr ""
 msgid "There's something missing, please check the comments in the form"
 msgstr ""
 
+#: app/templates/profile.html
+msgid "Toplist"
+msgstr ""
+
+#: app/templates/profile.html
+msgid "Toplist not available"
+msgstr ""
+
 #: app/templates/login.html
 msgid "Username"
 msgstr ""
@@ -473,6 +500,10 @@ msgid "You have {{ notifications.length }} notification"
 msgid_plural "You have {{ notifications.length }} notifications"
 msgstr[0] ""
 msgstr[1] ""
+
+#: app/templates/profile.html
+msgid "You must create contributions to show up in the ranking!"
+msgstr ""
 
 #: dist/controllers/main.js
 msgid "Your contribution was uploaded without your photo."
@@ -540,6 +571,10 @@ msgstr ""
 msgid "silent"
 msgstr ""
 
+#: app/templates/profile.html
+msgid "since"
+msgstr ""
+
 #: dist/controllers/main.js
 msgid "smart"
 msgstr ""
@@ -569,5 +604,17 @@ msgstr[1] ""
 #: app/templates/contribution.list.html
 msgid "{{ contributions.length }} contribution"
 msgid_plural "{{ contributions.length }} contributions"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/templates/profile.html
+msgid "{{ profile.comments_count }} comment"
+msgid_plural "{{ profile.comments_count }} comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/templates/profile.html
+msgid "{{ profile.contributions_count }} contribution"
+msgid_plural "{{ profile.contributions_count }} contributions"
 msgstr[0] ""
 msgstr[1] ""

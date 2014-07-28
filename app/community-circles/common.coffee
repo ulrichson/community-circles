@@ -35,6 +35,16 @@ common.filter "distance", ->
     else
       return input.toFixed(0) + "m"
 
+common.filter "area", ->
+  return (input) ->
+    try
+      if input >= 1000
+        return (input/1000).toFixed(2) + "km<sup>2</sup>"
+      else
+        return input.toFixed(0) + "m<sup>2</sup>"
+    catch
+      return input
+
 common.filter "mood", ->
     return (input, moods) ->
       try
@@ -167,7 +177,7 @@ common.factory "Game", ->
 #-------------------------------------------------------------------------------
 # Session
 #-------------------------------------------------------------------------------
-common.factory "Account", ($q, Log, T, gettext, AccountRestangular, ContributionRestangular, NotificationRestangular, PhotoRestangular) ->
+common.factory "Account", ($q, Log, T, gettext, AccountRestangular, ContributionRestangular, NotificationRestangular, PhotoRestangular, Backend) ->
   login: (username, password) ->
 
     deferred = $q.defer()
@@ -185,6 +195,7 @@ common.factory "Account", ($q, Log, T, gettext, AccountRestangular, Contribution
       ContributionRestangular.setDefaultHeaders "Authorization": "Token #{data.token}"
       NotificationRestangular.setDefaultHeaders "Authorization": "Token #{data.token}"
       PhotoRestangular.setDefaultHeaders "Authorization": "Token #{data.token}"
+      Backend.setDefaultHeaders "Authorization": "Token #{data.token}"
 
       Log.i "User #{username} logged in"
 
