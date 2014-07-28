@@ -635,14 +635,14 @@ msgstr[1] "{{ contributions.length }} Beiträge"
 #: app/templates/profile.html
 msgid "{{ profile.comments_count }} comment"
 msgid_plural "{{ profile.comments_count }} comments"
-msgstr[0] "{{ profile.comments.length }} Kommentar"
-msgstr[1] "{{ profile.comments.length }} Kommentare"
+msgstr[0] "{{ profile.comments_count }} Kommentar"
+msgstr[1] "{{ profile.comments_count }} Kommentare"
 
 #: app/templates/profile.html
 msgid "{{ profile.contributions_count }} contribution"
 msgid_plural "{{ profile.contributions_count }} contributions"
-msgstr[0] "{{ profile.contributions.length }} Beitrag"
-msgstr[1] "{{ profile.contributions.length }} Beiträge"
+msgstr[0] "{{ profile.contributions_count }} Beitrag"
+msgstr[1] "{{ profile.contributions_count }} Beiträge"
 
 #~ msgid "Vote"
 #~ msgstr "Abstimmen"
