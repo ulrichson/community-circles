@@ -1553,7 +1553,6 @@ mainApp.controller "ProfileCtrl", ($scope, $ionicLoading, T, gettext, Backend) -
   $scope.loadProfile = ->
     $ionicLoading.show template: T._ "Loading profile..."
     Backend.all("profile").customGET().then (data) ->
-      console.log data
       $scope.profile = data
     .finally ->
       $ionicLoading.hide()
