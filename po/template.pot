@@ -97,9 +97,12 @@ msgid "Capture photo"
 msgstr ""
 
 #: app/templates/contribution.detail.html
+#: app/templates/profile.html
 #: dist/controllers/main.js
 msgid "Comment"
-msgstr ""
+msgid_plural "Comments"
+msgstr[0] ""
+msgstr[1] ""
 
 #: app/templates/notifications.html
 msgid "Comment was voted"
@@ -108,6 +111,12 @@ msgstr ""
 #: dist/controllers/main.js
 msgid "Continue anyway"
 msgstr ""
+
+#: app/templates/profile.html
+msgid "Contribution"
+msgid_plural "Contributions"
+msgstr[0] ""
+msgstr[1] ""
 
 #: app/templates/notifications.html
 msgid "Contribution was commented"
@@ -169,15 +178,15 @@ msgstr ""
 msgid "From library"
 msgstr ""
 
-#: app/templates/profile.html
-msgid "Gave {{ profile.given_votes_count }} like"
-msgid_plural "Gave {{ profile.given_votes_count }} likes"
-msgstr[0] ""
-msgstr[1] ""
-
 #: app/templates/settings.html
 msgid "German"
 msgstr ""
+
+#: app/templates/profile.html
+msgid "Given like"
+msgid_plural "Given likes"
+msgstr[0] ""
+msgstr[1] ""
 
 #: app/templates/navigation.html
 msgid "Hello"
@@ -604,17 +613,5 @@ msgstr[1] ""
 #: app/templates/contribution.list.html
 msgid "{{ contributions.length }} contribution"
 msgid_plural "{{ contributions.length }} contributions"
-msgstr[0] ""
-msgstr[1] ""
-
-#: app/templates/profile.html
-msgid "{{ profile.comments_count }} comment"
-msgid_plural "{{ profile.comments_count }} comments"
-msgstr[0] ""
-msgstr[1] ""
-
-#: app/templates/profile.html
-msgid "{{ profile.contributions_count }} contribution"
-msgid_plural "{{ profile.contributions_count }} contributions"
 msgstr[0] ""
 msgstr[1] ""

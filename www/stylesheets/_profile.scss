@@ -3,10 +3,13 @@
     margin-bottom: 0;
   }
 
+  h2 {
+    margin-bottom: 10px;
+  }
+
   .overview {
-    .icon,
-    .icon:before {
-      font-size: 40px;
+    .info {
+      font-size: 36px;
     }
   }
 }

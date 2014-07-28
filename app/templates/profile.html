@@ -14,13 +14,13 @@
           <h2><span class="positive" ng-bind-html="profile.area_total | area"></span> <span translate>since</span> {{ profile.created | amCalendar }}</h2>
           <div class="row text-center overview positive">
             <div class="col no-padding" ng-class="{ 'text-muted': profile.contributions_count == 0 }">
-              <i class="icon" ng-class="profile.contributions_count > 0 ? 'ion-ios7-plus' : 'ion-ios7-plus-outline'"></i><br><small translate translate-n="profile.contributions_count" translate-plural="{{ profile.contributions_count }} contributions">{{ profile.contributions_count }} contribution</small>
+              <span class="info">{{ profile.contributions_count }} <i class="icon" ng-class="profile.contributions_count > 0 ? 'ion-ios7-plus' : 'ion-ios7-plus-outline'"></i></span><br><small translate translate-n="profile.contributions_count" translate-plural="Contributions">Contribution</small>
             </div>
             <div class="col no-padding" ng-class="{ 'text-muted': profile.comments_count == 0 }"> 
-              <i class="icon" ng-class="profile.comments_count > 0 ? 'ion-ios7-chatbubble' : 'ion-ios7-chatbubble-outline'"></i><br><small translate translate-n="profile.comments_count" translate-plural="{{ profile.comments_count }} comments">{{ profile.comments_count }} comment</small>
+              <span class="info">{{ profile.comments_count }} <i class="icon" ng-class="profile.comments_count > 0 ? 'ion-ios7-chatbubble' : 'ion-ios7-chatbubble-outline'"></i></span><br><small translate translate-n="profile.comments_count" translate-plural="Comments">Comment</small>
             </div>
             <div class="col no-padding" ng-class="{ 'text-muted': profile.given_votes_count == 0 }">
-              <i class="icon" ng-class="profile.given_votes_count > 0 ? 'ion-ios7-heart' : 'ion-ios7-heart-outline'"></i><br><small translate translate-n="profile.given_votes_count" translate-plural="Gave {{ profile.given_votes_count }} likes">Gave {{ profile.given_votes_count }} like</small>
+              <span class="info">{{ profile.given_votes_count }} <i class="icon" ng-class="profile.given_votes_count > 0 ? 'ion-ios7-heart' : 'ion-ios7-heart-outline'"></i></span><br><small translate translate-n="profile.given_votes_count" translate-plural="Given likes">Given like</small>
             </div>
           </div>
         </div>
