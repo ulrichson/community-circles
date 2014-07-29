@@ -76,6 +76,10 @@ msgstr ""
 msgid "Browse Contributions"
 msgstr ""
 
+#: app/templates/mission.detail.html
+msgid "By"
+msgstr ""
+
 #: dist/controllers/main.js
 msgid "Cancel"
 msgstr ""
@@ -290,6 +294,19 @@ msgstr ""
 msgid "Mine"
 msgstr ""
 
+#: dist/controllers/main.js
+msgid "Mission"
+msgstr ""
+
+#: app/templates/mission.list.html
+#: app/templates/navigation.html
+msgid "Missions"
+msgstr ""
+
+#: dist/controllers/main.js
+msgid "Missions can be added to a contribution when you create them. Usually, missions have a specific and goal and can be active for a certain time. They will increase your area and lifetime."
+msgstr ""
+
 #: app/templates/contribution.list.html
 msgid "Nearby"
 msgstr ""
@@ -300,6 +317,10 @@ msgstr ""
 
 #: app/templates/contribution.list.html
 msgid "No contributions found"
+msgstr ""
+
+#: app/templates/mission.list.html
+msgid "No missions found"
 msgstr ""
 
 #: app/templates/contribution.detail.html
@@ -369,6 +390,8 @@ msgstr ""
 
 #: app/templates/contribution.detail.html
 #: app/templates/contribution.list.html
+#: app/templates/mission.detail.html
+#: app/templates/mission.list.html
 #: app/templates/notifications.html
 #: app/templates/poi.html
 #: app/templates/profile.html
@@ -541,6 +564,7 @@ msgstr ""
 #: app/templates/contribution.detail.html
 #: app/templates/contribution.list.html
 #: app/templates/map.html
+#: app/templates/mission.list.html
 msgid "by"
 msgstr ""
 
@@ -625,5 +649,11 @@ msgstr[1] ""
 #: app/templates/contribution.list.html
 msgid "{{ contributions.length }} contribution"
 msgid_plural "{{ contributions.length }} contributions"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/templates/mission.list.html
+msgid "{{ missions.length }} mission"
+msgid_plural "{{ missions.length }} missions"
 msgstr[0] ""
 msgstr[1] ""

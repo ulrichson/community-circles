@@ -1,0 +1,33 @@
+<ion-view title="{{ 'Missions' | translate }}" class="mission-list">
+
+  <ion-nav-buttons side="left">
+    <button ng-click="toggleNavigationMenu()" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+
+  <ion-nav-buttons side="right">
+    <button class="button button-icon button-clear ion-ios7-help-outline" ng-click="help()"></button>
+  </ion-nav-buttons>
+
+  <ion-content>
+    <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="loadMissions()"></ion-refresher> 
+
+    <div class="list" ng-if="missions.length > 0">
+      <div class="item item-divider">
+        <span translate translate-n="missions.length" translate-plural="{{ missions.length }} missions">{{ missions.length }} mission</span>
+      </div>
+      <div class="item item-icon-right" ng-repeat="mission in missions" ng-click="openMission(mission)">
+        <h2>{{ mission.title }}</h2>
+        <p>
+          <span translate>by</span> <strong>{{ mission.author.username }}</strong> <span am-time-ago="mission.created"></span>
+        </p>
+        <i class="icon ion-ios7-arrow-right"></i>
+      </div>
+    </div>
+
+    <div class="list" ng-if="missions.length == 0">
+      <div class="item item-divider" translate>No missions found</div>
+    </div>
+
+  </ion-content>
+
+</ion-view>

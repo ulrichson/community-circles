@@ -51,36 +51,48 @@ mainApp.config ($stateProvider, $urlRouterProvider) ->
       mainContent:
         templateUrl: "notifications.html"
         controller: "NotificationCtrl"
-  $stateProvider.state "app.mood",
+  .state "app.mood",
     url: "/mood"
     views:
       mainContent:
         templateUrl: "mood.html"
         controller: "MoodCtrl"
-  $stateProvider.state "app.poi",
+  .state "app.poi",
     url: "/poi"
     views:
       mainContent:
         templateUrl: "poi.html"
         controller: "PoiCtrl"
-  $stateProvider.state "app.settings",
+  .state "app.settings",
     url: "/settings"
     views:
       mainContent:
         templateUrl: "settings.html"
         controller: "SettingsCtrl"
-  $stateProvider.state "app.profile",
+  .state "app.profile",
     url: "/profile"
     views:
       mainContent:
         templateUrl: "profile.html"
         controller: "ProfileCtrl"
-  $stateProvider.state "app.imprint",
+  .state "app.imprint",
     url: "/imprint"
     views:
       mainContent:
         templateUrl: "imprint.html"
         # controller: "ImprintCtrl"
+  .state "app.mission-list",
+    url: "/mission-list"
+    views:
+      mainContent:
+        templateUrl: "mission.list.html"
+        controller: "MissionListCtrl"
+  .state "app.mission-detail",
+    url: "/mission-detail/:id"
+    views:
+      mainContent:
+        templateUrl: "mission.detail.html"
+        controller: "MissionDetailCtrl"
 
   $urlRouterProvider.otherwise "/app/map"
 
@@ -1564,7 +1576,41 @@ mainApp.controller "ProfileCtrl", ($scope, $state, $ionicLoading, T, gettext, Ba
 
   $scope.loadProfile()
 
+#-------------------------------------------------------------------------------
+# MissionListCtrl
+#-------------------------------------------------------------------------------
+mainApp.controller "MissionListCtrl", ($scope, $state, $ionicPopup, $ionicLoading, T, gettext, Backend) ->
+  $scope.loadMissions = ->
+    $ionicLoading.show template: T._ "Loading missions..."
+    Backend.all("missions").getList().then (data) ->
+      # console.log data
+      $scope.missions = data
+    .finally ->
+      $ionicLoading.hide()
+      $scope.$broadcast "scroll.refreshComplete"
 
+  $scope.openMission = (mission) ->
+    $state.go "app.mission-detail", id: mission.id
 
+  $scope.help = ->
+    $ionicPopup.alert
+      title: T._ gettext "Mission"
+      template: T._ gettext "Missions can be added to a contribution when you create them. Usually, missions have a specific and goal and can be active for a certain time. They will increase your area and lifetime."
 
+  $scope.loadMissions()
 
+#-------------------------------------------------------------------------------
+# MissionDetailCtrl
+#-------------------------------------------------------------------------------
+mainApp.controller "MissionDetailCtrl", ($scope, $state, $stateParams, $ionicLoading, T, gettext, Backend) ->
+  $scope.mission = {}
+
+  $scope.loadMission = (id) ->
+    $ionicLoading.show template: T._ "Loading mission..."
+    Backend.one("mission", id).get().then (data) ->
+      $scope.mission = data
+    .finally ->
+      $ionicLoading.hide()
+      $scope.$broadcast "scroll.refreshComplete"
+
+  $scope.loadMission $stateParams.id

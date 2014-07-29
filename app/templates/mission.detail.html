@@ -1,0 +1,23 @@
+<ion-view title="{{ mission.title }}" class="mission-detail">
+
+  <ion-content>
+    <!-- <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="loadProfile()"></ion-refresher> -->
+    <div class="list">
+      <div class="card">
+
+        <div class="item">
+          <h2>{{  mission.title }}</h2>
+          <p><span translate>By</span> {{ mission.author.username }} <span am-time-ago="mission.created"></span></p>
+        </div>
+
+        <div class="item item-text-wrap">
+          <p>
+            {{ mission.description }}
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </ion-content>
+
+</ion-view>
