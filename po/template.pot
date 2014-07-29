@@ -108,6 +108,10 @@ msgstr ""
 msgid "Choose mission"
 msgstr ""
 
+#: app/templates/profile.html
+msgid "City official"
+msgstr ""
+
 #: app/templates/contribution.detail.html
 #: app/templates/profile.html
 #: dist/controllers/main.js
