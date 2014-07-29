@@ -46,11 +46,23 @@ common.filter "area", ->
       return input
 
 common.filter "mood", ->
-    return (input, moods) ->
-      try
-        return (_.find moods, (item) -> item.code is input).name
-      catch e
-        return input
+  return (input, moods) ->
+    try
+      return (_.find moods, (item) -> item.code is input).name
+    catch e
+      return input
+
+common.filter "lifetime", ->
+  return (input) ->
+    try
+      days = (input/1440.0).toFixed 2
+      if days is 1.0
+        return "#{days} day"
+      else
+        return "#{days} days"
+    catch e
+      return input
+    
 
 #-------------------------------------------------------------------------------
 # Constants

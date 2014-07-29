@@ -217,6 +217,10 @@ msgstr ""
 msgid "Imprint"
 msgstr ""
 
+#: app/templates/profile.html
+msgid "In"
+msgstr ""
+
 #: dist/controllers/main.js
 msgid "Invalid password or username"
 msgstr ""
@@ -235,6 +239,10 @@ msgstr ""
 
 #: app/templates/contribution.list.html
 msgid "Latest"
+msgstr ""
+
+#: app/templates/profile.html
+msgid "Latest Game Progress"
 msgstr ""
 
 #: app/templates/contribution.detail.html
@@ -373,6 +381,10 @@ msgstr ""
 
 #: app/templates/notifications.html
 msgid "Read"
+msgstr ""
+
+#: app/templates/profile.html
+msgid "Received"
 msgstr ""
 
 #: app/templates/login.html

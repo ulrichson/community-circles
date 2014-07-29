@@ -1549,14 +1549,18 @@ mainApp.controller "SettingsCtrl", ($scope, $rootScope, amMoment, gettextCatalog
 #-------------------------------------------------------------------------------
 # ProfileCtrl
 #-------------------------------------------------------------------------------
-mainApp.controller "ProfileCtrl", ($scope, $ionicLoading, T, gettext, Backend) ->
+mainApp.controller "ProfileCtrl", ($scope, $state, $ionicLoading, T, gettext, Backend) ->
   $scope.loadProfile = ->
     $ionicLoading.show template: T._ "Loading profile..."
     Backend.all("profile").customGET().then (data) ->
+      # console.log data
       $scope.profile = data
     .finally ->
       $ionicLoading.hide()
       $scope.$broadcast "scroll.refreshComplete"
+
+  $scope.openContribution = (contribution) ->
+    $state.go "app.contribution-detail", id: contribution.id
 
   $scope.loadProfile()
 

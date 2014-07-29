@@ -11,7 +11,8 @@
 
         <div class="item text-center">
           <h1>{{ profile.username }}</h1>
-          <h2><span class="positive" ng-bind-html="profile.area_total | area"></span> <span translate>since</span> {{ profile.created | amCalendar }}</h2>
+          <h2><span class="positive" ng-bind-html="profile.area_total | area"></span></h2>
+          <p><span translate>since</span> {{ profile.created | amCalendar }}</p>
           <div class="row text-center overview positive">
             <div class="col no-padding" ng-class="{ 'text-muted': profile.contributions_count == 0 }">
               <span class="info">{{ profile.contributions_count }} <i class="icon" ng-class="profile.contributions_count > 0 ? 'ion-ios7-plus' : 'ion-ios7-plus-outline'"></i></span><br><small translate translate-n="profile.contributions_count" translate-plural="Contributions">Contribution</small>
@@ -55,6 +56,16 @@
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <div class="item item-divider" ng-show="profile.latest_game_progress.length > 0" translate>
+          Latest Game Progress
+        </div>
+
+        <div class="item item-icon-right" ng-repeat="game_progress in profile.latest_game_progress" ng-show="profile.latest_game_progress.length > 0" ng-click="openContribution(game_progress.contribution)">
+          <h2><span translate>Received</span> <span ng-bind-html="game_progress.area_increase | area"></span> | {{ game_progress.lifetime_increase | lifetime }}</h2>
+          <p><span translate>In</span> <em>{{ game_progress.contribution.title }}</em> <span am-time-ago="game_progress.created"></span></p>
+          <i class="icon ion-ios7-arrow-right"></i>
         </div>
 
         <div class="item item-divider" ng-show="profile.missions.length > 0" translate>
