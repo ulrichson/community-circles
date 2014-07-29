@@ -38,8 +38,8 @@ common.filter "distance", ->
 common.filter "area", ->
   return (input) ->
     try
-      if input >= 1000
-        return (input/1000).toFixed(2) + "km<sup>2</sup>"
+      if input >= 1000000
+        return (input/1000000).toFixed(2) + "km<sup>2</sup>"
       else
         return input.toFixed(0) + "m<sup>2</sup>"
     catch
