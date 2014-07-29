@@ -70,7 +70,7 @@ mainApp.config ($stateProvider, $urlRouterProvider) ->
         templateUrl: "settings.html"
         controller: "SettingsCtrl"
   .state "app.profile",
-    url: "/profile"
+    url: "/profile/:username"
     views:
       mainContent:
         templateUrl: "profile.html"
@@ -1574,15 +1574,19 @@ mainApp.controller "SettingsCtrl", ($scope, $rootScope, amMoment, gettextCatalog
 #-------------------------------------------------------------------------------
 # ProfileCtrl
 #-------------------------------------------------------------------------------
-mainApp.controller "ProfileCtrl", ($scope, $state, $ionicLoading, T, gettext, Backend) ->
+mainApp.controller "ProfileCtrl", ($scope, $state, $stateParams, $ionicLoading, T, gettext, Backend) ->
   $scope.loadProfile = ->
     $ionicLoading.show template: T._ "Loading profile..."
-    Backend.all("profile").customGET().then (data) ->
-      # console.log data
-      $scope.profile = data
-    .finally ->
-      $ionicLoading.hide()
-      $scope.$broadcast "scroll.refreshComplete"
+    if $stateParams.username
+      query = Backend.one("profile", $stateParams.username).get()
+    else
+      query = Backend.all("profile").customGET()
+
+    query.then (data) ->
+        $scope.profile = data
+      .finally ->
+        $ionicLoading.hide()
+        $scope.$broadcast "scroll.refreshComplete"
 
   $scope.openContribution = (contribution) ->
     $state.go "app.contribution-detail", id: contribution.id
@@ -1596,7 +1600,6 @@ mainApp.controller "MissionListCtrl", ($scope, $state, $ionicPopup, $ionicLoadin
   $scope.loadMissions = ->
     $ionicLoading.show template: T._ "Loading missions..."
     Backend.all("missions").getList().then (data) ->
-      # console.log data
       $scope.missions = data
     .finally ->
       $ionicLoading.hide()
