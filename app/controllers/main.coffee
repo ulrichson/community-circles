@@ -93,6 +93,12 @@ mainApp.config ($stateProvider, $urlRouterProvider) ->
       mainContent:
         templateUrl: "mission.detail.html"
         controller: "MissionDetailCtrl"
+  .state "app.mission-select",
+    url: "/mission-select"
+    views:
+      mainContent:
+        templateUrl: "mission.select.html"
+        controller: "MissionSelectCtrl"
 
   $urlRouterProvider.otherwise "/app/map"
 
@@ -107,6 +113,7 @@ mainApp.factory "contributionModel", ->
   accuracy: null
   latlng: null
   poi: null
+  mission: null
   poll_options: []
   photo_src: null
   photo_file: null
@@ -119,6 +126,7 @@ mainApp.factory "contributionModel", ->
     @accuracy = null
     @latlng = null
     @poi = null
+    @mission = null
     @poll_options = []
     @photo_src = null
     @photo_file = null
@@ -129,6 +137,7 @@ mainApp.factory "contributionModel", ->
     @description isnt null or
     @mood isnt null or
     @poi isnt null or
+    @mission isnt null or
     @poll_options.length > 0 or
     @photo_src isnt null
 
@@ -1014,6 +1023,9 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
   $scope.choosePoi = ->
     $state.go "app.poi"
 
+  $scope.chooseMission = ->
+    $state.go "app.mission-select"
+
   $scope.createContribution = ->
     error = false
 
@@ -1080,9 +1092,10 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
       accuracy: localStorage.getItem "position.coords.accuracy"
       point: "POINT (#{$scope.contribution.latlng.lng} #{$scope.contribution.latlng.lat})"
       poi: poi
+      mission: $scope.contribution.mission.id
       poll_options: $scope.contribution.poll_options
     .then (response) ->
-      imageSrc = "" + $scope.contribution.photo_src
+      imageSrc = if $scope.contribution.photo_src? then $scope.contribution.photo_src else null
 
       Log.i "Contribution with id=#{response.id} was created"
       alert = $ionicPopup.alert
@@ -1092,7 +1105,7 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
         $scope.reset false
         $ionicNavBarDelegate.back()
 
-      if imageSrc
+      if imageSrc?
         Log.i "Uploading photo: #{imageSrc}"
         # Upload photo
         options = new FileUploadOptions()
@@ -1614,3 +1627,36 @@ mainApp.controller "MissionDetailCtrl", ($scope, $state, $stateParams, $ionicLoa
       $scope.$broadcast "scroll.refreshComplete"
 
   $scope.loadMission $stateParams.id
+
+#-------------------------------------------------------------------------------
+# MissionSelectCtrl
+#------------------------------------------------------------------------------- 
+mainApp.controller "MissionSelectCtrl", ($scope, contributionModel, $ionicLoading, T, gettext, Backend) ->
+  $scope.loadMissions = ->
+    $ionicLoading.show template: T._ "Loading missions..."
+    Backend.all("missions").getList().then (data) ->
+      $scope.missions = data
+    .finally ->
+      $ionicLoading.hide()
+      $scope.$broadcast "scroll.refreshComplete"
+
+  selectMission = (mission) ->
+    contributionModel.mission = mission
+    $scope.selectedMission = mission
+
+  unselectMission = ->
+    contributionModel.mission = null
+    $scope.selectedMission = null
+
+  $scope.choose = (mission) ->
+    if $scope.selectedMission? and $scope.selectedMission.id is mission.id
+      unselectMission()
+    else
+      selectMission mission
+
+  $scope.unselect = ->
+    unselectMission()
+  
+  $scope.selectedMission = contributionModel.mission
+  $scope.loadMissions()
+

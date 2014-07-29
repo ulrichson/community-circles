@@ -1,0 +1,26 @@
+<ion-view title="{{ 'Select mission' | translate }}" class="mission-select">
+
+  <ion-nav-buttons side="right">
+    <button class="button button-icon button-clear ion-close-circled" ng-show="selectedMission" ng-click="unselect()"></button>
+  </ion-nav-buttons>
+
+  <ion-content>
+    <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="loadMissions()"></ion-refresher> 
+
+    <div class="list" ng-if="missions.length > 0">
+      <div class="item item-divider">
+        <span translate translate-n="missions.length" translate-plural="{{ missions.length }} missions">{{ missions.length }} mission</span>
+      </div>
+      <div class="item" ng-repeat="mission in missions"  ng-class="{ 'active-positive': selectedMission.id == mission.id }" ng-click="choose(mission)">
+        {{ mission.title }}<br>
+        <span translate>by</span> <strong>{{ mission.author.username }}</strong> <span am-time-ago="mission.created"></span>
+      </div>
+    </div>
+
+    <div class="list" ng-if="missions.length == 0">
+      <div class="item item-divider" translate>No missions found</div>
+    </div>
+
+  </ion-content>
+
+</ion-view>

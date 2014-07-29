@@ -104,6 +104,10 @@ msgstr ""
 msgid "Capture photo"
 msgstr ""
 
+#: app/templates/contribution.new.html
+msgid "Choose mission"
+msgstr ""
+
 #: app/templates/contribution.detail.html
 #: app/templates/profile.html
 #: dist/controllers/main.js
@@ -324,6 +328,7 @@ msgid "No contributions found"
 msgstr ""
 
 #: app/templates/mission.list.html
+#: app/templates/mission.select.html
 msgid "No missions found"
 msgstr ""
 
@@ -400,6 +405,7 @@ msgstr ""
 #: app/templates/contribution.list.html
 #: app/templates/mission.detail.html
 #: app/templates/mission.list.html
+#: app/templates/mission.select.html
 #: app/templates/notifications.html
 #: app/templates/poi.html
 #: app/templates/profile.html
@@ -440,6 +446,10 @@ msgstr ""
 
 #: app/templates/contribution.new.html
 msgid "Reset contribution"
+msgstr ""
+
+#: app/templates/mission.select.html
+msgid "Select mission"
 msgstr ""
 
 #: dist/controllers/main.js
@@ -573,6 +583,7 @@ msgstr ""
 #: app/templates/contribution.list.html
 #: app/templates/map.html
 #: app/templates/mission.list.html
+#: app/templates/mission.select.html
 msgid "by"
 msgstr ""
 
@@ -668,6 +679,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: app/templates/mission.list.html
+#: app/templates/mission.select.html
 msgid "{{ missions.length }} mission"
 msgid_plural "{{ missions.length }} missions"
 msgstr[0] ""

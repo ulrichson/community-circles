@@ -87,6 +87,12 @@
         <span ng-show="contribution.mood">{{ contribution.mood.name }}</span>
         <i class="icon ion-ios7-arrow-right"></i>
       </div>
+      <div class="item item-icon-left item-icon-right" ng-click="chooseMission()">
+        <i class="icon ion-ribbon-b"></i>
+        <span ng-show="!contribution.mission"><em translate>Choose mission</em><em> …</em></span>
+        <span ng-show="contribution.mission">{{ contribution.mission.title }}</span>
+        <i class="icon ion-ios7-arrow-right"></i>
+      </div>
     </div>
     
     <button class="button button-full button-light" ng-click="resetConfirm()"><i class="icon ion-ios7-undo-outline"></i> <span translate>Reset contribution</span></button>
