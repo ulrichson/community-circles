@@ -26,11 +26,11 @@
           </div>
         </div>
 
-        <div class="item item-divider" translate>
+        <div class="item item-divider" ng-show="username == profile.username || profile.local_highscore.length > 0" translate>
           Ranking
         </div>
-        <div class="item">
-          <span class="no-truncate" ng-show="profile.local_highscore.length == 0" translate>You must create contributions to show up in the ranking!</span>
+        <div class="item" ng-show="username == profile.username || profile.local_highscore.length > 0">
+          <span class="no-truncate" ng-show="username == profile.username && profile.local_highscore.length == 0" translate>You must create contributions to show up in the ranking!</span>
           <table class="table" ng-show="profile.local_highscore.length > 0">
             <tbody>
               <tr ng-repeat="score in profile.local_highscore" ng-class="{ 'active-positive': score.username == profile.username }">
@@ -42,10 +42,10 @@
           </table>
         </div>
 
-        <div class="item item-divider" translate>
+        <div class="item item-divider" ng-show="username == profile.username" translate>
           Toplist
         </div>
-        <div class="item">
+        <div class="item" ng-show="username == profile.username">
           <span ng-show="profile.global_highscore.length == 0" translate>Toplist not available</span>
           <table class="table" ng-show="profile.global_highscore.length > 0">
             <tbody>
@@ -58,8 +58,8 @@
           </table>
         </div>
 
-        <div class="item item-divider" ng-show="profile.latest_game_progress.length > 0" translate>
-          Latest Game Progress
+        <div class="item item-divider" ng-show="profile.latest_game_progress.length > 0">
+          <i class="icon ion-arrow-graph-up-right"></i> <span translate>Latest Game Progress</span>
         </div>
 
         <div class="item item-icon-right" ng-repeat="game_progress in profile.latest_game_progress" ng-show="profile.latest_game_progress.length > 0" ng-click="openContribution(game_progress.contribution)">
@@ -68,13 +68,14 @@
           <i class="icon ion-ios7-arrow-right"></i>
         </div>
 
-        <div class="item item-divider" ng-show="profile.missions.length > 0" translate>
-          Participated Missions
+        <div class="item item-divider" ng-show="profile.missions.length > 0">
+          <i class="icon ion-ribbon-b"></i> <span translate>Participated Missions</span>
         </div>
 
-        <div class="item" ng-repeat="mission in profile.missions" ng-show="profile.missions.length > 0">
+        <a class="item item-icon-right" ng-repeat="mission in profile.missions" ng-show="profile.missions.length > 0" ui-sref="app.mission-detail({ id: mission.id })">
           {{ mission.title }}
-        </div>
+          <i class="icon ion-ios7-arrow-right"></i>
+        </a>
       </div>
     </div>
   </ion-content>

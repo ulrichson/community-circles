@@ -1574,7 +1574,7 @@ mainApp.controller "SettingsCtrl", ($scope, $rootScope, amMoment, gettextCatalog
 #-------------------------------------------------------------------------------
 # ProfileCtrl
 #-------------------------------------------------------------------------------
-mainApp.controller "ProfileCtrl", ($scope, $state, $stateParams, $ionicLoading, T, gettext, Backend) ->
+mainApp.controller "ProfileCtrl", ($scope, $state, $stateParams, $ionicLoading, T, gettext, Backend, Session) ->
   $scope.loadProfile = ->
     $ionicLoading.show template: T._ "Loading profile..."
     if $stateParams.username
@@ -1592,6 +1592,7 @@ mainApp.controller "ProfileCtrl", ($scope, $state, $stateParams, $ionicLoading, 
     $state.go "app.contribution-detail", id: contribution.id
 
   $scope.isCustomProfile = if $stateParams.username then true else false
+  $scope.username = Session.userName() 
   $scope.loadProfile()
 
 #-------------------------------------------------------------------------------
