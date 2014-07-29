@@ -15,7 +15,19 @@
             {{ mission.description }}
           </p>
         </div>
+        
+        <div class="item item-divider royal" ng-show="mission.participants.length == 0">
+          <span translate>Nobody participated so far.</span><br><span translate>Be the first!</span>
+        </div>
 
+        <div class="item item-divider" ng-show="mission.participants.length > 0" translate translate-n="mission.participants.length" translate-plural="{{ mission.participants.length }} participants">
+          {{ mission.participants.length }} participant
+        </div>
+
+        <div class="item" ng-show="mission.participants.length > 0" ng-repeat="participant in mission.participants">
+          {{ participant.username }}
+        </div>
+        
       </div>
     </div>
   </ion-content>

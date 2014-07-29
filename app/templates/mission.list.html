@@ -15,12 +15,14 @@
       <div class="item item-divider">
         <span translate translate-n="missions.length" translate-plural="{{ missions.length }} missions">{{ missions.length }} mission</span>
       </div>
-      <div class="item item-icon-right" ng-repeat="mission in missions" ng-click="openMission(mission)">
+      <div class="item" ng-repeat="mission in missions" ng-click="openMission(mission)">
+        <!-- <i class="icon ion-ios7-arrow-right"></i> -->
         <h2>{{ mission.title }}</h2>
         <p>
-          <span translate>by</span> <strong>{{ mission.author.username }}</strong> <span am-time-ago="mission.created"></span>
+          <span translate>by</span> <strong>{{ mission.author.username }}</strong> <span am-time-ago="mission.created"></span><br>
+          <i class="icon" ng-class="mission.participants.length > 0 ? 'ion-ios7-people' : 'ion-ios7-people-outline'"></i>
+          <span translate translate-n="mission.participants.length" translate-plural="{{ mission.participants.length }} participants">{{ mission.participants.length }} participant</span>
         </p>
-        <i class="icon ion-ios7-arrow-right"></i>
       </div>
     </div>
 

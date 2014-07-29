@@ -72,6 +72,10 @@ msgstr ""
 msgid "Be the first who comments!"
 msgstr ""
 
+#: app/templates/mission.detail.html
+msgid "Be the first!"
+msgstr ""
+
 #: app/templates/navigation.html
 msgid "Browse Contributions"
 msgstr ""
@@ -321,6 +325,10 @@ msgstr ""
 
 #: app/templates/mission.list.html
 msgid "No missions found"
+msgstr ""
+
+#: app/templates/mission.detail.html
+msgid "Nobody participated so far."
 msgstr ""
 
 #: app/templates/contribution.detail.html
@@ -649,6 +657,13 @@ msgstr[1] ""
 #: app/templates/contribution.list.html
 msgid "{{ contributions.length }} contribution"
 msgid_plural "{{ contributions.length }} contributions"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/templates/mission.detail.html
+#: app/templates/mission.list.html
+msgid "{{ mission.participants.length }} participant"
+msgid_plural "{{ mission.participants.length }} participants"
 msgstr[0] ""
 msgstr[1] ""
 
