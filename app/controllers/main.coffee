@@ -251,6 +251,11 @@ mainApp.controller "MainCtrl", ($scope, $state, $http, gettext, T, $ionicLoading
   $scope.register = {}
 
   $scope.setNotificationUnreadCount = ->
+    NotificationRestangular.setErrorInterceptor (response, deferred, responseHandler) ->
+      if response.status is 401
+        $scope.logout()
+        return true
+
     NotificationRestangular.all("notifications").getList().then (data) ->
       unread = _.where data, is_read: false
       $scope.notifications_unread_count = unread.length
