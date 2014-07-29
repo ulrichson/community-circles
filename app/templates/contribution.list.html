@@ -35,8 +35,7 @@
         <h2>{{ contribution.title }}</h2>
         <p>
           <span translate>by</span> <strong>{{ contribution.user.username }}</strong> <span am-time-ago="contribution.created"></span><br>
-          <i class="icon ion-ios7-chatbubble"></i> {{ contribution.comments_count }} <i class="icon ion-ios7-heart"></i> {{ contribution.votes_count }} <i class="icon ion-ios7-navigate"></i> {{ contribution.point | distanceToMe | distance }}
-
+          <i class="icon ion-ios7-chatbubble"></i> {{ contribution.comments_count }} <i class="icon ion-ios7-heart"></i> {{ contribution.votes_count }} <i class="icon ion-ios7-navigate"></i> {{ contribution.point | distanceToMe | distance }}<span ng-show="contribution.mission_short"> <i class="icon ion-ribbon-b"></i> {{ contribution.mission_short.title }}</span>
         </p>
       </div>
     </div>

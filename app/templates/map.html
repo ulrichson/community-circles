@@ -20,7 +20,7 @@
             <h4>{{ contribution.properties.title }}</h4>
             <p>
               <span translate>by</span> <strong>{{ contribution.properties.user.username }}</strong> <span am-time-ago="contribution.properties.created"></span><br>
-              <i class="icon ion-ios7-chatbubble"></i> {{ contribution.properties.comments_count }} <i class="icon ion-ios7-heart"></i> {{ contribution.properties.votes_count }}
+              <i class="icon ion-ios7-chatbubble"></i> {{ contribution.properties.comments_count }} <i class="icon ion-ios7-heart"></i> {{ contribution.properties.votes_count }}<span ng-show="contribution.properties.mission_short"> <i class="icon ion-ribbon-b"></i> {{ contribution.properties.mission_short.title }}</span>
             </p>
             <button class="button button-small button-outline button-positive" ng-click="openContribution()" translate>more</button>
           </div>

@@ -20,6 +20,11 @@
             <i class="icon ion-ios7-chatbubble"></i> {{ contribution.comments_count }} <i class="icon ion-ios7-heart"></i> {{ contribution.votes_count }}
           </p>
         </div>
+        <a class="item item-icon-left item-icon-right" ng-show="contribution.mission_short" ui-sref="app.mission-detail({ id: contribution.mission_short.id })">
+          <i class="icon ion-ribbon-b"></i>
+          {{ contribution.mission_short.title }}
+          <i class="icon ion-ios7-arrow-right"></i>
+        </a>
         <div class="item item-text-wrap" ng-show="contribution.type != 'PL'">
           {{ contribution.description }}
         </div>
