@@ -7,7 +7,7 @@
 
         <div class="item">
           <h2>{{  mission.title }}</h2>
-          <p><span translate>By</span> {{ mission.author.username }} <span am-time-ago="mission.created"></span></p>
+          <p><span translate>By</span> <a class="button-link" ui-sref="app.profile({ username: mission.author.username })">{{ mission.author.username }}</a> <span am-time-ago="mission.created"></span></p>
         </div>
 
         <div class="item item-text-wrap">
@@ -24,9 +24,10 @@
           {{ mission.participants.length }} participant
         </div>
 
-        <div class="item" ng-show="mission.participants.length > 0" ng-repeat="participant in mission.participants">
+        <a class="item item-icon-right" ng-show="mission.participants.length > 0" ng-repeat="participant in mission.participants" ui-sref="app.profile({ username: participant.username })">
           {{ participant.username }}
-        </div>
+          <i class="icon ion-ios7-arrow-right"></i>
+        </a>
         
       </div>
     </div>

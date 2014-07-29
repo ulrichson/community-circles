@@ -19,7 +19,7 @@
             <img ng-if="imageSrc" ng-src="{{ imageSrc }}" class="contribution-preview-image img-circle" alt="{{ contribution.properties.title }}" ng-click="openContribution()" width="200" height="200" img-loading-spinner>
             <h4>{{ contribution.properties.title }}</h4>
             <p>
-              <span translate>by</span> <strong>{{ contribution.properties.user.username }}</strong> <span am-time-ago="contribution.properties.created"></span><br>
+              <span translate>by</span> <a class="button-link" ui-sref="app.profile({ username: contribution.properties.user.username })">{{ contribution.properties.user.username }}</a> <span am-time-ago="contribution.properties.created"></span><br>
               <i class="icon ion-ios7-chatbubble"></i> {{ contribution.properties.comments_count }} <i class="icon ion-ios7-heart"></i> {{ contribution.properties.votes_count }}<span ng-show="contribution.properties.mission_short"> <i class="icon ion-ribbon-b"></i> {{ contribution.properties.mission_short.title }}</span>
             </p>
             <button class="button button-small button-outline button-positive" ng-click="openContribution()" translate>more</button>

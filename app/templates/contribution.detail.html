@@ -10,7 +10,7 @@
         <div class="item text-center">
           <h2 class="royal no-truncate">{{ contribution.title }}</h2>
           <p>
-            <span translate>by</span> <strong>{{ contribution.user.username }}</strong> <span am-time-ago="contribution.created"></span>
+            <span translate>by</span> <a class="button-link" ui-sref="app.profile({ username: contribution.user.username })">{{ contribution.user.username }}</a> <span am-time-ago="contribution.created"></span>
           </p>
           <p class="no-truncate">
             <span ng-show="contribution.poi || contribution.mood">
@@ -54,7 +54,7 @@
         <span class="item-note">
           <i class="icon ion-ios7-clock"></i>&nbsp;<span am-time-ago="comment.created"></span> | <i class="icon ion-ios7-heart"></i> {{ comment.votes_count }}
         </span>
-        <h2>{{ comment.user.username }}</h2>
+        <h2><a class="button-link" ui-sref="app.profile({ username: comment.user.username })">{{ comment.user.username }}</a></h2>
         <p class="no-truncate no-margin">{{ comment.content }}</p>
         <button class="button button-small button-clear button-positive" ng-click="voteComment(comment)">
           <i class="icon" ng-class="hasVotedForComment(comment) ? 'ion-ios7-heart' : 'ion-ios7-heart-outline'"></i>&nbsp;<span translate ng-class="{ 'bold': hasVotedForComment(comment) }">Like</span>

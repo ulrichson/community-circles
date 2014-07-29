@@ -24,6 +24,12 @@ em {
   font-style: italic;
 }
 
+a.button-link {
+  color: $positive;
+  font-weight: bold;
+  text-decoration: none;
+}
+
 .text-muted {
   color: $muted !important;
 }

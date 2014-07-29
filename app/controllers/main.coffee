@@ -1591,6 +1591,7 @@ mainApp.controller "ProfileCtrl", ($scope, $state, $stateParams, $ionicLoading, 
   $scope.openContribution = (contribution) ->
     $state.go "app.contribution-detail", id: contribution.id
 
+  $scope.isCustomProfile = if $stateParams.username then true else false
   $scope.loadProfile()
 
 #-------------------------------------------------------------------------------
