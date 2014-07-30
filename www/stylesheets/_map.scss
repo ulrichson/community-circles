@@ -57,6 +57,22 @@ $contributionClusterMarkerDiameter: $contrubutionMarkerDiameter * 0.75;
   background-image: url(/icons/contribution/poll_filled@2x.png);
 }
 
+.contribution-game-icon-idea {
+  background-image: url(/icons/contribution/idea@2x.png);
+}
+
+.contribution-game-icon-issue {
+  background-image: url(/icons/contribution/issue@2x.png);
+}
+
+.contribution-game-icon-opinion {
+  background-image: url(/icons/contribution/opinion@2x.png);
+}
+
+.contribution-game-icon-poll {
+  background-image: url(/icons/contribution/poll@2x.png);
+}
+
 .contribution-marker-cluster {
   background-color: $cc-light;
   border-radius: $contributionClusterMarkerDiameter;

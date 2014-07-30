@@ -68,6 +68,7 @@ common.filter "lifetime", ->
 # Constants
 #------------------------------------------------------------------------------- 
 common.constant "Config",
+  GAME_MODE: true
   SUPPORT_EMAIL: @config.SUPPORT_EMAIL
   API_ENDPOINT: @config.API_ENDPOINT
   REGEX_USERNAME: /^[a-zA-Z0-9\-\_\.]+$/
@@ -313,7 +314,7 @@ common.factory "UI", ->
 #-------------------------------------------------------------------------------
 # Util
 #-------------------------------------------------------------------------------
-common.factory "Util", ->
+common.factory "Util", (Config) ->
 
   convertContributionType: (code) ->
     if code is "ID"
@@ -414,13 +415,22 @@ common.factory "Util", ->
 
     return pm
 
-  createContributionMarker: (latlng, type) ->
-    marker = new L.Marker latlng,
-      icon: L.divIcon
-        className: "contribution-marker"
-        iconSize: [40, 40]
-        html: "<div class=\"contribution-icon contribution-icon-#{this.convertContributionType type}\"></div>"
-    return marker
+  createContributionMarker: (latlng, contribution, size) ->
+    size ?= 40
+    if Config.GAME_MODE
+      marker = new L.Marker latlng,
+        icon: L.divIcon
+          className: "contribution-marker"
+          iconSize: [size, size]
+          html: "<div class=\"contribution-icon contribution-game-icon-#{this.convertContributionType contribution.type}\"></div>"
+      return marker
+    else
+      marker = new L.Marker latlng,
+        icon: L.divIcon
+          className: "contribution-marker"
+          iconSize: [size, size]
+          html: "<div class=\"contribution-icon contribution-icon-#{this.convertContributionType contribution.type}\"></div>"
+      return marker
 
   disableMapInteraction: (map) ->
     map.dragging.disable()

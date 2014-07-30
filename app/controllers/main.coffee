@@ -523,14 +523,6 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
       setView: setView
       enableHighAccuracy: ionic.Platform.isIOS()
 
-  createContributionMarker = (feature, latlng) ->
-    marker = new L.Marker latlng,
-      icon: L.divIcon
-        className: "contribution-marker"
-        iconSize: [markerDiameter, markerDiameter]
-        html: "<div class=\"contribution-icon contribution-icon-#{Util.convertContributionType feature.properties.type}\"></div>"
-    return marker
-
   loadContributions =  ->
     return if $scope.contributionSelected
 
@@ -574,7 +566,7 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
         onEachFeature: (feature, layer) ->
           layer.on "click", contributionMarkerClicked
         pointToLayer: (feature, latlng) ->
-          contributionMarker = createContributionMarker feature, latlng
+          contributionMarker = Util.createContributionMarker latlng, feature.properties, markerDiameter
           contributionMarkers.push contributionMarker
           return contributionMarker
 
@@ -773,7 +765,7 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
       latlng = Util.pointToLatLng $scope.contribution.point
       map.setView latlng
       map.removeLayer contributionMarker if contributionMarker
-      contributionMarker = Util.createContributionMarker latlng, $scope.contribution.type
+      contributionMarker = Util.createContributionMarker latlng, $scope.contribution
       contributionMarker.addTo map
     .finally ->
       $ionicLoading.hide()
