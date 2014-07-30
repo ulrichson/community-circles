@@ -1093,6 +1093,11 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
       poi = $scope.contribution.poi.name
     catch e
       poi = null
+
+    try
+      mission_id = $scope.contribution.mission.id
+    catch e
+      mission_id = null
     
     $ionicLoading.show template: T._ gettext "Submitting contribution..."
     ContributionRestangular.all("contribution").post
@@ -1103,7 +1108,7 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
       accuracy: localStorage.getItem "position.coords.accuracy"
       point: "POINT (#{$scope.contribution.latlng.lng} #{$scope.contribution.latlng.lat})"
       poi: poi
-      mission: $scope.contribution.mission.id
+      mission: mission_id
       poll_options: $scope.contribution.poll_options
     .then (response) ->
       imageSrc = if $scope.contribution.photo_src? then $scope.contribution.photo_src else null
