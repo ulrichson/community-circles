@@ -50,7 +50,7 @@ common.constant "Config",
   API_ENDPOINT: @config.API_ENDPOINT
   REGEX_USERNAME: /^[a-zA-Z0-9\-\_\.]+$/
   REGEX_POINT: /\d+\.?\d*|\.\d+/g 
-  VERSION: "v1.0.0"
+  VERSION: "v1.0.1"
 
 common.constant "Key",
   FOURSQUARE_CLIENT_ID: @key.FOURSQUARE_CLIENT_ID
@@ -322,6 +322,24 @@ common.factory "Util", ->
       # return new L.LatLng 48.1217811, 16.5633169 # Vienna calling!
       return false
 
+  lastKnownMapBounds: (latLngBounds) ->
+    if latLngBounds
+      localStorage.setItem "map.bounds.west", latLngBounds.getWest()
+      localStorage.setItem "map.bounds.south", latLngBounds.getSouth()
+      localStorage.setItem "map.bounds.east", latLngBounds.getEast()
+      localStorage.setItem "map.bounds.north", latLngBounds.getNorth()
+    else
+      try
+        west = parseFloat localStorage.getItem "map.bounds.west"
+        south = parseFloat localStorage.getItem "map.bounds.south"
+        east = parseFloat localStorage.getItem "map.bounds.east"
+        north = parseFloat localStorage.getItem "map.bounds.north"
+        southWest = L.latLng south, west
+        northEast = L.latLng north, east
+        return L.latLngBounds southWest, northEast
+      catch e
+        return null
+    
   randomFromTo: (from, to, float = false) ->
     rand = Math.random() * (to - from + 1) + from
     rand = Math.floor rand if not float

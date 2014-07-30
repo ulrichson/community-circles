@@ -437,10 +437,12 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
 
   map.on "viewreset", (e) ->
     # Log.d "viewreset"
+    Util.lastKnownMapBounds map.getBounds()
     loadContributions()
 
   map.on "moveend", (e) ->
     # Log.d "moveend"
+    Util.lastKnownMapBounds map.getBounds()
     loadContributions()
 
   map.on "error", (e) ->
@@ -634,6 +636,11 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
   Util.createTileLayer().addTo map
   locateControl = new LocateControl()
   map.addControl locateControl
+  if Util.lastKnownMapBounds()
+    map.fitBounds Util.lastKnownMapBounds()
+    locate false
+  else
+    locate true
 
   # currentPositionInterval = setInterval ->
   #   updateCurrentPositionMarker Util.lastKnownPosition()
@@ -647,7 +654,6 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
   # L.DomEvent.disableClickPropagation document.getElementsByClassName("contribution-detail")[0]
 
   # Fetch location in background
-  locate true
   if not $rootScope.mapLocateInterval?
     $rootScope.mapLocateInterval = setInterval ->
       locate false
