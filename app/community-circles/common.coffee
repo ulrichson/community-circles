@@ -69,6 +69,7 @@ common.filter "lifetime", ->
 #------------------------------------------------------------------------------- 
 common.constant "Config",
   GAME_MODE: true
+  GAME_HEALTH_ALERT: 0.2
   SUPPORT_EMAIL: @config.SUPPORT_EMAIL
   API_ENDPOINT: @config.API_ENDPOINT
   REGEX_USERNAME: /^[a-zA-Z0-9\-\_\.]+$/
@@ -314,7 +315,7 @@ common.factory "UI", ->
 #-------------------------------------------------------------------------------
 # Util
 #-------------------------------------------------------------------------------
-common.factory "Util", (Config) ->
+common.factory "Util", (Config, Color) ->
 
   convertContributionType: (code) ->
     if code is "ID"
@@ -399,6 +400,36 @@ common.factory "Util", (Config) ->
 
     return L.latLngBounds new L.LatLng(minLat, minLng), new L.LatLng(maxLat, maxLng)
 
+  polarToCartesian: (centerX, centerY, radius, angleInDegrees) ->
+    angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0
+    x: centerX + (radius * Math.cos(angleInRadians))
+    y: centerY + (radius * Math.sin(angleInRadians))
+
+  describeArc: (x, y, radius, startAngle, endAngle) ->
+    start = this.polarToCartesian(x, y, radius, endAngle)
+    end = this.polarToCartesian(x, y, radius, startAngle)
+    arcSweep = (if endAngle - startAngle <= 180 then "0" else "1")
+    d = [
+      "M"
+      start.x
+      start.y
+      "A"
+      radius
+      radius
+      0
+      arcSweep
+      0
+      end.x
+      end.y
+      "L"
+      x
+      y
+      "L"
+      start.x
+      start.y
+    ].join(" ")
+    d
+
   createTileLayer: ->
     return L.tileLayer.provider "OpenStreetMap.BlackAndWhite",
       detectRetina: true
@@ -418,19 +449,36 @@ common.factory "Util", (Config) ->
   createContributionMarker: (latlng, contribution, size) ->
     size ?= 40
     if Config.GAME_MODE
+      # Create arc svg for health
+      healthDiv = document.createElement "div"
+      healthSvg = document.createElement "svg"
+      healthPath = document.createElement "path"
+
+      healthSvg.setAttribute "width", size
+      healthSvg.setAttribute "height", size
+      healthSvg.className = "contribution-health"
+      if contribution.health < Config.GAME_HEALTH_ALERT
+        healthSvg.className += " animated infinite flash"
+
+      healthPath.setAttribute "d", this.describeArc(size / 2.0, size / 2.0, size / 2.0, 0, 360.0 * contribution.health)
+      healthPath.setAttribute "fill", Color.ccMain
+
+      healthSvg.appendChild healthPath
+      healthDiv.appendChild healthSvg
+
       marker = new L.Marker latlng,
         icon: L.divIcon
           className: "contribution-marker"
           iconSize: [size, size]
-          html: "<div class=\"contribution-icon contribution-game-icon-#{this.convertContributionType contribution.type}\"></div>"
-      return marker
+          html: "#{healthDiv.innerHTML}<div class=\"contribution-icon contribution-game-icon-#{this.convertContributionType contribution.type}\"></div>"
     else
       marker = new L.Marker latlng,
         icon: L.divIcon
           className: "contribution-marker"
           iconSize: [size, size]
           html: "<div class=\"contribution-icon contribution-icon-#{this.convertContributionType contribution.type}\"></div>"
-      return marker
+    
+    return marker
 
   disableMapInteraction: (map) ->
     map.dragging.disable()

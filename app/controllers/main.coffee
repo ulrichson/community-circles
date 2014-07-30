@@ -763,7 +763,7 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
       $scope.contribution = data[0]
       $scope.imageSrc = "#{Config.API_ENDPOINT}/download/?photo_id=#{$scope.contribution.photos[0]}&convert=square_640" if $scope.contribution.photos[0]
       latlng = Util.pointToLatLng $scope.contribution.point
-      map.setView latlng
+      map.setView latlng, map.getMaxZoom()
       map.removeLayer contributionMarker if contributionMarker
       contributionMarker = Util.createContributionMarker latlng, $scope.contribution
       contributionMarker.addTo map

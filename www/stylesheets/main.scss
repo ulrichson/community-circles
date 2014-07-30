@@ -12,6 +12,7 @@ $calm:      $cc-lighter;
 $muted:     lighten($base-color, 75%);
 
 @import 
+  "animate",
   "contribution",
   "icons",
   "login",
