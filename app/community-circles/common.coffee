@@ -63,6 +63,23 @@ common.filter "lifetime", ->
     catch e
       return input
     
+common.filter "gameRuleIcon", ->
+  return (input) ->
+    try
+      if input.game_rule_area.indexOf("PHOTO") isnt -1
+        return "ion-image"
+      else if input.game_rule_area.indexOf("VOTE") isnt -1
+        return "ion-heart"
+      else if input.game_rule_area.indexOf("COMMENT") isnt -1
+        return "ion-chatbubble"
+      else if input.game_rule_area.indexOf("POI") isnt -1
+        return "ion-location"
+      else if input.game_rule_area.indexOf("MOOD") isnt -1
+        return "ion-happy"
+      else if input.game_rule_area.indexOf("MISSION") isnt -1
+        return "ion-ribbon-b"
+    catch e
+      return input
 
 #-------------------------------------------------------------------------------
 # Constants

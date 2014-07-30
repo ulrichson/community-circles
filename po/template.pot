@@ -424,10 +424,6 @@ msgstr ""
 msgid "Read"
 msgstr ""
 
-#: app/templates/profile.html
-msgid "Received"
-msgstr ""
-
 #: app/templates/login.html
 msgid "Register"
 msgstr ""
