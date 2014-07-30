@@ -21,6 +21,7 @@
     "angular-gettext": "0.4.x",
     "ngCordova": "0.1.x",
     "ionic": "driftyco/ionic-bower#v1.0.0-beta.9",
-    "leaflet.RaphaelLayer": "*"
+    "leaflet.RaphaelLayer": "*",
+    "raphael": "~2.1.2"
   }
 }
