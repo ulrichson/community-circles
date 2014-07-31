@@ -69,9 +69,9 @@ common.filter "gameRuleIcon", ->
       if input.game_rule_area.indexOf("PHOTO") isnt -1
         return "ion-image"
       else if input.game_rule_area.indexOf("VOTE") isnt -1
-        return "ion-heart"
+        return "ion-ios7-heart"
       else if input.game_rule_area.indexOf("COMMENT") isnt -1
-        return "ion-chatbubble"
+        return "ion-ios7-chatbubble"
       else if input.game_rule_area.indexOf("POI") isnt -1
         return "ion-location"
       else if input.game_rule_area.indexOf("MOOD") isnt -1
