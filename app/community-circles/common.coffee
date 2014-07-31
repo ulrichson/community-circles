@@ -364,6 +364,12 @@ common.factory "Util", (Config, Color) ->
       # return new L.LatLng 48.1217811, 16.5633169 # Vienna calling!
       return false
 
+  removeLastKnownMapBounds: ->
+    localStorage.removeItem "map.bounds.west"
+    localStorage.removeItem "map.bounds.south"
+    localStorage.removeItem "map.bounds.east"
+    localStorage.removeItem "map.bounds.north"
+
   lastKnownMapBounds: (latLngBounds) ->
     if latLngBounds
       localStorage.setItem "map.bounds.west", latLngBounds.getWest()

@@ -1096,6 +1096,7 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
         templete: T._ gettext "Thanks, your contribution was uploaded."
       alert.then ->
         $scope.reset false
+        Util.removeLastKnownMapBounds()
         $ionicNavBarDelegate.back()
 
       if imageSrc?
