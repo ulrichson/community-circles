@@ -395,11 +395,11 @@ mainApp.controller "MainCtrl", ($scope, $state, $http, gettext, T, $ionicLoading
 #-------------------------------------------------------------------------------
 # Map
 #------------------------------------------------------------------------------- 
-mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform, Game, Log, Config, Color, Util, UI, Session, ContributionRestangular, PhotoRestangular) ->
+mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform, Game, Log, Config, Color, Util, UI, Session, ContributionRestangular, PhotoRestangular, Backend) ->
 
   markerDiameter = 40
   mapPreviewHeight = 80
-  communityOpacity = 0.4
+  communityOpacity = 0.5
   communityColor = Color.ccLight
   contributionColor = Color.ccMain
   baseAnimationDuration = 500
@@ -518,7 +518,6 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
   # INTERNAL FUNCTIONS
   #-----------------------------------------------------------------------------
   locate =  (setView) ->
-    # Log.d "Fetching location..."
     map.locate
       setView: setView
       enableHighAccuracy: ionic.Platform.isIOS()
@@ -527,24 +526,13 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
     return if $scope.contributionSelected
 
     mapBounds = map.getBounds()
-    # contributions = ContributionRestangular.all("contribution").getList
-    #   sw_boundingbox_coordinate_lat: mapBounds.getSouthWest().lat
-    #   sw_boundingbox_coordinate_long: mapBounds.getSouthWest().lng
-    #   ne_boundingbox_coordinate_lat: mapBounds.getNorthEast().lat
-    #   ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
-    #   convert: "geojson"
-    # .then (data) ->
-    $http
-      url: "#{Config.API_ENDPOINT}/contrib/contribution/"
-      method: "GET"
-      params:
-        sw_boundingbox_coordinate_lat: mapBounds.getSouthWest().lat
-        sw_boundingbox_coordinate_long: mapBounds.getSouthWest().lng
-        ne_boundingbox_coordinate_lat: mapBounds.getNorthEast().lat
-        ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
-        convert: "geojson"
-    .success (data) ->
-      # map.removeLayer communitiesLayer unless communitiesLayer is null
+    Backend.all("contrib").customGET "contribution",
+      sw_boundingbox_coordinate_lat: mapBounds.getSouthWest().lat
+      sw_boundingbox_coordinate_long: mapBounds.getSouthWest().lng
+      ne_boundingbox_coordinate_lat: mapBounds.getNorthEast().lat
+      ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
+      convert: "geojson"
+    .then (data) ->
       map.removeLayer contributionsLayer unless contributionsLayer is null
 
       contributionMarkers = []
@@ -573,28 +561,25 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
       contributionsLayer.addLayer geoJsonLayer
       
       map.addLayer contributionsLayer
-    .error ->
+    , (error) ->
       Log.e "Could not load contributions"
 
-    $http
-      url: "#{Config.API_ENDPOINT}/contrib/community/"
-      method: "GET"
-      params:
-        sw_boundingbox_coordinate_lat: mapBounds.getSouthWest().lat
-        sw_boundingbox_coordinate_long: mapBounds.getSouthWest().lng
-        ne_boundingbox_coordinate_lat: mapBounds.getNorthEast().lat
-        ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
-    .success (data) ->
-      # console.log data
+    Backend.all("contrib").customGET "community",
+      sw_boundingbox_coordinate_lat: mapBounds.getSouthWest().lat
+      sw_boundingbox_coordinate_long: mapBounds.getSouthWest().lng
+      ne_boundingbox_coordinate_lat: mapBounds.getNorthEast().lat
+      ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
+    .then (data) ->
       map.removeLayer communitiesLayer unless communitiesLayer is null
       communitiesLayer = L.geoJson data,
-        style: 
+        style: (feature) ->
           clickable: false
           stroke: false
-          fillColor: communityColor
-          fillOpacity: communityOpacity
+          fillColor: if feature.properties.contributions_count > 1 then communityColor else Color.ccLighter
+          fillOpacity: if feature.properties.contributions_count > 1 then communityOpacity else 0.2
       map.addLayer communitiesLayer
-    .error ->
+    , (error) ->
+      console.log error
       Log.e "Could not load communities"
 
   updateCurrentPositionMarker = (latlng) ->
