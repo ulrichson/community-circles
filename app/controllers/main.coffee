@@ -575,7 +575,7 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
         style: (feature) ->
           clickable: false
           stroke: false
-          fillColor: if feature.properties.contributions_count > 1 then communityColor else Color.ccLighter
+          fillColor: if feature.properties.is_home_community then Color.ccDark else if feature.properties.contributions_count > 1 then communityColor else Color.ccLighter
           fillOpacity: if feature.properties.contributions_count > 1 then communityOpacity else 0.2
       map.addLayer communitiesLayer
     , (error) ->
