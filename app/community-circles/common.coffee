@@ -484,16 +484,18 @@ common.factory "Util", (Config, Color) ->
         healthSvg.className += " animated infinite flash"
 
       healthPath.setAttribute "d", this.describeArc(size / 2.0, size / 2.0, size / 2.0, 0, 360.0 * contribution.health)
-      healthPath.setAttribute "fill", Color.ccMain
+      healthPath.setAttribute "fill", if contribution.has_community then Color.ccMain else Color.ccLight
 
       healthSvg.appendChild healthPath
       healthDiv.appendChild healthSvg
+
+      community_suffix = if contribution.has_community then "-community" else ""
 
       marker = new L.Marker latlng,
         icon: L.divIcon
           className: "contribution-marker"
           iconSize: [size, size]
-          html: "#{healthDiv.innerHTML}<div class=\"contribution-icon contribution-game-icon-#{this.convertContributionType contribution.type}\"></div>"
+          html: "#{healthDiv.innerHTML}<div class=\"contribution-icon contribution-game-icon-#{this.convertContributionType contribution.type}#{community_suffix}\"></div>"
     else
       marker = new L.Marker latlng,
         icon: L.divIcon
