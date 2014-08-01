@@ -588,6 +588,8 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
         pointToLayer: (feature, latlng) ->
           return Util.createHomeMarker latlng
       map.addLayer @homeLayer
+    , (error) ->
+      Log.w "Cannot place home community: #{error.data.detail}"
 
   updateCurrentPositionMarker = (latlng) ->
     if not currentPositionMarker?
