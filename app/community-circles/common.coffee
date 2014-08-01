@@ -469,6 +469,9 @@ common.factory "Util", (Config, Color) ->
 
     return pm
 
+  createHomeMarker: (latlng) ->
+    return L.marker latlng
+
   createContributionMarker: (latlng, contribution, size) ->
     size ?= 40
     if Config.GAME_MODE

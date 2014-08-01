@@ -582,6 +582,13 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
       console.log error
       Log.e "Could not load communities"
 
+    Backend.all("home").customGET().then (data) ->
+      map.removeLayer @homeLayer if typeof(@homeLayer) isnt "undefined"
+      @homeLayer = L.geoJson data,
+        pointToLayer: (feature, latlng) ->
+          return Util.createHomeMarker latlng
+      map.addLayer @homeLayer
+
   updateCurrentPositionMarker = (latlng) ->
     if not currentPositionMarker?
       currentPositionMarker = Util.createPositionMarker latlng
