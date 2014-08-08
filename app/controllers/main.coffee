@@ -499,24 +499,13 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
     return if $scope.contributionSelected
 
     mapBounds = map.getBounds()
-    # contributions = ContributionRestangular.all("contribution").getList
-    #   sw_boundingbox_coordinate_lat: mapBounds.getSouthWest().lat
-    #   sw_boundingbox_coordinate_long: mapBounds.getSouthWest().lng
-    #   ne_boundingbox_coordinate_lat: mapBounds.getNorthEast().lat
-    #   ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
-    #   convert: "geojson"
-    # .then (data) ->
-    $http
-      url: "#{Config.API_ENDPOINT}/contrib/contribution/"
-      method: "GET"
-      params:
-        sw_boundingbox_coordinate_lat: mapBounds.getSouthWest().lat
-        sw_boundingbox_coordinate_long: mapBounds.getSouthWest().lng
-        ne_boundingbox_coordinate_lat: mapBounds.getNorthEast().lat
-        ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
-        convert: "geojson"
-    .success (data) ->
-      # map.removeLayer communitiesLayer unless communitiesLayer is null
+    ContributionRestangular.all("contribution").customGET "",
+      sw_boundingbox_coordinate_lat: mapBounds.getSouthWest().lat
+      sw_boundingbox_coordinate_long: mapBounds.getSouthWest().lng
+      ne_boundingbox_coordinate_lat: mapBounds.getNorthEast().lat
+      ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
+      convert: "geojson"
+    .then (data) ->
       map.removeLayer contributionsLayer unless contributionsLayer is null
 
       contributionMarkers = []
@@ -545,19 +534,15 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
       contributionsLayer.addLayer geoJsonLayer
       
       map.addLayer contributionsLayer
-    .error ->
+    , (error) ->
       Log.e "Could not load contributions"
 
-    $http
-      url: "#{Config.API_ENDPOINT}/contrib/community/"
-      method: "GET"
-      params:
-        sw_boundingbox_coordinate_lat: mapBounds.getSouthWest().lat
-        sw_boundingbox_coordinate_long: mapBounds.getSouthWest().lng
-        ne_boundingbox_coordinate_lat: mapBounds.getNorthEast().lat
-        ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
-    .success (data) ->
-      # console.log data
+    ContributionRestangular.all("community").customGET "",
+      sw_boundingbox_coordinate_lat: mapBounds.getSouthWest().lat
+      sw_boundingbox_coordinate_long: mapBounds.getSouthWest().lng
+      ne_boundingbox_coordinate_lat: mapBounds.getNorthEast().lat
+      ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
+    .then (data) ->
       map.removeLayer communitiesLayer unless communitiesLayer is null
       communitiesLayer = L.geoJson data,
         style: 
@@ -566,7 +551,7 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
           fillColor: communityColor
           fillOpacity: communityOpacity
       map.addLayer communitiesLayer
-    .error ->
+    , (error) ->
       Log.e "Could not load communities"
 
   updateCurrentPositionMarker = (latlng) ->
@@ -799,7 +784,7 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
       $ionicLoading.hide()
 
   $scope.voteContribution = ->
-    if not $scope.hasVotedForContribution()
+    if not $scope.contribution.has_voted
       $ionicLoading.show template: T._ gettext "Submitting..."
       ContributionRestangular.all("votecontribution").post
         contribution: $scope.contribution.id
@@ -815,8 +800,8 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
       .finally ->
         ionicLoading.hide()
 
-  $scope.hasVotedForContribution = ->
-    return _.contains $scope.contribution.votes, Session.userName()
+  # $scope.hasVotedForContribution = ->
+  #   return _.contains $scope.contribution.votes, Session.userName()
 
   $scope.voteComment = (comment) ->
     if not $scope.hasVotedForComment comment
@@ -1472,9 +1457,7 @@ mainApp.controller "ContributionListCtrl", ($scope, $rootScope, $state, $timeout
   # $scope.data.maxDistance = 5000
   # $scope.data.initDistance = $scope.data.maxDistance # $scope.maxDistance * 0.75
   # $scope.data.distance = $scope.data.initDistance
-  $scope.data.distance = 5000
-
-  $scope.filter = "nearby"
+  $scope.data.distance = 20000
 
   $scope.contributions = []
   $scope.baseUrl = Config.API_ENDPOINT 
@@ -1492,6 +1475,12 @@ mainApp.controller "ContributionListCtrl", ($scope, $rootScope, $state, $timeout
     else if $scope.filter is "latest"
       parameter = 
         filter: "latest"
+    else if $scope.filter is "voted"
+      parameter =
+        filter: "voted"
+    else if $scope.filter is "commented"
+      parameter =
+        filter: "commented"
 
     ContributionRestangular.all("contribution").getList(parameter).then (data) ->
       $scope.contributions = data

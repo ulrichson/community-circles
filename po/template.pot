@@ -218,8 +218,8 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: app/templates/contribution.list.html
-msgid "Latest"
+#: app/templates/navigation.html
+msgid "Latest Contributions"
 msgstr ""
 
 #: app/templates/contribution.detail.html
@@ -573,5 +573,17 @@ msgstr[1] ""
 #: app/templates/contribution.list.html
 msgid "{{ contributions.length }} contribution"
 msgid_plural "{{ contributions.length }} contributions"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/templates/contribution.list.html
+msgid "{{ contributions.length }} contribution you have commented"
+msgid_plural "{{ contributions.length }} contributions you have commented"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/templates/contribution.list.html
+msgid "{{ contributions.length }} contribution you have voted"
+msgid_plural "{{ contributions.length }} contributions you have voted"
 msgstr[0] ""
 msgstr[1] ""

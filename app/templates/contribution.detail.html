@@ -17,7 +17,7 @@
               <span ng-show="contribution.poi"><i class="icon ion-ios7-location"></i> {{ contribution.poi }}</span>
               <span ng-show="contribution.mood"><i class="icon icomatic {{ contribution.mood }}filled" style="font-size: 1.4em"></i>{{ contribution.mood | mood:moods }}</span>
             </span>
-            <i class="icon ion-ios7-chatbubble"></i> {{ contribution.comments_count }} <i class="icon ion-ios7-heart"></i> {{ contribution.votes_count }}
+            <i class="icon ion-ios7-chatbubble" ng-class="{ positive: contribution.has_commented }"></i> <span ng-class="{ 'positive bold': contribution.has_commented }">{{ contribution.comments_count }}</span> <i class="icon ion-ios7-heart" ng-class="{ positive: contribution.has_voted }"></i> <span ng-class="{ 'positive bold': contribution.has_voted }">{{ contribution.votes_count }}</span>
           </p>
         </div>
         <div class="item item-text-wrap" ng-show="contribution.type != 'PL'">
@@ -38,10 +38,10 @@
             <i class="icon ion-ios7-chatbubble-outline"></i> <span translate>Comment</span>
           </a>
           <a class="tab-item positive" ng-click="voteContribution()">
-            <span ng-show="hasVotedForContribution()">
+            <span ng-show="contribution.has_voted">
               <i class="icon ion-ios7-heart"></i>&nbsp;<strong translate>Like</strong>
             </span>
-            <span ng-show="!hasVotedForContribution()">
+            <span ng-show="!contribution.has_voted">
               <i class="icon ion-ios7-heart-outline"></i>&nbsp;<span translate>Like</span>
             </span>
           </a>

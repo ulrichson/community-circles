@@ -95,6 +95,16 @@ em {
   font-weight: bold;
 }
 
+.button-bar {
+  .button-icon {
+    padding: 0; 
+  }
+
+  .button-icon.active {
+    opacity: 1;
+  }
+}
+
 //
 // Close icons
 // --------------------------------------------------

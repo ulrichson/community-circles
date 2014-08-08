@@ -601,6 +601,21 @@ msgid_plural "{{ contributions.length }} contributions"
 msgstr[0] "{{ contributions.length }} Beitrag"
 msgstr[1] "{{ contributions.length }} Beiträge"
 
+#: app/templates/contribution.list.html
+msgid "{{ contributions.length }} contribution you have commented"
+msgid_plural "{{ contributions.length }} contributions you have commented"
+msgstr[0] "{{ contributions.length }} Beitrag den du kommentiert hast"
+msgstr[1] "{{ contributions.length }} Beiträge die du kommentiert hast"
+
+#: app/templates/contribution.list.html
+msgid "{{ contributions.length }} contribution you have voted"
+msgid_plural "{{ contributions.length }} contributions you have voted"
+msgstr[0] "{{ contributions.length }} Beitrag der dir gefällt"
+msgstr[1] "{{ contributions.length }} Beiträge die dir gefallen"
+
+#~ msgid "Liked"
+#~ msgstr "Gefällt mir"
+
 #~ msgid "Vote"
 #~ msgstr "Abstimmen"
 
