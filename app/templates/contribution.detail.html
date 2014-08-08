@@ -43,7 +43,12 @@
             <i class="icon ion-ios7-chatbubble-outline"></i> <span translate>Comment</span>
           </a>
           <a class="tab-item positive" ng-click="voteContribution()">
-            <i class="icon" ng-class="hasVotedForContribution() ? 'ion-ios7-heart' : 'ion-ios7-heart-outline'"></i>&nbsp;<span translate ng-class="{ 'bold': hasVotedForContribution(comment) }">Like</span>
+            <span ng-show="hasVotedForContribution()">
+              <i class="icon ion-ios7-heart"></i>&nbsp;<strong translate>Like</strong>
+            </span>
+            <span ng-show="!hasVotedForContribution()">
+              <i class="icon ion-ios7-heart-outline"></i>&nbsp;<span translate>Like</span>
+            </span>
           </a>
         </div>
       </div>
