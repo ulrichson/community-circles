@@ -1,0 +1,32 @@
+<ion-view title="{{ 'Latest Contributions' | translate }}">
+
+  <ion-nav-buttons side="left">
+    <button ng-click="toggleNavigationMenu()" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+
+  <ion-nav-buttons side="right">
+    <button class="button button-icon button-clear ion-plus-circled" ng-click="newContribution()"></button>
+  </ion-nav-buttons>
+
+  <ion-content>
+    <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="loadContributions()"></ion-refresher> 
+    <div class="list" ng-if="contributions.length > 0">
+      <div class="item item-divider">
+        <span translate translate-n="contributions.length" translate-plural="{{ contributions.length }} contributions">{{ contributions.length }} contribution</span>
+      </div>
+      <div class="item" ng-class="{ 'item-thumbnail-left': contribution.photos[0] }" ng-repeat="contribution in contributions" ng-click="openContribution(contribution)">
+        <img ng-if="contribution.photos[0]" ng-src="{{ baseUrl }}/download/?photo_id={{ contribution.photos[0] }}&convert=square_200" alt="{{ contribution.title }}">
+        <h2>{{ contribution.title }}</h2>
+        <p>
+          <span translate>by</span> <strong>{{ contribution.user.username }}</strong> <span am-time-ago="contribution.created"></span><br>
+          <i class="icon ion-ios7-chatbubble" ng-class="{ positive: contribution.has_commented }"></i> <span ng-class="{ 'positive bold': contribution.has_commented }">{{ contribution.comments_count }}</span> <i class="icon ion-ios7-heart" ng-class="{ positive: contribution.has_voted }"></i> <span ng-class="{ 'positive bold': contribution.has_voted }">{{ contribution.votes_count }}</span> <i class="icon ion-ios7-navigate"></i> {{ contribution.point | distanceToMe | distance }}
+
+        </p>
+      </div>
+    </div>
+    <div class="list" ng-if="contributions.length == 0">
+      <div class="item item-divider" translate>No contributions found</div>
+    </div>
+  </ion-content>
+
+</ion-view>

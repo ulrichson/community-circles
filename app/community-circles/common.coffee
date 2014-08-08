@@ -91,7 +91,7 @@ common.constant "Config",
   API_ENDPOINT: @config.API_ENDPOINT
   REGEX_USERNAME: /^[a-zA-Z0-9\-\_\.]+$/
   REGEX_POINT: /\d+\.?\d*|\.\d+/g 
-  VERSION: "v1.0.1"
+  VERSION: "v1.1.0"
 
 common.constant "Key",
   FOURSQUARE_CLIENT_ID: @key.FOURSQUARE_CLIENT_ID

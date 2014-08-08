@@ -11,8 +11,12 @@
   <ion-header-bar class="bar-subheader">
     <div class="button-bar">
       <a class="button button-positive button-outline button-small" ng-class="{ active: filter == 'nearby' }" ng-click="filter = 'nearby'; loadContributions()" translate>Nearby</a>
+      <!--
       <a class="button button-positive button-outline button-small" ng-class="{ active: filter == 'latest' }" ng-click="filter = 'latest'; loadContributions()" translate>Latest</a>
+      -->
       <a class="button button-positive button-outline button-small" ng-class="{ active: filter == 'mine' }" ng-click="filter = 'mine'; loadContributions()" translate>Mine</a>
+      <a class="button button-positive button-outline button-small button-icon ion-ios7-heart" ng-class="{ active: filter == 'voted' }" ng-click="filter = 'voted'; loadContributions()"></a>
+      <a class="button button-positive button-outline button-small button-icon ion-ios7-chatbubble" ng-class="{ active: filter == 'commented' }" ng-click="filter = 'commented'; loadContributions()"></a>
     </div>
   </ion-header-bar>
 
@@ -20,22 +24,28 @@
     <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="loadContributions()"></ion-refresher> 
     <div class="range range-positive padding" ng-show="filter == 'nearby'">
       100m
-      <input type="range" name="distance" ng-model="data.distance" min="100" max="5000" ng-change="distanceChanged()">
-      5000m
+      <input type="range" name="distance" ng-model="data.distance" min="100" max="20000" ng-change="distanceChanged()">
+      20km
     </div>
     <div class="list" ng-if="contributions.length > 0">
-      <div class="item item-divider" ng-show="filter != 'nearby'">
+      <div class="item item-divider" ng-show="filter != 'nearby' && filter != 'voted' && filter != 'commented'">
         <span translate translate-n="contributions.length" translate-plural="{{ contributions.length }} contributions">{{ contributions.length }} contribution</span>
       </div>
       <div class="item item-divider" ng-show="filter == 'nearby'">
         <span translate translate-n="contributions.length" translate-plural="{{ contributions.length }} contributions">{{ contributions.length }} contribution</span> <span translate>within {{ data.distance }}m</span>
+      </div>
+      <div class="item item-divider" ng-show="filter == 'voted'">
+        <span translate translate-n="contributions.length" translate-plural="{{ contributions.length }} contributions you have voted">{{ contributions.length }} contribution you have voted</span>
+      </div>
+      <div class="item item-divider" ng-show="filter == 'commented'">
+        <span translate translate-n="contributions.length" translate-plural="{{ contributions.length }} contributions you have commented">{{ contributions.length }} contribution you have commented</span>
       </div>
       <div class="item" ng-class="{ 'item-thumbnail-left': contribution.photos[0] }" ng-repeat="contribution in contributions" ng-click="openContribution(contribution)">
         <img ng-if="contribution.photos[0]" ng-src="{{ baseUrl }}/download/?photo_id={{ contribution.photos[0] }}&convert=square_200" alt="{{ contribution.title }}">
         <h2>{{ contribution.title }}</h2>
         <p>
           <span translate>by</span> <strong>{{ contribution.user.username }}</strong> <span am-time-ago="contribution.created"></span><br>
-          <i class="icon ion-ios7-chatbubble"></i> {{ contribution.comments_count }} <i class="icon ion-ios7-heart"></i> {{ contribution.votes_count }} <i class="icon ion-ios7-navigate"></i> {{ contribution.point | distanceToMe | distance }}<span ng-show="contribution.mission_short"> <i class="icon ion-ribbon-b"></i> {{ contribution.mission_short.title }}</span>
+          <i class="icon ion-ios7-chatbubble" ng-class="{ positive: contribution.has_commented }"></i> <span ng-class="{ 'positive bold': contribution.has_commented }">{{ contribution.comments_count }}</span> <i class="icon ion-ios7-heart" ng-class="{ positive: contribution.has_voted }"></i> <span ng-class="{ 'positive bold': contribution.has_voted }">{{ contribution.votes_count }}</span> <i class="icon ion-ios7-navigate"></i> {{ contribution.point | distanceToMe | distance }}<span ng-show="contribution.mission_short"> <i class="icon ion-ribbon-b"></i> {{ contribution.mission_short.title }}</span>
         </p>
       </div>
     </div>

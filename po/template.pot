@@ -253,8 +253,9 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: app/templates/contribution.list.html
-msgid "Latest"
+#: app/templates/contribution.stream.html
+#: app/templates/navigation.html
+msgid "Latest Contributions"
 msgstr ""
 
 #: app/templates/profile.html
@@ -328,6 +329,7 @@ msgid "New contribution"
 msgstr ""
 
 #: app/templates/contribution.list.html
+#: app/templates/contribution.stream.html
 msgid "No contributions found"
 msgstr ""
 
@@ -407,6 +409,7 @@ msgstr ""
 
 #: app/templates/contribution.detail.html
 #: app/templates/contribution.list.html
+#: app/templates/contribution.stream.html
 #: app/templates/mission.detail.html
 #: app/templates/mission.list.html
 #: app/templates/mission.select.html
@@ -585,6 +588,7 @@ msgstr ""
 
 #: app/templates/contribution.detail.html
 #: app/templates/contribution.list.html
+#: app/templates/contribution.stream.html
 #: app/templates/map.html
 #: app/templates/mission.list.html
 #: app/templates/mission.select.html
@@ -670,8 +674,21 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: app/templates/contribution.list.html
+#: app/templates/contribution.stream.html
 msgid "{{ contributions.length }} contribution"
 msgid_plural "{{ contributions.length }} contributions"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/templates/contribution.list.html
+msgid "{{ contributions.length }} contribution you have commented"
+msgid_plural "{{ contributions.length }} contributions you have commented"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/templates/contribution.list.html
+msgid "{{ contributions.length }} contribution you have voted"
+msgid_plural "{{ contributions.length }} contributions you have voted"
 msgstr[0] ""
 msgstr[1] ""
 

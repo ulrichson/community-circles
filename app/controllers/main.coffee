@@ -45,6 +45,12 @@ mainApp.config ($stateProvider, $urlRouterProvider) ->
       mainContent:
         templateUrl: "contribution.list.html"
         controller: "ContributionListCtrl"
+  .state "app.contribution-stream",
+    url: "/contribution-stream"
+    views:
+      mainContent:
+        templateUrl: "contribution.stream.html"
+        controller: "ContributionStreamCtrl"
   .state "app.notifications",
     url: "/notifications"
     views:
@@ -579,7 +585,6 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
           fillOpacity: if feature.properties.contributions_count > 1 then communityOpacity else 0.2
       map.addLayer communitiesLayer
     , (error) ->
-      console.log error
       Log.e "Could not load communities"
 
     Backend.all("home").customGET().then (data) ->
@@ -821,7 +826,7 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
       $ionicLoading.hide()
 
   $scope.voteContribution = ->
-    if not $scope.hasVotedForContribution()
+    if not $scope.contribution.has_voted
       $ionicLoading.show template: T._ gettext "Submitting..."
       ContributionRestangular.all("votecontribution").post
         contribution: $scope.contribution.id
@@ -837,8 +842,8 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
       .finally ->
         ionicLoading.hide()
 
-  $scope.hasVotedForContribution = ->
-    return _.contains $scope.contribution.votes, Session.userName()
+  # $scope.hasVotedForContribution = ->
+  #   return _.contains $scope.contribution.votes, Session.userName()
 
   $scope.voteComment = (comment) ->
     if not $scope.hasVotedForComment comment
@@ -1523,6 +1528,12 @@ mainApp.controller "ContributionListCtrl", ($scope, $rootScope, $state, $timeout
     else if $scope.filter is "latest"
       parameter = 
         filter: "latest"
+    else if $scope.filter is "voted"
+      parameter =
+        filter: "voted"
+    else if $scope.filter is "commented"
+      parameter =
+        filter: "commented"
 
     ContributionRestangular.all("contribution").getList(parameter).then (data) ->
       $scope.contributions = data
@@ -1570,6 +1581,34 @@ mainApp.controller "ContributionListCtrl", ($scope, $rootScope, $state, $timeout
   .finally ->
     $ionicLoading.hide()
     $scope.loadContributions()
+
+#-------------------------------------------------------------------------------
+# ContributionStreamCtrl
+#-------------------------------------------------------------------------------
+mainApp.controller "ContributionStreamCtrl", ($scope, $rootScope, $state, $timeout, $ionicLoading, $ionicScrollDelegate, $cordovaGeolocation, T, gettext, Session, Util, Log, Config, ContributionRestangular) ->
+
+  $scope.contributions = []
+  $scope.baseUrl = Config.API_ENDPOINT 
+
+  $scope.loadContributions = ->
+    $ionicLoading.show template: T._ gettext "Loading contributions..."
+    latlng = Util.lastKnownPosition()
+
+    ContributionRestangular.all("contribution").getList(filter: "latest").then (data) ->
+      $scope.contributions = data
+    .finally ->
+      $ionicLoading.hide()
+      $scope.$broadcast "scroll.refreshComplete"
+
+  $scope.openContribution = (contribution) ->
+    $state.go "app.contribution-detail", id: contribution.id
+
+
+  $scope.newContribution = ->
+    $state.go "app.contribution-new"
+
+  # Run
+  $scope.loadContributions()
 
 #-------------------------------------------------------------------------------
 # SettingsCtrl

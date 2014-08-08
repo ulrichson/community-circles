@@ -80,9 +80,17 @@ msgstr "Zurück zur Anmeldung"
 msgid "Be the first who comments!"
 msgstr "Kommentiere als ersteR!"
 
+#: app/templates/mission.detail.html
+msgid "Be the first!"
+msgstr "Seit die/der erste!"
+
 #: app/templates/navigation.html
 msgid "Browse Contributions"
 msgstr "Beiträge durchsuchen"
+
+#: app/templates/mission.detail.html
+msgid "By"
+msgstr "Von"
 
 #: dist/controllers/main.js
 msgid "Cancel"
@@ -104,9 +112,20 @@ msgstr "Foto kann nicht hochgeladen werden"
 msgid "Capture photo"
 msgstr "Foto aufnehmen"
 
-#: app/templates/contribution.detail.html dist/controllers/main.js
+#: app/templates/contribution.new.html
+msgid "Choose mission"
+msgstr "Wähle Mission"
+
+#: app/templates/profile.html
+msgid "City official"
+msgstr "Stadtverwaltung"
+
+#: app/templates/contribution.detail.html app/templates/profile.html
+#: dist/controllers/main.js
 msgid "Comment"
-msgstr "Kommentieren"
+msgid_plural "Comments"
+msgstr[0] "Kommentar"
+msgstr[1] "Kommentare"
 
 #: app/templates/notifications.html
 msgid "Comment was voted"
@@ -115,6 +134,12 @@ msgstr "Kommentar wurde abgestimmt"
 #: dist/controllers/main.js
 msgid "Continue anyway"
 msgstr "Trotzdem fortfahren"
+
+#: app/templates/profile.html
+msgid "Contribution"
+msgid_plural "Contributions"
+msgstr[0] "Beitrag"
+msgstr[1] "Beiträge"
 
 #: app/templates/notifications.html
 msgid "Contribution was commented"
@@ -176,15 +201,15 @@ msgstr "Orte werden geladen..."
 msgid "From library"
 msgstr "Von Bibliothek"
 
-#: app/templates/profile.html
-msgid "Gave {{ profile.given_votes_count }} like"
-msgid_plural "Gave {{ profile.given_votes_count }} likes"
-msgstr[0] "Gab {{ profile.given_votes_count }} Zustimm."
-msgstr[1] "Gab {{ profile.given_votes_count }} Zustimm."
-
 #: app/templates/settings.html
 msgid "German"
 msgstr "Deutsch"
+
+#: app/templates/profile.html
+msgid "Given like"
+msgid_plural "Given likes"
+msgstr[0] "Gefällt mir vergeben"
+msgstr[1] "Gefällt mir vergeben"
 
 #: app/templates/navigation.html
 msgid "Hello"
@@ -214,6 +239,10 @@ msgstr "Idee"
 msgid "Imprint"
 msgstr "Impressum"
 
+#: app/templates/profile.html
+msgid "In"
+msgstr "In"
+
 #: dist/controllers/main.js
 msgid "Invalid password or username"
 msgstr "Ungültiges Passwort oder Benutzername"
@@ -234,9 +263,13 @@ msgstr ""
 msgid "Language"
 msgstr "Sprache"
 
-#: app/templates/contribution.list.html
-msgid "Latest"
-msgstr "Neueste"
+#: app/templates/contribution.stream.html app/templates/navigation.html
+msgid "Latest Contributions"
+msgstr "Aktuellste Beiträge"
+
+#: app/templates/profile.html
+msgid "Latest Game Progress"
+msgstr "Letzte Spielfortschritte"
 
 #: app/templates/contribution.detail.html
 msgid "Like"
@@ -282,6 +315,24 @@ msgstr "Karte"
 msgid "Mine"
 msgstr "Meine"
 
+#: dist/controllers/main.js
+msgid "Mission"
+msgstr "Mission"
+
+#: app/templates/mission.list.html app/templates/navigation.html
+msgid "Missions"
+msgstr "Missionen"
+
+#: dist/controllers/main.js
+msgid ""
+"Missions can be added to a contribution when you create them. Usually, "
+"missions have a specific and goal and can be active for a certain time. They "
+"will increase your area and lifetime."
+msgstr ""
+"Missionen können zu Beiträge hinzugefügt werden wenn du diese erstellst. Für "
+"gewöhnlich haben Mission ein bestimmtes Ziel und können für einen Zeitraum "
+"aktiv sein. Sie werden die Fläche und Lebenszeit erhöhen."
+
 #: app/templates/contribution.list.html
 msgid "Nearby"
 msgstr "In Nähe"
@@ -290,9 +341,17 @@ msgstr "In Nähe"
 msgid "New contribution"
 msgstr "Neuer Beitrag"
 
-#: app/templates/contribution.list.html
+#: app/templates/contribution.list.html app/templates/contribution.stream.html
 msgid "No contributions found"
 msgstr "Keine Beiträge gefunden"
+
+#: app/templates/mission.list.html app/templates/mission.select.html
+msgid "No missions found"
+msgstr "Keine Missionen gefunden"
+
+#: app/templates/mission.detail.html
+msgid "Nobody participated so far."
+msgstr "Niemand hat bisher teilgenommen"
 
 #: app/templates/contribution.detail.html
 msgid "Nobody replied so far."
@@ -359,6 +418,8 @@ msgid "Profile"
 msgstr "Profil"
 
 #: app/templates/contribution.detail.html app/templates/contribution.list.html
+#: app/templates/contribution.stream.html app/templates/mission.detail.html
+#: app/templates/mission.list.html app/templates/mission.select.html
 #: app/templates/notifications.html app/templates/poi.html
 #: app/templates/profile.html
 msgid "Pull to refresh..."
@@ -395,6 +456,10 @@ msgstr "Zurücksetzen"
 #: app/templates/contribution.new.html
 msgid "Reset contribution"
 msgstr "Beitrag zurücksetzen"
+
+#: app/templates/mission.select.html
+msgid "Select mission"
+msgstr "Wähle Mission"
 
 #: dist/controllers/main.js
 msgid "Send"
@@ -548,7 +613,8 @@ msgid "angry"
 msgstr "traurig"
 
 #: app/templates/contribution.detail.html app/templates/contribution.list.html
-#: app/templates/map.html
+#: app/templates/contribution.stream.html app/templates/map.html
+#: app/templates/mission.list.html app/templates/mission.select.html
 msgid "by"
 msgstr "von"
 
@@ -630,23 +696,56 @@ msgid_plural "{{ comments.length }} comments"
 msgstr[0] "{{ comments.length }} Kommentar"
 msgstr[1] "{{ comments.length }} Kommentare"
 
-#: app/templates/contribution.list.html
+#: app/templates/contribution.list.html app/templates/contribution.stream.html
 msgid "{{ contributions.length }} contribution"
 msgid_plural "{{ contributions.length }} contributions"
 msgstr[0] "{{ contributions.length }} Beitrag"
 msgstr[1] "{{ contributions.length }} Beiträge"
 
-#: app/templates/profile.html
-msgid "{{ profile.comments_count }} comment"
-msgid_plural "{{ profile.comments_count }} comments"
-msgstr[0] "{{ profile.comments_count }} Kommentar"
-msgstr[1] "{{ profile.comments_count }} Kommentare"
+#: app/templates/contribution.list.html
+msgid "{{ contributions.length }} contribution you have commented"
+msgid_plural "{{ contributions.length }} contributions you have commented"
+msgstr[0] "{{ contributions.length }} Beitrag den du kommentiert hast"
+msgstr[1] "{{ contributions.length }} Beiträge die du kommentiert hast"
 
-#: app/templates/profile.html
-msgid "{{ profile.contributions_count }} contribution"
-msgid_plural "{{ profile.contributions_count }} contributions"
-msgstr[0] "{{ profile.contributions_count }} Beitrag"
-msgstr[1] "{{ profile.contributions_count }} Beiträge"
+#: app/templates/contribution.list.html
+msgid "{{ contributions.length }} contribution you have voted"
+msgid_plural "{{ contributions.length }} contributions you have voted"
+msgstr[0] "{{ contributions.length }} Beitrag der dir gefällt"
+msgstr[1] "{{ contributions.length }} Beiträge die dir gefallen"
+
+#: app/templates/mission.detail.html app/templates/mission.list.html
+msgid "{{ mission.participants.length }} participant"
+msgid_plural "{{ mission.participants.length }} participants"
+msgstr[0] "{{ mission.participants.length }} Teilnehmer"
+msgstr[1] "{{ mission.participants.length }} Teilnehmer"
+
+#: app/templates/mission.list.html app/templates/mission.select.html
+msgid "{{ missions.length }} mission"
+msgid_plural "{{ missions.length }} missions"
+msgstr[0] "{{ missions.length }} Mission"
+msgstr[1] "{{ missions.length }} Missionen"
+
+#~ msgid "Gave {{ profile.given_votes_count }} like"
+#~ msgid_plural "Gave {{ profile.given_votes_count }} likes"
+#~ msgstr[0] "Gab {{ profile.given_votes_count }} Zustimm."
+#~ msgstr[1] "Gab {{ profile.given_votes_count }} Zustimm."
+
+#~ msgid "{{ profile.comments_count }} comment"
+#~ msgid_plural "{{ profile.comments_count }} comments"
+#~ msgstr[0] "{{ profile.comments_count }} Kommentar"
+#~ msgstr[1] "{{ profile.comments_count }} Kommentare"
+
+#~ msgid "{{ profile.contributions_count }} contribution"
+#~ msgid_plural "{{ profile.contributions_count }} contributions"
+#~ msgstr[0] "{{ profile.contributions_count }} Beitrag"
+#~ msgstr[1] "{{ profile.contributions_count }} Beiträge"
+
+#~ msgid "Latest"
+#~ msgstr "Neueste"
+
+#~ msgid "Liked"
+#~ msgstr "Gefällt mir"
 
 #~ msgid "Vote"
 #~ msgstr "Abstimmen"
