@@ -279,6 +279,10 @@ msgid "Loading contributions..."
 msgstr ""
 
 #: dist/controllers/main.js
+msgid "Loading missions..."
+msgstr ""
+
+#: dist/controllers/main.js
 msgid "Loading notifications..."
 msgstr ""
 

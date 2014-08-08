@@ -1654,7 +1654,7 @@ mainApp.controller "ProfileCtrl", ($scope, $state, $stateParams, $ionicLoading, 
 #-------------------------------------------------------------------------------
 mainApp.controller "MissionListCtrl", ($scope, $state, $ionicPopup, $ionicLoading, T, gettext, Backend) ->
   $scope.loadMissions = ->
-    $ionicLoading.show template: T._ "Loading missions..."
+    $ionicLoading.show template: T._ gettext "Loading missions..."
     Backend.all("missions").getList().then (data) ->
       $scope.missions = data
     .finally ->
