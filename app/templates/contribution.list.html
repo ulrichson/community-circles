@@ -24,7 +24,7 @@
     <ion-refresher pulling-text="{{ 'Pull to refresh...' | translate }}" on-refresh="loadContributions()"></ion-refresher> 
     <div class="range range-positive padding" ng-show="filter == 'nearby'">
       100m
-      <input type="range" name="distance" ng-model="data.distance" min="100" max="5000" ng-change="distanceChanged()">
+      <input type="range" name="distance" ng-model="data.distance" min="100" max="20000" ng-change="distanceChanged()">
       20km
     </div>
     <div class="list" ng-if="contributions.length > 0">

@@ -44,6 +44,12 @@ mainApp.config ($stateProvider, $urlRouterProvider) ->
       mainContent:
         templateUrl: "contribution.list.html"
         controller: "ContributionListCtrl"
+  .state "app.contribution-stream",
+    url: "/contribution-stream"
+    views:
+      mainContent:
+        templateUrl: "contribution.stream.html"
+        controller: "ContributionStreamCtrl"
   .state "app.notifications",
     url: "/notifications"
     views:
@@ -1457,7 +1463,9 @@ mainApp.controller "ContributionListCtrl", ($scope, $rootScope, $state, $timeout
   # $scope.data.maxDistance = 5000
   # $scope.data.initDistance = $scope.data.maxDistance # $scope.maxDistance * 0.75
   # $scope.data.distance = $scope.data.initDistance
-  $scope.data.distance = 20000
+  $scope.data.distance = 5000
+
+  $scope.filter = "nearby"
 
   $scope.contributions = []
   $scope.baseUrl = Config.API_ENDPOINT 
@@ -1528,6 +1536,34 @@ mainApp.controller "ContributionListCtrl", ($scope, $rootScope, $state, $timeout
   .finally ->
     $ionicLoading.hide()
     $scope.loadContributions()
+
+#-------------------------------------------------------------------------------
+# ContributionStreamCtrl
+#-------------------------------------------------------------------------------
+mainApp.controller "ContributionStreamCtrl", ($scope, $rootScope, $state, $timeout, $ionicLoading, $ionicScrollDelegate, $cordovaGeolocation, T, gettext, Session, Util, Log, Config, ContributionRestangular) ->
+
+  $scope.contributions = []
+  $scope.baseUrl = Config.API_ENDPOINT 
+
+  $scope.loadContributions = ->
+    $ionicLoading.show template: T._ gettext "Loading contributions..."
+    latlng = Util.lastKnownPosition()
+
+    ContributionRestangular.all("contribution").getList(filter: "latest").then (data) ->
+      $scope.contributions = data
+    .finally ->
+      $ionicLoading.hide()
+      $scope.$broadcast "scroll.refreshComplete"
+
+  $scope.openContribution = (contribution) ->
+    $state.go "app.contribution-detail", id: contribution.id
+
+
+  $scope.newContribution = ->
+    $state.go "app.contribution-new"
+
+  # Run
+  $scope.loadContributions()
 
 #-------------------------------------------------------------------------------
 # SettingsCtrl

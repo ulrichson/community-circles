@@ -228,9 +228,9 @@ msgstr ""
 msgid "Language"
 msgstr "Sprache"
 
-#: app/templates/contribution.list.html
-msgid "Latest"
-msgstr "Neueste"
+#: app/templates/contribution.stream.html app/templates/navigation.html
+msgid "Latest Contributions"
+msgstr "Aktuellste Beiträge"
 
 #: app/templates/contribution.detail.html
 msgid "Like"
@@ -284,7 +284,7 @@ msgstr "In Nähe"
 msgid "New contribution"
 msgstr "Neuer Beitrag"
 
-#: app/templates/contribution.list.html
+#: app/templates/contribution.list.html app/templates/contribution.stream.html
 msgid "No contributions found"
 msgstr "Keine Beiträge gefunden"
 
@@ -345,7 +345,8 @@ msgid "Poll was voted"
 msgstr "Umfrage wurde abgestimmt"
 
 #: app/templates/contribution.detail.html app/templates/contribution.list.html
-#: app/templates/notifications.html app/templates/poi.html
+#: app/templates/contribution.stream.html app/templates/notifications.html
+#: app/templates/poi.html
 msgid "Pull to refresh..."
 msgstr "Zum Aktualisieren ziehen..."
 
@@ -517,7 +518,7 @@ msgid "angry"
 msgstr "traurig"
 
 #: app/templates/contribution.detail.html app/templates/contribution.list.html
-#: app/templates/map.html
+#: app/templates/contribution.stream.html app/templates/map.html
 msgid "by"
 msgstr "von"
 
@@ -595,7 +596,7 @@ msgid_plural "{{ comments.length }} comments"
 msgstr[0] "{{ comments.length }} Kommentar"
 msgstr[1] "{{ comments.length }} Kommentare"
 
-#: app/templates/contribution.list.html
+#: app/templates/contribution.list.html app/templates/contribution.stream.html
 msgid "{{ contributions.length }} contribution"
 msgid_plural "{{ contributions.length }} contributions"
 msgstr[0] "{{ contributions.length }} Beitrag"
@@ -612,6 +613,9 @@ msgid "{{ contributions.length }} contribution you have voted"
 msgid_plural "{{ contributions.length }} contributions you have voted"
 msgstr[0] "{{ contributions.length }} Beitrag der dir gefällt"
 msgstr[1] "{{ contributions.length }} Beiträge die dir gefallen"
+
+#~ msgid "Latest"
+#~ msgstr "Neueste"
 
 #~ msgid "Liked"
 #~ msgstr "Gefällt mir"
