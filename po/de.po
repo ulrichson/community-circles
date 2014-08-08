@@ -411,6 +411,10 @@ msgid "Submitting contribution..."
 msgstr "Beitrag wird hochgeladen..."
 
 #: dist/controllers/main.js
+msgid "Submitting..."
+msgstr "Übertrage..."
+
+#: dist/controllers/main.js
 msgid "Successfully uploaded"
 msgstr "Erfolgreich hochgeladen"
 

@@ -800,28 +800,40 @@ mainApp.controller "ContributionDetailCtrl", ($scope, $stateParams, $filter, $io
 
   $scope.voteContribution = ->
     if not $scope.hasVotedForContribution()
+      $ionicLoading.show template: T._ gettext "Submitting..."
       ContributionRestangular.all("votecontribution").post
         contribution: $scope.contribution.id
       .then (response) ->
         $scope.loadContribution $scope.contribution.id
         $ionicPopup.alert title: T._ gettext "Thanks for voting"
+      .finally ->
+        ionicLoading.hide()
     else
+      $ionicLoading.show template: T._ gettext "Submitting..."
       ContributionRestangular.one("votecontribution", $scope.contribution.id).remove().then ->
         $scope.loadContribution $scope.contribution.id
+      .finally ->
+        ionicLoading.hide()
 
   $scope.hasVotedForContribution = ->
     return _.contains $scope.contribution.votes, Session.userName()
 
   $scope.voteComment = (comment) ->
     if not $scope.hasVotedForComment comment
+      $ionicLoading.show template: T._ gettext "Submitting..."
       ContributionRestangular.all("votecomment").post
         comment: comment.id
       .then (response) ->
         $scope.loadComments $scope.contribution.id
         $ionicPopup.alert title: T._ gettext "Thanks for voting"
+      .finally ->
+        ionicLoading.hide()
     else
+      $ionicLoading.show template: T._ gettext "Submitting..."
       ContributionRestangular.one("votecomment", comment.id).remove().then -> 
         $scope.loadComments $scope.contribution.id
+      .finally ->
+        ionicLoading.hide()
 
   $scope.hasVotedForComment = (comment) ->
     return _.contains comment.votes, Session.userName()

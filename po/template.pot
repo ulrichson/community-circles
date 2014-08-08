@@ -405,6 +405,10 @@ msgid "Submitting contribution..."
 msgstr ""
 
 #: dist/controllers/main.js
+msgid "Submitting..."
+msgstr ""
+
+#: dist/controllers/main.js
 msgid "Successfully uploaded"
 msgstr ""
 
