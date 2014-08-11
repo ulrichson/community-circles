@@ -14,3 +14,4 @@ v1.1.0
 - Voted and commented contributions can be filtered
 - Voted and commented contribution icons will be highlighted, e.g. in map or list
 - Latest contributions can now be accessed through the side menu
+- Better performance finding location on map (iOS)

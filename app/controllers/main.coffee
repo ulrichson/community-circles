@@ -526,7 +526,6 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
   locate =  (setView) ->
     map.locate
       setView: setView
-      enableHighAccuracy: ionic.Platform.isIOS()
 
   loadContributions =  ->
     return if $scope.contributionSelected
