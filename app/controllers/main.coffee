@@ -491,7 +491,6 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
     # Log.d "Fetching location..."
     map.locate
       setView: setView
-      enableHighAccuracy: ionic.Platform.isIOS()
 
   createContributionMarker = (feature, latlng) ->
     marker = new L.Marker latlng,
