@@ -198,12 +198,6 @@ msgstr ""
 msgid "German"
 msgstr ""
 
-#: app/templates/profile.html
-msgid "Given like"
-msgid_plural "Given likes"
-msgstr[0] ""
-msgstr[1] ""
-
 #: app/templates/navigation.html
 msgid "Hello"
 msgstr ""
@@ -556,6 +550,12 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
+#: app/templates/profile.html
+msgid "Vote"
+msgid_plural "Votes"
+msgstr[0] ""
+msgstr[1] ""
+
 #: app/templates/poi.html
 msgid "Where are you?"
 msgstr ""
@@ -625,6 +625,10 @@ msgstr ""
 
 #: dist/controllers/main.js
 msgid "overhappy"
+msgstr ""
+
+#: app/templates/profile.html
+msgid "participated with"
 msgstr ""
 
 #: dist/controllers/main.js
