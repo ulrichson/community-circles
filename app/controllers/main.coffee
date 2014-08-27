@@ -237,7 +237,7 @@ mainApp.run ($rootScope, $templateCache, $ionicPlatform, T, gettext, Log, Config
 
   # Save last visited view
   $rootScope.$on "$stateChangeSuccess", (event, toState, toParams, fromState, fromParams) ->
-    localStorage.setItem "last_visited", toState.name if toState.name in ["app.map", "app.contribution-list", "app.notifications"]
+    localStorage.setItem "last_visited", toState.name if toState.name in ["app.map", "app.contribution-list", "app.notifications", "app.profile", "app.mission-select", "app.contribution-stream"]
     $rootScope.previousState = fromState
 
     if fromState.name == "app.map" and $rootScope.mapLocateInterval?
