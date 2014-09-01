@@ -50,7 +50,7 @@ common.constant "Config",
   API_ENDPOINT: @config.API_ENDPOINT
   REGEX_USERNAME: /^[a-zA-Z0-9\-\_\.]+$/
   REGEX_POINT: /\d+\.?\d*|\.\d+/g 
-  VERSION: "v1.1.0"
+  VERSION: "v1.1.1"
 
 common.constant "Key",
   FOURSQUARE_CLIENT_ID: @key.FOURSQUARE_CLIENT_ID
@@ -384,6 +384,8 @@ common.factory "Util", ->
   createTileLayer: ->
     return L.tileLayer.provider "OpenStreetMap.BlackAndWhite",
       detectRetina: true
+      maxNativeZoom: 18
+      maxZoom: 22
 
   createPositionMarker: (latlng, { size } = {}) ->
     size ?= 20
