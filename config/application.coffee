@@ -1,7 +1,8 @@
 # For an explanation of the steroids.config properties, see the guide at
 # http://guides.appgyver.com/steroids/guides/project_configuration/config-application-coffee/
 
-steroids.config.name = "b-Part"
+# steroids.config.name = "b-Part"
+steroids.config.name = "Community Circles"
 
 # -- Initial Location --
 steroids.config.location = "http://localhost/views/main/index.html"
