@@ -1386,7 +1386,7 @@ mainApp.controller "PoiCtrl", ($scope, $location, $anchorScroll, $ionicLoading, 
       selectedMarker._icon.style.zIndex = maxZIndex + 1
 
     latlng = new L.LatLng poi.location.lat, poi.location.lng
-    map.setView latlng, map.getMaxZoom()
+    map.setView latlng
     # map.panTo latlng
 
     contributionModel.poi = poi
