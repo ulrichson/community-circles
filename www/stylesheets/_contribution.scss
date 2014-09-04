@@ -125,3 +125,10 @@
   right: 0;
   top: 1px;
 }
+
+.contribution-marker {
+  @include filter(drop-shadow(0 0 5px rgba(0, 0, 0, 0.7)));
+  &:active {
+    @include filter(brightness(110%));
+  }
+}
