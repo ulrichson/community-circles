@@ -493,25 +493,15 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
   contributionMarkerClicked = (e) ->
     $scope.$apply -> $scope.imageSrc = null
     contributionClickCount++
-    targetBoundingBox = e.target._icon.getBoundingClientRect()
+    # targetBoundingBox = e.target._icon.getBoundingClientRect()
 
     # 200ms delay to wait for possible doube-clicks.
     # Allows to double-click zoom into the map, although marker was clicked.
     setTimeout ->
       # Check if click is inside marker
-      if contributionClickCount is 1 #and
-      # targetBoundingBox.left < e.originalEvent.clientX < targetBoundingBox.right and
-      # targetBoundingBox.top < e.originalEvent.clientY < targetBoundingBox.bottom
-        if not selectedContributionMarker
-          # Hide everything, except selected contribution
-          map.removeControl locateControl
-          map.removeLayer communitiesLayer
-          _.each contributionMarkers, (marker) ->
-            if marker is e.target
-              selectedContributionMarker = e.target
-            else
-              contributionsLayer.removeLayer marker
-
+      if contributionClickCount is 1
+          selectedContributionMarker = e.target
+          # L.DomUtil.addClass selectedContributionMarker._icon, "active"
           id = parseInt e.target.feature.id
           $scope.showContributionDetail id
         else
@@ -538,34 +528,35 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
       ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
       convert: "geojson"
     .then (data) ->
-      map.removeLayer contributionsLayer unless contributionsLayer is null
+      if not $scope.contributionSelected
+        map.removeLayer contributionsLayer unless contributionsLayer is null
 
-      contributionMarkers = []
-      contributions = data.features
-      
-      # Contributions and clustering
-      contributionsLayer = new L.MarkerClusterGroup
-        iconCreateFunction: (cluster) ->
-          return new L.DivIcon
-            html: "<div class=\"contribution-marker-cluster\"><span>#{cluster.getChildCount()}</span></div>"
-        maxClusterRadius: markerDiameter + 5
-        removeOutsideVisibleBounds: true
-        showCoverageOnHover: false
-        spiderfyDistanceMultiplier: 1.6
-        spiderfyOnMaxZoom: true
-        zoomToBoundsOnClick: true
+        contributionMarkers = []
+        contributions = data.features
+        
+        # Contributions and clustering
+        contributionsLayer = new L.MarkerClusterGroup
+          iconCreateFunction: (cluster) ->
+            return new L.DivIcon
+              html: "<div class=\"contribution-marker-cluster\"><span>#{cluster.getChildCount()}</span></div>"
+          maxClusterRadius: markerDiameter + 5
+          removeOutsideVisibleBounds: true
+          showCoverageOnHover: false
+          spiderfyDistanceMultiplier: 1.6
+          spiderfyOnMaxZoom: true
+          zoomToBoundsOnClick: true
 
-      geoJsonLayer = L.geoJson data,
-        onEachFeature: (feature, layer) ->
-          layer.on "click", contributionMarkerClicked
-        pointToLayer: (feature, latlng) ->
-          contributionMarker = Util.createContributionMarker latlng, feature.properties, markerDiameter
-          contributionMarkers.push contributionMarker
-          return contributionMarker
+        geoJsonLayer = L.geoJson data,
+          onEachFeature: (feature, layer) ->
+            layer.on "click", contributionMarkerClicked
+          pointToLayer: (feature, latlng) ->
+            contributionMarker = Util.createContributionMarker latlng, feature.properties, markerDiameter
+            contributionMarkers.push contributionMarker
+            return contributionMarker
 
-      contributionsLayer.addLayer geoJsonLayer
-      
-      map.addLayer contributionsLayer
+        contributionsLayer.addLayer geoJsonLayer
+        
+        map.addLayer contributionsLayer
     , (error) ->
       Log.e "Could not load contributions"
 
@@ -575,25 +566,27 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
       ne_boundingbox_coordinate_lat: mapBounds.getNorthEast().lat
       ne_boundingbox_coordinate_long: mapBounds.getNorthEast().lng
     .then (data) ->
-      map.removeLayer communitiesLayer unless communitiesLayer is null
-      communitiesLayer = L.geoJson data,
-        style: (feature) ->
-          clickable: false
-          stroke: false
-          fillColor: if feature.properties.is_home_community then Color.ccDark else if feature.properties.contributions_count > 1 then communityColor else Color.ccLighter
-          fillOpacity: if feature.properties.contributions_count > 1 then communityOpacity else 0.2
-      map.addLayer communitiesLayer
+      if not $scope.contributionSelected
+        map.removeLayer communitiesLayer unless communitiesLayer is null
+        communitiesLayer = L.geoJson data,
+          style: (feature) ->
+            clickable: false
+            stroke: false
+            fillColor: if feature.properties.is_home_community then Color.ccDark else if feature.properties.contributions_count > 1 then communityColor else Color.ccLighter
+            fillOpacity: if feature.properties.contributions_count > 1 then communityOpacity else 0.15
+        map.addLayer communitiesLayer
     , (error) ->
       Log.e "Could not load communities"
 
     Backend.all("home").customGET().then (data) ->
-      map.removeLayer @homeLayer if typeof(@homeLayer) isnt "undefined"
-      @homeLayer = L.geoJson data,
-        pointToLayer: (feature, latlng) ->
-          return Util.createHomeMarker latlng
-      map.addLayer @homeLayer
+      if not $scope.contributionSelected
+        map.removeLayer @homeLayer if typeof(@homeLayer) isnt "undefined"
+        @homeLayer = L.geoJson data,
+          pointToLayer: (feature, latlng) ->
+            return Util.createHomeMarker latlng
+        map.addLayer @homeLayer
     , (error) ->
-      Log.w "Cannot place home community: #{error.data.detail}"
+      # Log.w "Cannot place home community: #{error.data.detail}"
 
   updateCurrentPositionMarker = (latlng) ->
     if not currentPositionMarker?
@@ -614,6 +607,8 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
     $state.go "app.contribution-detail", id: $scope.contribution.id
 
   $scope.showContributionDetail = (id) ->
+    map.removeControl locateControl
+    # map.removeLayer communitiesLayer
     $scope.contributionSelected = true
     $scope.contribution = _.filter(contributions, (e) -> return e.id is id)[0]
     $scope.contribution.properties.area = Util.formatAreaSqKm $scope.contribution.properties.radius * $scope.contribution.properties.radius * Math.PI
@@ -638,23 +633,19 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
     $scope.$apply()
 
   $scope.hideContributionDetail = ->
-    contributionDetailVisible = false
-    $scope.contributionSelected = false
 
     latlng = new L.LatLng $scope.contribution.geometry.coordinates[1], $scope.contribution.geometry.coordinates[0]
     map.setView latlng
     
     Util.enableMapInteraction map
 
-    # Show contributions
-    contributionsLayer.removeLayer selectedContributionMarker
-    map.addLayer communitiesLayer
-    _.each contributionMarkers, (marker) ->
-      contributionsLayer.addLayer marker
-
+    # L.DomUtil.removeClass selectedContributionMarker._icon, "active" if selectedContributionMarker
     map.addControl locateControl
     
     selectedContributionMarker = null
+
+    contributionDetailVisible = false
+    $scope.contributionSelected = false
 
   #-----------------------------------------------------------------------------
   # INITIALIZE
@@ -682,7 +673,9 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
   # Fetch location in background
   if not $rootScope.mapLocateInterval?
     $rootScope.mapLocateInterval = setInterval ->
-      locate false
+      if not $scope.contributionSelected
+        locate false
+        loadContributions()
     , 5000
 
   loadContributions()
