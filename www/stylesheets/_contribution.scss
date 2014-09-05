@@ -128,7 +128,8 @@
 
 .contribution-marker {
   @include filter(drop-shadow(0 0 5px rgba(0, 0, 0, 0.7)));
-  &:active {
-    @include filter(brightness(110%));
+  &:active,
+  &.active {
+    @include filter(brightness(120%));
   }
 }
