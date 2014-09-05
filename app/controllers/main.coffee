@@ -607,7 +607,7 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
     $state.go "app.contribution-detail", id: $scope.contribution.id
 
   $scope.showContributionDetail = (id) ->
-    map.removeControl locateControl
+    locateControl.getContainer().style.visibility = "hidden"
     # map.removeLayer communitiesLayer
     $scope.contributionSelected = true
     $scope.contribution = _.filter(contributions, (e) -> return e.id is id)[0]
@@ -640,7 +640,7 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
     Util.enableMapInteraction map
 
     # L.DomUtil.removeClass selectedContributionMarker._icon, "active" if selectedContributionMarker
-    map.addControl locateControl
+    locateControl.getContainer().style.visibility = "visible"
     
     selectedContributionMarker = null
 
