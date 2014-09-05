@@ -82,7 +82,7 @@ msgstr "Kommentiere als ersteR!"
 
 #: app/templates/mission.detail.html
 msgid "Be the first!"
-msgstr "Seit die/der erste!"
+msgstr "Sei die/der erste!"
 
 #: app/templates/navigation.html
 msgid "Browse Contributions"
