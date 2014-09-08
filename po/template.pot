@@ -619,6 +619,12 @@ msgstr ""
 msgid "ironic"
 msgstr ""
 
+#: app/templates/profile.html
+msgid "member of {{ profile.communities_count }} community"
+msgid_plural "member of {{ profile.communities_count }} communities"
+msgstr[0] ""
+msgstr[1] ""
+
 #: app/templates/map.html
 msgid "more"
 msgstr ""

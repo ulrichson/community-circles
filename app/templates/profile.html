@@ -12,6 +12,7 @@
         <div class="item text-center">
           <h1 class="no-margin">{{ profile.username }}</h1>
           <h2 class="no-margin" ng-show="profile.is_staff"><i class="fa fa-institution"></i> <span translate>City official</span></h2>
+          <small class="positive" ng-show="profile.communities_count > 0" translate translate-n="profile.communities_count" translate-plural="member of {{ profile.communities_count }} communities">member of {{ profile.communities_count }} community</small>
           <h1 class="no-margin"><span class="positive" ng-bind-html="profile.area_total | area"></span></h1>
           <p translate>participated with</p>
           <div class="row text-center overview positive">
@@ -19,7 +20,7 @@
               <span class="info">{{ profile.contributions_count }} <i class="icon" ng-class="profile.contributions_count > 0 ? 'ion-ios7-plus' : 'ion-ios7-plus-outline'"></i></span><br><small class="extra-small" translate translate-n="profile.contributions_count" translate-plural="Contributions">Contribution</small>
             </div>
             <div class="col no-padding" ng-class="{ 'text-muted': profile.comments_count == 0 }"> 
-              <span class="info">{{ profile.comments_count }} <i class="icon" ng-class="profile.comments_count > 0 ? 'ion-ios7-chatbubble' : 'ion-ios7-chatbubble-outline'"></i></span><br><small class="extra-small"  translate translate-n="profile.comments_count" translate-plural="Comments">Comment</small>
+              <span class="info">{{ profile.comments_count }} <i class="icon" ng-class="profile.comments_count > 0 ? 'ion-ios7-chatbubble' : 'ion-ios7-chatbubble-outline'"></i></span><br><small class="extra-small" translate translate-n="profile.comments_count" translate-plural="Comments">Comment</small>
             </div>
             <div class="col no-padding" ng-class="{ 'text-muted': profile.given_votes_count == 0 }">
               <span class="info">{{ profile.given_votes_count }} <i class="icon" ng-class="profile.given_votes_count > 0 ? 'ion-ios7-heart' : 'ion-ios7-heart-outline'"></i></span><br><small class="extra-small"  translate translate-n="profile.given_votes_count" translate-plural="Votes">Vote</small>

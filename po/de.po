@@ -643,6 +643,12 @@ msgstr "verliebt"
 msgid "ironic"
 msgstr "ironisch"
 
+#: app/templates/profile.html
+msgid "member of {{ profile.communities_count }} community"
+msgid_plural "member of {{ profile.communities_count }} communities"
+msgstr[0] "Mitglied in {{ profile.communities_count }} Community"
+msgstr[1] "Mitglied in {{ profile.communities_count }} Communitys"
+
 #: app/templates/map.html
 msgid "more"
 msgstr "mehr"
@@ -744,11 +750,6 @@ msgstr[1] "{{ missions.length }} Missionen"
 #~ msgid_plural "Gave {{ profile.given_votes_count }} likes"
 #~ msgstr[0] "Gab {{ profile.given_votes_count }} Zustimm."
 #~ msgstr[1] "Gab {{ profile.given_votes_count }} Zustimm."
-
-#~ msgid "{{ profile.comments_count }} comment"
-#~ msgid_plural "{{ profile.comments_count }} comments"
-#~ msgstr[0] "{{ profile.comments_count }} Kommentar"
-#~ msgstr[1] "{{ profile.comments_count }} Kommentare"
 
 #~ msgid "{{ profile.contributions_count }} contribution"
 #~ msgid_plural "{{ profile.contributions_count }} contributions"
