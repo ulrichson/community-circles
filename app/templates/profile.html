@@ -67,7 +67,7 @@
 
         <div class="item item-icon-left item-icon-right" ng-repeat="game_progress in profile.latest_game_progress" ng-show="profile.latest_game_progress.length > 0" ng-click="openContribution(game_progress.contribution)">
           <i class="icon {{ game_progress | gameRuleIcon }}"></i>
-          <h2><span ng-bind-html="game_progress.area_increase | area"></span> | {{ game_progress.lifetime_increase | lifetime }}</h2>
+          <h2><span ng-bind-html="game_progress.area_increase | area"></span> | {{ game_progress.lifetime_increase | minutes }}</h2>
           <p><span translate>In</span> <em>{{ game_progress.contribution.title }}</em> <span am-time-ago="game_progress.created"></span></p>
           <i class="icon ion-ios7-arrow-right"></i>
         </div>

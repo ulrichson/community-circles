@@ -62,6 +62,13 @@ common.filter "lifetime", ->
         return "#{days} days"
     catch e
       return input
+
+common.filter "minutes", ->
+  return (input) ->
+    try
+      return "#{input} min"
+    catch e
+      return input
     
 common.filter "gameRuleIcon", ->
   return (input) ->
