@@ -15,7 +15,7 @@
         <span translate translate-n="contributions.length" translate-plural="{{ contributions.length }} contributions">{{ contributions.length }} contribution</span>
       </div>
       <div class="item" ng-class="{ 'item-thumbnail-left': contribution.photos[0] }" ng-repeat="contribution in contributions" ng-click="openContribution(contribution)">
-        <img ng-if="contribution.photos[0]" ng-src="{{ baseUrl }}/download/?photo_id={{ contribution.photos[0] }}&convert=square_200" alt="{{ contribution.title }}">
+        <img class="rounded" ng-if="contribution.photos[0]" ng-src="{{ baseUrl }}/download/?photo_id={{ contribution.photos[0] }}&convert=square_200" alt="{{ contribution.title }}">
         <h2>{{ contribution.title }}</h2>
         <p>
           <span translate>by</span> <strong>{{ contribution.user.username }}</strong> <span am-time-ago="contribution.created"></span><br>
