@@ -448,7 +448,7 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
       this._container = L.DomUtil.create "button", "button button-positive icon ion-pinpoint"
       L.DomEvent.addListener this._container, "click", (e) ->
         L.DomEvent.stopPropagation e
-        map.setView Util.lastKnownPosition(), Config.MAP_INITIAL_ZOOM
+        map.setView Util.lastKnownPosition() #, Config.MAP_INITIAL_ZOOM
 
       return this._container
       
@@ -683,6 +683,7 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
     , 20000
 
   loadContributions() if Session.loggedIn()
+  updateCurrentPositionMarker Util.lastKnownPosition() if Util.lastKnownPosition()
 
   # Set height of map (for some reason the height of 100% doesn't work)
   # $ionicPlatform.ready ->
