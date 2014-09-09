@@ -279,7 +279,7 @@ mainApp.controller "MainCtrl", ($scope, $state, $http, gettext, T, $ionicLoading
     $scope.requesting = true
     Account.login($scope.login.username, $scope.login.password).then (data) ->
       $scope.username = Session.userName()
-      $state.go $state.current, {}, reload: true
+      # $state.go $state.current, {}, reload: true
       $ionicLoading.hide()
       $scope.reset()
       $scope.modal.hide()
@@ -323,7 +323,7 @@ mainApp.controller "MainCtrl", ($scope, $state, $http, gettext, T, $ionicLoading
       $scope.requesting = true
       Account.login($scope.register.username, $scope.register.password).then (data) ->
         $scope.username = Session.userName()
-        $state.go $state.current, {}, reload: true
+        # $state.go $state.current, {}, reload: true
         $ionicLoading.hide()
         $scope.reset()
         $scope.modal.hide()
@@ -396,7 +396,7 @@ mainApp.controller "MainCtrl", ($scope, $state, $http, gettext, T, $ionicLoading
 
   # Init
   $scope.logout() if not Session.loggedIn()
-  $scope.setNotificationUnreadCount()
+  $scope.setNotificationUnreadCount() if Session.loggedIn()
 
 #-------------------------------------------------------------------------------
 # Map
@@ -448,7 +448,7 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
       this._container = L.DomUtil.create "button", "button button-positive icon ion-pinpoint"
       L.DomEvent.addListener this._container, "click", (e) ->
         L.DomEvent.stopPropagation e
-        locate true
+        map.setView Util.lastKnownPosition(), Config.MAP_INITIAL_ZOOM
 
       return this._container
       
@@ -458,7 +458,7 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
   map = new L.Map "map",
     attributionControl: false
     center: Util.lastKnownPosition()
-    zoom: 14
+    zoom: Config.MAP_INITIAL_ZOOM
     zoomControl: false
 
   map.on "click", (e) ->
@@ -578,15 +578,15 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
     , (error) ->
       Log.e "Could not load communities"
 
-    Backend.all("home").customGET().then (data) ->
-      if not $scope.contributionSelected
-        map.removeLayer @homeLayer if typeof(@homeLayer) isnt "undefined"
-        @homeLayer = L.geoJson data,
-          pointToLayer: (feature, latlng) ->
-            return Util.createHomeMarker latlng
-        map.addLayer @homeLayer
-    , (error) ->
-      # Log.w "Cannot place home community: #{error.data.detail}"
+    # Backend.all("home").customGET().then (data) ->
+    #   if not $scope.contributionSelected
+    #     map.removeLayer @homeLayer if typeof(@homeLayer) isnt "undefined"
+    #     @homeLayer = L.geoJson data,
+    #       pointToLayer: (feature, latlng) ->
+    #         return Util.createHomeMarker latlng
+    #     map.addLayer @homeLayer
+    # , (error) ->
+    #   # Log.w "Cannot place home community: #{error.data.detail}"
 
   updateCurrentPositionMarker = (latlng) ->
     if not currentPositionMarker?
@@ -653,11 +653,15 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
   Util.createTileLayer().addTo map
   locateControl = new LocateControl()
   map.addControl locateControl
-  if Util.lastKnownMapBounds()
-    map.fitBounds Util.lastKnownMapBounds()
-    locate false
-  else
-    locate true
+  map.locate
+    setView: true
+    maxZoom: Config.MAP_INITIAL_ZOOM
+
+  # if Util.lastKnownMapBounds()
+  #   map.fitBounds Util.lastKnownMapBounds()
+  #   locate false
+  # else
+  #   locate true
 
   # currentPositionInterval = setInterval ->
   #   updateCurrentPositionMarker Util.lastKnownPosition()
@@ -673,12 +677,12 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
   # Fetch location in background
   if not $rootScope.mapLocateInterval?
     $rootScope.mapLocateInterval = setInterval ->
-      if not $scope.contributionSelected
+      if Session.loggedIn() and not $scope.contributionSelected
         locate false
         loadContributions()
-    , 5000
+    , 20000
 
-  loadContributions()
+  loadContributions() if Session.loggedIn()
 
   # Set height of map (for some reason the height of 100% doesn't work)
   # $ionicPlatform.ready ->

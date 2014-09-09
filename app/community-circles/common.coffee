@@ -99,6 +99,8 @@ common.constant "Config",
   REGEX_USERNAME: /^[a-zA-Z0-9\-\_\.]+$/
   REGEX_POINT: /\d+\.?\d*|\.\d+/g 
   VERSION: "v1.1.1"
+  MAP_INITIAL_ZOOM: 14
+  MAP_MAX_NATIVE_ZOOM: 18
 
 common.constant "Key",
   FOURSQUARE_CLIENT_ID: @key.FOURSQUARE_CLIENT_ID
