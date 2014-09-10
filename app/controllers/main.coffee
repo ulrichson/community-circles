@@ -657,11 +657,11 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
     setView: true
     maxZoom: Config.MAP_INITIAL_ZOOM
 
-  # if Util.lastKnownMapBounds()
-  #   map.fitBounds Util.lastKnownMapBounds()
-  #   locate false
-  # else
-  #   locate true
+  if Util.lastKnownMapBounds()
+    map.fitBounds Util.lastKnownMapBounds()
+    locate false
+  else
+    locate true
 
   # currentPositionInterval = setInterval ->
   #   updateCurrentPositionMarker Util.lastKnownPosition()
