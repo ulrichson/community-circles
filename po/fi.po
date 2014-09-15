@@ -1,0 +1,623 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: b-Part Suomi\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2014-09-15 10:09+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.9\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: app/templates/contribution.new.html
+msgid "A contribution type is requred"
+msgstr "Tarvitaan osallistumisen tyyppi"
+
+#: app/templates/contribution.new.html
+msgid "A descrption is required"
+msgstr "Tarvitaan kuvaus"
+
+#: app/templates/contribution.new.html
+msgid "A title is required"
+msgstr "Tarvitaan otsikko"
+
+#: dist/controllers/main.js
+msgid "Add"
+msgstr "Lisää"
+
+#: dist/controllers/main.js
+msgid "Add a photo"
+msgstr "Lisää kuva"
+
+#: app/templates/contribution.new.html dist/controllers/main.js
+msgid "Add poll option"
+msgstr "Lisää vaihtoehto kyselyyn"
+
+#: dist/controllers/main.js
+msgid "Adding a photo gives your contribution more meaning!"
+msgstr "Lisäämällä kuvan lisäät osallistumisesi sisältöä!"
+
+#: dist/controllers/main.js
+msgid "Adding your location and mood gives your contribution more meaning!"
+msgstr "Lisäämällä sijainnin ja tunnelman lisäät osallistumisesi sisältöä!"
+
+#: dist/controllers/main.js
+msgid "Adding your location gives your contribution more meaning!"
+msgstr "Lisäämällä sijaintisi lisäät osallistumisesi sisältöä!"
+
+#: dist/controllers/main.js
+msgid "Adding your mood gives your contribution more meaning!"
+msgstr "Lisäämällä tunnelman lisäät osallistumisesi sisältöä!"
+
+#: app/templates/contribution.new.html
+msgid "Additional information"
+msgstr "Lisätietoja"
+
+#: app/templates/contribution.detail.html
+msgid "Agree for an option:"
+msgstr "Olen samaa mieltä"
+
+#: dist/controllers/main.js
+msgid "An error occured"
+msgstr "Tapahtui virhe"
+
+#: app/templates/contribution.new.html
+msgid "At least two poll options are required"
+msgstr "Ainakin kaksi vastausvaihtoehtoa tarvitaan"
+
+#: app/templates/navigation.html
+msgid "Back"
+msgstr "Takaisin"
+
+#: app/templates/login.html
+msgid "Back to login"
+msgstr "Takaisin sisäänkirjautumiseen"
+
+#: app/templates/contribution.detail.html
+msgid "Be the first who comments!"
+msgstr "Ole ensimmäinen, joka kommentoi!"
+
+#: app/templates/navigation.html
+msgid "Browse Contributions"
+msgstr "Selaa osallistumisia"
+
+#: dist/controllers/main.js
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: dist/controllers/main.js
+msgid "Cannot determine location"
+msgstr "Sijainnin ei voi määrittää"
+
+#: dist/controllers/main.js
+msgid "Cannot login"
+msgstr "Sisäänkirjautumisvirhe"
+
+#: dist/controllers/main.js
+msgid "Cannot upload photo"
+msgstr "Kuva ei voi lisätä"
+
+#: dist/controllers/main.js
+msgid "Capture photo"
+msgstr "Ota valokuva"
+
+#: app/templates/contribution.detail.html dist/controllers/main.js
+msgid "Comment"
+msgstr "Kommentoi"
+
+#: app/templates/notifications.html
+msgid "Comment was voted"
+msgstr "Kommenttisi sai äänen"
+
+#: dist/controllers/main.js
+msgid "Continue anyway"
+msgstr "Jatka jokatapauksessa"
+
+#: app/templates/notifications.html
+msgid "Contribution was commented"
+msgstr "Kirjoitustasi kommentoittiin"
+
+#: app/templates/notifications.html
+msgid "Contribution was voted"
+msgstr "Kirjoitustasi äänestettiin"
+
+#: app/templates/contribution.list.html
+msgid "Contributions"
+msgstr "Kirjoituksia"
+
+#: dist/controllers/main.js
+msgid "Couldn't upload comment"
+msgstr "Kommentti ei voinut lisätä"
+
+#: app/templates/notifications.html
+msgid "Dismiss"
+msgstr "Hylkä"
+
+#: dist/controllers/main.js
+msgid "Do you want to include a photo?"
+msgstr "Haluaisitko lisätä kuvan?"
+
+#: dist/controllers/main.js
+msgid "Do you want to provide additional information?"
+msgstr "Haluaisitko antaa lisää tietoa?"
+
+#: app/templates/login.html
+msgid "Email"
+msgstr "Sähköposti"
+
+#: app/templates/settings.html
+msgid "English"
+msgstr "Englanti"
+
+#: dist/controllers/main.js
+msgid "Error with email"
+msgstr "Sähköpostivirhe"
+
+#: dist/controllers/main.js
+msgid "Error with password"
+msgstr "Salasanavirhe"
+
+#: dist/controllers/main.js
+msgid "Error with username"
+msgstr "Käyttäjätunnusvirhe"
+
+#: dist/controllers/main.js
+msgid "Failed to upload"
+msgstr "Lisäys epäonnistui"
+
+#: dist/controllers/main.js
+msgid "Fetching venues..."
+msgstr "Paikat haetaan..."
+
+#: app/templates/settings.html
+msgid "Finnish"
+msgstr "Suomi"
+
+#: dist/controllers/main.js
+msgid "From library"
+msgstr "Kirjastosta"
+
+#: app/templates/settings.html
+msgid "German"
+msgstr "Saksaksi"
+
+#: app/templates/navigation.html
+msgid "Hello"
+msgstr "Hei"
+
+#: app/templates/mood.html
+msgid "How do you feel?"
+msgstr "Miltä sinusta tuntuu?"
+
+#: dist/controllers/main.js
+msgid "I'll edit first"
+msgstr "Muokan ensimmäiseksi"
+
+#: app/templates/contribution.new.html
+msgid "I'm at"
+msgstr "Olen "
+
+#: app/templates/contribution.new.html
+msgid "I'm feeling"
+msgstr "Minusta tuntuu"
+
+#: app/templates/contribution.new.html
+msgid "Idea"
+msgstr "Idea"
+
+#: app/templates/imprint.html app/templates/navigation.html
+msgid "Imprint"
+msgstr "Tekijänoikeudet"
+
+#: dist/controllers/main.js
+msgid "Invalid password or username"
+msgstr "Virheellinen salasana tai käyttäjätunnus"
+
+#: app/templates/contribution.new.html
+msgid "Issue"
+msgstr "Asia"
+
+#: dist/controllers/main.js
+msgid ""
+"It may contain letters, numbers, the characters '-', '_' and '.' but no "
+"special characters."
+msgstr ""
+"Voi sisältää kirjaimia, numeroita, merkkejä \"-\", \"_\" ja \".\" muttei "
+"erikoismerkkejä"
+
+#: app/templates/settings.html
+msgid "Language"
+msgstr "Kieli"
+
+#: app/templates/contribution.stream.html app/templates/navigation.html
+msgid "Latest Contributions"
+msgstr "Viimeisimmät osallistumisia"
+
+#: app/templates/contribution.detail.html
+msgid "Like"
+msgstr "Tykkää"
+
+#: dist/controllers/main.js
+msgid "Loading comments..."
+msgstr "Kommentteja ladataan..."
+
+#: dist/controllers/main.js
+msgid "Loading contribution..."
+msgstr "Kirjoitusta ladataan..."
+
+#: dist/controllers/main.js
+msgid "Loading contributions..."
+msgstr "Kirjoituksia ladataan..."
+
+#: dist/controllers/main.js
+msgid "Loading notifications..."
+msgstr "Ilmoituksia ladataan"
+
+#: dist/controllers/main.js
+msgid "Locating..."
+msgstr "Paikannetaan..."
+
+#: dist/controllers/main.js
+msgid "Logging in..."
+msgstr "Kirjaudutaan sisään..."
+
+#: app/templates/login.html
+msgid "Login"
+msgstr "Kirjaudu sisään"
+
+#: app/templates/navigation.html
+msgid "Logout"
+msgstr "Kirjaudu ulos"
+
+#: app/templates/map.html app/templates/navigation.html
+msgid "Map"
+msgstr "Kartta"
+
+#: app/templates/contribution.list.html
+msgid "Mine"
+msgstr "Omat"
+
+#: app/templates/contribution.list.html
+msgid "Nearby"
+msgstr "Lähellä"
+
+#: app/templates/contribution.new.html
+msgid "New contribution"
+msgstr "Uusi kirjoitus"
+
+#: app/templates/contribution.list.html app/templates/contribution.stream.html
+msgid "No contributions found"
+msgstr "Kirjoituksia ei löydetty"
+
+#: app/templates/contribution.detail.html
+msgid "Nobody replied so far."
+msgstr "Ketään ei vastanut vielä"
+
+#: app/templates/navigation.html app/templates/notifications.html
+msgid "Notifications"
+msgstr "Ilmoituksia"
+
+#: app/templates/contribution.new.html
+msgid "Opinion"
+msgstr "Mielipide"
+
+#: app/templates/login.html
+msgid "Password"
+msgstr "Salasana"
+
+#: dist/controllers/main.js
+msgid "Please enter a comment"
+msgstr "Kommentoi"
+
+#: dist/controllers/main.js
+msgid "Please enter all details!"
+msgstr "Täytä kaikki kentät"
+
+#: dist/controllers/main.js
+msgid "Please enter in the field below."
+msgstr "Täytä alla oleva rivi"
+
+#: dist/controllers/main.js
+msgid "Please enter your credentials"
+msgstr "Syöttää tunnuksesi"
+
+#: dist/controllers/main.js
+msgid "Please remove your previous vote first"
+msgstr "Ole hyvä ja poista ensiksi äänesi"
+
+#: dist/controllers/main.js
+msgid "Please try again later"
+msgstr "Yrittää myöhemmin uudelleen"
+
+#: dist/controllers/main.js
+msgid "Please try again later."
+msgstr "Yrittää myöhemmin uudelleen"
+
+#: app/templates/contribution.new.html
+msgid "Poll"
+msgstr "Gallupi"
+
+#: dist/controllers/main.js
+msgid "Poll option"
+msgstr "Gallupi vaihtoehto"
+
+#: app/templates/notifications.html
+msgid "Poll was voted"
+msgstr "Äänestys galluppissa"
+
+#: app/templates/contribution.detail.html app/templates/contribution.list.html
+#: app/templates/contribution.stream.html app/templates/notifications.html
+#: app/templates/poi.html
+msgid "Pull to refresh..."
+msgstr "Vetä päivitettäväksi"
+
+#: app/templates/notifications.html
+msgid "Read"
+msgstr "Lue"
+
+#: app/templates/login.html
+msgid "Register"
+msgstr "Rekisteröidy "
+
+#: app/templates/login.html
+msgid "Register account"
+msgstr "Rekisteröi tili"
+
+#: dist/controllers/main.js
+msgid "Registering account..."
+msgstr "Tili rekisteröidään"
+
+#: dist/controllers/main.js
+msgid "Replace photo"
+msgstr "Vaihda kuva"
+
+#: dist/controllers/main.js
+msgid "Reset"
+msgstr "Tyhjentä"
+
+#: app/templates/contribution.new.html
+msgid "Reset contribution"
+msgstr "Tyhjätä kirjoitus"
+
+#: dist/controllers/main.js
+msgid "Send"
+msgstr "Lähetä"
+
+#: app/templates/notifications.html
+msgid "Set Unread"
+msgstr "Aseta lukemattomaksi"
+
+#: app/templates/navigation.html app/templates/settings.html
+msgid "Settings"
+msgstr "Asetukset"
+
+#: dist/controllers/main.js
+msgid "Something is missing"
+msgstr "Jotain puuttuu"
+
+#: dist/controllers/main.js
+msgid "Sorry, an error occured"
+msgstr "Valitettavasti virhe tapahtui "
+
+#: dist/controllers/main.js
+msgid "Sorry, couldn't upload your contribution. Please try again later."
+msgstr "Kirjoituksesi ei ollut mahdollista lisätä. Yritä myöhemmin uudelleen."
+
+#: app/templates/contribution.new.html
+msgid "Submit"
+msgstr "Lähetä "
+
+#: dist/controllers/main.js
+msgid "Submitting contribution..."
+msgstr "Kirjoitus lisätään"
+
+#: dist/controllers/main.js
+msgid "Submitting..."
+msgstr "Lähettämällä..."
+
+#: dist/controllers/main.js
+msgid "Successfully uploaded"
+msgstr "Onnistuneesti ladattu"
+
+#: app/templates/navigation.html
+msgid "Support"
+msgstr "Tuki"
+
+#: app/templates/contribution.new.html
+msgid "Tap to enter a description"
+msgstr "Naputa kuvaus"
+
+#: app/templates/contribution.new.html
+msgid "Tap to enter a title"
+msgstr "Naputa otsikko"
+
+#: dist/controllers/main.js
+msgid "Thanks for voting"
+msgstr "Kiitos äänestäsi!"
+
+#: dist/controllers/main.js
+msgid "Thanks, your contribution was uploaded."
+msgstr "Kiitos- kirjoituksesi on tallenettu"
+
+#: app/templates/notifications.html
+msgid ""
+"The comment <em>{{ notification.ref_comment_display }}</em> for the "
+"contribution <strong>{{ notification.ref_contribution_display }}</strong> "
+"was voted"
+msgstr ""
+"Kirjoituksen <strong>{{ notification.ref_contribution_display }}</strong> "
+"kommentti <em>{{ notification.ref_comment_display }}</em> sai äänen"
+
+#: app/templates/notifications.html
+msgid ""
+"The contribution <strong>{{ notification.ref_contribution_display }}</"
+"strong> was commented by <strong>{{ notification.ref_user_display }}</"
+"strong>: <em>{{ notification.ref_comment_display }}</em>"
+msgstr ""
+"<strong>{{ notification.ref_user_display }}</strong>: <em>{{ notification."
+"ref_comment_display }}</em> kommentoi kirjoitusta <strong>{{ notification."
+"ref_contribution_display }}</strong>"
+
+#: app/templates/notifications.html
+msgid ""
+"The contribution <strong>{{ notification.ref_contribution_display }}</"
+"strong> was voted"
+msgstr ""
+"Kirjoitus koskien <strong>{{ notification.ref_contribution_display }}</"
+"strong> sai äänen "
+
+#: app/templates/notifications.html
+msgid ""
+"The poll for <strong>{{ notification.ref_contribution_display }}</strong> "
+"was voted"
+msgstr ""
+"Äänestys koskien <strong>{{ notification.ref_contribution_display }}</"
+"strong> sai äänen"
+
+#: app/templates/notifications.html
+msgid "There are no notifications for you"
+msgstr "Ei uusia ilmoituksia"
+
+#: dist/controllers/main.js
+msgid "There's something missing, please check the comments in the form"
+msgstr "Jotain puuttuu. Ole hyvä ja tarkista kommentit"
+
+#: app/templates/login.html
+msgid "Username"
+msgstr "Käyttäjätunnus"
+
+#: app/templates/poi.html
+msgid "Where are you?"
+msgstr "Missä olet?"
+
+#: dist/controllers/main.js
+msgid "You are not done yet"
+msgstr "Et ole vielä valmis"
+
+#: dist/controllers/main.js
+msgid "You have already voted for this poll!"
+msgstr "Olet jo äänestänyt tässä gallupissa!"
+
+#: app/templates/notifications.html
+msgid "You have {{ notifications.length }} notification"
+msgid_plural "You have {{ notifications.length }} notifications"
+msgstr[0] "Sinulla on {{ notifications.length }} ilmoituksia"
+msgstr[1] ""
+
+#: dist/controllers/main.js
+msgid "Your contribution was uploaded without your photo."
+msgstr "Kirjoituksesi on ladattu ilman valokuvaa"
+
+#: dist/controllers/main.js
+msgid "Your username is invalid"
+msgstr "Väärä käyttäjätunnus"
+
+#: dist/controllers/main.js
+msgid "angry"
+msgstr "vihaiselta"
+
+#: app/templates/contribution.detail.html app/templates/contribution.list.html
+#: app/templates/contribution.stream.html app/templates/map.html
+msgid "by"
+msgstr "mukaan"
+
+#: dist/controllers/main.js
+msgid "childish"
+msgstr "lapselliselta"
+
+#: dist/controllers/main.js
+msgid "confused"
+msgstr "hämmentyneeltä"
+
+#: dist/controllers/main.js
+msgid "happy"
+msgstr "onnelliselta"
+
+#: dist/controllers/main.js
+msgid "in love"
+msgstr "rakastuneelta"
+
+#: dist/controllers/main.js
+msgid "ironic"
+msgstr "ironiselta"
+
+#: app/templates/map.html
+msgid "more"
+msgstr "lisä"
+
+#: dist/controllers/main.js
+msgid "overhappy"
+msgstr "ikionnellinen"
+
+#: dist/controllers/main.js
+msgid "royal"
+msgstr "kunnikaaliselta"
+
+#: dist/controllers/main.js
+msgid "sad"
+msgstr "surulliselta"
+
+#: dist/controllers/main.js
+msgid "sealed"
+msgstr "sanaton"
+
+#: dist/controllers/main.js
+msgid "shocked"
+msgstr "järkyttyneeltä"
+
+#: dist/controllers/main.js
+msgid "silent"
+msgstr "hiljaiselta"
+
+#: dist/controllers/main.js
+msgid "smart"
+msgstr "älykkäältä"
+
+#: dist/controllers/main.js
+msgid "sneaky"
+msgstr "ovelalta"
+
+#: dist/controllers/main.js
+msgid "tired"
+msgstr "väsyneeltä"
+
+#: dist/controllers/main.js
+msgid "unhappy"
+msgstr "tyytymätön"
+
+#: app/templates/contribution.list.html
+msgid "within {{ data.distance }}m"
+msgstr "{{ data.distance }}m läheisyydellä"
+
+#: app/templates/contribution.detail.html
+msgid "{{ comments.length }} comment"
+msgid_plural "{{ comments.length }} comments"
+msgstr[0] "{{ comments.length }} kommentti"
+msgstr[1] ""
+
+#: app/templates/contribution.list.html app/templates/contribution.stream.html
+msgid "{{ contributions.length }} contribution"
+msgid_plural "{{ contributions.length }} contributions"
+msgstr[0] "{{ contributions.length }} osallistuminen"
+msgstr[1] ""
+
+#: app/templates/contribution.list.html
+#, fuzzy
+msgid "{{ contributions.length }} contribution you have commented"
+msgid_plural "{{ contributions.length }} contributions you have commented"
+msgstr[0] "{{ contributions.length }} osallistuminen"
+msgstr[1] ""
+
+#: app/templates/contribution.list.html
+#, fuzzy
+msgid "{{ contributions.length }} contribution you have voted"
+msgid_plural "{{ contributions.length }} contributions you have voted"
+msgstr[0] "{{ contributions.length }} osallistuminen"
+msgstr[1] ""
+
+#~ msgid "Latest"
+#~ msgstr "Uusimmat"

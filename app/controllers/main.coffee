@@ -151,7 +151,7 @@ mainApp.run ($rootScope, $templateCache, $ionicPlatform, T, gettext, Log, Config
 
   if $rootScope.language isnt "en"
     gettextCatalog.currentLanguage = $rootScope.language
-    amMoment.changeLanguage $rootScope.language
+    amMoment.changeLocale $rootScope.language
 
   $rootScope.getMoods = ->
     return [
@@ -1576,5 +1576,5 @@ mainApp.controller "SettingsCtrl", ($scope, $rootScope, amMoment, gettextCatalog
     localStorage.setItem "language", language
 
     gettextCatalog.currentLanguage = language
-    amMoment.changeLanguage language
+    amMoment.changeLocale language
     $rootScope.moods = $rootScope.getMoods()

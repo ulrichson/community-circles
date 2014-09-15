@@ -6,6 +6,7 @@ Angular.JS directive and filters for [Moment.JS](http://www.momentjs.com).
 Copyright (C) 2013, 2014, Uri Shaked <uri@urish.org>
 
 [![Build Status](https://travis-ci.org/urish/angular-moment.png?branch=master)](https://travis-ci.org/urish/angular-moment)
+[![Coverage Status](https://coveralls.io/repos/urish/angular-moment/badge.png)](https://coveralls.io/r/urish/angular-moment)
 
 Installation
 ------------
@@ -13,6 +14,7 @@ Installation
 You can choose your preferred method of installation:
 * Through bower: `bower install angular-moment --save`
 * Through npm: `npm install angular-moment --save`
+* From a CDN: [jsDelivr](https://cdn.jsdelivr.net/angular.moment/0.8.0/angular-moment.min.js) or [CDNJS](https://cdnjs.cloudflare.com/ajax/libs/angular-moment/0.8.0/angular-moment.min.js)
 * Download from github: [angular-moment.min.js](https://raw.github.com/urish/angular-moment/master/angular-moment.min.js)
 
 Usage
@@ -36,10 +38,23 @@ If you need internationalization support, load specified moment.js locale file f
 <script src="components/moment/lang/de.js"></script>
 ```
 
-Than trigger global moment.js language (e.g. in your app's run() callback):
+Then call the `amMoment.changeLocale()` method (e.g. inside your app's run() callback):
 
-```html
-$window.moment.lang('de');
+```js
+myapp.run(function(amMoment) {
+	amMoment.changeLocale('de');
+});
+```
+
+### Configuration
+
+Parameter `preprocess`(e.g: `unix`, `utc`) would pre-execute before. 
+
+```js
+angular.module('myapp').constant('angularMomentConfig', {
+	preprocess: 'unix', // optional
+	timezone: 'Europe/London' // optional
+});
 ```
 
 ### Timeago directive
@@ -47,6 +62,7 @@ Use am-time-ago directive to format your relative timestamps. For example:
 
 ```html
 <span am-time-ago="message.time"></span>
+<span am-time-ago="message.time" am-preprocess="unix"></span>
 ```
 
 angular-moment will dynamically update the span to indicate how much time
@@ -100,7 +116,9 @@ angular.module('myapp').constant('angularMomentConfig', {
 ```
 
 Remember to include `moment-timezone.js` in your project, otherwise the custom timezone
-functionality will not be available.
+functionality will not be available. You will also need to include a timezone data file that
+you can create using the [Timezone Data Builder](http://momentjs.com/timezone/data/)
+or simply download from [here](https://rawgithub.com/qw4n7y/7282780/raw/6ae3b334b295f93047e8f3ad300db6bc4387e235/moment-timezone-data.js).
 
 License
 ----

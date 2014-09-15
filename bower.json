@@ -14,7 +14,7 @@
     "steroids-js": "3.1.x",
     "underscore": "1.5.1",
     "restangular": "1.0.7",
-    "angular-moment": "0.6.x",
+    "angular-moment": "0.8.x",
     "leaflet.markercluster": "0.4.x",
     "leaflet-dist": "0.7.x",
     "leaflet-providers": "x",
