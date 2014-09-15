@@ -20,3 +20,9 @@ v1.1.1
 ======
 
 - Map can be zoomed in closer
+
+v1.2.0
+======
+
+- Added Finnish translation
+- Enhanced contrast for contribution marker and introduced active state (iOS)
