@@ -20,6 +20,9 @@
     "leaflet-providers": "x",
     "angular-gettext": "0.4.x",
     "ngCordova": "0.1.x",
-    "ionic": "driftyco/ionic-bower#v1.0.0-beta.9"
+    "ionic": "driftyco/ionic-bower#v1.0.0-beta.12"
+  },
+  "resolutions": {
+    "angular": "~1.2.17"
   }
 }
