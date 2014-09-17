@@ -382,7 +382,7 @@ common.factory "Util", ->
     return L.latLngBounds new L.LatLng(minLat, minLng), new L.LatLng(maxLat, maxLng)
 
   createTileLayer: ->
-    return L.tileLayer.provider "OpenStreetMap.BlackAndWhite",
+    return L.tileLayer.provider "Hydda.Full",
       detectRetina: true
       maxNativeZoom: 18
       maxZoom: 22
