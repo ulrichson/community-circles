@@ -190,6 +190,10 @@ msgstr ""
 msgid "Fetching venues..."
 msgstr ""
 
+#: app/templates/settings.html
+msgid "Finnish"
+msgstr ""
+
 #: dist/controllers/main.js
 msgid "From library"
 msgstr ""

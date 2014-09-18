@@ -98,7 +98,7 @@ common.constant "Config",
   API_ENDPOINT: @config.API_ENDPOINT
   REGEX_USERNAME: /^[a-zA-Z0-9\-\_\.]+$/
   REGEX_POINT: /\d+\.?\d*|\.\d+/g 
-  VERSION: "v1.1.1"
+  VERSION: "v1.2.0"
   MAP_INITIAL_ZOOM: 14
   MAP_MAX_NATIVE_ZOOM: 18
 
@@ -463,7 +463,7 @@ common.factory "Util", (Config, Color) ->
     d
 
   createTileLayer: ->
-    return L.tileLayer.provider "OpenStreetMap.BlackAndWhite",
+    return L.tileLayer.provider "Hydda.Full",
       detectRetina: true
       maxNativeZoom: 18
       maxZoom: 22
