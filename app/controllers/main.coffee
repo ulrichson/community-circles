@@ -649,7 +649,7 @@ mainApp.controller "MapCtrl", ($scope, $rootScope, $http, $state, $ionicPlatform
       locate false
     , 5000
 
-  loadContributions()
+  loadContributions() if Session.loggedIn()
 
   # Set height of map (for some reason the height of 100% doesn't work)
   # $ionicPlatform.ready ->
