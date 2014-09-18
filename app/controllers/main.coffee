@@ -1153,7 +1153,6 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
     if locate
       $ionicLoading.show template: T._ gettext "Locating..."
       $cordovaGeolocation.getCurrentPosition
-        enableHighAccuracy: ionic.Platform.isIOS()
         timeout: 5000
       .then (position) ->
         contributionModel.latlng = L.latLng position.coords.latitude, position.coords.longitude
@@ -1208,7 +1207,6 @@ mainApp.controller "ContributionNewCtrl", ($scope, $rootScope, $http, $state, $c
   if not contributionModel.isDirty()
     $ionicLoading.show template: T._ gettext "Locating..."
     $cordovaGeolocation.getCurrentPosition
-      enableHighAccuracy: ionic.Platform.isIOS()
       timeout: 5000
     .then (position) ->
       contributionModel.latlng = L.latLng position.coords.latitude, position.coords.longitude
@@ -1522,8 +1520,7 @@ mainApp.controller "ContributionListCtrl", ($scope, $rootScope, $state, $timeout
 
   $ionicLoading.show template: T._ gettext "Locating..."
   $cordovaGeolocation.getCurrentPosition
-    enableHighAccuracy: ionic.Platform.isIOS()
-    timeout: 2000
+    timeout: 5000
   .then (position) ->
     localStorage.setItem "position.coords.latitude", position.coords.latitude
     localStorage.setItem "position.coords.longitude", position.coords.longitude
