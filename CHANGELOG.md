@@ -27,3 +27,8 @@ v1.2.0
 - Added Finnish translation
 - Enhanced contrast for contribution marker and introduced active state (iOS)
 - Changed map style
+
+v1.2.1
+======
+
+- Fixed position bug in iOS
